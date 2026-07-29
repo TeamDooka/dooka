@@ -93,7 +93,7 @@
     box-shadow: 0 1px 0 0 color-mix(in srgb, var(--turf) 12%, transparent);
   }
   .topbar-inner { display: flex; align-items: center; justify-content: space-between; height: 64px; }
-  .brand { display: flex; align-items: center; gap: 11px; font-weight: 700; font-size: 1.08rem; letter-spacing: -0.01em; }
+  .brand { display: flex; align-items: center; gap: 11px; font-weight: 700; font-size: 1.08rem; letter-spacing: -0.01em; text-decoration: none; }
   .brand .jeton {
     width: 30px; height: 30px; flex: none; border-radius: 50%;
     box-shadow: 0 0 0 1px color-mix(in srgb, var(--gold) 45%, transparent);
@@ -226,12 +226,12 @@
 </style>
 
 <!-- ========== TOP BAR ========== -->
-<div class="topbar">
+<div class="topbar" id="top">
   <div class="wrap topbar-inner">
-    <div class="brand">
+    <a class="brand" href="#top" aria-label="Retour en haut">
       <span class="jeton" aria-hidden="true"><svg viewBox="0 0 100 100" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="48" fill="#157A3E"/><text x="50" y="52" text-anchor="middle" dominant-baseline="central" font-family="system-ui, sans-serif" font-weight="700" font-size="46" fill="#F7F3E9">D</text></svg></span>
       Dooka
-    </div>
+    </a>
     <nav class="topbar-nav">
       <a href="#features">Fonctionnalités</a>
       <a href="#classement">Classement</a>
