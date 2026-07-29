@@ -10,74 +10,44 @@
 <meta property="og:description" content="Gratte tes tickets, suis tes gains, défie tes potes. Appli communautaire Android, gratuite." />
 <meta property="og:url" content="https://dooka.fr" />
 <meta name="twitter:card" content="summary" />
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%23F7C948'/><circle cx='50' cy='50' r='37' fill='%23157A3E'/><text x='50' y='70' font-size='58' text-anchor='middle' font-family='sans-serif' font-weight='800' fill='%23F7F3E9'>D</text></svg>" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%23157A3E'/><text x='50' y='68' font-size='58' text-anchor='middle' font-family='sans-serif' font-weight='700' fill='%23F7F3E9'>D</text></svg>" />
 </head>
 <body>
 <style>
   :root {
-    /* Light — papier de bordereau, chaud biaisé vert */
-    --ground: #F1EEE2;
-    --surface: #FBF9F1;
-    --surface-2: #FFFFFF;
-    --ink: #16211B;
-    --muted: #5C6B61;
+    --ground: #FAFAF7;
+    --surface: #FFFFFF;
+    --ink: #17201A;
+    --muted: #64716A;
     --turf: #157A3E;
-    --turf-deep: #0F5A2A;
     --gold: #B4841E;
-    --gold-bright: #F7C948;
-    --line: rgba(20, 40, 28, 0.12);
-    --shadow: rgba(20, 40, 28, 0.10);
+    --line: rgba(23, 32, 26, 0.10);
 
-    --font-display: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    --font-body: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --font: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     --font-mono: ui-monospace, "SF Mono", "JetBrains Mono", "Roboto Mono", Consolas, monospace;
 
-    --maxw: 1080px;
-    --r: 16px;
+    --maxw: 980px;
+    --r: 14px;
   }
 
   @media (prefers-color-scheme: dark) {
     :root {
-      --ground: #0A130E;
-      --surface: #101E16;
-      --surface-2: #142419;
-      --ink: #F1EFE2;
-      --muted: #93A597;
-      --turf: #3FBE72;
-      --turf-deep: #157A3E;
-      --gold: #F7C948;
-      --gold-bright: #F7C948;
+      --ground: #0C1310;
+      --surface: #131C16;
+      --ink: #F1EFE7;
+      --muted: #8D9A92;
+      --turf: #45C77E;
+      --gold: #F0C15C;
       --line: rgba(255, 255, 255, 0.09);
-      --shadow: rgba(0, 0, 0, 0.5);
     }
   }
-
   :root[data-theme="dark"] {
-    --ground: #0A130E;
-    --surface: #101E16;
-    --surface-2: #142419;
-    --ink: #F1EFE2;
-    --muted: #93A597;
-    --turf: #3FBE72;
-    --turf-deep: #157A3E;
-    --gold: #F7C948;
-    --gold-bright: #F7C948;
-    --line: rgba(255, 255, 255, 0.09);
-    --shadow: rgba(0, 0, 0, 0.5);
+    --ground: #0C1310; --surface: #131C16; --ink: #F1EFE7; --muted: #8D9A92;
+    --turf: #45C77E; --gold: #F0C15C; --line: rgba(255, 255, 255, 0.09);
   }
-
   :root[data-theme="light"] {
-    --ground: #F1EEE2;
-    --surface: #FBF9F1;
-    --surface-2: #FFFFFF;
-    --ink: #16211B;
-    --muted: #5C6B61;
-    --turf: #157A3E;
-    --turf-deep: #0F5A2A;
-    --gold: #B4841E;
-    --gold-bright: #F7C948;
-    --line: rgba(20, 40, 28, 0.12);
-    --shadow: rgba(20, 40, 28, 0.10);
+    --ground: #FAFAF7; --surface: #FFFFFF; --ink: #17201A; --muted: #64716A;
+    --turf: #157A3E; --gold: #B4841E; --line: rgba(23, 32, 26, 0.10);
   }
 
   * { box-sizing: border-box; }
@@ -86,446 +56,187 @@
     margin: 0;
     background: var(--ground);
     color: var(--ink);
-    font-family: var(--font-body);
+    font-family: var(--font);
     font-size: 17px;
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
   }
 
-  .wrap {
-    max-width: var(--maxw);
-    margin: 0 auto;
-    padding: 0 24px;
-  }
-
+  .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 24px; }
   a { color: inherit; }
 
   .eyebrow {
     font-family: var(--font-mono);
     font-size: 0.72rem;
-    letter-spacing: 0.18em;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--turf);
     font-weight: 600;
   }
 
   h1, h2, h3 {
-    font-family: var(--font-display);
+    font-family: var(--font);
     text-wrap: balance;
     margin: 0;
-    letter-spacing: -0.03em;
-    line-height: 1.02;
+    letter-spacing: -0.02em;
+    line-height: 1.08;
+    font-weight: 700;
   }
 
   /* ---------- Top bar ---------- */
   .topbar {
-    position: sticky;
-    top: 0;
-    z-index: 50;
-    background: color-mix(in srgb, var(--ground) 88%, transparent);
+    position: sticky; top: 0; z-index: 50;
+    background: color-mix(in srgb, var(--ground) 90%, transparent);
     backdrop-filter: blur(10px);
     border-bottom: 1px solid var(--line);
+    box-shadow: 0 1px 0 0 color-mix(in srgb, var(--turf) 12%, transparent);
   }
-  .topbar-inner {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    height: 64px;
+  .topbar-inner { display: flex; align-items: center; justify-content: space-between; height: 64px; }
+  .brand { display: flex; align-items: center; gap: 11px; font-weight: 700; font-size: 1.08rem; letter-spacing: -0.01em; }
+  .brand .jeton {
+    width: 30px; height: 30px; flex: none; border-radius: 50%;
+    box-shadow: 0 0 0 1px color-mix(in srgb, var(--gold) 45%, transparent);
   }
-  .brand {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    font-family: var(--font-display);
-    font-weight: 800;
-    font-size: 1.15rem;
-    letter-spacing: -0.02em;
+  .topbar-nav { display: flex; align-items: center; gap: 22px; margin-left: 8px; }
+  .topbar-nav a {
+    font-size: 0.9rem; font-weight: 500; color: var(--muted); text-decoration: none;
+    transition: color 0.15s ease;
   }
-  .brand .jeton { width: 34px; height: 34px; flex: none; }
+  .topbar-nav a:hover { color: var(--ink); }
+  @media (max-width: 640px) { .topbar-nav { display: none; } }
   .topbar-actions { display: flex; align-items: center; gap: 8px; }
 
   .btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    font-family: var(--font-display);
-    font-weight: 700;
-    font-size: 1rem;
-    letter-spacing: -0.01em;
-    padding: 13px 22px;
-    border-radius: 999px;
-    border: 1px solid transparent;
-    cursor: pointer;
-    text-decoration: none;
-    transition: transform 0.15s ease, box-shadow 0.2s ease, background 0.2s ease;
+    display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+    font-family: var(--font); font-weight: 600; font-size: 0.98rem;
+    padding: 11px 20px; border-radius: 10px; border: 1px solid transparent;
+    cursor: pointer; text-decoration: none;
+    transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
   }
-  .btn-primary {
-    background: var(--turf);
-    color: #fff;
-    box-shadow: 0 8px 24px color-mix(in srgb, var(--turf) 35%, transparent);
-  }
-  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 30px color-mix(in srgb, var(--turf) 45%, transparent); }
-  .btn-ghost {
-    background: transparent;
-    color: var(--ink);
-    border-color: var(--line);
-  }
+  .btn-primary { background: var(--turf); color: #fff; }
+  .btn-primary:hover { background: color-mix(in srgb, var(--turf) 85%, black); }
+  .btn-ghost { background: transparent; color: var(--ink); border-color: var(--line); }
   .btn-ghost:hover { border-color: var(--turf); color: var(--turf); }
-  .btn:focus-visible { outline: 3px solid var(--gold-bright); outline-offset: 2px; }
-  .btn-sm { padding: 9px 16px; font-size: 0.9rem; }
+  .btn:focus-visible { outline: 2px solid var(--turf); outline-offset: 2px; }
+  .btn-sm { padding: 8px 14px; font-size: 0.88rem; border-radius: 8px; }
 
-  .btn-primary .apk-meta {
-    font-family: var(--font-mono);
-    font-weight: 500;
-    font-size: 0.7rem;
-    opacity: 0.85;
-    letter-spacing: 0;
-  }
+  .btn-primary .apk-meta { font-family: var(--font-mono); font-weight: 400; font-size: 0.72rem; opacity: 0.85; }
 
   /* ---------- Hero ---------- */
-  .hero {
-    padding: clamp(40px, 8vw, 88px) 0 clamp(48px, 7vw, 80px);
-    position: relative;
-  }
-  .hero-grid {
-    display: grid;
-    grid-template-columns: 1.1fr 0.9fr;
-    gap: clamp(32px, 5vw, 64px);
-    align-items: center;
-  }
-  @media (max-width: 860px) {
-    .hero-grid { grid-template-columns: 1fr; gap: 36px; }
-  }
-
-  .hero h1 {
-    font-size: clamp(2.6rem, 7.5vw, 4.6rem);
-    font-weight: 800;
-    margin: 18px 0 0;
-  }
+  .hero { padding: clamp(64px, 12vw, 120px) 0 clamp(56px, 8vw, 88px); text-align: center; }
+  .hero h1 { font-size: clamp(2.4rem, 6vw, 3.6rem); margin: 18px auto 0; max-width: 16ch; }
   .hero h1 .accent { color: var(--turf); }
-  .hero-sub {
-    margin: 22px 0 30px;
-    font-size: clamp(1.05rem, 2.2vw, 1.2rem);
-    color: var(--muted);
-    max-width: 34ch;
-  }
-  .hero-cta { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
-  .hero-note {
-    margin-top: 18px;
-    font-family: var(--font-mono);
-    font-size: 0.72rem;
-    letter-spacing: 0.04em;
-    color: var(--muted);
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  /* ---------- Scratch card ---------- */
-  .ticket {
-    position: relative;
-    aspect-ratio: 5 / 6;
-    max-width: 380px;
-    width: 100%;
-    margin: 0 auto;
-    border-radius: 22px;
-    background:
-      radial-gradient(120% 90% at 50% 0%, color-mix(in srgb, var(--turf) 22%, var(--surface)) 0%, var(--surface) 55%);
-    border: 1px solid var(--line);
-    box-shadow: 0 30px 60px -20px var(--shadow);
-    overflow: hidden;
-    padding: 22px;
-    display: flex;
-    flex-direction: column;
-  }
-  .ticket-perf {
-    position: absolute;
-    inset: 12px;
-    border: 2px dashed color-mix(in srgb, var(--gold) 55%, transparent);
-    border-radius: 16px;
-    pointer-events: none;
-  }
-  .ticket-head {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-family: var(--font-mono);
-    font-size: 0.68rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--muted);
-    z-index: 2;
-  }
-  .ticket-serial { color: var(--gold); }
-  .scratch-zone {
-    position: relative;
-    flex: 1;
-    margin: 16px 4px;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    overflow: hidden;
-  }
-  .scratch-prize {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    padding: 12px;
-  }
-  .scratch-prize .win-amount {
-    font-family: var(--font-display);
-    font-weight: 800;
-    font-size: clamp(2rem, 9vw, 3rem);
-    letter-spacing: -0.03em;
-    color: var(--turf);
-    line-height: 1;
-  }
-  .scratch-prize .win-label {
-    font-family: var(--font-mono);
-    font-size: 0.7rem;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--muted);
-  }
-  .scratch-canvas {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    cursor: grab;
-    touch-action: none;
-    transition: opacity 0.6s ease;
-    z-index: 2;
-  }
-  .scratch-canvas:active { cursor: grabbing; }
-  .ticket-foot {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 10px;
-    z-index: 2;
-  }
-  .odds {
-    font-family: var(--font-mono);
-    font-size: 0.66rem;
-    color: var(--muted);
-    letter-spacing: 0.04em;
-  }
-  .reveal-link {
-    background: none;
-    border: none;
-    font-family: var(--font-mono);
-    font-size: 0.66rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--turf);
-    cursor: pointer;
-    padding: 4px 0;
-    text-decoration: underline;
-    text-underline-offset: 3px;
-  }
-  .reveal-link:focus-visible { outline: 2px solid var(--gold-bright); outline-offset: 2px; }
+  .hero-sub { margin: 20px auto 32px; font-size: clamp(1.02rem, 2vw, 1.15rem); color: var(--muted); max-width: 42ch; }
+  .hero-cta { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: center; }
 
   /* ---------- Section shell ---------- */
-  section { padding: clamp(56px, 9vw, 100px) 0; }
-  .section-head { max-width: 42ch; margin-bottom: clamp(32px, 5vw, 52px); }
-  .section-head h2 {
-    font-size: clamp(1.9rem, 4.5vw, 3rem);
-    font-weight: 800;
-    margin-top: 14px;
-  }
-  .section-head p { color: var(--muted); font-size: 1.1rem; margin: 16px 0 0; }
+  section { padding: clamp(48px, 7vw, 80px) 0; }
+  .section-head { max-width: 46ch; margin: 0 auto clamp(32px, 5vw, 48px); text-align: center; }
+  .section-head h2 { font-size: clamp(1.7rem, 3.6vw, 2.4rem); margin-top: 12px; }
+  .section-head p { color: var(--muted); font-size: 1.05rem; margin: 14px 0 0; }
 
-  /* ---------- Communautaire band ---------- */
-  .band {
-    background: var(--turf-deep);
-    color: #F3F7F2;
-    border-radius: 28px;
-    padding: clamp(36px, 6vw, 64px);
-    position: relative;
-    overflow: hidden;
-  }
-  .band::after {
-    content: "";
-    position: absolute;
-    right: -60px; top: -60px;
-    width: 260px; height: 260px;
-    background: radial-gradient(circle, color-mix(in srgb, var(--gold-bright) 40%, transparent), transparent 70%);
-    pointer-events: none;
-  }
-  .band .eyebrow { color: var(--gold-bright); }
-  .band h2 {
-    font-size: clamp(1.9rem, 4.5vw, 3rem);
-    font-weight: 800;
-    margin: 14px 0 0;
-    max-width: 20ch;
-    position: relative;
-  }
-  .band p {
-    color: color-mix(in srgb, #F3F7F2 82%, transparent);
-    font-size: 1.12rem;
-    max-width: 52ch;
-    margin: 20px 0 0;
-    position: relative;
-  }
-  .band-stats {
-    display: flex;
-    flex-wrap: wrap;
-    gap: clamp(24px, 5vw, 56px);
-    margin-top: 40px;
-    position: relative;
-  }
+  hr.rule { border: none; border-top: 1px solid var(--line); margin: 0; }
+
+  /* ---------- Stats row ---------- */
+  .stats { display: flex; justify-content: center; gap: clamp(28px, 6vw, 64px); flex-wrap: wrap; text-align: center; }
   .stat .num {
-    font-family: var(--font-display);
-    font-weight: 800;
-    font-size: clamp(1.8rem, 5vw, 2.6rem);
-    letter-spacing: -0.03em;
-    color: var(--gold-bright);
-    font-variant-numeric: tabular-nums;
+    font-weight: 700; font-size: clamp(1.6rem, 4vw, 2.1rem); letter-spacing: -0.02em;
+    color: var(--ink); font-variant-numeric: tabular-nums;
   }
-  .stat .cap {
-    font-family: var(--font-mono);
-    font-size: 0.72rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: color-mix(in srgb, #F3F7F2 70%, transparent);
-    margin-top: 4px;
-  }
+  .stat .cap { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); margin-top: 4px; }
 
   /* ---------- Features ---------- */
-  .features {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 18px;
-  }
-  @media (max-width: 900px) { .features { grid-template-columns: repeat(2, 1fr); } }
-  @media (max-width: 580px) { .features { grid-template-columns: 1fr; } }
+  .features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: var(--r); overflow: hidden; }
+  @media (max-width: 860px) { .features { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 560px) { .features { grid-template-columns: 1fr; } }
 
-  .card {
-    background: var(--surface);
-    border: 1px solid var(--line);
-    border-radius: var(--r);
-    padding: 26px;
-    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  .card { background: var(--surface); padding: 28px 24px; }
+  .card h3 { font-size: 1.08rem; font-weight: 700; }
+  .card p { color: var(--muted); font-size: 0.96rem; margin: 8px 0 0; }
+
+  /* ---------- Leaderboard ---------- */
+  .leaderboard { border: 1px solid var(--line); border-radius: var(--r); overflow: hidden; background: var(--surface); }
+  .leaderboard-row {
+    display: flex; align-items: center; gap: 14px;
+    padding: 14px 20px; border-bottom: 1px solid var(--line);
   }
-  .card:hover {
-    transform: translateY(-4px);
-    border-color: color-mix(in srgb, var(--gold) 50%, var(--line));
-    box-shadow: 0 18px 40px -24px var(--shadow);
+  .leaderboard-row:last-child { border-bottom: none; }
+  .leaderboard-rank {
+    font-family: var(--font-mono); font-size: 0.85rem; font-weight: 600;
+    color: var(--muted); width: 1.6em; flex: none; text-align: right;
   }
-  .card .ic {
-    width: 46px; height: 46px;
-    border-radius: 12px;
-    display: grid; place-items: center;
-    background: color-mix(in srgb, var(--turf) 14%, transparent);
-    margin-bottom: 18px;
+  .leaderboard-row:nth-child(1) .leaderboard-rank { color: var(--gold); }
+  .leaderboard-avatar {
+    width: 36px; height: 36px; border-radius: 50%; flex: none; object-fit: cover;
+    background: color-mix(in srgb, var(--turf) 16%, transparent);
   }
-  .card .ic svg { width: 24px; height: 24px; }
-  .card h3 { font-size: 1.2rem; font-weight: 700; letter-spacing: -0.01em; }
-  .card p { color: var(--muted); font-size: 0.98rem; margin: 10px 0 0; }
+  .leaderboard-avatar-fallback {
+    width: 36px; height: 36px; border-radius: 50%; flex: none;
+    background: color-mix(in srgb, var(--turf) 16%, transparent);
+    color: var(--turf); font-weight: 700; font-size: 0.9rem;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .leaderboard-info { flex: 1; min-width: 0; }
+  .leaderboard-name { font-weight: 600; font-size: 0.96rem; }
+  .leaderboard-place { color: var(--muted); font-size: 0.84rem; margin-top: 1px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .leaderboard-amount {
+    font-weight: 700; font-size: 1.02rem; color: var(--turf);
+    font-variant-numeric: tabular-nums; flex: none;
+  }
+  .leaderboard-state { text-align: center; color: var(--muted); font-size: 0.94rem; padding: 32px 20px; margin: 0; }
 
   /* ---------- Steps ---------- */
-  .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
   @media (max-width: 720px) { .steps { grid-template-columns: 1fr; } }
-  .step { position: relative; padding-top: 20px; border-top: 2px solid var(--line); }
-  .step .n {
-    font-family: var(--font-mono);
-    font-size: 0.8rem;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    color: var(--gold);
-  }
-  .step h3 { font-size: 1.25rem; font-weight: 700; margin: 12px 0 8px; }
-  .step p { color: var(--muted); margin: 0; font-size: 0.98rem; }
+  .step .n { font-family: var(--font-mono); font-size: 0.78rem; font-weight: 600; color: var(--gold); }
+  .step h3 { font-size: 1.15rem; margin: 10px 0 6px; }
+  .step p { color: var(--muted); margin: 0; font-size: 0.96rem; }
 
   /* ---------- Download CTA ---------- */
-  .download {
-    text-align: center;
-    background: var(--surface);
-    border: 1px solid var(--line);
-    border-radius: 28px;
-    padding: clamp(40px, 7vw, 72px) 24px;
-  }
-  .download .jeton { width: 68px; height: 68px; margin: 0 auto 22px; }
-  .download h2 { font-size: clamp(2rem, 5vw, 3rem); font-weight: 800; }
-  .download p { color: var(--muted); max-width: 42ch; margin: 16px auto 30px; font-size: 1.08rem; }
-  .platform-note {
-    font-family: var(--font-mono);
-    font-size: 0.72rem;
-    letter-spacing: 0.06em;
-    color: var(--muted);
-    margin-top: 20px;
-  }
+  .download { text-align: center; padding: clamp(48px, 8vw, 88px) 24px; }
+  .download h2 { font-size: clamp(1.9rem, 4.5vw, 2.8rem); }
+  .download p { color: var(--muted); max-width: 40ch; margin: 14px auto 28px; font-size: 1.04rem; }
+  .platform-note { font-family: var(--font-mono); font-size: 0.72rem; color: var(--muted); margin-top: 18px; }
+  .hero-platform-note { margin-top: 20px; }
 
   /* ---------- Footer ---------- */
-  footer { border-top: 1px solid var(--line); padding: 44px 0 60px; }
-  .foot-grid {
-    display: flex;
-    justify-content: space-between;
-    gap: 32px;
-    flex-wrap: wrap;
-    align-items: flex-start;
-  }
-  .foot-brand { display: flex; align-items: center; gap: 12px; font-family: var(--font-display); font-weight: 800; font-size: 1.1rem; }
-  .foot-brand .jeton { width: 32px; height: 32px; }
-  .legal {
-    max-width: 60ch;
-    font-size: 0.82rem;
-    color: var(--muted);
-    line-height: 1.55;
-  }
+  footer { border-top: 1px solid var(--line); padding: 40px 0 56px; }
+  .foot-grid { display: flex; justify-content: space-between; gap: 32px; flex-wrap: wrap; align-items: flex-start; }
+  .foot-brand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 1rem; }
+  .foot-brand .jeton { width: 24px; height: 24px; }
+  .legal { max-width: 58ch; font-size: 0.8rem; color: var(--muted); line-height: 1.55; }
   .legal strong { color: var(--ink); font-weight: 600; }
   .warn {
-    margin-top: 14px;
-    padding: 14px 16px;
-    border: 1px solid var(--line);
-    border-radius: 12px;
-    background: color-mix(in srgb, var(--gold-bright) 8%, transparent);
-    font-family: var(--font-mono);
-    font-size: 0.72rem;
-    line-height: 1.5;
-    color: var(--ink);
+    margin-top: 12px; padding: 12px 14px; border: 1px solid var(--line); border-radius: 10px;
+    font-family: var(--font-mono); font-size: 0.7rem; line-height: 1.5; color: var(--ink);
   }
   .warn a { color: var(--turf); font-weight: 600; }
 
   /* ---------- Sticky mobile download ---------- */
-  .sticky-dl {
-    position: fixed;
-    left: 16px; right: 16px; bottom: 16px;
-    z-index: 60;
-    display: none;
-    box-shadow: 0 12px 30px -8px var(--shadow);
-  }
-  @media (max-width: 860px) {
+  .sticky-dl { position: fixed; left: 16px; right: 16px; bottom: 16px; z-index: 60; display: none; }
+  @media (max-width: 720px) {
     .sticky-dl { display: flex; }
     .topbar-actions .btn-primary { display: none; }
   }
 
-  /* ---------- Reveal on scroll ---------- */
-  .reveal { opacity: 0; transform: translateY(18px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .reveal { opacity: 0; transform: translateY(14px); transition: opacity 0.6s ease, transform 0.6s ease; }
   .reveal.in { opacity: 1; transform: none; }
-
-  @media (prefers-reduced-motion: reduce) {
-    .reveal { opacity: 1; transform: none; transition: none; }
-    .btn, .card { transition: none; }
-  }
+  @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } }
 </style>
 
 <!-- ========== TOP BAR ========== -->
 <div class="topbar">
   <div class="wrap topbar-inner">
     <div class="brand">
-      <span class="jeton" aria-hidden="true"><svg viewBox="0 0 100 100" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="48" fill="#F7C948"/><circle cx="50" cy="50" r="44" fill="none" stroke="#C6871F" stroke-width="4" stroke-dasharray="3 3.15"/><circle cx="50" cy="50" r="37" fill="#157A3E"/><text x="50" y="53" text-anchor="middle" dominant-baseline="central" font-family="system-ui, sans-serif" font-weight="800" font-size="44" fill="#F7F3E9">D</text></svg></span>
+      <span class="jeton" aria-hidden="true"><svg viewBox="0 0 100 100" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="48" fill="#157A3E"/><text x="50" y="52" text-anchor="middle" dominant-baseline="central" font-family="system-ui, sans-serif" font-weight="700" font-size="46" fill="#F7F3E9">D</text></svg></span>
       Dooka
     </div>
+    <nav class="topbar-nav">
+      <a href="#features">Fonctionnalités</a>
+      <a href="#classement">Classement</a>
+      <a href="#comment">Comment ça marche</a>
+    </nav>
     <div class="topbar-actions">
       <button class="btn btn-ghost btn-sm" id="themeToggle" type="button" aria-label="Changer de thème">Thème</button>
       <a class="btn btn-primary btn-sm" href="https://github.com/Pierrelaurent/dooka/releases/latest/download/dooka.apk">Télécharger</a>
@@ -535,67 +246,38 @@
 
 <!-- ========== HERO ========== -->
 <header class="hero">
-  <div class="wrap hero-grid">
-    <div>
-      <span class="eyebrow">Appli communautaire · Android</span>
-      <h1>Gratte tes tickets.<br><span class="accent">Défie tes potes.</span></h1>
-      <p class="hero-sub">Dooka réunit tes tickets à gratter FDJ, tes sessions PMU et ta bande de potes dans une seule appli.</p>
-      <div class="hero-cta">
-        <a class="btn btn-primary" href="https://github.com/Pierrelaurent/dooka/releases/latest/download/dooka.apk">
-          Télécharger pour Android
-          <span class="apk-meta">.apk · gratuit</span>
-        </a>
-        <a class="btn btn-ghost" href="#comment">Comment ça marche</a>
-      </div>
-      <div class="hero-note">
-        <span aria-hidden="true">👆</span> Gratte le ticket pour voir la suite
-      </div>
+  <div class="wrap">
+    <span class="eyebrow">Android aujourd'hui · iOS bientôt</span>
+    <h1>Le PMU, <span class="accent">entre potes</span></h1>
+    <p class="hero-sub">Dooka réunit tes tickets à gratter FDJ, tes sessions PMU et ta bande de potes dans une seule appli. Gratuit, sans pub.</p>
+    <div class="hero-cta">
+      <a class="btn btn-primary" href="https://github.com/Pierrelaurent/dooka/releases/latest/download/dooka.apk">
+        Télécharger pour Android
+        <span class="apk-meta">.apk · gratuit</span>
+      </a>
+      <a class="btn btn-ghost" href="#comment">Comment ça marche</a>
     </div>
-
-    <div>
-      <div class="ticket" role="img" aria-label="Ticket à gratter Dooka : gratte pour révéler le montant du gain">
-        <div class="ticket-perf" aria-hidden="true"></div>
-        <div class="ticket-head">
-          <span>Dooka · Ticket du jour</span>
-          <span class="ticket-serial">N° 07‑29</span>
-        </div>
-        <div class="scratch-zone">
-          <div class="scratch-prize">
-            <span class="win-label">Ton gain</span>
-            <span class="win-amount">+250 €</span>
-            <span class="win-label">partagé avec la bande</span>
-          </div>
-          <canvas class="scratch-canvas" id="scratch" aria-hidden="true"></canvas>
-        </div>
-        <div class="ticket-foot">
-          <span class="odds">1 chance sur 3 de gagner</span>
-          <button class="reveal-link" id="revealBtn" type="button">Tout révéler</button>
-        </div>
-      </div>
-    </div>
+    <p class="platform-note hero-platform-note">📱 Sur iPhone ? L'appli iOS arrive bientôt — reviens ici pour la télécharger.</p>
   </div>
 </header>
 
-<!-- ========== COMMUNAUTAIRE ========== -->
+<hr class="rule" />
+
+<!-- ========== STATS ========== -->
 <section>
   <div class="wrap">
-    <div class="band reveal">
-      <span class="eyebrow">L'esprit Dooka</span>
-      <h2>Seul on gratte. Ensemble, on s'amuse.</h2>
-      <p>Dooka transforme tes tickets et tes paris en défis entre amis : classements de groupe, gains partagés, tickets quotidiens à gratter, et le Top gains France pour les plus chanceux.</p>
-      <div class="band-stats">
-        <div class="stat">
-          <div class="num">1 appli</div>
-          <div class="cap">Tickets · PMU · potes</div>
-        </div>
-        <div class="stat">
-          <div class="num">100 %</div>
-          <div class="cap">Gratuit, sans pub</div>
-        </div>
-        <div class="stat">
-          <div class="num">∞</div>
-          <div class="cap">Défis entre amis</div>
-        </div>
+    <div class="stats reveal">
+      <div class="stat">
+        <div class="num">1 appli</div>
+        <div class="cap">Tickets · PMU · potes</div>
+      </div>
+      <div class="stat">
+        <div class="num">100 %</div>
+        <div class="cap">Gratuit, sans pub</div>
+      </div>
+      <div class="stat">
+        <div class="num">∞</div>
+        <div class="cap">Défis entre amis</div>
       </div>
     </div>
   </div>
@@ -609,37 +291,45 @@
       <h2>Tout ton jeu, au même endroit</h2>
       <p>Des fonctionnalités pensées pour la bande, pas pour jouer plus.</p>
     </div>
-    <div class="features">
-      <div class="card reveal">
-        <div class="ic"><svg viewBox="0 0 24 24" fill="var(--turf)"><path d="M12 2c-3.9 0-7 3.1-7 7 0 5 7 13 7 13s7-8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg></div>
+    <div class="features reveal">
+      <div class="card">
         <h3>La carte des PMU</h3>
         <p>Trouve les bars-tabac et PMU autour de toi, avec les repères ajoutés par la communauté.</p>
       </div>
-      <div class="card reveal">
-        <div class="ic"><svg viewBox="0 0 24 24" fill="var(--turf)"><path d="M3 7a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v2a2 2 0 0 0 0 4v2a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-2a2 2 0 0 0 0-4V7z"/></svg></div>
+      <div class="card">
         <h3>Tes tickets FDJ</h3>
         <p>Note chaque ticket gratté, ton solde réel et ton plus gros gain — photo à l'appui.</p>
       </div>
-      <div class="card reveal">
-        <div class="ic"><svg viewBox="0 0 24 24" fill="var(--turf)"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 19a5.5 5.5 0 0 1 11 0v.5h-11V19z"/><circle cx="17" cy="8.5" r="2.6" opacity="0.6"/><path d="M15.6 14.3A5 5 0 0 1 21 19v.5h-4.2v-.5a6.4 6.4 0 0 0-1.2-4.7z" opacity="0.6"/></svg></div>
+      <div class="card">
         <h3>Groupes &amp; classements</h3>
         <p>Crée une bande, invite tes potes avec un code, comparez vos bilans nets.</p>
       </div>
-      <div class="card reveal">
-        <div class="ic"><svg viewBox="0 0 24 24" fill="var(--turf)"><path d="M4 6a2 2 0 0 1 2-2h8.5L20 9.5V18a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6z"/><path d="M12.6 7.7l1.05 2.35L16 11.1l-2.35 1.05L12.6 14.5l-1.05-2.35L9.2 11.1l2.35-1.05L12.6 7.7z" fill="#F7F3E9"/></svg></div>
+      <div class="card">
         <h3>Défi ticket quotidien</h3>
         <p>Un ticket virtuel gratuit à gratter chaque jour, des points, un classement dédié.</p>
       </div>
-      <div class="card reveal">
-        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="var(--turf)" stroke-width="2.2" stroke-linecap="round"><path d="M7 20V11a5 5 0 0 1 10 0v9"/><circle cx="7" cy="20" r="1.15" fill="var(--turf)" stroke="none"/><circle cx="17" cy="20" r="1.15" fill="var(--turf)" stroke="none"/></svg></div>
+      <div class="card">
         <h3>Sessions PMU</h3>
         <p>Organise une virée au PMU et suis les gains de la session, ensemble.</p>
       </div>
-      <div class="card reveal">
-        <div class="ic"><svg viewBox="0 0 24 24" fill="var(--turf)"><path d="M7 4h10v3.5a5 5 0 0 1-10 0V4z"/><path d="M5 5H3.2v1.2A3 3 0 0 0 7 9.1V7.2H5V5zm14 0h1.8v1.2A3 3 0 0 1 17 9.1V7.2h2V5z"/><rect x="10.7" y="11.5" width="2.6" height="4"/><rect x="7.5" y="18" width="9" height="2" rx="1"/><rect x="9" y="15.2" width="6" height="2" rx="0.6"/></svg></div>
+      <div class="card">
         <h3>Top gains France</h3>
         <p>Les plus gros gains de la communauté, partagés par ceux qui le veulent.</p>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== CLASSEMENT ========== -->
+<section id="classement">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">Top gains France</span>
+      <h2>Les plus gros gains de la communauté</h2>
+      <p>Gains partagés publiquement par des joueurs Dooka qui ont activé le partage.</p>
+    </div>
+    <div class="leaderboard reveal" id="leaderboard">
+      <p class="leaderboard-state">Chargement du classement…</p>
     </div>
   </div>
 </section>
@@ -653,17 +343,17 @@
     </div>
     <div class="steps">
       <div class="step reveal">
-        <span class="n">ÉTAPE 01</span>
+        <span class="n">01</span>
         <h3>Télécharge l'appli</h3>
         <p>Installe l'APK Android en un tap. Rien d'autre à configurer.</p>
       </div>
       <div class="step reveal">
-        <span class="n">ÉTAPE 02</span>
+        <span class="n">02</span>
         <h3>Rejoins tes potes</h3>
         <p>Crée un groupe ou rejoins celui d'un ami avec son code d'invitation.</p>
       </div>
       <div class="step reveal">
-        <span class="n">ÉTAPE 03</span>
+        <span class="n">03</span>
         <h3>Gratte &amp; grimpe</h3>
         <p>Note tes tickets, relève les défis du jour, vise le sommet du classement.</p>
       </div>
@@ -671,11 +361,12 @@
   </div>
 </section>
 
+<hr class="rule" />
+
 <!-- ========== DOWNLOAD ========== -->
 <section id="download">
   <div class="wrap">
     <div class="download reveal">
-      <span class="jeton" aria-hidden="true"><svg viewBox="0 0 100 100" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="48" fill="#F7C948"/><circle cx="50" cy="50" r="44" fill="none" stroke="#C6871F" stroke-width="4" stroke-dasharray="3 3.15"/><circle cx="50" cy="50" r="37" fill="#157A3E"/><text x="50" y="53" text-anchor="middle" dominant-baseline="central" font-family="system-ui, sans-serif" font-weight="800" font-size="44" fill="#F7F3E9">D</text></svg></span>
       <h2>Rejoins la bande sur Dooka</h2>
       <p>Gratuit, sans pub. Il te suffit d'un téléphone Android et de quelques potes.</p>
       <a class="btn btn-primary" href="https://github.com/Pierrelaurent/dooka/releases/latest/download/dooka.apk">
@@ -693,7 +384,7 @@
     <div class="foot-grid">
       <div>
         <div class="foot-brand">
-          <span class="jeton" aria-hidden="true"><svg viewBox="0 0 100 100" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="48" fill="#F7C948"/><circle cx="50" cy="50" r="44" fill="none" stroke="#C6871F" stroke-width="4" stroke-dasharray="3 3.15"/><circle cx="50" cy="50" r="37" fill="#157A3E"/><text x="50" y="53" text-anchor="middle" dominant-baseline="central" font-family="system-ui, sans-serif" font-weight="800" font-size="44" fill="#F7F3E9">D</text></svg></span>
+          <span class="jeton" aria-hidden="true"><svg viewBox="0 0 100 100" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="48" fill="#157A3E"/><text x="50" y="52" text-anchor="middle" dominant-baseline="central" font-family="system-ui, sans-serif" font-weight="700" font-size="46" fill="#F7F3E9">D</text></svg></span>
           Dooka
         </div>
       </div>
@@ -715,7 +406,60 @@
   (function () {
     "use strict";
 
-    /* ---- Theme toggle ---- */
+    /* ---- Top gains France (RPC anonyme, lecture seule) ---- */
+    var SUPABASE_URL = "https://ybnacpzicldzsmmypupj.supabase.co";
+    var SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlibmFjcHppY2xkenNtbXlwdXBqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQyODg4OTAsImV4cCI6MjA5OTg2NDg5MH0.zk6cs62vw1Xx2IfL5UX88XWmXFYMdxU75qCkp_f7DCs";
+
+    function escapeHtml(str) {
+      return String(str).replace(/[&<>"']/g, function (c) {
+        return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+      });
+    }
+
+    function formatAmount(n) {
+      return new Intl.NumberFormat("fr-FR", { style: "currency", currency: "EUR", maximumFractionDigits: 0 }).format(n);
+    }
+
+    function renderLeaderboard(rows) {
+      var el = document.getElementById("leaderboard");
+      if (!rows || rows.length === 0) {
+        el.innerHTML = '<p class="leaderboard-state">Aucun gain partagé publiquement pour le moment.</p>';
+        return;
+      }
+      el.innerHTML = rows.map(function (row, i) {
+        var name = escapeHtml(row.display_name || "Joueur Dooka");
+        var initial = escapeHtml((row.display_name || "?").trim().charAt(0).toUpperCase() || "?");
+        var avatar = row.avatar_url
+          ? '<img class="leaderboard-avatar" src="' + escapeHtml(row.avatar_url) + '" alt="" loading="lazy" />'
+          : '<span class="leaderboard-avatar-fallback" aria-hidden="true">' + initial + "</span>";
+        var place = row.place_name ? '<div class="leaderboard-place">' + escapeHtml(row.place_name) + "</div>" : "";
+        return (
+          '<div class="leaderboard-row">' +
+            '<span class="leaderboard-rank">' + (i + 1) + "</span>" +
+            avatar +
+            '<div class="leaderboard-info"><div class="leaderboard-name">' + name + "</div>" + place + "</div>" +
+            '<span class="leaderboard-amount">' + formatAmount(row.amount_won) + "</span>" +
+          "</div>"
+        );
+      }).join("");
+    }
+
+    fetch(SUPABASE_URL + "/rest/v1/rpc/public_top_gains", {
+      method: "POST",
+      headers: {
+        apikey: SUPABASE_ANON_KEY,
+        Authorization: "Bearer " + SUPABASE_ANON_KEY,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ limit_count: 8 }),
+    })
+      .then(function (res) { if (!res.ok) throw new Error("HTTP " + res.status); return res.json(); })
+      .then(renderLeaderboard)
+      .catch(function () {
+        document.getElementById("leaderboard").innerHTML =
+          '<p class="leaderboard-state">Classement momentanément indisponible.</p>';
+      });
+
     var root = document.documentElement;
     var toggle = document.getElementById("themeToggle");
     toggle.addEventListener("click", function () {
@@ -726,7 +470,6 @@
       root.setAttribute("data-theme", current === "dark" ? "light" : "dark");
     });
 
-    /* ---- Reveal on scroll ---- */
     var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (!reduce && "IntersectionObserver" in window) {
       var io = new IntersectionObserver(function (entries) {
@@ -738,113 +481,6 @@
     } else {
       document.querySelectorAll(".reveal").forEach(function (el) { el.classList.add("in"); });
     }
-
-    /* ---- Scratch card ---- */
-    var canvas = document.getElementById("scratch");
-    var ctx = canvas.getContext("2d");
-    var revealBtn = document.getElementById("revealBtn");
-    var dpr = Math.max(1, Math.min(3, window.devicePixelRatio || 1));
-    var revealed = false;
-    var lastCheck = 0;
-
-    function paintFoil() {
-      var w = canvas.width, h = canvas.height;
-      var g = ctx.createLinearGradient(0, 0, w, h);
-      g.addColorStop(0, "#FBE38C");
-      g.addColorStop(0.45, "#E9B84A");
-      g.addColorStop(0.55, "#F7D774");
-      g.addColorStop(1, "#C6871F");
-      ctx.globalCompositeOperation = "source-over";
-      ctx.fillStyle = g;
-      ctx.fillRect(0, 0, w, h);
-
-      /* sparkle grain */
-      ctx.fillStyle = "rgba(255,255,255,0.35)";
-      for (var i = 0; i < (w * h) / 2600; i++) {
-        var x = Math.random() * w, y = Math.random() * h, r = Math.random() * 1.6 * dpr;
-        ctx.beginPath(); ctx.arc(x, y, r, 0, 6.283); ctx.fill();
-      }
-
-      /* label */
-      ctx.fillStyle = "rgba(90,55,10,0.72)";
-      ctx.textAlign = "center";
-      ctx.textBaseline = "middle";
-      var fs = Math.round(15 * dpr);
-      ctx.font = "700 " + fs + "px ui-monospace, monospace";
-      ctx.fillText("GRATTE ICI", w / 2, h / 2 - 8 * dpr);
-      ctx.font = "600 " + Math.round(10 * dpr) + "px ui-monospace, monospace";
-      ctx.fillText("✦ ✦ ✦", w / 2, h / 2 + 14 * dpr);
-    }
-
-    function sizeCanvas() {
-      var rect = canvas.getBoundingClientRect();
-      if (rect.width === 0) return;
-      canvas.width = Math.round(rect.width * dpr);
-      canvas.height = Math.round(rect.height * dpr);
-      if (!revealed) paintFoil();
-    }
-
-    function pos(e) {
-      var rect = canvas.getBoundingClientRect();
-      var cx = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
-      var cy = (e.touches ? e.touches[0].clientY : e.clientY) - rect.top;
-      return { x: cx * dpr, y: cy * dpr };
-    }
-
-    function erase(p) {
-      ctx.globalCompositeOperation = "destination-out";
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, 26 * dpr, 0, 6.283);
-      ctx.fill();
-    }
-
-    function erasedRatio() {
-      var w = canvas.width, h = canvas.height;
-      var data;
-      try { data = ctx.getImageData(0, 0, w, h).data; } catch (err) { return 0; }
-      var clear = 0, total = 0;
-      for (var i = 3; i < data.length; i += 64) { total++; if (data[i] < 40) clear++; }
-      return total ? clear / total : 0;
-    }
-
-    function reveal() {
-      if (revealed) return;
-      revealed = true;
-      canvas.style.opacity = "0";
-      setTimeout(function () { canvas.style.display = "none"; }, 620);
-    }
-
-    var drawing = false;
-    function down(e) { if (revealed) return; drawing = true; erase(pos(e)); e.preventDefault(); }
-    function move(e) {
-      if (!drawing || revealed) return;
-      erase(pos(e));
-      var now = Date.now();
-      if (now - lastCheck > 120) {
-        lastCheck = now;
-        if (erasedRatio() > 0.5) reveal();
-      }
-      e.preventDefault();
-    }
-    function up() { drawing = false; }
-
-    canvas.addEventListener("mousedown", down);
-    window.addEventListener("mousemove", move);
-    window.addEventListener("mouseup", up);
-    canvas.addEventListener("touchstart", down, { passive: false });
-    canvas.addEventListener("touchmove", move, { passive: false });
-    window.addEventListener("touchend", up);
-
-    revealBtn.addEventListener("click", reveal);
-
-    if (reduce) { reveal(); }
-    else { sizeCanvas(); }
-
-    var rt;
-    window.addEventListener("resize", function () {
-      clearTimeout(rt);
-      rt = setTimeout(function () { if (!revealed) sizeCanvas(); }, 150);
-    });
   })();
 </script>
 </body>
