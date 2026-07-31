@@ -8,35 +8,55 @@
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%23157A3E'/><text x='50' y='68' font-size='58' text-anchor='middle' font-family='sans-serif' font-weight='700' fill='%23F7F3E9'>D</text></svg>" />
 
 <style>
+  /* Mêmes jetons que dooka.fr : c'est une page du même site, elle n'a
+     pas à inventer une seconde identité. Ce qui change ici relève de la
+     mise en forme de l'information, pas de la charte. */
   :root {
     --ground: #FAFAF7;
     --surface: #FFFFFF;
+    --raised: #F3F2EC;
     --ink: #17201A;
     --muted: #64716A;
     --turf: #157A3E;
     --gold: #B4841E;
-    --line: rgba(23, 32, 26, 0.10);
-    --warn: #B4841E;
     --bad: #A33A2A;
+    --line: rgba(23, 32, 26, 0.10);
+    --hair: rgba(23, 32, 26, 0.055);
+    --shadow: 0 1px 2px rgba(23, 32, 26, 0.04), 0 8px 24px -12px rgba(23, 32, 26, 0.14);
 
     --font: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     --font-mono: ui-monospace, "SF Mono", "JetBrains Mono", "Roboto Mono", Consolas, monospace;
-    --maxw: 1080px;
+    --maxw: 1140px;
     --r: 14px;
   }
 
   @media (prefers-color-scheme: dark) {
     :root {
-      --ground: #0C1310;
-      --surface: #131C16;
-      --ink: #F1EFE7;
-      --muted: #8D9A92;
-      --turf: #43B072;
-      --gold: #D8A63C;
-      --line: rgba(241, 239, 231, 0.12);
-      --warn: #D8A63C;
-      --bad: #E0705C;
+      --ground: #0C1310; --surface: #131C16; --raised: #1A241E;
+      --ink: #F1EFE7; --muted: #8D9A92;
+      --turf: #45C77E; --gold: #F0C15C; --bad: #E0705C;
+      --line: rgba(255, 255, 255, 0.09);
+      --hair: rgba(255, 255, 255, 0.05);
+      --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px -12px rgba(0, 0, 0, 0.6);
     }
+  }
+  /* Le bouton de thème du site pose data-theme sur <html> : il doit
+     l'emporter sur la préférence système, dans les deux sens. */
+  :root[data-theme="dark"] {
+    --ground: #0C1310; --surface: #131C16; --raised: #1A241E;
+    --ink: #F1EFE7; --muted: #8D9A92;
+    --turf: #45C77E; --gold: #F0C15C; --bad: #E0705C;
+    --line: rgba(255, 255, 255, 0.09);
+    --hair: rgba(255, 255, 255, 0.05);
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px -12px rgba(0, 0, 0, 0.6);
+  }
+  :root[data-theme="light"] {
+    --ground: #FAFAF7; --surface: #FFFFFF; --raised: #F3F2EC;
+    --ink: #17201A; --muted: #64716A;
+    --turf: #157A3E; --gold: #B4841E; --bad: #A33A2A;
+    --line: rgba(23, 32, 26, 0.10);
+    --hair: rgba(23, 32, 26, 0.055);
+    --shadow: 0 1px 2px rgba(23, 32, 26, 0.04), 0 8px 24px -12px rgba(23, 32, 26, 0.14);
   }
 
   * { box-sizing: border-box; }
@@ -47,171 +67,321 @@
     color: var(--ink);
     font-family: var(--font);
     line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
     -webkit-text-size-adjust: 100%;
   }
 
-  .wrap {
-    max-width: var(--maxw);
-    margin: 0 auto;
-    padding: 2rem 1.15rem 4rem;
-  }
+  .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 20px; }
 
-  header.top {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 0.75rem;
-    padding-bottom: 1.25rem;
+  /* ---------- Barre supérieure ---------- */
+  .topbar {
+    position: sticky; top: 0; z-index: 40;
+    background: color-mix(in srgb, var(--ground) 88%, transparent);
+    backdrop-filter: blur(10px);
     border-bottom: 1px solid var(--line);
-    margin-bottom: 1.75rem;
+  }
+  .topbar-inner {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 16px; height: 60px;
+  }
+  .brand { display: flex; align-items: center; gap: 11px; min-width: 0; }
+  .brand svg {
+    width: 28px; height: 28px; flex: none; border-radius: 50%;
+    box-shadow: 0 0 0 1px color-mix(in srgb, var(--gold) 45%, transparent);
+  }
+  .brand-txt { font-weight: 700; letter-spacing: -0.01em; white-space: nowrap; }
+  .brand-txt span { color: var(--muted); font-weight: 500; }
+  .topbar-actions { display: flex; align-items: center; gap: 8px; }
+
+  .stamp {
+    font-family: var(--font-mono); font-size: 0.72rem; color: var(--muted);
+    font-variant-numeric: tabular-nums; white-space: nowrap;
+  }
+  @media (max-width: 620px) { .stamp { display: none; } }
+
+  button {
+    appearance: none; font: inherit; cursor: pointer;
+    border-radius: 9px; border: 1px solid transparent;
+    transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease, opacity 0.15s ease;
+  }
+  button:focus-visible { outline: 2px solid var(--turf); outline-offset: 2px; }
+
+  .btn-primary {
+    background: var(--turf); color: #fff; font-weight: 600;
+    padding: 11px 22px; font-size: 0.98rem;
+  }
+  .btn-primary:hover { background: color-mix(in srgb, var(--turf) 85%, black); }
+
+  .btn-ghost {
+    background: transparent; color: var(--muted); border-color: var(--line);
+    font-size: 0.82rem; font-weight: 500; padding: 7px 13px;
+  }
+  .btn-ghost:hover { color: var(--ink); border-color: var(--turf); }
+
+  /* ---------- Rythme des sections ---------- */
+  main { padding: 30px 0 72px; }
+  .band { margin-top: 40px; }
+  .band:first-child { margin-top: 0; }
+
+  .band-head {
+    display: flex; align-items: baseline; gap: 14px;
+    margin-bottom: 14px;
+  }
+  .eyebrow {
+    font-family: var(--font-mono); font-size: 0.7rem; font-weight: 600;
+    letter-spacing: 0.14em; text-transform: uppercase; color: var(--turf);
+    white-space: nowrap;
+  }
+  .band-head .fill { flex: 1; height: 1px; background: var(--line); }
+  .band-note { font-size: 0.76rem; color: var(--muted); white-space: nowrap; }
+
+  /* ---------- Bandeau d'ouverture ---------- */
+  .headline {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    background: var(--surface); border: 1px solid var(--line);
+    border-radius: var(--r); box-shadow: var(--shadow); overflow: hidden;
+  }
+  .headline > div { padding: 22px 24px; border-left: 1px solid var(--hair); }
+  .headline > div:first-child { border-left: 0; }
+  .headline .k {
+    font-family: var(--font-mono); font-size: 0.68rem; font-weight: 600;
+    letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted);
+  }
+  .headline .v {
+    font-size: clamp(2rem, 5vw, 2.9rem); font-weight: 700; letter-spacing: -0.035em;
+    font-variant-numeric: tabular-nums; line-height: 1.05; margin-top: 6px;
+  }
+  .headline .sub { font-size: 0.8rem; color: var(--muted); margin-top: 2px; }
+  @media (max-width: 720px) {
+    .headline { grid-template-columns: 1fr; }
+    .headline > div { border-left: 0; border-top: 1px solid var(--hair); }
+    .headline > div:first-child { border-top: 0; }
   }
 
-  h1 { font-size: 1.4rem; margin: 0; letter-spacing: -0.01em; }
-  .stamp { color: var(--muted); font-size: 0.82rem; font-variant-numeric: tabular-nums; }
-
-  h2 {
-    font-size: 0.72rem;
-    text-transform: uppercase;
-    letter-spacing: 0.09em;
-    color: var(--muted);
-    margin: 2rem 0 0.75rem;
-    font-weight: 600;
+  /* ---------- Adoption des versions ----------
+     L'indicateur qu'on vient regarder en premier après une mise en
+     ligne : il a donc le traitement le plus fort de la page. */
+  .adoption {
+    display: grid; grid-template-columns: minmax(190px, 250px) 1fr; gap: 0;
+    background: var(--surface); border: 1px solid var(--line);
+    border-radius: var(--r); box-shadow: var(--shadow); overflow: hidden;
   }
-  h2:first-of-type { margin-top: 0; }
+  .adoption-figure {
+    padding: 24px; background: var(--raised);
+    border-right: 1px solid var(--hair);
+    display: flex; flex-direction: column; justify-content: center;
+  }
+  .adoption-figure .pct {
+    font-size: clamp(2.6rem, 7vw, 3.5rem); font-weight: 700;
+    letter-spacing: -0.04em; line-height: 1; font-variant-numeric: tabular-nums;
+    color: var(--turf);
+  }
+  .adoption-figure .pct.low { color: var(--gold); }
+  .adoption-figure .cap { font-size: 0.84rem; color: var(--muted); margin-top: 8px; }
+  .adoption-figure .tag {
+    font-family: var(--font-mono); font-size: 0.78rem; color: var(--ink);
+    margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--line);
+  }
+  .adoption-body { padding: 20px 24px; min-width: 0; }
 
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 0.7rem;
+  .segbar { display: flex; height: 12px; border-radius: 999px; overflow: hidden; gap: 2px; }
+  .segbar i { display: block; height: 100%; }
+  .segbar i:first-child { border-radius: 999px 0 0 999px; }
+  .segbar i:last-child { border-radius: 0 999px 999px 0; }
+
+  .vrows { margin-top: 18px; display: flex; flex-direction: column; gap: 1px; }
+  .vrow {
+    display: grid; grid-template-columns: 10px 1fr auto auto;
+    align-items: center; gap: 12px;
+    padding: 7px 0; border-top: 1px solid var(--hair);
+    font-variant-numeric: tabular-nums;
+  }
+  .vrow:first-child { border-top: 0; }
+  .vrow .dot { width: 8px; height: 8px; border-radius: 50%; }
+  .vrow .name { font-family: var(--font-mono); font-size: 0.84rem; }
+  .vrow .cnt { font-size: 0.84rem; color: var(--muted); }
+  .vrow .pc { font-size: 0.84rem; font-weight: 600; min-width: 3.2rem; text-align: right; }
+  @media (max-width: 640px) {
+    .adoption { grid-template-columns: 1fr; }
+    .adoption-figure { border-right: 0; border-bottom: 1px solid var(--hair); }
   }
 
+  /* ---------- Courbes ---------- */
+  .charts { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 720px) { .charts { grid-template-columns: 1fr; } }
+
+  .chart {
+    background: var(--surface); border: 1px solid var(--line);
+    border-radius: var(--r); box-shadow: var(--shadow); padding: 18px 20px 14px;
+  }
+  .chart-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+  .chart-head .t { font-size: 0.92rem; font-weight: 600; }
+  .chart-head .n {
+    font-family: var(--font-mono); font-size: 0.78rem; color: var(--muted);
+    font-variant-numeric: tabular-nums;
+  }
+  .plot { height: 104px; margin-top: 10px; }
+  .plot svg { display: block; width: 100%; height: 100%; }
+  .chart-axis {
+    display: flex; justify-content: space-between;
+    font-family: var(--font-mono); font-size: 0.66rem; color: var(--muted);
+    margin-top: 6px; font-variant-numeric: tabular-nums;
+  }
+  .spark-line { fill: none; stroke-width: 1.6; }
+
+  /* ---------- Cartes de mesures ---------- */
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(168px, 1fr)); gap: 12px; }
   .card {
-    background: var(--surface);
-    border: 1px solid var(--line);
-    border-radius: var(--r);
-    padding: 0.9rem 1rem;
+    background: var(--surface); border: 1px solid var(--line);
+    border-radius: 12px; padding: 15px 16px 14px;
   }
-
-  .card .k { color: var(--muted); font-size: 0.78rem; }
+  .card .k { font-size: 0.78rem; color: var(--muted); }
   .card .v {
-    font-size: 1.55rem;
-    font-weight: 650;
-    font-variant-numeric: tabular-nums;
-    letter-spacing: -0.02em;
-    margin-top: 0.15rem;
+    font-size: 1.65rem; font-weight: 650; letter-spacing: -0.03em;
+    font-variant-numeric: tabular-nums; line-height: 1.15; margin-top: 4px;
   }
-  .card .sub { color: var(--muted); font-size: 0.75rem; font-variant-numeric: tabular-nums; }
+  .card .sub { font-size: 0.74rem; color: var(--muted); margin-top: 2px; }
 
-  /* Adoption des versions : c'est l'indicateur qu'on vient regarder en
-     premier après une mise en ligne, il a donc son propre traitement. */
-  .bars { display: flex; flex-direction: column; gap: 0.5rem; }
-  .bar-row {
-    display: grid;
-    grid-template-columns: 5.5rem 1fr auto;
-    align-items: center;
-    gap: 0.7rem;
-    font-variant-numeric: tabular-nums;
+  /* ---------- Téléchargements ---------- */
+  .panel {
+    background: var(--surface); border: 1px solid var(--line);
+    border-radius: var(--r); box-shadow: var(--shadow); overflow: hidden;
   }
-  .bar-label { font-family: var(--font-mono); font-size: 0.82rem; }
-  .bar-track {
-    height: 0.55rem;
-    background: var(--line);
-    border-radius: 999px;
-    overflow: hidden;
-  }
-  .bar-fill { height: 100%; background: var(--turf); border-radius: 999px; }
-  .bar-fill.stale { background: var(--warn); }
-  .bar-val { font-size: 0.82rem; color: var(--muted); min-width: 3.5rem; text-align: right; }
-
+  .scroll { overflow-x: auto; }
   table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
-  th, td { text-align: left; padding: 0.5rem 0.6rem; border-bottom: 1px solid var(--line); font-size: 0.88rem; }
-  th { color: var(--muted); font-weight: 600; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; }
+  thead th {
+    font-family: var(--font-mono); font-size: 0.66rem; font-weight: 600;
+    letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted);
+    text-align: left; padding: 11px 18px; border-bottom: 1px solid var(--line);
+    white-space: nowrap;
+  }
+  tbody td {
+    padding: 11px 18px; border-top: 1px solid var(--hair); font-size: 0.88rem;
+    white-space: nowrap;
+  }
+  tbody tr:first-child td { border-top: 0; }
+  td.tag { font-family: var(--font-mono); }
   td.num, th.num { text-align: right; }
-  .scroll { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--r); background: var(--surface); }
+  td.meter { width: 45%; min-width: 120px; }
+  .meter-track { height: 6px; background: var(--hair); border-radius: 999px; overflow: hidden; }
+  .meter-fill { display: block; height: 100%; background: var(--turf); border-radius: 999px; }
+  .muted { color: var(--muted); }
 
-  .gate { max-width: 26rem; margin: 4rem auto; text-align: center; }
-  .gate p { color: var(--muted); }
+  /* ---------- Écran de connexion ---------- */
+  .gate { max-width: 27rem; margin: clamp(60px, 14vh, 130px) auto; text-align: center; }
+  .gate svg { width: 52px; height: 52px; border-radius: 50%; }
+  .gate h1 { font-size: 1.5rem; letter-spacing: -0.02em; margin: 18px 0 8px; }
+  .gate p { color: var(--muted); margin: 0 0 26px; }
+  .gate .err { color: var(--bad); }
+  .gate .foot { margin-top: 18px; }
 
-  button.primary {
-    appearance: none;
-    border: 0;
-    background: var(--turf);
-    color: #fff;
-    font: inherit;
-    font-weight: 600;
-    padding: 0.7rem 1.4rem;
-    border-radius: 10px;
-    cursor: pointer;
-  }
-  button.primary:hover { opacity: 0.92; }
-  button.primary:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
-
-  button.ghost {
-    appearance: none;
-    background: transparent;
-    border: 1px solid var(--line);
-    color: var(--muted);
-    font: inherit;
-    font-size: 0.82rem;
-    padding: 0.35rem 0.75rem;
-    border-radius: 8px;
-    cursor: pointer;
-  }
-
-  .msg { color: var(--bad); }
-  .hidden { display: none; }
+  .hidden { display: none !important; }
   a { color: var(--turf); }
+
+  /* Une seule séquence d'apparition, au chargement. */
+  @media (prefers-reduced-motion: no-preference) {
+    .band { animation: rise 0.5s cubic-bezier(0.22, 1, 0.36, 1) backwards; }
+    .band:nth-child(2) { animation-delay: 0.05s; }
+    .band:nth-child(3) { animation-delay: 0.1s; }
+    .band:nth-child(4) { animation-delay: 0.15s; }
+    .band:nth-child(5) { animation-delay: 0.2s; }
+    .band:nth-child(6) { animation-delay: 0.25s; }
+    @keyframes rise { from { opacity: 0; transform: translateY(10px); } }
+  }
 </style>
 </head>
 <body>
 
-<div class="wrap">
+<!-- Écran de connexion -->
+<section id="gate" class="gate">
+  <svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="48" fill="#157A3E"/><text x="50" y="68" font-size="58" text-anchor="middle" font-family="sans-serif" font-weight="700" fill="#F7F3E9">D</text></svg>
+  <h1>Tableau de bord</h1>
+  <p id="gate-msg">Réservé aux administrateurs.</p>
+  <button class="btn-primary" id="login" type="button">Se connecter avec Google</button>
+  <p class="foot"><button class="btn-ghost hidden" id="logout-gate" type="button">Se déconnecter</button></p>
+</section>
 
-  <!-- Écran de connexion -->
-  <section id="gate" class="gate">
-    <h1>Tableau de bord Dooka</h1>
-    <p id="gate-msg">Réservé aux administrateurs.</p>
-    <p><button class="primary" id="login">Se connecter avec Google</button></p>
-    <p><button class="ghost hidden" id="logout-gate">Se déconnecter</button></p>
-  </section>
+<!-- Tableau de bord -->
+<div id="board" class="hidden">
 
-  <!-- Tableau de bord -->
-  <main id="board" class="hidden">
-    <header class="top">
-      <h1>Tableau de bord</h1>
-      <span class="stamp">
-        <span id="stamp"></span>
-        <button class="ghost" id="logout">Se déconnecter</button>
-      </span>
-    </header>
-
-    <h2>Adoption des versions</h2>
-    <div class="bars" id="versions"></div>
-
-    <h2>Utilisateurs</h2>
-    <div class="grid" id="users"></div>
-
-    <h2>Activité de jeu</h2>
-    <div class="grid" id="plays"></div>
-
-    <h2>Social</h2>
-    <div class="grid" id="social"></div>
-
-    <h2>Contenu</h2>
-    <div class="grid" id="content"></div>
-
-    <h2>Téléchargements par version</h2>
-    <div class="scroll">
-      <table>
-        <thead>
-          <tr><th>Version</th><th class="num">Téléchargements</th><th>Publiée le</th></tr>
-        </thead>
-        <tbody id="downloads"><tr><td colspan="3">Chargement…</td></tr></tbody>
-      </table>
+  <div class="topbar">
+    <div class="wrap topbar-inner">
+      <div class="brand">
+        <svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="48" fill="#157A3E"/><text x="50" y="68" font-size="58" text-anchor="middle" font-family="sans-serif" font-weight="700" fill="#F7F3E9">D</text></svg>
+        <span class="brand-txt">Dooka <span>· tableau de bord</span></span>
+      </div>
+      <div class="topbar-actions">
+        <span class="stamp" id="stamp"></span>
+        <button class="btn-ghost" id="refresh" type="button">Actualiser</button>
+        <button class="btn-ghost" id="theme" type="button" aria-label="Changer de thème">Thème</button>
+        <button class="btn-ghost" id="logout" type="button">Quitter</button>
+      </div>
     </div>
-  </main>
+  </div>
 
+  <main class="wrap">
+
+    <section class="band">
+      <div class="headline" id="headline"></div>
+    </section>
+
+    <section class="band">
+      <div class="band-head">
+        <span class="eyebrow">Adoption des versions</span>
+        <span class="fill"></span>
+        <span class="band-note">Qui tourne sur quoi, en ce moment</span>
+      </div>
+      <div class="adoption">
+        <div class="adoption-figure" id="adoption-figure"></div>
+        <div class="adoption-body">
+          <div class="segbar" id="segbar"></div>
+          <div class="vrows" id="vrows"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="band hidden" id="band-charts">
+      <div class="band-head">
+        <span class="eyebrow">Trente derniers jours</span>
+        <span class="fill"></span>
+        <span class="band-note" id="charts-range"></span>
+      </div>
+      <div class="charts" id="charts"></div>
+    </section>
+
+    <section class="band">
+      <div class="band-head">
+        <span class="eyebrow">Activité de jeu</span>
+        <span class="fill"></span>
+      </div>
+      <div class="grid" id="plays"></div>
+    </section>
+
+    <section class="band">
+      <div class="band-head">
+        <span class="eyebrow">Social &amp; contenu</span>
+        <span class="fill"></span>
+      </div>
+      <div class="grid" id="social"></div>
+    </section>
+
+    <section class="band">
+      <div class="band-head">
+        <span class="eyebrow">Téléchargements</span>
+        <span class="fill"></span>
+        <span class="band-note">Fichiers .apk servis par GitHub</span>
+      </div>
+      <div class="panel scroll">
+        <table>
+          <thead>
+            <tr><th>Version</th><th class="num">Téléch.</th><th class="meter"></th><th>Publiée</th></tr>
+          </thead>
+          <tbody id="downloads"><tr><td colspan="4" class="muted">Chargement…</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -222,7 +392,7 @@
   // Même projet que l'app. La clé anon est publiable par conception :
   // elle n'ouvre que ce que les politiques RLS autorisent, et la fonction
   // admin_kpis vérifie elle-même le rôle administrateur côté serveur.
-  // Masquer cette page ne protège donc rien — c'est la base qui refuse.
+  // Masquer cette page ne protégerait donc rien — c'est la base qui refuse.
   var SUPABASE_URL = 'https://ybnacpzicldzsmmypupj.supabase.co';
   var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlibmFjcHppY2xkenNtbXlwdXBqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQyODg4OTAsImV4cCI6MjA5OTg2NDg5MH0.zk6cs62vw1Xx2IfL5UX88XWmXFYMdxU75qCkp_f7DCs';
   var GITHUB_RELEASES = 'https://api.github.com/repos/Pierrelaurent/dooka/releases';
@@ -232,6 +402,7 @@
   var $ = function (id) { return document.getElementById(id); };
   var nf = new Intl.NumberFormat('fr-FR');
   var cf = new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 });
+  var df = new Intl.DateTimeFormat('fr-FR', { day: '2-digit', month: 'short' });
 
   function esc(s) {
     return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
@@ -245,39 +416,198 @@
            (sub ? '<div class="sub">' + esc(sub) + '</div>' : '') + '</div>';
   }
 
-  // ── Rendu ──────────────────────────────────────────────────────────
-  function renderVersions(versions, currentVersion) {
-    var total = versions.reduce(function (n, v) { return n + Number(v.count); }, 0);
-    if (total === 0) { $('versions').innerHTML = '<p class="stamp">Aucune donnée encore.</p>'; return; }
+  function css(name) {
+    return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+  }
 
-    $('versions').innerHTML = versions.map(function (v) {
-      var pct = Math.round((Number(v.count) / total) * 100);
-      // Tout ce qui n'est pas la dernière version est signalé : c'est
-      // exactement ce qu'on veut voir d'un coup d'œil après une mise en
-      // ligne, surtout quand elle corrige la sécurité.
-      var stale = v.version !== currentVersion;
-      return '<div class="bar-row">' +
-        '<span class="bar-label">' + esc(v.version) + '</span>' +
-        '<span class="bar-track"><span class="bar-fill' + (stale ? ' stale' : '') +
-          '" style="width:' + pct + '%"></span></span>' +
-        '<span class="bar-val">' + nf.format(v.count) + ' · ' + pct + '%</span>' +
+  // ── Courbes ────────────────────────────────────────────────────────
+  // Tracé en SVG : les chemins sont calculés, pas écrits à la main, et
+  // le rendu reste net à n'importe quelle taille.
+  //
+  // Le viewBox est réglé sur la largeur réelle mesurée plutôt que fixé
+  // avec preserveAspectRatio="none" : cette dernière solution étire
+  // l'horizontale et l'écart entre les deux axes déforme tout ce qui
+  // n'est pas un trait — le point de fin deviendrait une ellipse.
+  function sparkline(values, labels, color, W, H) {
+    var PAD = 4;
+    var n = values.length;
+    var max = Math.max.apply(null, values.concat([1]));
+    var x = function (i) { return PAD + (i * (W - PAD * 2)) / (n - 1); };
+    var y = function (v) { return H - PAD - (v / max) * (H - PAD * 2 - 6); };
+    var uid = 'g' + Math.random().toString(36).slice(2, 8);
+
+    var line = 'M' + values.map(function (v, i) {
+      return x(i).toFixed(1) + ' ' + y(v).toFixed(1);
+    }).join(' L');
+    var area = line + ' L' + x(n - 1).toFixed(1) + ' ' + H + ' L' + x(0).toFixed(1) + ' ' + H + ' Z';
+
+    // Une zone de survol par jour, bien plus large que le point : c'est
+    // ce qui rend la courbe lisible au détail sans encombrer le tracé.
+    var slot = (W - PAD * 2) / (n - 1);
+    var hits = values.map(function (v, i) {
+      return '<rect x="' + (x(i) - slot / 2).toFixed(1) + '" y="0" width="' + slot.toFixed(1) +
+             '" height="' + H + '" fill="transparent"><title>' +
+             esc(labels[i]) + ' — ' + nf.format(v) + '</title></rect>';
+    }).join('');
+
+    return '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Évolution sur 30 jours">' +
+      '<defs><linearGradient id="' + uid + '" x1="0" y1="0" x2="0" y2="1">' +
+        '<stop offset="0" stop-color="' + color + '" stop-opacity="0.22"/>' +
+        '<stop offset="1" stop-color="' + color + '" stop-opacity="0"/>' +
+      '</linearGradient></defs>' +
+      '<line x1="0" y1="' + (H - PAD) + '" x2="' + W + '" y2="' + (H - PAD) +
+        '" stroke="currentColor" stroke-opacity="0.12" stroke-width="1"/>' +
+      '<path d="' + area + '" fill="url(#' + uid + ')"/>' +
+      '<path class="spark-line" d="' + line + '" stroke="' + color +
+        '" stroke-linejoin="round" stroke-linecap="round"/>' +
+      '<circle cx="' + x(n - 1).toFixed(1) + '" cy="' + y(values[n - 1]).toFixed(1) +
+        '" r="3" fill="' + color + '"/>' +
+      hits +
+      '</svg>';
+  }
+
+  var plots = [];
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function drawPlots(animate) {
+    plots.forEach(function (p) {
+      var host = $(p.id);
+      if (!host) return;
+      var w = Math.max(160, Math.round(host.clientWidth));
+      host.innerHTML = sparkline(p.values, p.labels, css(p.token), w, host.clientHeight || 104);
+
+      if (!animate || reduceMotion) return;
+      var path = host.querySelector('.spark-line');
+      if (!path || !path.getTotalLength) return;
+      // La longueur exacte du tracé, mesurée : un tiret plus court
+      // laisserait la fin visible d'emblée, plus long ferait apparaître
+      // la courbe d'un coup à la toute fin de l'animation.
+      var len = path.getTotalLength();
+      path.style.strokeDasharray = len;
+      path.style.strokeDashoffset = len;
+      requestAnimationFrame(function () {
+        path.style.transition = 'stroke-dashoffset 0.9s cubic-bezier(0.33, 1, 0.68, 1)';
+        path.style.strokeDashoffset = '0';
+      });
+    });
+  }
+
+  function renderCharts(daily) {
+    // Absent tant que la migration 0050 n'est pas passée : on masque la
+    // bande plutôt que d'afficher un cadre vide.
+    if (!daily || daily.length < 2) { $('band-charts').classList.add('hidden'); return; }
+
+    var labels = daily.map(function (d) { return df.format(new Date(d.day + 'T12:00:00')); });
+    plots = [
+      { id: 'plot-signups', token: '--turf', labels: labels,
+        values: daily.map(function (d) { return Number(d.signups); }) },
+      { id: 'plot-plays', token: '--gold', labels: labels,
+        values: daily.map(function (d) { return Number(d.plays); }) }
+    ];
+
+    $('charts').innerHTML = [
+      { id: 'plot-signups', title: 'Inscriptions' },
+      { id: 'plot-plays', title: 'Parties jouées' }
+    ].map(function (c, i) {
+      var total = plots[i].values.reduce(function (a, b) { return a + b; }, 0);
+      return '<div class="chart">' +
+        '<div class="chart-head"><span class="t">' + esc(c.title) + '</span>' +
+        '<span class="n">' + nf.format(total) + ' sur 30 j</span></div>' +
+        '<div class="plot" id="' + c.id + '"></div>' +
+        '<div class="chart-axis"><span>' + esc(labels[0]) + '</span>' +
+        '<span>' + esc(labels[labels.length - 1]) + '</span></div>' +
+        '</div>';
+    }).join('');
+
+    $('charts-range').textContent = labels[0] + ' → ' + labels[labels.length - 1];
+    $('band-charts').classList.remove('hidden');
+    drawPlots(true);
+  }
+
+  // ── Adoption ───────────────────────────────────────────────────────
+  function renderAdoption(versions, current) {
+    var total = versions.reduce(function (n, v) { return n + Number(v.count); }, 0);
+    if (!total) {
+      $('adoption-figure').innerHTML = '<div class="cap">Aucune donnée : personne n\'a encore ouvert une version qui remonte l\'information.</div>';
+      return;
+    }
+
+    // À défaut de release GitHub lisible, on retient le plus grand
+    // numéro remonté : sans repère, tout serait signalé « en retard »
+    // et l'indicateur dirait n'importe quoi.
+    if (!current) {
+      current = versions.map(function (v) { return v.version; })
+        .filter(function (v) { return /^\d/.test(v); })
+        .sort(function (a, b) {
+          var A = a.split('.').map(Number), B = b.split('.').map(Number);
+          for (var i = 0; i < 3; i++) { if ((A[i] || 0) !== (B[i] || 0)) return (B[i] || 0) - (A[i] || 0); }
+          return 0;
+        })[0] || '';
+    }
+
+    var upToDate = versions.reduce(function (n, v) {
+      return v.version === current ? n + Number(v.count) : n;
+    }, 0);
+    var pct = Math.round((upToDate / total) * 100);
+
+    var turf = css('--turf'), gold = css('--gold'), muted = css('--muted');
+    var staleRank = 0;
+    var colored = versions.map(function (v) {
+      var color;
+      if (v.version === current) color = turf;
+      else if (v.version === 'inconnue') color = muted;
+      // Plusieurs versions en retard : on les dégrade progressivement,
+      // pour que la plus ancienne se distingue de l'avant-dernière.
+      else color = 'color-mix(in srgb, ' + gold + ' ' + Math.max(35, 100 - staleRank++ * 22) + '%, transparent)';
+      return { version: v.version, count: Number(v.count), color: color };
+    });
+
+    $('adoption-figure').innerHTML =
+      '<div class="pct' + (pct < 80 ? ' low' : '') + '">' + pct + ' %</div>' +
+      '<div class="cap">des comptes sont à jour</div>' +
+      (current ? '<div class="tag">v' + esc(current) + '</div>' : '');
+
+    $('segbar').innerHTML = colored.map(function (v) {
+      return '<i style="width:' + ((v.count / total) * 100).toFixed(2) + '%;background:' + v.color +
+             '" title="' + esc(v.version) + ' — ' + nf.format(v.count) + '"></i>';
+    }).join('');
+
+    $('vrows').innerHTML = colored.map(function (v) {
+      return '<div class="vrow">' +
+        '<span class="dot" style="background:' + v.color + '"></span>' +
+        '<span class="name">' + (v.version === 'inconnue' ? 'inconnue' : 'v' + esc(v.version)) + '</span>' +
+        '<span class="cnt">' + nf.format(v.count) + (v.count > 1 ? ' comptes' : ' compte') + '</span>' +
+        '<span class="pc">' + Math.round((v.count / total) * 100) + ' %</span>' +
         '</div>';
     }).join('');
   }
 
-  function renderBoard(k, latestTag) {
-    $('stamp').textContent = 'à ' + new Date(k.generated_at).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }) + ' · ';
+  // ── Rendu général ──────────────────────────────────────────────────
+  function renderBoard(k, releases) {
+    $('stamp').textContent = 'à ' + new Date(k.generated_at)
+      .toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
 
-    renderVersions(k.versions || [], (latestTag || '').replace(/^v/, ''));
+    var totalDl = releases.reduce(function (n, rel) {
+      return n + (rel.assets || []).reduce(function (m, a) {
+        return m + (/\.apk$/.test(a.name) ? a.download_count : 0);
+      }, 0);
+    }, 0);
+    var latestTag = releases.length ? releases[0].tag_name : null;
 
-    $('users').innerHTML =
-      card('Comptes', nf.format(k.users.total)) +
-      card('Actifs 7 j', nf.format(k.users.active_7d), 'sur ' + nf.format(k.users.total)) +
-      card('Actifs 30 j', nf.format(k.users.active_30d)) +
-      card('Nouveaux 7 j', nf.format(k.users.new_7d), nf.format(k.users.new_30d) + ' sur 30 j');
+    var activeShare = k.users.total ? Math.round((k.users.active_7d / k.users.total) * 100) : 0;
+    $('headline').innerHTML =
+      '<div><div class="k">Comptes</div><div class="v">' + nf.format(k.users.total) + '</div>' +
+      '<div class="sub">+' + nf.format(k.users.new_7d) + ' sur 7 jours</div></div>' +
+      '<div><div class="k">Actifs 7 jours</div><div class="v">' + nf.format(k.users.active_7d) + '</div>' +
+      '<div class="sub">' + activeShare + ' % des comptes · ' + nf.format(k.users.active_30d) + ' sur 30 j</div></div>' +
+      '<div><div class="k">Téléchargements</div><div class="v">' + nf.format(totalDl) + '</div>' +
+      '<div class="sub">' + (latestTag ? 'dernière : ' + esc(latestTag) : 'toutes versions') + '</div></div>';
+
+    renderAdoption(k.versions || [], (latestTag || '').replace(/^v/, ''));
+    renderCharts(k.daily);
 
     $('plays').innerHTML =
-      card('Parties', nf.format(k.plays.total), nf.format(k.plays.last_7d) + ' sur 7 j') +
+      card('Parties', nf.format(k.plays.total), nf.format(k.plays.last_7d) + ' sur 7 jours') +
       card('Vérifiées', k.plays.verified_share + ' %', 'avec photo, comptent au classement') +
       card('Scannées', nf.format(k.plays.scanned), 'code-barres enregistré') +
       card('Gains déclarés', cf.format(k.plays.total_won));
@@ -286,37 +616,41 @@
       card('Groupes', nf.format(k.social.groups)) +
       card('Sessions', nf.format(k.social.sessions), nf.format(k.social.sessions_open) + ' en cours') +
       card('Amitiés', nf.format(k.social.friendships)) +
-      card('Événements', nf.format(k.social.events));
-
-    $('content').innerHTML =
+      card('Événements', nf.format(k.social.events)) +
       card('Tickets', nf.format(k.content.tickets)) +
       card('Bars communautaires', nf.format(k.content.bars_user)) +
       card('Bars en cache', nf.format(k.content.bars_cached), 'évitent un appel Google') +
       card('Suggestions ouvertes', nf.format(k.content.suggestions_open));
+
+    renderDownloads(releases);
+  }
+
+  function renderDownloads(releases) {
+    if (!releases.length) {
+      $('downloads').innerHTML = '<tr><td colspan="4" class="muted">Aucune release publiée.</td></tr>';
+      return;
+    }
+    var counts = releases.map(function (rel) {
+      var apk = (rel.assets || []).filter(function (a) { return /\.apk$/.test(a.name); })[0];
+      return apk ? apk.download_count : 0;
+    });
+    var max = Math.max.apply(null, counts.concat([1]));
+
+    $('downloads').innerHTML = releases.map(function (rel, i) {
+      return '<tr><td class="tag">' + esc(rel.tag_name) + '</td>' +
+        '<td class="num">' + nf.format(counts[i]) + '</td>' +
+        '<td class="meter"><span class="meter-track"><span class="meter-fill" style="width:' +
+          ((counts[i] / max) * 100).toFixed(1) + '%"></span></span></td>' +
+        '<td class="muted">' + new Date(rel.published_at).toLocaleDateString('fr-FR') + '</td></tr>';
+    }).join('');
   }
 
   // Les compteurs de téléchargement viennent de l'API GitHub, publique
   // pour un dépôt public : aucune authentification, aucun secret.
-  function loadDownloads() {
+  function loadReleases() {
     return fetch(GITHUB_RELEASES)
       .then(function (r) { return r.ok ? r.json() : []; })
-      .then(function (releases) {
-        if (!releases.length) {
-          $('downloads').innerHTML = '<tr><td colspan="3">Aucune release.</td></tr>';
-          return null;
-        }
-        $('downloads').innerHTML = releases.map(function (rel) {
-          var apk = (rel.assets || []).filter(function (a) { return /\.apk$/.test(a.name); })[0];
-          return '<tr><td>' + esc(rel.tag_name) + '</td>' +
-                 '<td class="num">' + nf.format(apk ? apk.download_count : 0) + '</td>' +
-                 '<td>' + new Date(rel.published_at).toLocaleDateString('fr-FR') + '</td></tr>';
-        }).join('');
-        return releases[0].tag_name;
-      })
-      .catch(function () {
-        $('downloads').innerHTML = '<tr><td colspan="3">Indisponible.</td></tr>';
-        return null;
-      });
+      .catch(function () { return []; });
   }
 
   // ── Accès ──────────────────────────────────────────────────────────
@@ -327,24 +661,33 @@
     $('logout-gate').classList.toggle('hidden', !canLogout);
   }
 
+  // Conservé pour pouvoir redessiner sans rappeler la base : au
+  // changement de thème, les couleurs des courbes et des pastilles sont
+  // lues dans les variables CSS au moment du tracé — sans nouveau rendu
+  // elles resteraient celles du thème précédent.
+  var last = null;
+
+  function load() {
+    // Le refus vient de la base, pas d'ici : admin_kpis lève une
+    // exception si l'appelant n'est pas administrateur. Se connecter
+    // avec un compte ordinaire ne donne donc rien à voir.
+    return Promise.all([sb.rpc('admin_kpis'), loadReleases()]).then(function (r) {
+      var out = r[0];
+      if (out.error) {
+        showGate('<span class="err">Ce compte n\'est pas administrateur.</span>', true);
+        return;
+      }
+      $('gate').classList.add('hidden');
+      $('board').classList.remove('hidden');
+      last = { kpis: out.data, releases: r[1] };
+      renderBoard(last.kpis, last.releases);
+    });
+  }
+
   function start() {
     return sb.auth.getSession().then(function (res) {
       if (!res.data.session) { showGate('Réservé aux administrateurs.', false); return; }
-
-      // Le refus vient de la base, pas d'ici : admin_kpis lève une
-      // exception si l'appelant n'est pas administrateur. Se connecter
-      // avec un compte ordinaire ne donne donc rien à voir.
-      return sb.rpc('admin_kpis').then(function (out) {
-        if (out.error) {
-          showGate('<span class="msg">Ce compte n\'est pas administrateur.</span>', true);
-          return;
-        }
-        $('gate').classList.add('hidden');
-        $('board').classList.remove('hidden');
-        return loadDownloads().then(function (latestTag) {
-          renderBoard(out.data, latestTag);
-        });
-      });
+      return load();
     });
   }
 
@@ -353,6 +696,29 @@
       provider: 'google',
       options: { redirectTo: window.location.href.split('#')[0] }
     });
+  });
+
+  $('refresh').addEventListener('click', function () {
+    $('refresh').disabled = true;
+    load().then(function () { $('refresh').disabled = false; });
+  });
+
+  $('theme').addEventListener('click', function () {
+    var root = document.documentElement;
+    var current = root.getAttribute('data-theme');
+    if (!current) {
+      current = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    }
+    root.setAttribute('data-theme', current === 'dark' ? 'light' : 'dark');
+    if (last) renderBoard(last.kpis, last.releases);
+  });
+
+  // Le viewBox est calé sur la largeur mesurée : il faut le recalculer
+  // quand elle change, sinon le tracé garde l'échelle d'origine.
+  var resizeTimer;
+  window.addEventListener('resize', function () {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(function () { drawPlots(false); }, 150);
   });
 
   function signOut() { sb.auth.signOut().then(function () { window.location.reload(); }); }
