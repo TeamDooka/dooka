@@ -1,0 +1,366 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Dooka — tableau de bord</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%23157A3E'/><text x='50' y='68' font-size='58' text-anchor='middle' font-family='sans-serif' font-weight='700' fill='%23F7F3E9'>D</text></svg>" />
+
+<style>
+  :root {
+    --ground: #FAFAF7;
+    --surface: #FFFFFF;
+    --ink: #17201A;
+    --muted: #64716A;
+    --turf: #157A3E;
+    --gold: #B4841E;
+    --line: rgba(23, 32, 26, 0.10);
+    --warn: #B4841E;
+    --bad: #A33A2A;
+
+    --font: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --font-mono: ui-monospace, "SF Mono", "JetBrains Mono", "Roboto Mono", Consolas, monospace;
+    --maxw: 1080px;
+    --r: 14px;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ground: #0C1310;
+      --surface: #131C16;
+      --ink: #F1EFE7;
+      --muted: #8D9A92;
+      --turf: #43B072;
+      --gold: #D8A63C;
+      --line: rgba(241, 239, 231, 0.12);
+      --warn: #D8A63C;
+      --bad: #E0705C;
+    }
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--ground);
+    color: var(--ink);
+    font-family: var(--font);
+    line-height: 1.5;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  .wrap {
+    max-width: var(--maxw);
+    margin: 0 auto;
+    padding: 2rem 1.15rem 4rem;
+  }
+
+  header.top {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding-bottom: 1.25rem;
+    border-bottom: 1px solid var(--line);
+    margin-bottom: 1.75rem;
+  }
+
+  h1 { font-size: 1.4rem; margin: 0; letter-spacing: -0.01em; }
+  .stamp { color: var(--muted); font-size: 0.82rem; font-variant-numeric: tabular-nums; }
+
+  h2 {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+    color: var(--muted);
+    margin: 2rem 0 0.75rem;
+    font-weight: 600;
+  }
+  h2:first-of-type { margin-top: 0; }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 0.7rem;
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--r);
+    padding: 0.9rem 1rem;
+  }
+
+  .card .k { color: var(--muted); font-size: 0.78rem; }
+  .card .v {
+    font-size: 1.55rem;
+    font-weight: 650;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.02em;
+    margin-top: 0.15rem;
+  }
+  .card .sub { color: var(--muted); font-size: 0.75rem; font-variant-numeric: tabular-nums; }
+
+  /* Adoption des versions : c'est l'indicateur qu'on vient regarder en
+     premier après une mise en ligne, il a donc son propre traitement. */
+  .bars { display: flex; flex-direction: column; gap: 0.5rem; }
+  .bar-row {
+    display: grid;
+    grid-template-columns: 5.5rem 1fr auto;
+    align-items: center;
+    gap: 0.7rem;
+    font-variant-numeric: tabular-nums;
+  }
+  .bar-label { font-family: var(--font-mono); font-size: 0.82rem; }
+  .bar-track {
+    height: 0.55rem;
+    background: var(--line);
+    border-radius: 999px;
+    overflow: hidden;
+  }
+  .bar-fill { height: 100%; background: var(--turf); border-radius: 999px; }
+  .bar-fill.stale { background: var(--warn); }
+  .bar-val { font-size: 0.82rem; color: var(--muted); min-width: 3.5rem; text-align: right; }
+
+  table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+  th, td { text-align: left; padding: 0.5rem 0.6rem; border-bottom: 1px solid var(--line); font-size: 0.88rem; }
+  th { color: var(--muted); font-weight: 600; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; }
+  td.num, th.num { text-align: right; }
+  .scroll { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--r); background: var(--surface); }
+
+  .gate { max-width: 26rem; margin: 4rem auto; text-align: center; }
+  .gate p { color: var(--muted); }
+
+  button.primary {
+    appearance: none;
+    border: 0;
+    background: var(--turf);
+    color: #fff;
+    font: inherit;
+    font-weight: 600;
+    padding: 0.7rem 1.4rem;
+    border-radius: 10px;
+    cursor: pointer;
+  }
+  button.primary:hover { opacity: 0.92; }
+  button.primary:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+
+  button.ghost {
+    appearance: none;
+    background: transparent;
+    border: 1px solid var(--line);
+    color: var(--muted);
+    font: inherit;
+    font-size: 0.82rem;
+    padding: 0.35rem 0.75rem;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+
+  .msg { color: var(--bad); }
+  .hidden { display: none; }
+  a { color: var(--turf); }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <!-- Écran de connexion -->
+  <section id="gate" class="gate">
+    <h1>Tableau de bord Dooka</h1>
+    <p id="gate-msg">Réservé aux administrateurs.</p>
+    <p><button class="primary" id="login">Se connecter avec Google</button></p>
+    <p><button class="ghost hidden" id="logout-gate">Se déconnecter</button></p>
+  </section>
+
+  <!-- Tableau de bord -->
+  <main id="board" class="hidden">
+    <header class="top">
+      <h1>Tableau de bord</h1>
+      <span class="stamp">
+        <span id="stamp"></span>
+        <button class="ghost" id="logout">Se déconnecter</button>
+      </span>
+    </header>
+
+    <h2>Adoption des versions</h2>
+    <div class="bars" id="versions"></div>
+
+    <h2>Utilisateurs</h2>
+    <div class="grid" id="users"></div>
+
+    <h2>Activité de jeu</h2>
+    <div class="grid" id="plays"></div>
+
+    <h2>Social</h2>
+    <div class="grid" id="social"></div>
+
+    <h2>Contenu</h2>
+    <div class="grid" id="content"></div>
+
+    <h2>Téléchargements par version</h2>
+    <div class="scroll">
+      <table>
+        <thead>
+          <tr><th>Version</th><th class="num">Téléchargements</th><th>Publiée le</th></tr>
+        </thead>
+        <tbody id="downloads"><tr><td colspan="3">Chargement…</td></tr></tbody>
+      </table>
+    </div>
+  </main>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+(function () {
+  'use strict';
+
+  // Même projet que l'app. La clé anon est publiable par conception :
+  // elle n'ouvre que ce que les politiques RLS autorisent, et la fonction
+  // admin_kpis vérifie elle-même le rôle administrateur côté serveur.
+  // Masquer cette page ne protège donc rien — c'est la base qui refuse.
+  var SUPABASE_URL = 'https://ybnacpzicldzsmmypupj.supabase.co';
+  var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlibmFjcHppY2xkenNtbXlwdXBqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQyODg4OTAsImV4cCI6MjA5OTg2NDg5MH0.zk6cs62vw1Xx2IfL5UX88XWmXFYMdxU75qCkp_f7DCs';
+  var GITHUB_RELEASES = 'https://api.github.com/repos/Pierrelaurent/dooka/releases';
+
+  var sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  var $ = function (id) { return document.getElementById(id); };
+  var nf = new Intl.NumberFormat('fr-FR');
+  var cf = new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 });
+
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+
+  function card(label, value, sub) {
+    return '<div class="card"><div class="k">' + esc(label) + '</div>' +
+           '<div class="v">' + esc(value) + '</div>' +
+           (sub ? '<div class="sub">' + esc(sub) + '</div>' : '') + '</div>';
+  }
+
+  // ── Rendu ──────────────────────────────────────────────────────────
+  function renderVersions(versions, currentVersion) {
+    var total = versions.reduce(function (n, v) { return n + Number(v.count); }, 0);
+    if (total === 0) { $('versions').innerHTML = '<p class="stamp">Aucune donnée encore.</p>'; return; }
+
+    $('versions').innerHTML = versions.map(function (v) {
+      var pct = Math.round((Number(v.count) / total) * 100);
+      // Tout ce qui n'est pas la dernière version est signalé : c'est
+      // exactement ce qu'on veut voir d'un coup d'œil après une mise en
+      // ligne, surtout quand elle corrige la sécurité.
+      var stale = v.version !== currentVersion;
+      return '<div class="bar-row">' +
+        '<span class="bar-label">' + esc(v.version) + '</span>' +
+        '<span class="bar-track"><span class="bar-fill' + (stale ? ' stale' : '') +
+          '" style="width:' + pct + '%"></span></span>' +
+        '<span class="bar-val">' + nf.format(v.count) + ' · ' + pct + '%</span>' +
+        '</div>';
+    }).join('');
+  }
+
+  function renderBoard(k, latestTag) {
+    $('stamp').textContent = 'à ' + new Date(k.generated_at).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }) + ' · ';
+
+    renderVersions(k.versions || [], (latestTag || '').replace(/^v/, ''));
+
+    $('users').innerHTML =
+      card('Comptes', nf.format(k.users.total)) +
+      card('Actifs 7 j', nf.format(k.users.active_7d), 'sur ' + nf.format(k.users.total)) +
+      card('Actifs 30 j', nf.format(k.users.active_30d)) +
+      card('Nouveaux 7 j', nf.format(k.users.new_7d), nf.format(k.users.new_30d) + ' sur 30 j');
+
+    $('plays').innerHTML =
+      card('Parties', nf.format(k.plays.total), nf.format(k.plays.last_7d) + ' sur 7 j') +
+      card('Vérifiées', k.plays.verified_share + ' %', 'avec photo, comptent au classement') +
+      card('Scannées', nf.format(k.plays.scanned), 'code-barres enregistré') +
+      card('Gains déclarés', cf.format(k.plays.total_won));
+
+    $('social').innerHTML =
+      card('Groupes', nf.format(k.social.groups)) +
+      card('Sessions', nf.format(k.social.sessions), nf.format(k.social.sessions_open) + ' en cours') +
+      card('Amitiés', nf.format(k.social.friendships)) +
+      card('Événements', nf.format(k.social.events));
+
+    $('content').innerHTML =
+      card('Tickets', nf.format(k.content.tickets)) +
+      card('Bars communautaires', nf.format(k.content.bars_user)) +
+      card('Bars en cache', nf.format(k.content.bars_cached), 'évitent un appel Google') +
+      card('Suggestions ouvertes', nf.format(k.content.suggestions_open));
+  }
+
+  // Les compteurs de téléchargement viennent de l'API GitHub, publique
+  // pour un dépôt public : aucune authentification, aucun secret.
+  function loadDownloads() {
+    return fetch(GITHUB_RELEASES)
+      .then(function (r) { return r.ok ? r.json() : []; })
+      .then(function (releases) {
+        if (!releases.length) {
+          $('downloads').innerHTML = '<tr><td colspan="3">Aucune release.</td></tr>';
+          return null;
+        }
+        $('downloads').innerHTML = releases.map(function (rel) {
+          var apk = (rel.assets || []).filter(function (a) { return /\.apk$/.test(a.name); })[0];
+          return '<tr><td>' + esc(rel.tag_name) + '</td>' +
+                 '<td class="num">' + nf.format(apk ? apk.download_count : 0) + '</td>' +
+                 '<td>' + new Date(rel.published_at).toLocaleDateString('fr-FR') + '</td></tr>';
+        }).join('');
+        return releases[0].tag_name;
+      })
+      .catch(function () {
+        $('downloads').innerHTML = '<tr><td colspan="3">Indisponible.</td></tr>';
+        return null;
+      });
+  }
+
+  // ── Accès ──────────────────────────────────────────────────────────
+  function showGate(message, canLogout) {
+    $('gate-msg').innerHTML = message;
+    $('gate').classList.remove('hidden');
+    $('board').classList.add('hidden');
+    $('logout-gate').classList.toggle('hidden', !canLogout);
+  }
+
+  function start() {
+    return sb.auth.getSession().then(function (res) {
+      if (!res.data.session) { showGate('Réservé aux administrateurs.', false); return; }
+
+      // Le refus vient de la base, pas d'ici : admin_kpis lève une
+      // exception si l'appelant n'est pas administrateur. Se connecter
+      // avec un compte ordinaire ne donne donc rien à voir.
+      return sb.rpc('admin_kpis').then(function (out) {
+        if (out.error) {
+          showGate('<span class="msg">Ce compte n\'est pas administrateur.</span>', true);
+          return;
+        }
+        $('gate').classList.add('hidden');
+        $('board').classList.remove('hidden');
+        return loadDownloads().then(function (latestTag) {
+          renderBoard(out.data, latestTag);
+        });
+      });
+    });
+  }
+
+  $('login').addEventListener('click', function () {
+    sb.auth.signInWithOAuth({
+      provider: 'google',
+      options: { redirectTo: window.location.href.split('#')[0] }
+    });
+  });
+
+  function signOut() { sb.auth.signOut().then(function () { window.location.reload(); }); }
+  $('logout').addEventListener('click', signOut);
+  $('logout-gate').addEventListener('click', signOut);
+
+  start();
+})();
+</script>
+</body>
+</html>
