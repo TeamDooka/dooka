@@ -273,6 +273,15 @@
   .leaderboard-row { transition: background 0.25s ease; }
   .leaderboard-row:hover { background: color-mix(in srgb, var(--turf) 5%, transparent); }
 
+  .lb-retry {
+    appearance: none; border: 1px solid var(--line); background: transparent;
+    color: var(--turf); font: inherit; font-size: 0.88rem; font-weight: 600;
+    padding: 5px 12px; border-radius: 8px; cursor: pointer; margin-left: 6px;
+    transition: border-color 0.15s ease, background 0.15s ease;
+  }
+  .lb-retry:hover { border-color: var(--turf); background: color-mix(in srgb, var(--turf) 8%, transparent); }
+  .lb-retry:focus-visible { outline: 2px solid var(--turf); outline-offset: 2px; }
+
   /* Le jeton tourne, lentement. C'est un jeton : c'est le seul mouvement
      ambiant que le sujet réclame vraiment. */
   .jeton svg { display: block; }
@@ -342,6 +351,15 @@
     .ticket { animation-delay: 0.42s; }
     .ticket-hint { animation-delay: 0.52s; }
     @keyframes heroIn { from { opacity: 0; transform: translateY(16px); } }
+
+    /* Les lignes du classement arrivent après la réponse réseau : elles
+       ne peuvent pas passer par l'observateur de défilement, d'où une
+       animation déclenchée au montage plutôt qu'à l'entrée dans l'écran. */
+    .leaderboard-row {
+      animation: rowIn 0.5s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+      animation-delay: calc(var(--i, 0) * 80ms);
+    }
+    @keyframes rowIn { from { opacity: 0; transform: translateX(-12px); } }
 
     .jeton-ring { animation: spin 18s linear infinite; }
     @keyframes spin { to { transform: rotate(360deg); } }
@@ -586,6 +604,8 @@
         return;
       }
       el.innerHTML = rows.map(function (row, i) {
+        // L'index alimente le décalage d'animation en CSS : les lignes
+        // se posent l'une après l'autre au lieu d'apparaître d'un bloc.
         var name = escapeHtml(row.display_name || "Joueur Dooka");
         var initial = escapeHtml((row.display_name || "?").trim().charAt(0).toUpperCase() || "?");
         var avatar = row.avatar_url
@@ -593,7 +613,7 @@
           : '<span class="leaderboard-avatar-fallback" aria-hidden="true">' + initial + "</span>";
         var place = row.place_name ? '<div class="leaderboard-place">' + escapeHtml(row.place_name) + "</div>" : "";
         return (
-          '<div class="leaderboard-row">' +
+          '<div class="leaderboard-row" style="--i:' + i + '">' +
             '<span class="leaderboard-rank">' + (i + 1) + "</span>" +
             avatar +
             '<div class="leaderboard-info"><div class="leaderboard-name">' + name + "</div>" + place + "</div>" +
@@ -603,21 +623,62 @@
       }).join("");
     }
 
-    fetch(SUPABASE_URL + "/rest/v1/rpc/public_top_gains", {
-      method: "POST",
-      headers: {
-        apikey: SUPABASE_ANON_KEY,
-        Authorization: "Bearer " + SUPABASE_ANON_KEY,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ limit_count: 8 }),
-    })
-      .then(function (res) { if (!res.ok) throw new Error("HTTP " + res.status); return res.json(); })
-      .then(renderLeaderboard)
-      .catch(function () {
-        document.getElementById("leaderboard").innerHTML =
-          '<p class="leaderboard-state">Classement momentanément indisponible.</p>';
-      });
+    // Le classement se chargeait en une seule tentative, sans délai
+    // maximum : sur un réseau mobile — signal faible, changement
+    // d'antenne, portail captif — une requête tombe régulièrement, et le
+    // message d'indisponibilité restait affiché pour de bon alors que
+    // l'API répondait parfaitement. Deux tentatives, un délai maximum, et
+    // un bouton pour réessayer à la main plutôt qu'un cul-de-sac.
+    var LEADERBOARD_TIMEOUT = 8000;
+    var LEADERBOARD_RETRIES = 2;
+
+    function fetchLeaderboard(attempt) {
+      var controller = window.AbortController ? new AbortController() : null;
+      var timer = window.setTimeout(function () {
+        if (controller) controller.abort();
+      }, LEADERBOARD_TIMEOUT);
+
+      var options = {
+        method: "POST",
+        headers: {
+          apikey: SUPABASE_ANON_KEY,
+          Authorization: "Bearer " + SUPABASE_ANON_KEY,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ limit_count: 8 }),
+      };
+      if (controller) options.signal = controller.signal;
+
+      fetch(SUPABASE_URL + "/rest/v1/rpc/public_top_gains", options)
+        .then(function (res) {
+          window.clearTimeout(timer);
+          if (!res.ok) throw new Error("HTTP " + res.status);
+          return res.json();
+        })
+        .then(renderLeaderboard)
+        .catch(function () {
+          window.clearTimeout(timer);
+          if (attempt < LEADERBOARD_RETRIES) {
+            // Une seconde d'attente : le temps qu'un changement
+            // d'antenne se termine, sans faire patienter pour rien.
+            window.setTimeout(function () { fetchLeaderboard(attempt + 1); }, 1000);
+            return;
+          }
+          var el = document.getElementById("leaderboard");
+          el.innerHTML =
+            '<p class="leaderboard-state">Classement momentanément indisponible.' +
+            ' <button type="button" class="lb-retry" id="lbRetry">Réessayer</button></p>';
+          var retry = document.getElementById("lbRetry");
+          if (retry) {
+            retry.addEventListener("click", function () {
+              el.innerHTML = '<p class="leaderboard-state">Chargement du classement…</p>';
+              fetchLeaderboard(0);
+            });
+          }
+        });
+    }
+
+    fetchLeaderboard(0);
 
     var root = document.documentElement;
     var toggle = document.getElementById("themeToggle");
