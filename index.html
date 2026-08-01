@@ -226,13 +226,139 @@
   .reveal { opacity: 0; transform: translateY(14px); transition: opacity 0.6s ease, transform 0.6s ease; }
   .reveal.in { opacity: 1; transform: none; }
   @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } }
+
+  /* ================= MOTION =================
+     Tout est enfermé dans une seule requête « pas de préférence » :
+     l'intégralité du site reste utilisable et lisible sans une seule
+     animation. Aucune information n'existe uniquement dans le mouvement. */
+
+  /* Fil de progression de lecture, en haut. */
+  .progress {
+    position: fixed; top: 0; left: 0; height: 2px; z-index: 70;
+    width: 100%; transform: scaleX(0); transform-origin: 0 50%;
+    background: linear-gradient(90deg, var(--turf), var(--gold));
+    pointer-events: none;
+  }
+
+  /* Échelonnement : chaque enfant part avec un léger décalage plutôt que
+     tout le bloc d'un coup. C'est ce qui donne la sensation de matière. */
+  .stagger > * { opacity: 0; transform: translateY(18px); }
+  .stagger.in > * {
+    opacity: 1; transform: none;
+    transition: opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1) calc(var(--i, 0) * 70ms),
+                transform 0.55s cubic-bezier(0.22, 1, 0.36, 1) calc(var(--i, 0) * 70ms);
+  }
+
+  /* Cartes : élévation et filet doré au survol. */
+  .card { position: relative; transition: background 0.3s ease, transform 0.3s cubic-bezier(0.22, 1, 0.36, 1); }
+  .card::after {
+    content: ""; position: absolute; left: 0; right: 0; top: 0; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    transform: scaleX(0); transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .card:hover { background: color-mix(in srgb, var(--turf) 4%, var(--surface)); }
+  .card:hover::after { transform: scaleX(1); }
+
+  .leaderboard-row { transition: background 0.25s ease; }
+  .leaderboard-row:hover { background: color-mix(in srgb, var(--turf) 5%, transparent); }
+
+  /* Le jeton tourne, lentement. C'est un jeton : c'est le seul mouvement
+     ambiant que le sujet réclame vraiment. */
+  .jeton svg { display: block; }
+  .jeton-ring { transform-origin: 50% 50%; }
+
+  /* ---------- Le ticket à gratter du hero ---------- */
+  .hero { position: relative; }
+  .ticket {
+    position: relative; width: min(340px, 100%); margin: 40px auto 0;
+    aspect-ratio: 16 / 9; border-radius: 16px;
+    background: linear-gradient(150deg,
+      color-mix(in srgb, var(--turf) 16%, var(--surface)),
+      color-mix(in srgb, var(--gold) 14%, var(--surface)));
+    border: 1px solid var(--line);
+    box-shadow: 0 18px 40px -22px color-mix(in srgb, var(--turf) 60%, transparent);
+    overflow: hidden;
+  }
+  /* Les encoches latérales d'un vrai ticket. */
+  .ticket::before, .ticket::after {
+    content: ""; position: absolute; top: 50%; width: 18px; height: 18px;
+    border-radius: 50%; background: var(--ground); transform: translateY(-50%);
+  }
+  .ticket::before { left: -9px; }
+  .ticket::after { right: -9px; }
+
+  .ticket-prize {
+    position: absolute; inset: 0; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 6px; text-align: center; padding: 18px;
+  }
+  .ticket-prize .amount {
+    font-size: clamp(1.8rem, 6vw, 2.5rem); font-weight: 700; letter-spacing: -0.03em;
+    color: var(--turf); line-height: 1;
+  }
+  .ticket-prize .label {
+    font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--muted);
+  }
+  .ticket-canvas {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    cursor: grab;
+    /* pan-y et non none : le ticket occupe une bonne part de l'écran sur
+       téléphone, et `none` lui ferait avaler le défilement vertical —
+       le pouce resterait bloqué dessus. Le navigateur garde donc le
+       geste vertical, et il reste le mouvement horizontal pour gratter. */
+    touch-action: pan-y;
+    transition: opacity 0.5s ease;
+  }
+  .ticket-canvas:active { cursor: grabbing; }
+  .ticket-canvas.done { opacity: 0; pointer-events: none; }
+  .ticket-hint {
+    font-family: var(--font-mono); font-size: 0.7rem; color: var(--muted);
+    text-align: center; margin: 12px 0 0; transition: opacity 0.4s ease;
+  }
+  .ticket-hint.gone { opacity: 0; }
+
+  @media (prefers-reduced-motion: no-preference) {
+    /* Entrée du hero, en cascade. `backwards` maintient l'état initial
+       pendant le délai, sans quoi le contenu clignote avant de partir. */
+    .hero .eyebrow, .hero h1, .hero-sub, .hero-cta, .hero-platform-note, .ticket, .ticket-hint {
+      animation: heroIn 0.7s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+    }
+    .hero .eyebrow { animation-delay: 0.05s; }
+    .hero h1 { animation-delay: 0.13s; }
+    .hero-sub { animation-delay: 0.21s; }
+    .hero-cta { animation-delay: 0.29s; }
+    .hero-platform-note { animation-delay: 0.37s; }
+    .ticket { animation-delay: 0.42s; }
+    .ticket-hint { animation-delay: 0.52s; }
+    @keyframes heroIn { from { opacity: 0; transform: translateY(16px); } }
+
+    .jeton-ring { animation: spin 18s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .card:hover { transform: translateY(-3px); }
+
+    /* Le ticket respire très légèrement tant qu'il n'est pas gratté :
+       assez pour attirer l'œil, pas assez pour distraire. */
+    .ticket:not(.scratched) { animation: heroIn 0.7s cubic-bezier(0.22,1,0.36,1) 0.42s backwards, breathe 5s ease-in-out 1.2s infinite; }
+    @keyframes breathe {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-5px) rotate(-0.4deg); }
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .stagger > * { opacity: 1; transform: none; }
+    .progress { display: none; }
+  }
 </style>
+
+<div class="progress" id="progress" aria-hidden="true"></div>
 
 <!-- ========== TOP BAR ========== -->
 <div class="topbar" id="top">
   <div class="wrap topbar-inner">
     <a class="brand" href="#top" aria-label="Retour en haut">
-      <span class="jeton" aria-hidden="true"><svg viewBox="0 0 100 100" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="48" fill="#157A3E"/><text x="50" y="52" text-anchor="middle" dominant-baseline="central" font-family="system-ui, sans-serif" font-weight="700" font-size="46" fill="#F7F3E9">D</text></svg></span>
+      <span class="jeton" aria-hidden="true"><svg viewBox="0 0 100 100" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="48" fill="#157A3E"/><circle class="jeton-ring" cx="50" cy="50" r="38" fill="none" stroke="#F7C948" stroke-width="7" stroke-dasharray="13 12"/><text x="50" y="52" text-anchor="middle" dominant-baseline="central" font-family="system-ui, sans-serif" font-weight="700" font-size="42" fill="#F7F3E9">D</text></svg></span>
       Dooka
     </a>
     <nav class="topbar-nav">
@@ -261,6 +387,19 @@
       <a class="btn btn-ghost" href="#comment">Comment ça marche</a>
     </div>
     <p class="platform-note hero-platform-note">📱 Sur iPhone ? L'appli iOS arrive bientôt — reviens ici pour la télécharger.</p>
+
+    <!-- Le geste central de l'app, posé dans le hero. Le contenu du prix
+         est dans le DOM et lisible d'emblée : la couche à gratter est
+         peinte par-dessus en JavaScript, et n'existe donc pas du tout
+         sans script, sans lecteur d'écran perdu, ni mouvement imposé. -->
+    <div class="ticket" id="ticket">
+      <div class="ticket-prize">
+        <span class="label">Ton gain garanti</span>
+        <span class="amount">Gratuit</span>
+        <span class="label">Sans pub · sans abonnement</span>
+      </div>
+    </div>
+    <p class="ticket-hint" id="ticketHint">↑ gratte le ticket</p>
   </div>
 </header>
 
@@ -269,7 +408,7 @@
 <!-- ========== STATS ========== -->
 <section>
   <div class="wrap">
-    <div class="stats reveal">
+    <div class="stats reveal stagger">
       <div class="stat">
         <div class="num">1 appli</div>
         <div class="cap">Tickets · PMU · potes</div>
@@ -294,7 +433,7 @@
       <h2>Tout ton jeu, au même endroit</h2>
       <p>Des fonctionnalités pensées pour la bande, pas pour jouer plus.</p>
     </div>
-    <div class="features reveal">
+    <div class="features reveal stagger">
       <div class="card">
         <h3>La carte des PMU</h3>
         <p>Trouve les bars-tabac et PMU autour de toi, avec les repères ajoutés par la communauté.</p>
@@ -344,18 +483,18 @@
       <span class="eyebrow">En trois temps</span>
       <h2>Prêt en deux minutes</h2>
     </div>
-    <div class="steps">
-      <div class="step reveal">
+    <div class="steps reveal stagger">
+      <div class="step">
         <span class="n">01</span>
         <h3>Télécharge l'appli</h3>
         <p>Installe l'APK Android en un tap. Rien d'autre à configurer.</p>
       </div>
-      <div class="step reveal">
+      <div class="step">
         <span class="n">02</span>
         <h3>Rejoins tes potes</h3>
         <p>Crée un groupe ou rejoins celui d'un ami avec son code d'invitation.</p>
       </div>
-      <div class="step reveal">
+      <div class="step">
         <span class="n">03</span>
         <h3>Gratte &amp; grimpe</h3>
         <p>Note tes tickets, relève les défis du jour, vise le sommet du classement.</p>
@@ -488,6 +627,166 @@
     } else {
       document.querySelectorAll(".reveal").forEach(function (el) { el.classList.add("in"); });
     }
+
+    // ---------- Échelonnement ----------
+    // L'index sert de multiplicateur au transition-delay en CSS : les
+    // enfants d'un même bloc arrivent l'un après l'autre au lieu de
+    // surgir ensemble.
+    document.querySelectorAll(".stagger").forEach(function (group) {
+      Array.prototype.forEach.call(group.children, function (child, i) {
+        child.style.setProperty("--i", i);
+      });
+    });
+
+    // ---------- Fil de progression ----------
+    var bar = document.getElementById("progress");
+    if (bar && !reduce) {
+      var ticking = false;
+      var update = function () {
+        var h = document.documentElement.scrollHeight - window.innerHeight;
+        var ratio = h > 0 ? window.scrollY / h : 0;
+        bar.style.transform = "scaleX(" + Math.min(1, Math.max(0, ratio)) + ")";
+        ticking = false;
+      };
+      window.addEventListener("scroll", function () {
+        // rAF plutôt qu'un appel direct : le scroll tire des dizaines
+        // d'événements par seconde, et écrire un style à chacun force
+        // autant de recalculs de rendu.
+        if (!ticking) { ticking = true; window.requestAnimationFrame(update); }
+      }, { passive: true });
+      update();
+    }
+
+    // ---------- Le ticket à gratter ----------
+    // La couche argentée est peinte en JavaScript, jamais dans le HTML :
+    // sans script, ou en mouvement réduit, le prix est simplement lisible
+    // et il ne reste rien à découvrir. Le contenu ne dépend donc jamais
+    // du geste.
+    (function scratchTicket() {
+      var ticket = document.getElementById("ticket");
+      var hint = document.getElementById("ticketHint");
+      if (!ticket) return;
+      if (reduce || !window.CanvasRenderingContext2D) {
+        if (hint) hint.style.display = "none";
+        return;
+      }
+
+      var canvas = document.createElement("canvas");
+      canvas.className = "ticket-canvas";
+      canvas.setAttribute("aria-hidden", "true");
+      ticket.appendChild(canvas);
+
+      var ctx = canvas.getContext("2d");
+      var dpr = Math.min(window.devicePixelRatio || 1, 2);
+      var w = 0, h = 0;
+      var cleared = false;
+
+      function paint() {
+        var r = ticket.getBoundingClientRect();
+        w = r.width; h = r.height;
+        canvas.width = Math.round(w * dpr);
+        canvas.height = Math.round(h * dpr);
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        ctx.globalCompositeOperation = "source-over";
+
+        var g = ctx.createLinearGradient(0, 0, w, h);
+        g.addColorStop(0, "#C2C7BF");
+        g.addColorStop(0.45, "#8F958C");
+        g.addColorStop(0.7, "#AEB4AB");
+        g.addColorStop(1, "#7E847C");
+        ctx.fillStyle = g;
+        ctx.fillRect(0, 0, w, h);
+
+        // Grain : sans lui l'aplat gris fait « rectangle posé »
+        // plutôt que « pellicule à gratter ».
+        for (var i = 0; i < 900; i++) {
+          ctx.fillStyle = "rgba(255,255,255," + (Math.random() * 0.06) + ")";
+          ctx.fillRect(Math.random() * w, Math.random() * h, 2, 2);
+        }
+
+        ctx.fillStyle = "rgba(255,255,255,0.62)";
+        ctx.font = '600 12px ui-monospace, "SF Mono", Consolas, monospace';
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.letterSpacing = "3px";
+        ctx.fillText("GRATTE ICI", w / 2, h / 2);
+      }
+
+      function dig(x, y) {
+        ctx.globalCompositeOperation = "destination-out";
+        ctx.beginPath();
+        ctx.arc(x, y, Math.max(18, w * 0.07), 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      // Proportion réellement grattée, par échantillonnage : inspecter
+      // chaque pixel à chaque mouvement coûterait bien plus que le rendu
+      // lui-même.
+      function clearedRatio() {
+        var data = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+        var empty = 0, total = 0;
+        for (var i = 3; i < data.length; i += 4 * 64) {
+          total++;
+          if (data[i] === 0) empty++;
+        }
+        return total ? empty / total : 0;
+      }
+
+      function finish() {
+        if (cleared) return;
+        cleared = true;
+        canvas.classList.add("done");
+        ticket.classList.add("scratched");
+        if (hint) hint.classList.add("gone");
+      }
+
+      var moves = 0;
+      function onMove(e) {
+        if (cleared) return;
+        var r = canvas.getBoundingClientRect();
+        dig(e.clientX - r.left, e.clientY - r.top);
+        if (hint) hint.classList.add("gone");
+        // Le contrôle ne tourne qu'un mouvement sur douze : getImageData
+        // est l'opération coûteuse de toute cette fonction.
+        if (++moves % 12 === 0 && clearedRatio() > 0.45) finish();
+      }
+
+      canvas.addEventListener("pointerdown", function (e) {
+        canvas.setPointerCapture(e.pointerId);
+        onMove(e);
+      });
+      canvas.addEventListener("pointermove", function (e) {
+        if (e.buttons !== 0 || e.pointerType === "touch") onMove(e);
+      });
+      canvas.addEventListener("pointerup", function () {
+        if (!cleared && clearedRatio() > 0.35) finish();
+      });
+
+      paint();
+
+      // Personne ne devine qu'un rectangle gris se gratte. Au bout de
+      // deux secondes et demie sans geste, on en gratte un bout à sa
+      // place : le mouvement enseigne l'interaction, il ne la remplace pas.
+      window.setTimeout(function () {
+        if (cleared || moves > 0) return;
+        var step = 0;
+        var demo = window.setInterval(function () {
+          if (cleared || moves > 0) { window.clearInterval(demo); return; }
+          step++;
+          dig(w * (0.28 + step * 0.035), h * (0.42 + Math.sin(step / 2) * 0.1));
+          if (step > 9) window.clearInterval(demo);
+        }, 45);
+      }, 2500);
+
+      var resizeTimer;
+      window.addEventListener("resize", function () {
+        if (cleared) return;
+        window.clearTimeout(resizeTimer);
+        // Le canvas est reconstruit à la nouvelle taille : le grattage
+        // déjà fait ne survit pas, d'où le repaint complet.
+        resizeTimer = window.setTimeout(paint, 200);
+      });
+    })();
   })();
 </script>
 </body>
