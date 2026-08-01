@@ -232,6 +232,17 @@
      l'intégralité du site reste utilisable et lisible sans une seule
      animation. Aucune information n'existe uniquement dans le mouvement. */
 
+  /* ---------- Fond ambiant ----------
+     Un canvas fixe, derrière tout le contenu. z-index négatif : le fond
+     de <body> se propage au viewport et se peint avant les couches
+     négatives, le canvas reste donc visible par-dessus la couleur de
+     fond mais sous le texte. Rien d'interactif, rien d'informatif. */
+  .bg-canvas {
+    position: fixed; inset: 0; z-index: -1;
+    width: 100%; height: 100%;
+    pointer-events: none;
+  }
+
   /* Fil de progression de lecture, en haut. */
   .progress {
     position: fixed; top: 0; left: 0; height: 2px; z-index: 70;
@@ -351,6 +362,8 @@
     .progress { display: none; }
   }
 </style>
+
+<canvas class="bg-canvas" id="bg" aria-hidden="true"></canvas>
 
 <div class="progress" id="progress" aria-hidden="true"></div>
 
@@ -614,6 +627,10 @@
         current = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
       }
       root.setAttribute("data-theme", current === "dark" ? "light" : "dark");
+      // Les couleurs du fond sont lues dans les variables CSS au moment
+      // du tracé : sans ce rappel, les anneaux garderaient la palette du
+      // thème précédent. Même piège que sur le tableau de bord.
+      repaintBackground();
     });
 
     var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -656,6 +673,130 @@
       }, { passive: true });
       update();
     }
+
+    // ---------- Fond ambiant ----------
+    // Le motif du jeton — l'anneau doré en pointillés du logo — décliné
+    // en très grand format et mis en rotation lente. Plutôt qu'un
+    // dégradé animé, qui n'aurait rien dit du sujet : ces anneaux sont
+    // littéralement la marque, agrandie au point de devenir texture.
+    //
+    // Dessiné au canvas et non en SVG : ce sont des formes calculées qui
+    // changent à chaque image, pas un tracé à écrire à la main.
+    var repaintBackground = (function ambientBackground() {
+      var canvas = document.getElementById("bg");
+      if (!canvas || !window.CanvasRenderingContext2D) return function () {};
+      var ctx = canvas.getContext("2d");
+      // Plafonné à 1,5 : au-delà on quadruple le nombre de pixels à
+      // peindre à chaque image pour une différence invisible sur un
+      // aplat aussi peu contrasté.
+      var dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+      var w = 0, h = 0, rings = [], palette = null;
+
+      // Positions et rayons en proportion du viewport : le motif se
+      // recompose à l'identique quel que soit l'écran, du téléphone au
+      // grand moniteur.
+      var LAYOUT = [
+        { x: 0.08, y: 0.14, r: 0.42, spin:  0.00013, drift: 0.00021, tone: "turf" },
+        { x: 0.92, y: 0.30, r: 0.30, spin: -0.00019, drift: 0.00016, tone: "gold" },
+        { x: 0.72, y: 0.86, r: 0.50, spin:  0.00009, drift: 0.00012, tone: "turf" },
+        { x: 0.22, y: 0.74, r: 0.24, spin: -0.00026, drift: 0.00024, tone: "gold" },
+        { x: 0.55, y: 0.42, r: 0.66, spin:  0.00006, drift: 0.00009, tone: "turf" }
+      ];
+
+      function readPalette() {
+        var cs = getComputedStyle(document.documentElement);
+        var dark = document.documentElement.getAttribute("data-theme") === "dark"
+          || (!document.documentElement.getAttribute("data-theme")
+              && window.matchMedia("(prefers-color-scheme: dark)").matches);
+        return {
+          turf: cs.getPropertyValue("--turf").trim() || "#157A3E",
+          gold: cs.getPropertyValue("--gold").trim() || "#B4841E",
+          // Sur fond clair le même trait paraît nettement plus présent
+          // que sur fond sombre : l'opacité ne peut pas être commune.
+          alpha: dark ? 0.14 : 0.085
+        };
+      }
+
+      function measure() {
+        w = window.innerWidth;
+        h = window.innerHeight;
+        canvas.width = Math.round(w * dpr);
+        canvas.height = Math.round(h * dpr);
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        palette = readPalette();
+        var base = Math.max(w, h);
+        rings = LAYOUT.map(function (l) {
+          return {
+            cx: w * l.x, cy: h * l.y, R: base * l.r,
+            spin: l.spin, drift: l.drift,
+            color: l.tone === "gold" ? palette.gold : palette.turf
+          };
+        });
+      }
+
+      function render(t) {
+        ctx.clearRect(0, 0, w, h);
+        ctx.globalAlpha = palette.alpha;
+        for (var i = 0; i < rings.length; i++) {
+          var g = rings[i];
+          ctx.save();
+          ctx.translate(
+            g.cx + Math.sin(t * g.drift) * 26,
+            g.cy + Math.cos(t * g.drift * 0.7) * 20
+          );
+          ctx.rotate(t * g.spin);
+          ctx.strokeStyle = g.color;
+          ctx.lineWidth = g.R * 0.075;
+          // Le tiret du jeton : segments longs séparés par des vides
+          // presque aussi larges, exactement comme sur le logo.
+          ctx.setLineDash([g.R * 0.30, g.R * 0.27]);
+          ctx.beginPath();
+          ctx.arc(0, 0, g.R, 0, Math.PI * 2);
+          ctx.stroke();
+          ctx.restore();
+        }
+        ctx.globalAlpha = 1;
+      }
+
+      measure();
+
+      if (reduce) {
+        // Une seule image, figée : le motif reste, le mouvement non.
+        // Sans boucle d'animation pour rattraper un changement de thème,
+        // le repaint doit être explicite ici — `measure` seul mettrait à
+        // jour la palette sans jamais la peindre.
+        var still = function () { measure(); render(0); };
+        still();
+        return still;
+      }
+
+      var last = 0;
+      var running = true;
+      function frame(now) {
+        if (!running) return;
+        // ~30 images par seconde suffisent très largement pour des
+        // formes qui mettent une minute à faire un tour, et ça divise
+        // par deux le travail sur un téléphone.
+        if (now - last > 33) { render(now); last = now; }
+        window.requestAnimationFrame(frame);
+      }
+      window.requestAnimationFrame(frame);
+
+      // Onglet en arrière-plan : inutile de consommer de la batterie
+      // pour peindre ce que personne ne regarde.
+      document.addEventListener("visibilitychange", function () {
+        if (document.hidden) { running = false; }
+        else if (!running) { running = true; window.requestAnimationFrame(frame); }
+      });
+
+      var resizeTimer;
+      window.addEventListener("resize", function () {
+        window.clearTimeout(resizeTimer);
+        resizeTimer = window.setTimeout(measure, 200);
+      });
+
+      return measure;
+    })();
 
     // ---------- Le ticket à gratter ----------
     // La couche argentée est peinte en JavaScript, jamais dans le HTML :
