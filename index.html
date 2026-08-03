@@ -10,7 +10,7 @@
 <meta property="og:description" content="Gratte tes tickets, suis tes gains, défie tes potes. Appli communautaire Android, gratuite." />
 <meta property="og:url" content="https://dooka.fr" />
 <meta name="twitter:card" content="summary" />
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%23157A3E'/><text x='50' y='68' font-size='58' text-anchor='middle' font-family='sans-serif' font-weight='700' fill='%23F7F3E9'>D</text></svg>" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%23178A45'/><text x='50' y='68' font-size='58' text-anchor='middle' font-family='sans-serif' font-weight='700' fill='%23F7F3E9'>D</text></svg>" />
 </head>
 <body>
 <style>
@@ -19,7 +19,7 @@
     --surface: #FFFFFF;
     --ink: #17201A;
     --muted: #64716A;
-    --turf: #157A3E;
+    --turf: #178A45;
     --gold: #B4841E;
     --line: rgba(23, 32, 26, 0.10);
 
@@ -36,18 +36,18 @@
       --surface: #131C16;
       --ink: #F1EFE7;
       --muted: #8D9A92;
-      --turf: #45C77E;
+      --turf: #3FBE72;
       --gold: #F0C15C;
       --line: rgba(255, 255, 255, 0.09);
     }
   }
   :root[data-theme="dark"] {
     --ground: #0C1310; --surface: #131C16; --ink: #F1EFE7; --muted: #8D9A92;
-    --turf: #45C77E; --gold: #F0C15C; --line: rgba(255, 255, 255, 0.09);
+    --turf: #3FBE72; --gold: #F0C15C; --line: rgba(255, 255, 255, 0.09);
   }
   :root[data-theme="light"] {
     --ground: #FAFAF7; --surface: #FFFFFF; --ink: #17201A; --muted: #64716A;
-    --turf: #157A3E; --gold: #B4841E; --line: rgba(23, 32, 26, 0.10);
+    --turf: #178A45; --gold: #B4841E; --line: rgba(23, 32, 26, 0.10);
   }
 
   * { box-sizing: border-box; }
@@ -389,7 +389,7 @@
 <div class="topbar" id="top">
   <div class="wrap topbar-inner">
     <a class="brand" href="#top" aria-label="Retour en haut">
-      <span class="jeton" aria-hidden="true"><svg viewBox="0 0 100 100" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="48" fill="#157A3E"/><circle class="jeton-ring" cx="50" cy="50" r="38" fill="none" stroke="#F7C948" stroke-width="7" stroke-dasharray="13 12"/><text x="50" y="52" text-anchor="middle" dominant-baseline="central" font-family="system-ui, sans-serif" font-weight="700" font-size="42" fill="#F7F3E9">D</text></svg></span>
+      <span class="jeton" aria-hidden="true"><svg viewBox="0 0 100 100" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="48" fill="#178A45"/><circle class="jeton-ring" cx="50" cy="50" r="38" fill="none" stroke="#F7C948" stroke-width="7" stroke-dasharray="13 12"/><text x="50" y="52" text-anchor="middle" dominant-baseline="central" font-family="system-ui, sans-serif" font-weight="700" font-size="42" fill="#F7F3E9">D</text></svg></span>
       Dooka
     </a>
     <nav class="topbar-nav">
@@ -557,7 +557,7 @@
     <div class="foot-grid">
       <div>
         <div class="foot-brand">
-          <span class="jeton" aria-hidden="true"><svg viewBox="0 0 100 100" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="48" fill="#157A3E"/><text x="50" y="52" text-anchor="middle" dominant-baseline="central" font-family="system-ui, sans-serif" font-weight="700" font-size="46" fill="#F7F3E9">D</text></svg></span>
+          <span class="jeton" aria-hidden="true"><svg viewBox="0 0 100 100" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="48" fill="#178A45"/><text x="50" y="52" text-anchor="middle" dominant-baseline="central" font-family="system-ui, sans-serif" font-weight="700" font-size="46" fill="#F7F3E9">D</text></svg></span>
           Dooka
         </div>
         <div class="foot-links">
@@ -770,7 +770,7 @@
           || (!document.documentElement.getAttribute("data-theme")
               && window.matchMedia("(prefers-color-scheme: dark)").matches);
         return {
-          turf: cs.getPropertyValue("--turf").trim() || "#157A3E",
+          turf: cs.getPropertyValue("--turf").trim() || "#178A45",
           gold: cs.getPropertyValue("--gold").trim() || "#B4841E",
           // Sur fond clair le même trait paraît nettement plus présent
           // que sur fond sombre : l'opacité ne peut pas être commune.
