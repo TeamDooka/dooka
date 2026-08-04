@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Dooka — Confirmation</title>
+<meta name="description" content="Confirmation d'adresse e-mail et réinitialisation de mot de passe Dooka." />
+<meta name="robots" content="noindex" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%23178A45'/><text x='50' y='68' font-size='58' text-anchor='middle' font-family='sans-serif' font-weight='700' fill='%23F7F3E9'>D</text></svg>" />
+<style>
+  :root {
+    --ground: #FAFAF7; --surface: #FFFFFF; --raised: #F3F2EC;
+    --ink: #17201A; --muted: #64716A; --turf: #178A45; --gold: #B4841E;
+    --danger: #B3261E;
+    --line: rgba(23,32,26,0.11); --hair: rgba(23,32,26,0.06);
+    --font: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --mono: ui-monospace, "SF Mono", "JetBrains Mono", "Roboto Mono", Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --ground:#0C1310; --surface:#131C16; --raised:#1A241E;
+      --ink:#F1EFE7; --muted:#8D9A92; --turf:#3FBE72; --gold:#F0C15C;
+      --danger:#F2B8B5;
+      --line:rgba(255,255,255,0.11); --hair:rgba(255,255,255,0.06); }
+  }
+  :root[data-theme="dark"] { --ground:#0C1310; --surface:#131C16; --raised:#1A241E;
+    --ink:#F1EFE7; --muted:#8D9A92; --turf:#3FBE72; --gold:#F0C15C; --danger:#F2B8B5;
+    --line:rgba(255,255,255,0.11); --hair:rgba(255,255,255,0.06); }
+  :root[data-theme="light"] { --ground:#FAFAF7; --surface:#FFFFFF; --raised:#F3F2EC;
+    --ink:#17201A; --muted:#64716A; --turf:#178A45; --gold:#B4841E; --danger:#B3261E;
+    --line:rgba(23,32,26,0.11); --hair:rgba(23,32,26,0.06); }
+
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--ground); color:var(--ink);
+    font-family:var(--font); font-size:17px; line-height:1.65; -webkit-text-size-adjust:100%; }
+  .wrap { max-width: 520px; margin: 0 auto; padding: 0 22px 80px; }
+
+  .topbar { border-bottom:1px solid var(--line); margin-bottom:44px; }
+  .topbar-inner { max-width:520px; margin:0 auto; padding:0 22px; height:62px;
+    display:flex; align-items:center; gap:11px; }
+  .topbar svg { width:28px; height:28px; border-radius:50%; flex:none; }
+  .topbar a { color:inherit; text-decoration:none; font-weight:700; letter-spacing:-0.01em; }
+
+  h1 { font-size: clamp(1.6rem,5vw,2.1rem); letter-spacing:-0.03em; line-height:1.15;
+       margin:0; text-wrap:balance; }
+  .lede { color:var(--muted); margin:14px 0 0; }
+  p { margin:13px 0; }
+  a { color:var(--turf); }
+
+  /* Pastille d'état : la première chose que l'œil doit trouver, puisque
+     toute la question de l'utilisateur tient en « est-ce que ça a marché ». */
+  .mark { width:52px; height:52px; border-radius:50%; display:flex;
+    align-items:center; justify-content:center; font-size:26px; margin-bottom:20px; }
+  .mark.ok { background:color-mix(in srgb, var(--turf) 16%, var(--surface)); color:var(--turf); }
+  .mark.ko { background:color-mix(in srgb, var(--danger) 14%, var(--surface)); color:var(--danger); }
+  .mark.wait { background:var(--raised); color:var(--muted); }
+
+  .btn { display:inline-flex; align-items:center; justify-content:center; gap:9px;
+    text-decoration:none; background:var(--turf); color:#fff; font-weight:600;
+    font-size:1rem; padding:13px 24px; border-radius:10px; margin-top:8px;
+    border:none; cursor:pointer; font-family:inherit; }
+  .btn:hover { background:color-mix(in srgb, var(--turf) 85%, black); }
+  .btn:disabled { opacity:0.55; cursor:default; }
+  .btn.block { display:flex; width:100%; }
+
+  label { display:block; font-size:0.9rem; font-weight:600; margin:20px 0 6px; }
+  input[type=password] { width:100%; font-family:inherit; font-size:1rem;
+    padding:13px 15px; border-radius:10px; border:1px solid var(--line);
+    background:var(--surface); color:var(--ink); }
+  input[type=password]:focus { outline:2px solid var(--turf); outline-offset:1px; }
+  .hint { color:var(--muted); font-size:0.86rem; margin:7px 0 0; }
+  .err { color:var(--danger); font-size:0.9rem; margin:14px 0 0; }
+
+  .box { background:var(--surface); border:1px solid var(--line);
+         border-radius:12px; padding:16px 20px; margin:26px 0 0; }
+  .box p:first-child { margin-top:0; } .box p:last-child { margin-bottom:0; }
+  .box .tag { font-family:var(--mono); font-size:0.68rem; letter-spacing:0.12em;
+    text-transform:uppercase; font-weight:700; color:var(--turf); display:block; margin-bottom:6px; }
+
+  footer { margin-top:52px; padding-top:22px; border-top:1px solid var(--line);
+    font-size:0.85rem; color:var(--muted); }
+  [hidden] { display:none !important; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="48" fill="#178A45"/><text x="50" y="68" font-size="58" text-anchor="middle" font-family="sans-serif" font-weight="700" fill="#F7F3E9">D</text></svg>
+    <a href="/">Dooka</a>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <section id="loading">
+    <div class="mark wait" aria-hidden="true">•••</div>
+    <h1>Un instant…</h1>
+    <p class="lede">On vérifie votre lien.</p>
+  </section>
+
+  <section id="confirmed" hidden>
+    <div class="mark ok" aria-hidden="true">✓</div>
+    <h1>Votre adresse est confirmée</h1>
+    <p class="lede">Votre compte Dooka est prêt. Il ne reste qu'à ouvrir l'application et à vous connecter.</p>
+    <p><a class="btn" href="dooka://">Ouvrir Dooka</a></p>
+    <div class="box">
+      <span class="tag">Si rien ne s'ouvre</span>
+      <p>C'est que vous lisez ce message sur un ordinateur. Ouvrez simplement Dooka sur votre téléphone : votre compte y est déjà actif.</p>
+    </div>
+  </section>
+
+  <section id="reset" hidden>
+    <div class="mark ok" aria-hidden="true">🔑</div>
+    <h1>Nouveau mot de passe</h1>
+    <p class="lede">Choisissez-en un nouveau, puis reconnectez-vous dans l'application.</p>
+
+    <form id="reset-form" novalidate>
+      <label for="pw1">Nouveau mot de passe</label>
+      <input type="password" id="pw1" autocomplete="new-password" required minlength="8" />
+      <p class="hint">8 caractères au minimum.</p>
+
+      <label for="pw2">Confirmez-le</label>
+      <input type="password" id="pw2" autocomplete="new-password" required minlength="8" />
+
+      <p class="err" id="reset-error" hidden></p>
+      <p><button class="btn block" type="submit" id="reset-submit">Enregistrer</button></p>
+    </form>
+  </section>
+
+  <section id="done" hidden>
+    <div class="mark ok" aria-hidden="true">✓</div>
+    <h1>Mot de passe modifié</h1>
+    <p class="lede">Vous pouvez vous connecter à Dooka avec votre nouveau mot de passe.</p>
+    <p><a class="btn" href="dooka://">Ouvrir Dooka</a></p>
+  </section>
+
+  <section id="failed" hidden>
+    <div class="mark ko" aria-hidden="true">!</div>
+    <h1 id="failed-title">Ce lien n'est plus valable</h1>
+    <p class="lede" id="failed-text">
+      Les liens de confirmation expirent au bout de 24 heures, et ne servent qu'une fois.
+    </p>
+    <div class="box">
+      <span class="tag">Que faire</span>
+      <p>Retournez dans l'application et redemandez un lien — celui-ci arrivera dans la foulée. Si le problème persiste, écrivez-nous à <a href="mailto:contact@dooka.fr">contact@dooka.fr</a>.</p>
+    </div>
+  </section>
+
+  <footer>
+    <p>Dooka — application indépendante, sans lien avec le PMU ni la Française des Jeux. <a href="/">Retour au site</a></p>
+  </footer>
+
+</div>
+
+<script>
+(function () {
+  // Le projet Supabase et sa clé « anon ». Publique par conception : elle
+  // est déjà embarquée en clair dans l'APK, et tout ce qu'elle autorise est
+  // borné par les politiques RLS. La poser ici n'expose rien de plus.
+  var SUPABASE_URL = 'https://ybnacpzicldzsmmypupj.supabase.co';
+  var ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlibmFjcHppY2xkenNtbXlwdXBqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQyODg4OTAsImV4cCI6MjA5OTg2NDg5MH0.zk6cs62vw1Xx2IfL5UX88XWmXFYMdxU75qCkp_f7DCs';
+
+  var params = new URLSearchParams(window.location.search);
+  var tokenHash = params.get('token_hash');
+  var type = params.get('type') || 'signup';
+  var accessToken = null;
+
+  function show(id) {
+    ['loading', 'confirmed', 'reset', 'done', 'failed'].forEach(function (key) {
+      document.getElementById(key).hidden = key !== id;
+    });
+  }
+
+  function fail(title, text) {
+    if (title) document.getElementById('failed-title').textContent = title;
+    if (text) document.getElementById('failed-text').textContent = text;
+    show('failed');
+  }
+
+  if (!tokenHash) {
+    fail('Lien incomplet', "Ce lien ne contient pas de jeton de vérification. Ouvrez-le directement depuis l'e-mail reçu, sans le recopier à la main.");
+    return;
+  }
+
+  // Échange le jeton à usage unique contre une session. C'est cette
+  // requête qui confirme réellement l'adresse ou ouvre le droit à changer
+  // le mot de passe — la page ne fait que la présenter lisiblement.
+  fetch(SUPABASE_URL + '/auth/v1/verify', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', apikey: ANON_KEY },
+    body: JSON.stringify({ type: type, token_hash: tokenHash })
+  })
+    .then(function (response) {
+      return response.json().then(function (body) {
+        return { ok: response.ok, body: body };
+      });
+    })
+    .then(function (result) {
+      if (!result.ok) {
+        fail(null, result.body && result.body.error_description
+          ? result.body.error_description
+          : "Les liens de confirmation expirent au bout de 24 heures, et ne servent qu'une fois.");
+        return;
+      }
+      accessToken = result.body.access_token;
+      // Un lien de réinitialisation ouvre un droit, il ne termine rien :
+      // sans nouveau mot de passe saisi ici, l'utilisateur repartirait
+      // avec l'ancien, sans le savoir.
+      show(type === 'recovery' ? 'reset' : 'confirmed');
+    })
+    .catch(function () {
+      fail('Connexion impossible', 'Vérifiez votre connexion internet et rouvrez le lien.');
+    });
+
+  document.getElementById('reset-form').addEventListener('submit', function (event) {
+    event.preventDefault();
+    var pw1 = document.getElementById('pw1').value;
+    var pw2 = document.getElementById('pw2').value;
+    var errorEl = document.getElementById('reset-error');
+    var submit = document.getElementById('reset-submit');
+
+    function showError(message) {
+      errorEl.textContent = message;
+      errorEl.hidden = false;
+    }
+
+    errorEl.hidden = true;
+    if (pw1.length < 8) return showError('Il faut au moins 8 caractères.');
+    if (pw1 !== pw2) return showError('Les deux mots de passe ne sont pas identiques.');
+
+    submit.disabled = true;
+    submit.textContent = 'Enregistrement…';
+
+    fetch(SUPABASE_URL + '/auth/v1/user', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        apikey: ANON_KEY,
+        Authorization: 'Bearer ' + accessToken
+      },
+      body: JSON.stringify({ password: pw1 })
+    })
+      .then(function (response) {
+        return response.json().then(function (body) {
+          return { ok: response.ok, body: body };
+        });
+      })
+      .then(function (result) {
+        if (!result.ok) {
+          submit.disabled = false;
+          submit.textContent = 'Enregistrer';
+          return showError(
+            result.body && (result.body.msg || result.body.error_description)
+              ? result.body.msg || result.body.error_description
+              : "Le mot de passe n'a pas pu être modifié."
+          );
+        }
+        show('done');
+      })
+      .catch(function () {
+        submit.disabled = false;
+        submit.textContent = 'Enregistrer';
+        showError('Connexion impossible. Réessayez.');
+      });
+  });
+})();
+</script>
+
+</body>
+</html>
