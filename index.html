@@ -121,7 +121,21 @@
   .btn:focus-visible { outline: 2px solid var(--turf); outline-offset: 2px; }
   .btn-sm { padding: 8px 14px; font-size: 0.88rem; border-radius: 8px; }
 
-  .btn-primary .apk-meta { font-family: var(--font-mono); font-weight: 400; font-size: 0.72rem; opacity: 0.85; }
+  .btn .apk-meta { font-family: var(--font-mono); font-weight: 400; font-size: 0.72rem; opacity: 0.85; }
+
+  /* Bouton Google Play. Il ne pointe pas vers la fiche publique
+     play.google.com/store/apps/details?id=fr.dooka.app : tant que l'app
+     n'est pas approuvée en production, cette adresse renvoie un 404 pour
+     tout le monde. On envoie donc vers l'opt-in du test fermé, qui
+     fonctionne pour les testeurs inscrits et affiche un message clair
+     pour les autres. Le jour de la publication en production, il suffit
+     de remplacer les deux href .btn-play par la fiche publique. */
+  .btn-play {
+    background: color-mix(in srgb, var(--turf) 12%, transparent);
+    color: var(--turf);
+    border-color: color-mix(in srgb, var(--turf) 32%, transparent);
+  }
+  .btn-play:hover { background: color-mix(in srgb, var(--turf) 20%, transparent); }
 
   /* ---------- Hero ---------- */
   .hero { padding: clamp(64px, 12vw, 120px) 0 clamp(56px, 8vw, 88px); text-align: center; }
@@ -415,6 +429,10 @@
         Télécharger pour Android
         <span class="apk-meta">.apk · gratuit</span>
       </a>
+      <a class="btn btn-play" href="https://play.google.com/apps/testing/fr.dooka.app">
+        Google Play
+        <span class="apk-meta">test fermé · sur invitation</span>
+      </a>
       <a class="btn btn-ghost" href="#comment">Comment ça marche</a>
     </div>
     <p class="platform-note hero-platform-note">📱 Sur iPhone ? L'appli iOS arrive bientôt — reviens ici pour la télécharger.</p>
@@ -542,11 +560,17 @@
     <div class="download reveal">
       <h2>Rejoins la bande sur Dooka</h2>
       <p>Gratuit, sans pub. Il te suffit d'un téléphone Android et de quelques potes.</p>
-      <a class="btn btn-primary" href="https://github.com/Pierrelaurent/dooka/releases/latest/download/dooka.apk">
-        Télécharger pour Android
-        <span class="apk-meta">.apk · dernière version</span>
-      </a>
-      <div class="platform-note">Bientôt disponible sur iPhone · iOS</div>
+      <div class="hero-cta">
+        <a class="btn btn-primary" href="https://github.com/Pierrelaurent/dooka/releases/latest/download/dooka.apk">
+          Télécharger pour Android
+          <span class="apk-meta">.apk · dernière version</span>
+        </a>
+        <a class="btn btn-play" href="https://play.google.com/apps/testing/fr.dooka.app">
+          Google Play
+          <span class="apk-meta">test fermé · sur invitation</span>
+        </a>
+      </div>
+      <div class="platform-note">Sur Google Play, les mises à jour arrivent toutes seules · Bientôt sur iPhone</div>
     </div>
   </div>
 </section>
