@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Badges, bulles et podium — système de design Dooka</title>
+<meta name="description" content="Pastilles de compteur, médailles, rangs. Du très petit texte qui doit rester lisible sur un aplat saturé." />
+<meta name="robots" content="noindex" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%23178A45'/><text x='50' y='68' font-size='58' text-anchor='middle' font-family='sans-serif' font-weight='700' fill='%23F7F3E9'>D</text></svg>" />
+<link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+<header class="topbar">
+  <div class="wrap topbar-inner">
+    <a class="brand" href="https://dooka.fr">
+      <img class="jeton" src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%23178A45'/><text x='50' y='68' font-size='58' text-anchor='middle' font-family='sans-serif' font-weight='700' fill='%23F7F3E9'>D</text></svg>" alt="" width="30" height="30" />
+      Dooka
+    </a>
+    <a class="topbar-back" href="./">Toutes les fiches</a>
+  </div>
+</header>
+<main class="wrap">
+  <div class="pagehead">
+    <p class="eyebrow">Composants</p>
+    <h1>Badges, bulles et podium</h1>
+    <p>Pastilles de compteur, médailles, rangs. Du très petit texte qui doit rester lisible sur un aplat saturé.</p>
+  </div>
+  <div class="specimen">
+<style>
+  .ds { --ivoire:#F5F3EE; --carte:#FFFFFF; --encre:#15191F; --gris:#5F6672;
+        --vert:#178A45; --creux:#E7E3D9; --bord:#E4E0D6;
+        background:var(--ivoire); color:var(--encre); padding:28px;
+        font-family:system-ui,-apple-system,sans-serif; }
+  .ds h2 { font-size:21px; font-weight:700; letter-spacing:-.2px; margin:0 0 4px; }
+  .ds .intro { font-size:15px; line-height:1.45; color:var(--gris); max-width:64ch; margin:0 0 8px; }
+  .ds h3 { font-family:ui-monospace,Menlo,monospace; font-size:11px; font-weight:600;
+           letter-spacing:.9px; text-transform:uppercase; color:var(--gris);
+           margin:26px 0 12px; }
+  .ds .rangee { display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+  .ds .pastille { border-radius:999px; padding:6px 14px; font-size:15px; font-weight:700; color:#fff; }
+  .ds .attribut { background:var(--creux); color:var(--gris); border-radius:999px;
+                  padding:7px 14px; font-size:15px; font-weight:600; }
+  .ds .bulle { border-radius:12px; padding:7px 13px; font-size:15px; font-weight:700;
+               color:#fff; display:inline-flex; align-items:center; gap:7px; position:relative; }
+  .ds .bulle::after { content:''; position:absolute; bottom:-6px; left:50%;
+                      transform:translateX(-50%); border-left:7px solid transparent;
+                      border-right:7px solid transparent; }
+  .ds .b-rouge::after { border-top:7px solid #C32B30; }
+  .ds .b-vert::after { border-top:7px solid #0F7938; }
+  .ds .b-bleu::after { border-top:7px solid #2E7CF6; }
+  .ds .podium { display:flex; align-items:flex-end; gap:10px; }
+  .ds .marche { border-radius:12px 12px 0 0; width:96px; text-align:center;
+                padding:12px 8px 14px; color:#1E1E1E; }
+  .ds .rang { font-size:26px; font-weight:800; letter-spacing:-.4px; }
+  .ds .qui { font-size:13px; font-weight:600; margin-top:2px; }
+  .ds .medaille { display:inline-flex; align-items:center; justify-content:center;
+                  width:26px; height:26px; border-radius:999px; font-size:13px;
+                  font-weight:800; color:#1E1E1E; }
+  .ds .note { font-size:13px; line-height:1.5; color:var(--gris); max-width:64ch; margin:12px 0 0; }
+  .ds .regle { background:rgba(247,201,72,.22); border-radius:12px; padding:14px 16px; margin:16px 0 0; }
+  .ds .regle p { margin:0; font-size:13px; line-height:1.5; color:#8A6200; max-width:66ch; }
+  .ds code { font-family:ui-monospace,Menlo,monospace; font-size:12px; }
+</style>
+
+<div class="ds">
+  <h2>Badges, bulles et podium</h2>
+  <p class="intro">
+    Tout ce qui porte une information courte et colorée : état, attribut,
+    montant, rang.
+  </p>
+
+  <h3>États</h3>
+  <div class="rangee">
+    <span class="pastille" style="background:#0F7938">Ouvert</span>
+    <span class="pastille" style="background:#C32B30">Fermé</span>
+    <span class="pastille" style="background:#9A6E05">À vérifier</span>
+  </div>
+  <p class="note">
+    Posés sur une image ou un aplat de couleur, donc en blanc sur fond saturé.
+    Les valeurs de <em>texte</em> (<code>success</code>, <code>danger</code>)
+    servent ici en fond, pas les valeurs d'aplat : le badge porte du texte et
+    doit tenir le contraste.
+  </p>
+
+  <h3>Attributs d'un lieu</h3>
+  <div class="rangee">
+    <span class="attribut">Tickets FDJ</span>
+    <span class="attribut">Courses en direct</span>
+    <span class="attribut">Terrasse</span>
+  </div>
+  <p class="note">
+    Neutres et non cliquables : ils décrivent, ils ne filtrent pas. À ne pas
+    confondre avec les puces de filtre, qui portent la couleur de marque quand
+    elles sont actives.
+  </p>
+
+  <h3>Bulles de carte</h3>
+  <div class="rangee" style="padding-bottom:8px">
+    <span class="bulle b-rouge" style="background:#C32B30">🏆 20 €</span>
+    <span class="bulle b-vert" style="background:#0F7938">👑 10 €</span>
+    <span class="bulle b-bleu" style="background:#2E7CF6">🏆 2 €</span>
+  </div>
+  <p class="note">
+    Le marqueur d'un bar où quelque chose s'est passé. La pointe sous la bulle
+    désigne le point exact. Attention côté natif : Android fige la largeur d'un
+    marqueur à sa première mesure — changer de forme (pastille ↔ bulle) exige un
+    vrai remontage, pas une simple mise à jour de contenu.
+  </p>
+
+  <h3>Podium et médailles</h3>
+  <div class="podium">
+    <div class="marche" style="background:#C0C4CC;height:96px">
+      <div class="rang">2</div><div class="qui">Sofia</div>
+    </div>
+    <div class="marche" style="background:#F7C948;height:124px">
+      <div class="rang">1</div><div class="qui">Pierre</div>
+    </div>
+    <div class="marche" style="background:#CD7F32;height:78px">
+      <div class="rang">3</div><div class="qui">Valentin</div>
+    </div>
+  </div>
+  <div class="rangee" style="margin-top:14px">
+    <span class="medaille" style="background:#F7C948">1</span>
+    <span class="medaille" style="background:#C0C4CC">2</span>
+    <span class="medaille" style="background:#CD7F32">3</span>
+    <span class="attribut">4ᵉ et au-delà</span>
+  </div>
+  <p class="note">
+    Les trois métaux sont hors thème et l'encre posée dessus est fixe. Au-delà
+    de la troisième place, pas de médaille : le rang s'écrit en style ordinaire.
+  </p>
+
+  <div class="regle">
+    <p>
+      <strong>Règle produit — pas d'incitation.</strong> Un badge n'affiche que
+      ce qui a <em>réellement</em> été joué et gagné. Jamais un gain potentiel,
+      un taux de retour, une échéance, ni un écart à combler pour remonter au
+      classement. On décrit le joueur, on ne le conseille pas : « à 2 € de
+      Sofia » et non « 2 € pour passer 4ᵉ ».
+    </p>
+  </div>
+</div>
+  </div>
+  <nav class="suite">
+    <a href="cartes-et-tuiles.html">← Cartes et tuiles</a>
+    <a href="puces-le-composant.html">Chip — la puce, comme composant →</a>
+  </nav>
+</main>
+<footer>
+  <div class="wrap">
+    Système de design de <a href="https://dooka.fr">Dooka</a>. Ces pages
+    décrivent l'app telle qu'elle est, pas telle qu'on aimerait qu'elle soit —
+    quand le code change, la fiche change avec lui.
+  </div>
+</footer>
+</body>
+</html>

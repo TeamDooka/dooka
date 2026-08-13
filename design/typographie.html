@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Typographie — système de design Dooka</title>
+<meta name="description" content="Quatorze crans, du chronomètre plein écran à la mention légale. Et pourquoi l'échelle d'origine ne hiérarchisait plus rien." />
+<meta name="robots" content="noindex" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%23178A45'/><text x='50' y='68' font-size='58' text-anchor='middle' font-family='sans-serif' font-weight='700' fill='%23F7F3E9'>D</text></svg>" />
+<link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+<header class="topbar">
+  <div class="wrap topbar-inner">
+    <a class="brand" href="https://dooka.fr">
+      <img class="jeton" src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%23178A45'/><text x='50' y='68' font-size='58' text-anchor='middle' font-family='sans-serif' font-weight='700' fill='%23F7F3E9'>D</text></svg>" alt="" width="30" height="30" />
+      Dooka
+    </a>
+    <a class="topbar-back" href="./">Toutes les fiches</a>
+  </div>
+</header>
+<main class="wrap">
+  <div class="pagehead">
+    <p class="eyebrow">Fondations</p>
+    <h1>Typographie</h1>
+    <p>Quatorze crans, du chronomètre plein écran à la mention légale. Et pourquoi l'échelle d'origine ne hiérarchisait plus rien.</p>
+  </div>
+  <div class="specimen">
+<style>
+  .ds { --ivoire:#F5F3EE; --carte:#FFFFFF; --encre:#15191F; --gris:#5F6672;
+        background:var(--ivoire); color:var(--encre); padding:28px;
+        font-family:system-ui,-apple-system,sans-serif; }
+  .ds h2 { font-size:21px; font-weight:700; letter-spacing:-.2px; margin:0 0 4px; }
+  .ds .intro { font-size:15px; line-height:1.45; color:var(--gris); max-width:64ch; margin:0 0 8px; }
+  .ds .resolu { background:rgba(23,138,69,.10); border-radius:12px; padding:14px 16px;
+                margin:16px 0 24px; }
+  .ds .resolu p { margin:0 0 8px; font-size:13px; line-height:1.5; color:#0F5A2A; max-width:66ch; }
+  .ds .resolu p:last-child { margin-bottom:0; }
+  .ds .ligne { background:var(--carte); border:1px solid rgba(20,25,31,.07);
+               border-radius:12px; box-shadow:0 1px 2px rgba(20,25,31,.05);
+               padding:14px 18px; margin-bottom:8px;
+               display:flex; align-items:baseline; gap:18px; flex-wrap:wrap; }
+  .ds .cle { font-family:ui-monospace,Menlo,monospace; font-size:11px; font-weight:600;
+             letter-spacing:.9px; text-transform:uppercase; color:var(--gris);
+             min-width:120px; flex-shrink:0; }
+  .ds .spec { font-family:ui-monospace,Menlo,monospace; font-size:11px; color:var(--gris);
+              margin-left:auto; flex-shrink:0; }
+  .ds .ex { flex:1; min-width:220px; }
+  .ds h3 { font-family:ui-monospace,Menlo,monospace; font-size:11px; font-weight:600;
+           letter-spacing:.9px; text-transform:uppercase; color:var(--gris);
+           margin:26px 0 10px; }
+  .ds .note { font-size:13px; line-height:1.5; color:var(--gris); max-width:64ch; margin:10px 0 0; }
+  .ds .note em { font-style:normal; font-weight:600; color:var(--encre); }
+  .ds .ligne .ex { line-height:1.15; }
+</style>
+
+<div class="ds">
+  <h2>Typographie</h2>
+  <p class="intro">
+    Quatorze variantes prêtes à l'emploi. Un composant écrit
+    <code>typography.body</code> au lieu de réassembler à la main une taille et
+    une graisse — c'est cette recomposition qui faisait diverger les écrans les
+    uns des autres.
+  </p>
+
+  <div class="resolu">
+    <p>
+      <strong>Terminé — 107 tailles en dur au départ, 11 aujourd'hui, et
+      aucune n'est du texte.</strong> L'adoption est passée de 13 fichiers à
+      35. Ce qui reste tient en une phrase : <em>une taille de dessin n'est
+      pas un cran de lecture.</em> Un emoji, un chevron, un logotype, un nom
+      de ticket géant servant de texture de fond — leur taille est calée sur
+      le rond ou la carte qui les porte, pas sur la hiérarchie du texte.
+      Chacun porte désormais une ligne de commentaire qui le dit, pour qu'une
+      prochaine passe ne les « corrige » pas.
+    </p>
+    <p>
+      <strong>Une seule exception réelle : la mention de jeu responsable,
+      à 9 px.</strong> Le bandeau est fixe en bas de toutes les pages et sa
+      mention doit tenir sur exactement deux lignes. Au cran <code>meta</code>
+      (11), sur un écran étroit, la coupe emporte le numéro d'aide — et un
+      texte légal tronqué est pire qu'un texte légal petit. C'est un arbitrage
+      assumé, pas un oubli.
+    </p>
+  </div>
+
+  <h3>Chiffres mis en avant</h3>
+  <div class="ligne">
+    <span class="cle">heroXL</span>
+    <span class="ex" style="font-size:58px;font-weight:800;letter-spacing:-1.4px;line-height:1.05">03:19</span>
+    <span class="spec">58 / 800 / −1.4</span>
+  </div>
+  <p class="note" style="margin:0 0 8px">
+    Le chiffre qui <em>est</em> l'écran : chronomètre d'une session en cours,
+    solde affiché en fin de partie. Réservé au plein écran — dans une carte, il
+    écrase tout le reste. Ce cran existe parce que ces deux-là étaient écrits à
+    la main à 62 et 58 : les ramener à <code>hero</code> aurait fait perdre au
+    chronomètre le seul rôle qu'il a, être lisible à bout de bras sur une table
+    de bar.
+  </p>
+  <div class="ligne">
+    <span class="cle">hero</span>
+    <span class="ex" style="font-size:32px;font-weight:800;letter-spacing:-.6px">+128 €</span>
+    <span class="spec">32 / 800 / −0.6</span>
+  </div>
+  <div class="ligne">
+    <span class="cle">display</span>
+    <span class="ex" style="font-size:26px;font-weight:800;letter-spacing:-.4px">+128 €</span>
+    <span class="spec">26 / 800 / −0.4</span>
+  </div>
+  <div class="ligne">
+    <span class="cle">dataLarge</span>
+    <span class="ex" style="font-size:26px;font-weight:800;letter-spacing:-.4px;font-variant-numeric:tabular-nums">1 240,50 €</span>
+    <span class="spec">26 / 800 / tabulaire</span>
+  </div>
+
+  <h3>Titres</h3>
+  <div class="ligne">
+    <span class="cle">title</span>
+    <span class="ex" style="font-size:21px;font-weight:700;letter-spacing:-.2px">Mes sessions</span>
+    <span class="spec">21 / 700</span>
+  </div>
+  <div class="ligne">
+    <span class="cle">section</span>
+    <span class="ex" style="font-size:17px;font-weight:700">Mes badges</span>
+    <span class="spec">17 / 700</span>
+  </div>
+
+  <h3>Corps</h3>
+  <div class="ligne">
+    <span class="cle">body</span>
+    <span class="ex" style="font-size:15px;font-weight:400;line-height:21px">Jouer dans 10 bars différents</span>
+    <span class="spec">15 / 400 / 21</span>
+  </div>
+  <div class="ligne">
+    <span class="cle">bodyStrong</span>
+    <span class="ex" style="font-size:15px;font-weight:600;line-height:21px">Tournée des bars</span>
+    <span class="spec">15 / 600 / 21</span>
+  </div>
+  <div class="ligne">
+    <span class="cle">caption</span>
+    <span class="ex" style="font-size:13px;font-weight:400;line-height:18px">10 Rue du Morbihan, Rennes</span>
+    <span class="spec">13 / 400 / 18</span>
+  </div>
+  <div class="ligne">
+    <span class="cle">captionStrong</span>
+    <span class="ex" style="font-size:13px;font-weight:600;line-height:18px">Bar PMU · 2,3 km</span>
+    <span class="spec">13 / 600 / 18</span>
+  </div>
+  <div class="ligne">
+    <span class="cle">meta</span>
+    <span class="ex" style="font-size:11px;font-weight:400">Interdit aux mineurs</span>
+    <span class="spec">11 / 400</span>
+  </div>
+  <div class="ligne">
+    <span class="cle">badge</span>
+    <span class="ex">
+      <span style="background:#C32B30;color:#fff;border-radius:999px;padding:2px 7px;font-size:11px;font-weight:700">3</span>
+      <span style="background:#E7E3D9;color:#5F6672;border-radius:999px;padding:2px 8px;font-size:11px;font-weight:700;margin-left:6px">NOUVEAUTÉ</span>
+    </span>
+    <span class="spec">11 / 700</span>
+  </div>
+  <p class="note" style="margin:0 0 8px">
+    Petit <em>et</em> gras — la seule combinaison que l'échelle ne savait pas
+    dire : <code>meta</code> est trop léger, <code>label</code> est en mono et
+    en capitales. Une pastille de compteur doit rester minuscule pour tenir
+    dans son rond, mais grasse pour se lire sur un aplat saturé. Ne s'applique
+    qu'à un mot ou un nombre posé dans une pastille — jamais à une phrase.
+  </p>
+
+  <h3>Signature</h3>
+  <div class="ligne">
+    <span class="cle">label</span>
+    <span class="ex" style="font-family:ui-monospace,Menlo,monospace;font-size:11px;font-weight:600;letter-spacing:.9px;text-transform:uppercase">Bilan net</span>
+    <span class="spec">mono 11 / 600 / +0.9</span>
+  </div>
+  <div class="ligne">
+    <span class="cle">data</span>
+    <span class="ex" style="font-size:15px;font-weight:600;font-variant-numeric:tabular-nums">+12,00 €</span>
+    <span class="spec">15 / 600 / tabulaire</span>
+  </div>
+  <p class="note">
+    <code>label</code> reprend la signature du site dooka.fr : mono, capitales,
+    espacé. Réservé aux intitulés courts qui coiffent une valeur — en capitales,
+    une phrase devient illisible. <code>data</code> aligne les chiffres en
+    colonne d'une ligne à l'autre : sur une liste de montants, les euros tombent
+    les uns sous les autres.
+  </p>
+  <p class="note">
+    C'est le jeton qui a le plus servi pendant l'harmonisation, pour une raison
+    qui n'était pas visible avant de la mener : beaucoup de
+    <code>fontSize: 16, fontWeight: bold</code> écrits à la main n'étaient pas
+    la même chose. Le nom d'un bar en tête de ligne est un <em>titre</em> ; le
+    net d'une session est un <em>montant</em>. Ils portaient la même
+    déclaration, ils reçoivent désormais <code>section</code> pour les uns et
+    <code>data</code> pour les autres.
+  </p>
+
+  <h3>Pourquoi cette échelle</h3>
+  <p class="note">
+    L'échelle d'origine tenait entre 11 et 22 px, et <strong>69 % des textes se
+    trouvaient entre 11 et 13 px</strong>. Deux conséquences : le corps passait
+    sous le minimum lisible en mobile (15–17 px selon Apple comme Google), et
+    surtout aucun écart de taille ne hiérarchisait plus rien — d'où des pages qui
+    paraissent denses alors qu'elles ne portent pas tant d'information.
+  </p>
+</div>
+  </div>
+  <nav class="suite">
+    <a href="couleurs.html">← Couleurs</a>
+    <a href="espacements-et-surfaces.html">Espacements, rayons et élévation →</a>
+  </nav>
+</main>
+<footer>
+  <div class="wrap">
+    Système de design de <a href="https://dooka.fr">Dooka</a>. Ces pages
+    décrivent l'app telle qu'elle est, pas telle qu'on aimerait qu'elle soit —
+    quand le code change, la fiche change avec lui.
+  </div>
+</footer>
+</body>
+</html>

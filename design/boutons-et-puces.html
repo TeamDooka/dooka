@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Boutons et puces — système de design Dooka</title>
+<meta name="description" content="Les variantes, les tailles, et la cible tactile qui est plus grande que ce que voit l’œil." />
+<meta name="robots" content="noindex" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%23178A45'/><text x='50' y='68' font-size='58' text-anchor='middle' font-family='sans-serif' font-weight='700' fill='%23F7F3E9'>D</text></svg>" />
+<link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+<header class="topbar">
+  <div class="wrap topbar-inner">
+    <a class="brand" href="https://dooka.fr">
+      <img class="jeton" src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%23178A45'/><text x='50' y='68' font-size='58' text-anchor='middle' font-family='sans-serif' font-weight='700' fill='%23F7F3E9'>D</text></svg>" alt="" width="30" height="30" />
+      Dooka
+    </a>
+    <a class="topbar-back" href="./">Toutes les fiches</a>
+  </div>
+</header>
+<main class="wrap">
+  <div class="pagehead">
+    <p class="eyebrow">Composants</p>
+    <h1>Boutons et puces</h1>
+    <p>Les variantes, les tailles, et la cible tactile qui est plus grande que ce que voit l’œil.</p>
+  </div>
+  <div class="specimen">
+<style>
+  .ds { --ivoire:#F5F3EE; --carte:#FFFFFF; --encre:#15191F; --gris:#5F6672;
+        --vert:#178A45; --vert-fonce:#0F5A2A; --creux:#E7E3D9; --bord:#E4E0D6;
+        background:var(--ivoire); color:var(--encre); padding:28px;
+        font-family:system-ui,-apple-system,sans-serif; }
+  .ds h2 { font-size:21px; font-weight:700; letter-spacing:-.2px; margin:0 0 4px; }
+  .ds .intro { font-size:15px; line-height:1.45; color:var(--gris); max-width:64ch; margin:0 0 8px; }
+  .ds h3 { font-family:ui-monospace,Menlo,monospace; font-size:11px; font-weight:600;
+           letter-spacing:.9px; text-transform:uppercase; color:var(--gris);
+           margin:26px 0 12px; }
+  .ds .rangee { display:flex; gap:12px; flex-wrap:wrap; align-items:center; }
+  .ds .btn { border:0; border-radius:8px; padding:12px 20px; font-size:15px;
+             font-weight:600; font-family:inherit; cursor:pointer; }
+  .ds .plein { background:var(--vert); color:#fff; }
+  .ds .plein:hover { background:var(--vert-fonce); }
+  .ds .contour { background:var(--carte); color:var(--vert);
+                 border:1px solid var(--bord); box-shadow:0 1px 2px rgba(20,25,31,.05); }
+  .ds .danger { background:#C32B30; color:#fff; }
+  .ds .fantome { background:transparent; color:var(--gris); }
+  .ds .desactive { background:var(--creux); color:var(--gris); cursor:not-allowed; }
+  .ds .pleine-largeur { display:block; width:100%; text-align:center; }
+  .ds .puce { border:0; border-radius:16px; padding:6px 12px; font-size:15px;
+              font-weight:600; font-family:inherit; background:var(--creux);
+              color:var(--gris); cursor:pointer; }
+  .ds .puce.active { background:var(--vert); color:#fff; }
+  .ds .fab { width:64px; height:64px; border-radius:999px; background:var(--vert);
+             border:0; color:#fff; font-size:22px; cursor:pointer;
+             box-shadow:0 2px 6px rgba(20,25,31,.18); }
+  .ds .note { font-size:13px; line-height:1.5; color:var(--gris); max-width:64ch; margin:12px 0 0; }
+  .ds .alerte { background:rgba(195,43,48,.10); border-radius:12px; padding:14px 16px; margin:16px 0 0; }
+  .ds .alerte p { margin:0; font-size:13px; line-height:1.5; color:#C32B30; max-width:66ch; }
+  .ds .resolu { background:rgba(23,138,69,.10); border-radius:12px; padding:14px 16px; margin:16px 0 0; }
+  .ds .resolu p { margin:0; font-size:13px; line-height:1.5; color:#0F5A2A; max-width:66ch; }
+  .ds code { font-family:ui-monospace,Menlo,monospace; font-size:12px; }
+  .ds .spec { font-family:ui-monospace,Menlo,monospace; font-size:11px; color:var(--gris); margin-top:8px; }
+</style>
+
+<div class="ds">
+  <h2>Boutons et puces</h2>
+  <p class="intro">
+    Ce que l'app utilise réellement aujourd'hui, remis à plat.
+  </p>
+
+  <div class="resolu">
+    <p>
+      <strong>Réglé.</strong> Cette fiche annonçait « 49 boutons pleins dans 32
+      fichiers, aucun composant <code>Button</code> ». C'est faux aujourd'hui :
+      <code>ui/Button.tsx</code> existe, avec quatre variantes et deux tailles,
+      et porte <strong>87 boutons dans 37 fichiers</strong>. Ce qui reste peint
+      en vert plein ailleurs, ce ne sont plus des boutons — ce sont des avatars,
+      des onglets et des puces.
+    </p>
+  </div>
+
+  <div class="alerte">
+    <p>
+      <strong>La prochaine pièce à extraire, ce sont les puces : 20 familles
+      distinctes, 62 déclarations, 14 fichiers.</strong>
+      <code>priceChip</code>, <code>typeChip</code>, <code>modeChip</code>,
+      <code>filterChip</code>, <code>amountChip</code>, <code>groupChip</code>,
+      <code>ticketChip</code>, <code>zodiacChip</code>… chacune avec son
+      <code>…Active</code> et son <code>…TextActive</code>, redessinés à la
+      main. C'est exactement la situation où était le bouton avant son
+      extraction.
+    </p>
+  </div>
+
+  <h3>Boutons</h3>
+  <div class="rangee">
+    <button class="btn plein">Démarrer une session</button>
+    <button class="btn contour">Itinéraire</button>
+    <button class="btn danger">Supprimer</button>
+    <button class="btn fantome">Annuler</button>
+    <button class="btn desactive" disabled>Indisponible</button>
+  </div>
+  <p class="spec">radii.md (8) · paddingVertical spacing.md (12) · paddingHorizontal 20 · typography.bodyStrong</p>
+  <p class="note">
+    Le bouton plein porte l'action principale de l'écran, et il n'y en a qu'une.
+    Le contour est une action secondaire de même importance qu'une autre à côté
+    d'elle (« Itinéraire » et « Partager » sur une fiche de bar). Le fantôme
+    ferme ou annule.
+  </p>
+
+  <h3>Bouton d'écran, pleine largeur</h3>
+  <button class="btn plein pleine-largeur">Démarrer une session ici</button>
+  <p class="note">
+    Posé en bas d'une fiche, détaché du contenu par un filet. C'est la forme que
+    prend l'action principale quand l'écran n'en a qu'une.
+  </p>
+
+  <h3>Puces de filtre</h3>
+  <div class="rangee">
+    <button class="puce active">Ouvertes</button>
+    <button class="puce">Clôturées</button>
+    <button class="puce">Archivées</button>
+  </div>
+  <p class="spec">radii.xl (16) · paddingVertical 6 · paddingHorizontal spacing.md (12) · fontSizes.base</p>
+  <p class="note">
+    Une seule puce active à la fois. Le fond inactif est
+    <code>surfaceMuted</code> et non du blanc : sur l'ivoire, un blanc ne creuse
+    rien.
+  </p>
+  <p class="note">
+    C'est le motif ci-dessus qui existe en vingt exemplaires. Une puce de prix,
+    une puce de type, une puce de mode, une puce de montant : la même forme, la
+    même bascule actif / inactif, réécrite dans chaque écran sous un nom
+    différent. Extraire un <code>Chip</code> supprimerait plus de code que
+    <code>Button</code> n'en a supprimé.
+  </p>
+
+  <h3>Boutons flottants</h3>
+  <div class="rangee">
+    <button class="fab">•••</button>
+    <button class="fab">📍</button>
+  </div>
+  <p class="note">
+    Réservés à la carte, où le contenu occupe tout l'écran et ne peut pas
+    accueillir de barre d'action. Ailleurs, l'action principale se pose en bas
+    d'écran plutôt qu'en flottant — c'est la correction déjà appliquée à
+    l'onglet Tickets FDJ.
+  </p>
+</div>
+  </div>
+  <nav class="suite">
+    <a href="espacements-et-surfaces.html">← Espacements, rayons et élévation</a>
+    <a href="cartes-et-tuiles.html">Cartes et tuiles →</a>
+  </nav>
+</main>
+<footer>
+  <div class="wrap">
+    Système de design de <a href="https://dooka.fr">Dooka</a>. Ces pages
+    décrivent l'app telle qu'elle est, pas telle qu'on aimerait qu'elle soit —
+    quand le code change, la fiche change avec lui.
+  </div>
+</footer>
+</body>
+</html>

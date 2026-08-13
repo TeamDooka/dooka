@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Chip — la puce, comme composant — système de design Dooka</title>
+<meta name="description" content="Le même motif existait sous vingt noms dans quatorze fichiers. Le récit de sa fusion en un seul composant." />
+<meta name="robots" content="noindex" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%23178A45'/><text x='50' y='68' font-size='58' text-anchor='middle' font-family='sans-serif' font-weight='700' fill='%23F7F3E9'>D</text></svg>" />
+<link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+<header class="topbar">
+  <div class="wrap topbar-inner">
+    <a class="brand" href="https://dooka.fr">
+      <img class="jeton" src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%23178A45'/><text x='50' y='68' font-size='58' text-anchor='middle' font-family='sans-serif' font-weight='700' fill='%23F7F3E9'>D</text></svg>" alt="" width="30" height="30" />
+      Dooka
+    </a>
+    <a class="topbar-back" href="./">Toutes les fiches</a>
+  </div>
+</header>
+<main class="wrap">
+  <div class="pagehead">
+    <p class="eyebrow">Composants</p>
+    <h1>Chip — la puce, comme composant</h1>
+    <p>Le même motif existait sous vingt noms dans quatorze fichiers. Le récit de sa fusion en un seul composant.</p>
+  </div>
+  <div class="specimen">
+<style>
+  .ds { --ivoire:#F5F3EE; --carte:#FFFFFF; --encre:#15191F; --gris:#5F6672;
+        --vert:#178A45; --creux:#E7E3D9; --bord:#E4E0D6; --or:#F7C948; --orTexte:#8A6200;
+        background:var(--ivoire); color:var(--encre); padding:28px;
+        font-family:system-ui,-apple-system,sans-serif; }
+  .ds h2 { font-size:21px; font-weight:700; letter-spacing:-.2px; margin:0 0 4px; }
+  .ds .intro { font-size:15px; line-height:1.45; color:var(--gris); max-width:64ch; margin:0 0 8px; }
+  .ds h3 { font-family:ui-monospace,Menlo,monospace; font-size:11px; font-weight:600;
+           letter-spacing:.9px; text-transform:uppercase; color:var(--gris);
+           margin:26px 0 12px; }
+  .ds .rangee { display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+  .ds .puce { border:0; border-radius:999px; padding:6px 12px; font-size:15px;
+              font-weight:600; font-family:inherit; background:var(--creux);
+              color:var(--gris); cursor:pointer; }
+  .ds .puce.active { background:var(--vert); color:#fff; }
+  .ds .puce.or { background:var(--or); color:var(--orTexte); }
+  .ds .puce.eteinte { opacity:.6; cursor:not-allowed; }
+  .ds .puce.bornee { max-width:170px; overflow:hidden; text-overflow:ellipsis;
+                     white-space:nowrap; display:inline-block; vertical-align:middle; }
+  .ds .note { font-size:13px; line-height:1.5; color:var(--gris); max-width:64ch; margin:12px 0 0; }
+  .ds .note em { font-style:normal; font-weight:600; color:var(--encre); }
+  .ds code { font-family:ui-monospace,Menlo,monospace; font-size:12px; }
+  .ds .spec { font-family:ui-monospace,Menlo,monospace; font-size:11px; color:var(--gris); margin-top:8px; }
+  .ds .resolu { background:rgba(23,138,69,.10); border-radius:12px; padding:14px 16px; margin:16px 0 0; }
+  .ds .resolu p { margin:0; font-size:13px; line-height:1.5; color:#0F5A2A; max-width:66ch; }
+  .ds .alerte { background:rgba(195,43,48,.10); border-radius:12px; padding:14px 16px; margin:16px 0 0; }
+  .ds .alerte p { margin:0; font-size:13px; line-height:1.5; color:#C32B30; max-width:66ch; }
+  .ds table { border-collapse:collapse; margin-top:10px; font-size:13px; }
+  .ds td, .ds th { text-align:left; padding:6px 16px 6px 0; vertical-align:top; }
+  .ds th { font-family:ui-monospace,Menlo,monospace; font-size:11px; font-weight:600;
+           letter-spacing:.9px; text-transform:uppercase; color:var(--gris); }
+  .ds td:first-child { font-family:ui-monospace,Menlo,monospace; font-size:12px; }
+  .ds .tableau { overflow-x:auto; }
+</style>
+
+<div class="ds">
+  <h2>Chip — la puce, comme composant</h2>
+  <p class="intro">
+    Un choix court, dans une rangée de choix courts. Filtres des Sessions,
+    mises de l'Amigo, prix du catalogue, signes du zodiaque, montants gagnés.
+  </p>
+
+  <div class="resolu">
+    <p>
+      <strong>Extrait.</strong> Ce motif existait sous <strong>vingt noms</strong>
+      — <code>priceChip</code>, <code>typeChip</code>, <code>modeChip</code>,
+      <code>filterChip</code>, <code>amountChip</code>, <code>groupChip</code>,
+      <code>ticketChip</code>, <code>zodiacChip</code>… — chacun avec son
+      <code>…Active</code> et son <code>…TextActive</code>, dans quatorze
+      fichiers. 62 déclarations de style, ramenées à 26 ; 178 lignes supprimées
+      pour 56 ajoutées.
+    </p>
+  </div>
+
+  <h3>États</h3>
+  <div class="rangee">
+    <button class="puce active">Ouvertes (1)</button>
+    <button class="puce">Clôturées (0)</button>
+    <button class="puce">Archivées (0)</button>
+    <button class="puce eteinte" disabled>Indisponible</button>
+  </div>
+  <p class="spec">radii.pill · paddingVertical 6 · paddingHorizontal spacing.md (12) · typography.bodyStrong</p>
+  <p class="note">
+    Le fond inactif est <code>surfaceMuted</code> et non du blanc : sur
+    l'ivoire, un blanc ne creuse rien. Une seule puce active à la fois dans une
+    rangée de filtres — plusieurs quand ce sont des attributs cumulables.
+  </p>
+
+  <h3>Une seule teinte, volontairement</h3>
+  <p class="note" style="margin-top:0">
+    Une variante dorée avait été prévue « au cas où ». Aucune puce de l'app
+    n'en voulait, elle a été retirée. Un composant partagé qui offre des
+    options que personne n'utilise invite à s'en servir sans raison —
+    <em>c'est ainsi que renaîtraient les vingt familles qu'on vient de
+    fondre.</em>
+  </p>
+
+  <h3>Libellé qu'on ne choisit pas</h3>
+  <div class="rangee">
+    <button class="puce bornee">Le Bar de la Gare Saint-Jacques</button>
+    <button class="puce bornee">Astro Millionnaire Édition Limitée</button>
+  </div>
+  <p class="note">
+    Un nom de ticket est saisi par un joueur, un nom de bar vient de Google :
+    tous deux peuvent être arbitrairement longs. D'où <code>numberOfLines</code>,
+    à n'employer qu'avec une largeur bornée — sans borne, la troncature ne se
+    déclenche jamais et la rangée sort de l'écran.
+  </p>
+
+  <h3>Ce qui n'est pas une puce</h3>
+  <div class="tableau">
+    <table>
+      <tr><th>Portait le nom</th><th>Est en réalité</th></tr>
+      <tr><td>luckyNumberChip<br>luckyChip · numberChip</td>
+          <td>un rond de 32–36 px portant un chiffre. La forme ne se plie pas au
+              contenu, c'est le contenu qui tient dans la forme — l'inverse
+              d'une puce.</td></tr>
+      <tr><td>modeChip</td>
+          <td>un contrôle segmenté : <code>flex: 1</code>, rayon <code>md</code>,
+              les segments se partagent la largeur.</td></tr>
+      <tr><td>tierChip<br>activityDrawChip · myPlayChip</td>
+          <td>des étiquettes non cliquables. Elles décrivent, elles ne
+              choisissent pas.</td></tr>
+    </table>
+  </div>
+  <p class="note">
+    Les fondre dans <code>Chip</code> reviendrait à refaire l'erreur qu'on
+    répare : <em>leur donner le même nom parce qu'elles se ressemblent de
+    loin.</em>
+  </p>
+
+  <div class="alerte">
+    <p>
+      <strong>La cible tactile est plus grande que la puce.</strong> À 30 px de
+      haut, une puce tombe sous les 44 pt d'Apple et les 48 dp d'Android. La
+      grandir écraserait la rangée : on rattrape en <code>hitSlop</code>, zone
+      de touche invisible. Le doigt vise 46, l'œil voit 30 — même arbitrage que
+      le bouton <code>sm</code>.
+    </p>
+  </div>
+
+  <p class="note">
+    Un détail qui ne se voit qu'en le retirant : le composant neutralise le
+    <code>lineHeight</code> de <code>bodyStrong</code>. Pensé pour un
+    paragraphe (21 px), il ajoutait 3 px au-dessus et en dessous du texte et
+    faisait gonfler toute la rangée.
+  </p>
+</div>
+  </div>
+  <nav class="suite">
+    <a href="badges-et-podium.html">← Badges, bulles et podium</a>
+    <span>Dernière fiche</span>
+  </nav>
+</main>
+<footer>
+  <div class="wrap">
+    Système de design de <a href="https://dooka.fr">Dooka</a>. Ces pages
+    décrivent l'app telle qu'elle est, pas telle qu'on aimerait qu'elle soit —
+    quand le code change, la fiche change avec lui.
+  </div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Espacements, rayons et élévation — système de design Dooka</title>
+<meta name="description" content="Trois échelles courtes. Leur intérêt n'est pas leur contenu, mais le fait qu'il n'en existe qu'une de chaque." />
+<meta name="robots" content="noindex" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%23178A45'/><text x='50' y='68' font-size='58' text-anchor='middle' font-family='sans-serif' font-weight='700' fill='%23F7F3E9'>D</text></svg>" />
+<link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+<header class="topbar">
+  <div class="wrap topbar-inner">
+    <a class="brand" href="https://dooka.fr">
+      <img class="jeton" src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%23178A45'/><text x='50' y='68' font-size='58' text-anchor='middle' font-family='sans-serif' font-weight='700' fill='%23F7F3E9'>D</text></svg>" alt="" width="30" height="30" />
+      Dooka
+    </a>
+    <a class="topbar-back" href="./">Toutes les fiches</a>
+  </div>
+</header>
+<main class="wrap">
+  <div class="pagehead">
+    <p class="eyebrow">Fondations</p>
+    <h1>Espacements, rayons et élévation</h1>
+    <p>Trois échelles courtes. Leur intérêt n'est pas leur contenu, mais le fait qu'il n'en existe qu'une de chaque.</p>
+  </div>
+  <div class="specimen">
+<style>
+  .ds { --ivoire:#F5F3EE; --carte:#FFFFFF; --encre:#15191F; --gris:#5F6672; --vert:#178A45;
+        background:var(--ivoire); color:var(--encre); padding:28px;
+        font-family:system-ui,-apple-system,sans-serif; }
+  .ds h2 { font-size:21px; font-weight:700; letter-spacing:-.2px; margin:0 0 4px; }
+  .ds .intro { font-size:15px; line-height:1.45; color:var(--gris); max-width:64ch; margin:0 0 24px; }
+  .ds h3 { font-family:ui-monospace,Menlo,monospace; font-size:11px; font-weight:600;
+           letter-spacing:.9px; text-transform:uppercase; color:var(--gris);
+           margin:26px 0 12px; }
+  .ds .rangee { display:flex; align-items:center; gap:14px; margin-bottom:7px; }
+  .ds .cle { font-family:ui-monospace,Menlo,monospace; font-size:12px; font-weight:600;
+             width:44px; flex-shrink:0; }
+  .ds .val { font-family:ui-monospace,Menlo,monospace; font-size:11px; color:var(--gris);
+             width:40px; flex-shrink:0; }
+  .ds .barre { height:16px; background:var(--vert); border-radius:3px; }
+  .ds .rayons { display:flex; gap:12px; flex-wrap:wrap; }
+  .ds .r { width:88px; height:88px; background:var(--carte);
+           border:1px solid rgba(20,25,31,.07); box-shadow:0 1px 2px rgba(20,25,31,.05);
+           display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3px; }
+  .ds .r b { font-family:ui-monospace,Menlo,monospace; font-size:12px; font-weight:600; }
+  .ds .r span { font-family:ui-monospace,Menlo,monospace; font-size:11px; color:var(--gris); }
+  .ds .demo { display:flex; gap:20px; flex-wrap:wrap; align-items:flex-start; margin-top:6px; }
+  .ds .carte-ex { background:var(--carte); border:1px solid rgba(20,25,31,.07);
+                  border-radius:12px; box-shadow:0 1px 2px rgba(20,25,31,.05);
+                  padding:16px; width:230px; }
+  .ds .carte-faux { background:#E7E3D9; border:0; border-radius:12px; padding:16px; width:230px; }
+  .ds .carte-ex h4, .ds .carte-faux h4 { margin:0 0 4px; font-size:15px; font-weight:600; }
+  .ds .carte-ex p, .ds .carte-faux p { margin:0; font-size:13px; color:var(--gris); }
+  .ds .verdict { font-family:ui-monospace,Menlo,monospace; font-size:11px; font-weight:600;
+                 letter-spacing:.9px; text-transform:uppercase; margin-top:8px; display:block; }
+  .ds .note { font-size:13px; line-height:1.5; color:var(--gris); max-width:64ch; margin:12px 0 0; }
+  .ds .alerte { background:rgba(195,43,48,.10); border-radius:12px; padding:14px 16px; margin-top:14px; }
+  .ds .alerte p { margin:0; font-size:13px; line-height:1.5; color:#C32B30; max-width:66ch; }
+  .ds .resolu { background:rgba(23,138,69,.10); border-radius:12px; padding:14px 16px; margin-top:14px; }
+  .ds .resolu p { margin:0; font-size:13px; line-height:1.5; color:#0F5A2A; max-width:66ch; }
+  .ds .note em { font-style:normal; font-weight:600; color:#15191F; }
+</style>
+
+<div class="ds">
+  <h2>Espacements, rayons et élévation</h2>
+  <p class="intro">
+    Trois échelles courtes. Leur intérêt n'est pas leur contenu mais le fait
+    qu'il n'en existe qu'une de chaque.
+  </p>
+
+  <h3>Espacements</h3>
+  <div class="rangee"><span class="cle">xs</span><span class="val">4</span><div class="barre" style="width:4px"></div></div>
+  <div class="rangee"><span class="cle">sm</span><span class="val">8</span><div class="barre" style="width:8px"></div></div>
+  <div class="rangee"><span class="cle">md</span><span class="val">12</span><div class="barre" style="width:12px"></div></div>
+  <div class="rangee"><span class="cle">lg</span><span class="val">16</span><div class="barre" style="width:16px"></div></div>
+  <div class="rangee"><span class="cle">xl</span><span class="val">20</span><div class="barre" style="width:20px"></div></div>
+  <div class="rangee"><span class="cle">xxl</span><span class="val">24</span><div class="barre" style="width:24px"></div></div>
+
+  <h3>Rayons</h3>
+  <div class="rayons">
+    <div class="r" style="border-radius:6px"><b>sm</b><span>6</span></div>
+    <div class="r" style="border-radius:8px"><b>md</b><span>8</span></div>
+    <div class="r" style="border-radius:12px"><b>lg</b><span>12</span></div>
+    <div class="r" style="border-radius:16px"><b>xl</b><span>16</span></div>
+    <div class="r" style="border-radius:999px"><b>pill</b><span>999</span></div>
+  </div>
+
+  <h3>Élévation — une seule</h3>
+  <div class="demo">
+    <div>
+      <div class="carte-ex">
+        <h4>Le Daily Bar PMU</h4>
+        <p>Blanc + ombre + filet d'un pixel</p>
+      </div>
+      <span class="verdict" style="color:#0F7938">✓ la carte</span>
+    </div>
+    <div>
+      <div class="carte-faux">
+        <h4>Le Daily Bar PMU</h4>
+        <p>Aplat gris, sans ombre</p>
+      </div>
+      <span class="verdict" style="color:#C32B30">✗ jamais</span>
+    </div>
+  </div>
+  <p class="note">
+    Une carte, en clair, c'est du <strong>blanc plus une ombre</strong> — jamais
+    un aplat gris, et jamais deux niveaux empilés. Le design la décrit en CSS
+    avec deux ombres : <code>0 1px 2px rgba(20,25,31,.05)</code> pour le
+    décollement et <code>0 0 0 1px rgba(20,25,31,.07)</code> pour le filet.
+    React Native ne sait poser qu'une ombre, donc la seconde redevient ce
+    qu'elle est réellement : une bordure d'un pixel. Sur Android, où l'ombre
+    n'est pas paramétrable, <code>elevation: 1</code> en est l'équivalent.
+  </p>
+
+  <div class="resolu">
+    <p>
+      <strong>Réglé — et le chiffre alarmant de départ était mal lu.</strong>
+      Cette fiche annonçait « 6 fichiers sur 88 ». Vrai, mais trompeur : sur
+      les 46 surfaces blanches de l'app, la plupart <em>ne sont pas</em> des
+      cartes. Un conteneur de modale, une ligne de tableau, un onglet, un
+      bouton blanc sont plats à dessein. En cherchant les vraies cartes — fond
+      blanc <em>et</em> filet d'un pixel <em>et</em> rayon lg/xl — il y en
+      avait exactement <strong>13</strong>. Toutes portent le jeton.
+    </p>
+  </div>
+</div>
+  </div>
+  <nav class="suite">
+    <a href="typographie.html">← Typographie</a>
+    <a href="boutons-et-puces.html">Boutons et puces →</a>
+  </nav>
+</main>
+<footer>
+  <div class="wrap">
+    Système de design de <a href="https://dooka.fr">Dooka</a>. Ces pages
+    décrivent l'app telle qu'elle est, pas telle qu'on aimerait qu'elle soit —
+    quand le code change, la fiche change avec lui.
+  </div>
+</footer>
+</body>
+</html>

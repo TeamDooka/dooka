@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Couleurs — système de design Dooka</title>
+<meta name="description" content="La palette et ce que chaque couleur a le droit de dire. Le vert n'est pas décoratif : il signale un gain." />
+<meta name="robots" content="noindex" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%23178A45'/><text x='50' y='68' font-size='58' text-anchor='middle' font-family='sans-serif' font-weight='700' fill='%23F7F3E9'>D</text></svg>" />
+<link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+<header class="topbar">
+  <div class="wrap topbar-inner">
+    <a class="brand" href="https://dooka.fr">
+      <img class="jeton" src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%23178A45'/><text x='50' y='68' font-size='58' text-anchor='middle' font-family='sans-serif' font-weight='700' fill='%23F7F3E9'>D</text></svg>" alt="" width="30" height="30" />
+      Dooka
+    </a>
+    <a class="topbar-back" href="./">Toutes les fiches</a>
+  </div>
+</header>
+<main class="wrap">
+  <div class="pagehead">
+    <p class="eyebrow">Fondations</p>
+    <h1>Couleurs</h1>
+    <p>La palette et ce que chaque couleur a le droit de dire. Le vert n'est pas décoratif : il signale un gain.</p>
+  </div>
+  <div class="specimen">
+<style>
+  .ds { --ivoire:#F5F3EE; --carte:#FFFFFF; --encre:#15191F; --gris:#5F6672;
+        --bord:#E4E0D6; --bord-clair:#EFEBE1;
+        background:var(--ivoire); color:var(--encre); padding:28px;
+        font-family:system-ui,-apple-system,sans-serif; line-height:1.45; }
+  .ds h2 { font-size:21px; font-weight:700; letter-spacing:-.2px; margin:0 0 4px; }
+  .ds .intro { font-size:15px; color:var(--gris); max-width:62ch; margin:0 0 26px; }
+  .ds h3 { font-family:ui-monospace,Menlo,monospace; font-size:11px; font-weight:600;
+           letter-spacing:.9px; text-transform:uppercase; color:var(--gris);
+           margin:26px 0 10px; }
+  .ds .grille { display:grid; grid-template-columns:repeat(auto-fill,minmax(190px,1fr)); gap:10px; }
+  .ds .jeton { background:var(--carte); border:1px solid rgba(20,25,31,.07);
+               border-radius:12px; overflow:hidden;
+               box-shadow:0 1px 2px rgba(20,25,31,.05); }
+  .ds .pastille { height:56px; }
+  .ds .info { padding:9px 11px; }
+  .ds .nom { font-family:ui-monospace,Menlo,monospace; font-size:12px; font-weight:600; }
+  .ds .hex { font-family:ui-monospace,Menlo,monospace; font-size:11px; color:var(--gris);
+             margin-top:2px; text-transform:uppercase; }
+  .ds .note { font-size:13px; color:var(--gris); margin:8px 0 0; max-width:62ch; }
+  .ds .encadre { background:rgba(247,201,72,.22); border-radius:12px;
+                 padding:14px 16px; margin:14px 0 0; }
+  .ds .encadre p { margin:0; font-size:13px; color:#8A6200; max-width:64ch; }
+  .ds .demo { display:flex; gap:10px; flex-wrap:wrap; margin-top:10px; }
+  .ds .ex { border-radius:10px; padding:10px 14px; font-size:15px; font-weight:600; }
+</style>
+
+<div class="ds">
+  <h2>Couleurs</h2>
+  <p class="intro">
+    Palette claire de la refonte d'août 2026. Le fond n'est pas blanc mais
+    <strong>ivoire</strong> : le blanc pur est réservé aux cartes, qui se
+    détachent donc sans avoir besoin d'un gris.
+  </p>
+
+  <h3>Marque</h3>
+  <div class="grille">
+    <div class="jeton"><div class="pastille" style="background:#178A45"></div>
+      <div class="info"><div class="nom">primary</div><div class="hex">#178A45</div></div></div>
+    <div class="jeton"><div class="pastille" style="background:#0F5A2A"></div>
+      <div class="info"><div class="nom">primaryDark</div><div class="hex">#0F5A2A</div></div></div>
+    <div class="jeton"><div class="pastille" style="background:#F7C948"></div>
+      <div class="info"><div class="nom">gold</div><div class="hex">#F7C948</div></div></div>
+  </div>
+
+  <h3>L'or, en trois valeurs</h3>
+  <div class="grille">
+    <div class="jeton"><div class="pastille" style="background:#F7C948"></div>
+      <div class="info"><div class="nom">gold</div><div class="hex">aplat seulement</div></div></div>
+    <div class="jeton"><div class="pastille" style="background:#9A6E05"></div>
+      <div class="info"><div class="nom">goldSoft</div><div class="hex">#9A6E05</div></div></div>
+    <div class="jeton"><div class="pastille" style="background:#8A6200"></div>
+      <div class="info"><div class="nom">goldText</div><div class="hex">#8A6200</div></div></div>
+  </div>
+  <div class="encadre">
+    <p>
+      <strong>Trois valeurs et pas une.</strong> <code>gold</code> est un jaune vif :
+      posé sur un fond clair il tombe à 1,6:1, là où WCAG AA en demande 4,5.
+      Il reste le bon choix en aplat — pastille, anneau, fond coloré — mais un
+      montant écrit en <code>gold</code> sur blanc est illisible.
+    </p>
+    <div class="demo">
+      <span class="ex" style="background:#FFF;color:#F7C948;border:1px solid #E4E0D6">12 € en gold ✗</span>
+      <span class="ex" style="background:#FFF;color:#9A6E05;border:1px solid #E4E0D6">12 € en goldSoft ✓</span>
+      <span class="ex" style="background:#F7C948;color:#1E1E1E">aplat gold ✓</span>
+    </div>
+  </div>
+
+  <h3>Texte</h3>
+  <div class="grille">
+    <div class="jeton"><div class="pastille" style="background:#15191F"></div>
+      <div class="info"><div class="nom">textPrimary</div><div class="hex">#15191F</div></div></div>
+    <div class="jeton"><div class="pastille" style="background:#5F6672"></div>
+      <div class="info"><div class="nom">textSecondary</div><div class="hex">#5F6672</div></div></div>
+  </div>
+  <p class="note">
+    Un seul gris secondaire, et c'est voulu : <code>#6b7280</code> passait AA sur
+    une carte blanche mais pas sur l'ivoire (4,36:1). <code>#5F6672</code> y tient
+    à 5,2:1. <code>textMuted</code> et <code>textFaint</code> pointent sur la même
+    valeur — le gris « faible » a disparu, car la seule chose qu'il portait était
+    la mention de jeu responsable, qui doit justement rester lisible.
+  </p>
+
+  <h3>États</h3>
+  <div class="grille">
+    <div class="jeton"><div class="pastille" style="background:#0F7938"></div>
+      <div class="info"><div class="nom">success</div><div class="hex">#0F7938</div></div></div>
+    <div class="jeton"><div class="pastille" style="background:#C32B30"></div>
+      <div class="info"><div class="nom">danger</div><div class="hex">#C32B30</div></div></div>
+    <div class="jeton"><div class="pastille" style="background:rgba(23,138,69,.12)"></div>
+      <div class="info"><div class="nom">successLight</div><div class="hex">alpha .12</div></div></div>
+    <div class="jeton"><div class="pastille" style="background:rgba(195,43,48,.10)"></div>
+      <div class="info"><div class="nom">dangerLight</div><div class="hex">alpha .10</div></div></div>
+  </div>
+  <p class="note">
+    Le vert et le rouge de <em>texte</em> sont plus sombres que ceux d'aplat : il
+    leur faut 4,5:1 sur l'ivoire, que les valeurs de marque n'atteignent pas.
+  </p>
+
+  <h3>Surfaces</h3>
+  <div class="grille">
+    <div class="jeton"><div class="pastille" style="background:#F5F3EE"></div>
+      <div class="info"><div class="nom">background</div><div class="hex">#F5F3EE</div></div></div>
+    <div class="jeton"><div class="pastille" style="background:#FFFFFF;border-bottom:1px solid #E4E0D6"></div>
+      <div class="info"><div class="nom">surfaceSubtle</div><div class="hex">#FFFFFF</div></div></div>
+    <div class="jeton"><div class="pastille" style="background:#E7E3D9"></div>
+      <div class="info"><div class="nom">surfaceMuted / track</div><div class="hex">#E7E3D9</div></div></div>
+    <div class="jeton"><div class="pastille" style="background:#E4E0D6"></div>
+      <div class="info"><div class="nom">border</div><div class="hex">#E4E0D6</div></div></div>
+  </div>
+  <p class="note">
+    La hiérarchie s'inverse par rapport au thème sombre : en sombre une carte est
+    plus <em>claire</em> que le fond, en clair elle est plus <em>blanche</em> que
+    lui — et c'est l'ombre qui la soulève, jamais un aplat gris.
+  </p>
+
+  <h3>Podium — hors thème</h3>
+  <div class="grille">
+    <div class="jeton"><div class="pastille" style="background:#F7C948"></div>
+      <div class="info"><div class="nom">podium.gold</div><div class="hex">#F7C948</div></div></div>
+    <div class="jeton"><div class="pastille" style="background:#C0C4CC"></div>
+      <div class="info"><div class="nom">podium.silver</div><div class="hex">#C0C4CC</div></div></div>
+    <div class="jeton"><div class="pastille" style="background:#CD7F32"></div>
+      <div class="info"><div class="nom">podium.bronze</div><div class="hex">#CD7F32</div></div></div>
+  </div>
+  <p class="note">
+    Les trois métaux ne suivent pas le thème, et c'est voulu : de l'argent qui
+    s'assombrit en mode sombre n'est plus de l'argent. L'encre posée dessus est
+    fixe elle aussi (<code>podium.ink</code>, #1E1E1E).
+  </p>
+</div>
+  </div>
+  <nav class="suite">
+    <span>Première fiche</span>
+    <a href="typographie.html">Typographie →</a>
+  </nav>
+</main>
+<footer>
+  <div class="wrap">
+    Système de design de <a href="https://dooka.fr">Dooka</a>. Ces pages
+    décrivent l'app telle qu'elle est, pas telle qu'on aimerait qu'elle soit —
+    quand le code change, la fiche change avec lui.
+  </div>
+</footer>
+</body>
+</html>

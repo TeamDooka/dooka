@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Cartes et tuiles — système de design Dooka</title>
+<meta name="description" content="Ce qui est une carte, ce qui n’en est pas, et pourquoi la distinction n’est pas une question de goût." />
+<meta name="robots" content="noindex" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%23178A45'/><text x='50' y='68' font-size='58' text-anchor='middle' font-family='sans-serif' font-weight='700' fill='%23F7F3E9'>D</text></svg>" />
+<link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+<header class="topbar">
+  <div class="wrap topbar-inner">
+    <a class="brand" href="https://dooka.fr">
+      <img class="jeton" src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%23178A45'/><text x='50' y='68' font-size='58' text-anchor='middle' font-family='sans-serif' font-weight='700' fill='%23F7F3E9'>D</text></svg>" alt="" width="30" height="30" />
+      Dooka
+    </a>
+    <a class="topbar-back" href="./">Toutes les fiches</a>
+  </div>
+</header>
+<main class="wrap">
+  <div class="pagehead">
+    <p class="eyebrow">Composants</p>
+    <h1>Cartes et tuiles</h1>
+    <p>Ce qui est une carte, ce qui n’en est pas, et pourquoi la distinction n’est pas une question de goût.</p>
+  </div>
+  <div class="specimen">
+<style>
+  .ds { --ivoire:#F5F3EE; --carte:#FFFFFF; --encre:#15191F; --gris:#5F6672;
+        --vert:#178A45; --creux:#E7E3D9; --bord:#E4E0D6;
+        background:var(--ivoire); color:var(--encre); padding:28px;
+        font-family:system-ui,-apple-system,sans-serif; }
+  .ds h2 { font-size:21px; font-weight:700; letter-spacing:-.2px; margin:0 0 4px; }
+  .ds .intro { font-size:15px; line-height:1.45; color:var(--gris); max-width:64ch; margin:0 0 8px; }
+  .ds h3 { font-family:ui-monospace,Menlo,monospace; font-size:11px; font-weight:600;
+           letter-spacing:.9px; text-transform:uppercase; color:var(--gris);
+           margin:26px 0 12px; }
+  .ds .carte { background:var(--carte); border:1px solid rgba(20,25,31,.07);
+               border-radius:12px; box-shadow:0 1px 2px rgba(20,25,31,.05);
+               padding:16px; max-width:420px; }
+  .ds .titre-carte { font-size:15px; font-weight:600; margin:0 0 3px; }
+  .ds .sous { font-size:13px; color:var(--gris); margin:0; }
+  .ds .tuiles { display:flex; background:var(--carte); border:1px solid rgba(20,25,31,.07);
+                border-radius:12px; box-shadow:0 1px 2px rgba(20,25,31,.05);
+                max-width:420px; overflow:hidden; }
+  .ds .tuile { flex:1; padding:16px 12px; text-align:center; }
+  .ds .tuile + .tuile { border-left:1px solid var(--bord); }
+  .ds .cle-tuile { font-family:ui-monospace,Menlo,monospace; font-size:11px; font-weight:600;
+                   letter-spacing:.9px; text-transform:uppercase; color:var(--gris);
+                   margin:0 0 6px; }
+  .ds .val-tuile { font-size:26px; font-weight:800; letter-spacing:-.4px;
+                   font-variant-numeric:tabular-nums; margin:0; }
+  .ds .liste { background:var(--carte); border:1px solid rgba(20,25,31,.07);
+               border-radius:12px; box-shadow:0 1px 2px rgba(20,25,31,.05);
+               max-width:420px; overflow:hidden; }
+  .ds .item { display:flex; align-items:center; gap:12px; padding:14px 16px; }
+  .ds .item + .item { border-top:1px solid var(--bord); }
+  .ds .rond { width:40px; height:40px; border-radius:999px; background:var(--creux);
+              display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0; }
+  .ds .corps { flex:1; min-width:0; }
+  .ds .compte { font-family:ui-monospace,Menlo,monospace; font-size:13px;
+                color:var(--gris); font-variant-numeric:tabular-nums; }
+  .ds .piste { height:8px; background:var(--creux); border-radius:999px; overflow:hidden; margin-top:10px; }
+  .ds .rempli { height:100%; background:var(--vert); border-radius:999px; }
+  .ds .note { font-size:13px; line-height:1.5; color:var(--gris); max-width:64ch; margin:12px 0 0; }
+  .ds code { font-family:ui-monospace,Menlo,monospace; font-size:12px; }
+</style>
+
+<div class="ds">
+  <h2>Cartes et tuiles</h2>
+  <p class="intro">
+    Les contenants. Tous reposent sur la même élévation : blanc, filet d'un
+    pixel, ombre courte — jamais un aplat gris.
+  </p>
+
+  <h3>Carte simple</h3>
+  <div class="carte">
+    <p class="titre-carte">Le Daily Bar PMU</p>
+    <p class="sous">10 Rue du Morbihan, Rennes · 2,3 km</p>
+  </div>
+
+  <h3>Tuiles de statistiques</h3>
+  <div class="tuiles">
+    <div class="tuile"><p class="cle-tuile">Parties</p><p class="val-tuile">0</p></div>
+    <div class="tuile"><p class="cle-tuile">Bilan net</p><p class="val-tuile" style="color:#0F7938">+0 €</p></div>
+    <div class="tuile"><p class="cle-tuile">Record</p><p class="val-tuile" style="color:#9A6E05">—</p></div>
+  </div>
+  <p class="note">
+    L'intitulé en <code>typography.label</code> — mono, capitales, espacé —
+    coiffe une valeur en <code>dataLarge</code>. Les chiffres sont tabulaires :
+    d'une tuile à l'autre, ils gardent la même largeur. Un tiret cadratin plutôt
+    qu'un zéro quand la valeur n'existe pas : « — » se lit « rien pour
+    l'instant », « 0 € » se lirait comme un résultat.
+  </p>
+
+  <h3>Liste avec progression</h3>
+  <div class="liste">
+    <div class="item">
+      <div class="rond">🍺</div>
+      <div class="corps">
+        <p class="titre-carte">Tournée des bars</p>
+        <p class="sous">Jouer dans 10 bars différents</p>
+      </div>
+      <span class="compte">0/10</span>
+    </div>
+    <div class="item">
+      <div class="rond">💥</div>
+      <div class="corps">
+        <p class="titre-carte">Coups d'éclat</p>
+        <p class="sous">Décrocher 3 gains d'au moins 50 €</p>
+      </div>
+      <span class="compte">0/3</span>
+    </div>
+  </div>
+
+  <h3>Piste de progression</h3>
+  <div class="carte">
+    <p class="titre-carte">Encore 5 tickets pour « Gratteur débutant »</p>
+    <div class="piste"><div class="rempli" style="width:8%"></div></div>
+  </div>
+  <p class="note">
+    La piste creusée utilise <code>track</code> et non <code>background</code> :
+    sur un fond ivoire, le fond d'écran ne se distingue plus assez pour creuser
+    quoi que ce soit. La barre repart de zéro à chaque palier atteint — sans
+    quoi un joueur venant d'en décrocher un verrait une barre déjà presque
+    pleine qui n'avancerait plus.
+  </p>
+</div>
+  </div>
+  <nav class="suite">
+    <a href="boutons-et-puces.html">← Boutons et puces</a>
+    <a href="badges-et-podium.html">Badges, bulles et podium →</a>
+  </nav>
+</main>
+<footer>
+  <div class="wrap">
+    Système de design de <a href="https://dooka.fr">Dooka</a>. Ces pages
+    décrivent l'app telle qu'elle est, pas telle qu'on aimerait qu'elle soit —
+    quand le code change, la fiche change avec lui.
+  </div>
+</footer>
+</body>
+</html>

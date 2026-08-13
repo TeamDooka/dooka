@@ -1,0 +1,159 @@
+/* Chrome des pages du système de design. Reprend les jetons de dooka.fr —
+   même vert de tapis, même or, mêmes deux thèmes — pour que cette section
+   ne paraisse pas greffée sur le site.
+
+   Une précision qui a son importance : les fiches elles-mêmes portent leurs
+   propres couleurs en dur. Ce n'est pas un oubli, c'est leur sujet. Une
+   fiche de couleurs qui suivrait le thème du navigateur ne montrerait plus
+   la palette de l'app, elle montrerait celle du lecteur. Elles sont donc
+   posées sur leur propre fond, comme un échantillon sur une planche. */
+
+:root {
+  --ground: #FAFAF7;
+  --surface: #FFFFFF;
+  --ink: #17201A;
+  --muted: #64716A;
+  --turf: #178A45;
+  --gold: #B4841E;
+  --line: rgba(23, 32, 26, 0.10);
+
+  --font: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", "JetBrains Mono", "Roboto Mono", Consolas, monospace;
+
+  --maxw: 980px;
+  --r: 14px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --ground: #0C1310;
+    --surface: #131C16;
+    --ink: #F1EFE7;
+    --muted: #8D9A92;
+    --turf: #3FBE72;
+    --gold: #F0C15C;
+    --line: rgba(255, 255, 255, 0.09);
+  }
+}
+:root[data-theme="dark"] {
+  --ground: #0C1310; --surface: #131C16; --ink: #F1EFE7; --muted: #8D9A92;
+  --turf: #3FBE72; --gold: #F0C15C; --line: rgba(255, 255, 255, 0.09);
+}
+:root[data-theme="light"] {
+  --ground: #FAFAF7; --surface: #FFFFFF; --ink: #17201A; --muted: #64716A;
+  --turf: #178A45; --gold: #B4841E; --line: rgba(23, 32, 26, 0.10);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--ground);
+  color: var(--ink);
+  font-family: var(--font);
+  font-size: 17px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+.wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 24px; }
+a { color: inherit; }
+
+h1, h2, h3 { margin: 0; letter-spacing: -0.02em; line-height: 1.1; font-weight: 700; text-wrap: balance; }
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--turf);
+  font-weight: 600;
+}
+
+/* ---------- Barre du haut ---------- */
+.topbar {
+  position: sticky; top: 0; z-index: 50;
+  background: color-mix(in srgb, var(--ground) 90%, transparent);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+}
+.topbar-inner { display: flex; align-items: center; justify-content: space-between; gap: 16px; height: 64px; }
+.brand { display: flex; align-items: center; gap: 11px; font-weight: 700; font-size: 1.08rem; text-decoration: none; }
+.brand .jeton {
+  width: 30px; height: 30px; flex: none; border-radius: 50%;
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--gold) 45%, transparent);
+}
+.topbar-back {
+  font-size: 0.9rem; font-weight: 500; color: var(--muted); text-decoration: none;
+  transition: color 0.15s ease;
+}
+.topbar-back:hover { color: var(--turf); }
+
+/* ---------- En-tête de page ---------- */
+.pagehead { padding: clamp(40px, 7vw, 72px) 0 clamp(24px, 4vw, 40px); }
+.pagehead h1 { font-size: clamp(1.9rem, 4.6vw, 2.8rem); margin-top: 14px; max-width: 20ch; }
+.pagehead p { color: var(--muted); font-size: 1.05rem; margin: 16px 0 0; max-width: 58ch; }
+
+/* ---------- La planche d'échantillon ---------- */
+.specimen {
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  overflow: hidden;
+  margin-bottom: clamp(40px, 6vw, 72px);
+  /* Les fiches sont larges : sur téléphone elles défilent dans leur propre
+     cadre plutôt que d'emporter la page entière de travers. */
+  overflow-x: auto;
+}
+.specimen > .ds { min-width: 340px; }
+/* Les fiches ont été écrites sans interlignage hérité : le 1.6 confortable
+   du site les ferait respirer là où elles ne le demandent pas, et décalerait
+   les échantillons de hauteur. Chaque fiche pose son propre line-height là
+   où elle en veut un. */
+.specimen .ds { line-height: normal; }
+
+/* ---------- Sommaire ---------- */
+.groupe { margin-bottom: clamp(32px, 5vw, 52px); }
+.groupe > h2 { font-size: 1.05rem; margin-bottom: 16px; }
+.grille {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  overflow: hidden;
+}
+.fiche {
+  background: var(--surface);
+  padding: 22px 22px 24px;
+  text-decoration: none;
+  display: block;
+  transition: background 0.15s ease;
+}
+.fiche:hover { background: color-mix(in srgb, var(--turf) 7%, var(--surface)); }
+.fiche:focus-visible { outline: 2px solid var(--turf); outline-offset: -2px; }
+.fiche h3 { font-size: 1.05rem; }
+.fiche p { color: var(--muted); font-size: 0.92rem; margin: 7px 0 0; line-height: 1.5; }
+
+/* ---------- Navigation entre fiches ---------- */
+.suite {
+  display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+  border-top: 1px solid var(--line);
+  padding: 28px 0 0;
+  margin-bottom: clamp(48px, 7vw, 80px);
+}
+.suite a {
+  text-decoration: none; font-weight: 600; font-size: 0.95rem;
+  color: var(--turf);
+}
+.suite a:hover { text-decoration: underline; }
+.suite span { color: var(--muted); font-size: 0.95rem; }
+
+footer {
+  border-top: 1px solid var(--line);
+  padding: 28px 0 40px;
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+footer a { color: var(--turf); }
