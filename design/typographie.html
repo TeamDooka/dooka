@@ -65,24 +65,81 @@
 
   <div class="resolu">
     <p>
-      <strong>Terminé — 107 tailles en dur au départ, 11 aujourd'hui, et
-      aucune n'est du texte.</strong> L'adoption est passée de 13 fichiers à
-      35. Ce qui reste tient en une phrase : <em>une taille de dessin n'est
-      pas un cran de lecture.</em> Un emoji, un chevron, un logotype, un nom
-      de ticket géant servant de texture de fond — leur taille est calée sur
-      le rond ou la carte qui les porte, pas sur la hiérarchie du texte.
-      Chacun porte désormais une ligne de commentaire qui le dit, pour qu'une
-      prochaine passe ne les « corrige » pas.
+      <strong>Les tailles écrites en chiffres : 107 au départ, 11
+      aujourd'hui, et aucune n'est du texte.</strong> Ce qui reste tient en
+      une phrase — <em>une taille de dessin n'est pas un cran de
+      lecture.</em> Un emoji, un chevron, un logotype, un nom de ticket géant
+      servant de texture de fond : leur taille est calée sur le rond ou la
+      carte qui les porte. Chacun porte une ligne de commentaire qui le dit,
+      pour qu'une prochaine passe ne les « corrige » pas.
     </p>
     <p>
       <strong>Une seule exception réelle : la mention de jeu responsable,
       à 9 px.</strong> Le bandeau est fixe en bas de toutes les pages et sa
       mention doit tenir sur exactement deux lignes. Au cran <code>meta</code>
       (11), sur un écran étroit, la coupe emporte le numéro d'aide — et un
-      texte légal tronqué est pire qu'un texte légal petit. C'est un arbitrage
-      assumé, pas un oubli.
+      texte légal tronqué est pire qu'un texte légal petit.
     </p>
   </div>
+
+  <h3>Le même défaut sous trois costumes</h3>
+  <p class="note" style="margin-top:0">
+    Compter les nombres écrits en clair donnait une image flatteuse et
+    fausse. <code>fontSize: 16</code> saute aux yeux ;
+    <code>fontSize: fontSizes.md, fontWeight: fontWeights.bold</code> a l'air
+    rangé et dit exactement la même chose — un cran de l'échelle réassemblé à
+    la main. Il y en avait <strong>175</strong>, contre 11 nombres en clair.
+    Un troisième costume s'est révélé en chemin : l'arithmétique sur jeton,
+    <code>fontSizes.xxl + 2</code>, <code>fontSizes.display + 4</code>.
+  </p>
+  <p class="note">
+    97 reproduisaient à l'identique un cran existant : remplacement
+    mécanique. Les autres disaient quelque chose de structurel, et c'est la
+    partie intéressante.
+  </p>
+
+  <h3>Deux crans retirés de l'échelle</h3>
+  <div class="ligne">
+    <span class="cle" style="text-decoration:line-through">md</span>
+    <span class="ex" style="color:#C32B30;font-weight:600">16 — retiré</span>
+    <span class="spec">31 usages réaffectés</span>
+  </div>
+  <div class="ligne">
+    <span class="cle" style="text-decoration:line-through">xl</span>
+    <span class="ex" style="color:#C32B30;font-weight:600">19 — retiré</span>
+    <span class="spec">9 usages réaffectés</span>
+  </div>
+  <p class="note">
+    L'argument est arithmétique avant d'être esthétique. L'échelle progresse
+    de 11 à 13 à 15 à 17 à 21 à 26 à 32 : des marches de <strong>13 à
+    24 %</strong>. Insérer 16 entre 15 et 17 en crée deux de <strong>6 %</strong>
+    — personne ne distingue 16 de 17 sur un téléphone. Ces crans n'offraient
+    donc pas une nuance, seulement <em>un choix</em>, et c'est le choix qui
+    produit la dérive : <code>md</code> désignait tour à tour un titre de
+    section, un montant et du corps de texte. Exactement l'ambiguïté que
+    cette échelle avait été refaite pour lever.
+  </p>
+
+  <h3>Un cran nommé par son rôle</h3>
+  <div class="ligne">
+    <span class="cle">control</span>
+    <span class="ex" style="font-size:16px">Ton nom · Enregistrer</span>
+    <span class="spec">16</span>
+  </div>
+  <p class="note">
+    Le 16 de <code>md</code> survit, sous le nom de ce qu'il fait. Le texte
+    d'un champ de saisie et celui d'un bouton moyen ne hiérarchisent rien :
+    ils dimensionnent ce qu'on manipule. Et sous 16 px, iOS zoome
+    automatiquement sur un champ à la prise de focus et décadre la page —
+    c'est une contrainte, pas un goût. <em>Nommé par son emploi et non par sa
+    position, il n'invite plus personne à s'en servir « parce que 15 est un
+    peu petit ».</em>
+  </p>
+  <p class="note">
+    Il reste 55 déclarations hors échelle : de vraies variantes de graisse,
+    un <code>bold</code> là où le cran est <code>medium</code>. Elles
+    relèvent d'un arbitrage cran par cran, pas d'un remplacement.
+  </p>
 
   <h3>Chiffres mis en avant</h3>
   <div class="ligne">
