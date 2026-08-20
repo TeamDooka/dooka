@@ -80,6 +80,8 @@
 
   * { box-sizing: border-box; }
 
+  img, svg { max-width: 100%; }
+
   html, body { margin: 0; padding: 0; }
 
   body {
@@ -100,8 +102,6 @@
   }
 
   ::selection { background: var(--gold); color: var(--gold-ink); }
-
-  .wrap { max-width: var(--maxw); margin: 0 auto; padding-left: 24px; padding-right: 24px; }
 
   /* Le libellé en capitales monospace revient partout : hero, sections,
      colonnes du classement. Une seule classe pour ne pas le réécrire. */
@@ -163,6 +163,7 @@
   .btn-ink:hover { background: var(--green-link); color: #fff; }
   .btn-outline-gold { background: transparent; color: var(--gold-ink); border-color: rgba(30, 30, 30, .35); padding: 14px 22px; font-size: 16px; }
   .btn-outline-gold:hover { border-color: var(--gold-ink); color: var(--gold-ink); }
+
   /* ---------- Hero ---------- */
 
   .hero {
@@ -193,8 +194,12 @@
   }
   @keyframes dkb-pulse { 0%, 100% { opacity: 1; } 50% { opacity: .25; } }
 
+  /* Le plancher était à 46 px : « classement. » y mesure environ 290 px
+     pour 312 px utiles sur un écran de 360, et débordait dès qu'on
+     descendait plus bas. Le plancher tombe à 34 px et le palier
+     intermédiaire passe en vw, qui suit la largeur réelle. */
   .hero h1 {
-    font-size: clamp(46px, 6vw, 76px);
+    font-size: clamp(34px, 11vw, 76px);
     line-height: .96;
     font-weight: 800;
     letter-spacing: -3px;
@@ -302,7 +307,15 @@
   .card h3 { font-size: 17px; font-weight: 700; margin: 0; letter-spacing: -.2px; }
   .card p { font-size: 15px; line-height: 21px; color: var(--text-dim); margin: 0; }
 
-  .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 14px; }
+  /* Le `min(290px, 100%)` n'est pas de la coquetterie : `minmax(290px, 1fr)`
+     seul impose un plancher de 290 px à chaque colonne, y compris quand le
+     conteneur est plus étroit — sur un écran de 320 px il reste 272 px
+     utiles, et la grille débordait de 18 px sans que rien ne le signale. */
+  .grid-3 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(290px, 100%), 1fr));
+    gap: 14px;
+  }
   .grid-3.wide { gap: 22px; }
 
   /* ---------- Écran par écran ---------- */
@@ -411,6 +424,7 @@
     gap: 32px;
     flex-wrap: wrap;
   }
+  .cta-copy { flex: 1; min-width: min(320px, 100%); }
   .cta h2 { font-size: 40px; font-weight: 800; letter-spacing: -1.2px; margin: 0 0 10px; text-wrap: balance; }
   .cta p { font-size: 17px; line-height: 1.5; margin: 0; max-width: 46ch; }
 
@@ -431,7 +445,7 @@
   .foot-links { display: flex; gap: 18px; flex-wrap: wrap; }
   .foot-links a { font-size: 13px; color: var(--on-ink-dim); }
   .foot-links a:hover { color: var(--gold); }
-  .legal { flex: 1; min-width: 320px; display: flex; flex-direction: column; gap: 8px; }
+  .legal { flex: 1; min-width: min(320px, 100%); display: flex; flex-direction: column; gap: 8px; }
   .legal p { font-size: 13px; line-height: 1.5; margin: 0; }
   .legal strong { color: var(--on-ink); }
   .legal .warn { font-size: 11px; line-height: 1.45; }
@@ -455,19 +469,50 @@
     .hero { padding-top: 12px; }
     .hero-copy { padding-bottom: 34px; }
     .hero h1 { letter-spacing: -1.6px; }
-    .phones { flex: 1 1 100%; gap: 10px; padding-bottom: 34px; }
-    .phone-side { width: 132px; height: 270px; }
-    .phone-main { width: 158px; height: 322px; }
+
+    /* Les trois cadres étaient figés en pixels : 132 + 158 + 132 et deux
+       gouttières faisaient 442 px, pour 342 px utiles sur un écran de
+       390. Ils débordaient des deux côtés, et `overflow-x: hidden` le
+       cachait au lieu de le corriger — d'où l'impression que la page
+       « déborde » sans qu'elle défile.
+
+       Ils se partagent maintenant la largeur en pourcentage, et
+       `aspect-ratio` déduit la hauteur : la rangée tient dans son
+       conteneur quelle que soit la largeur, sans palier à retoucher. */
+    .phones { flex: 1 1 100%; min-width: 0; width: 100%; gap: 10px; padding-bottom: 34px; }
+    .phone-side, .phone-main { width: auto; height: auto; aspect-ratio: 200 / 406; }
+    .phone-side { flex: 0 1 29%; }
+    .phone-main { flex: 0 1 32%; }
+
+    /* La nav portait le `margin-left: auto` qui poussait le bouton à
+       droite. En la masquant, le bouton revenait se coller au logo. */
     .topnav { display: none; }
+    .topbar .btn-gold { margin-left: auto; }
     .sec { padding-top: 48px; }
     .sec-head h2 { font-size: 28px; }
     .cta h2 { font-size: 30px; letter-spacing: -.8px; }
-    .row { gap: 10px; padding: 14px 16px; }
-    .who { width: 100%; order: 2; }
-    .rank { order: 1; }
-    .gain { order: 3; margin-left: auto; width: auto; }
-    .jauge { order: 5; flex-basis: 100%; }
-    .jeu { order: 4; width: auto; }
+    /* Le remontage par `order` sur une rangée flex donnait une bouillie :
+       le rang seul sur sa ligne, le nom en dessous, puis le montant et le
+       jeu, puis la jauge. Une grille nommée dit ce qu'on veut voir —
+       rang à gauche sur toute la hauteur, nom et montant sur la première
+       ligne, bar et jeu sur la deuxième, jauge en pied. */
+    .row {
+      display: grid;
+      grid-template-columns: 32px 1fr auto;
+      grid-template-areas:
+        "rang qui   gain"
+        "rang jeu   jeu"
+        "barre barre barre";
+      column-gap: 12px;
+      row-gap: 6px;
+      align-items: center;
+      padding: 14px 16px;
+    }
+    .rank { grid-area: rang; align-self: start; }
+    .who { grid-area: qui; width: auto; }
+    .gain { grid-area: gain; width: auto; font-size: 18px; }
+    .jeu { grid-area: jeu; width: auto; text-align: left; }
+    .jauge { grid-area: barre; }
     .board-head, .board-note, .board-state { padding-left: 16px; padding-right: 16px; }
   }
 </style>
@@ -602,7 +647,7 @@
 
 <section class="cta">
   <div class="cta-inner">
-    <div style="flex:1;min-width:320px">
+    <div class="cta-copy">
       <h2>Ta bande t'attend au comptoir.</h2>
       <p>Gratuit, sans pub, sans abonnement. Un téléphone Android et quelques potes suffisent.</p>
     </div>
@@ -660,9 +705,17 @@
 
     var METAL = ["or", "argent", "bronze"];
 
-    function renderLeaderboard(rows) {
+    function renderLeaderboard(reponse) {
       var el = document.getElementById("leaderboard");
-      if (!rows || rows.length === 0) {
+
+      // public_top_gains compte une partie comme publiable dès qu'elle a
+      // une photo de ticket OU un gain nul (voir 0040) : une partie
+      // perdante partagée remonte donc ici à 0 €. Sous un titre « Les plus
+      // gros gains », c'est absurde — et la jauge, calculee sur un maximum
+      // nul, s'affichait vide sur toute la largeur.
+      var rows = (reponse || []).filter(function (r) { return Number(r.amount_won) > 0; });
+
+      if (rows.length === 0) {
         el.innerHTML = '<p class="board-state">Aucun gain partagé publiquement pour le moment.</p>';
         return;
       }
