@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Quali — Politique de confidentialité</title>
+<meta name="description" content="Quelles données Quali collecte, pourquoi, avec qui elles sont partagées et comment les supprimer." />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%230A0A0B'/><text x='50' y='70' font-size='62' text-anchor='middle' font-family='sans-serif' font-weight='700' fill='%23E8452C'>Q</text></svg>" />
+<style>
+  :root {
+    --ground: #EFEAE4; --surface: #FBF9F6; --raised: #F4F0EA;
+    --ink: #1A1418; --muted: #6B6167; --accent: #C93A22;
+    --line: rgba(26,20,24,0.12); --hair: rgba(26,20,24,0.06);
+    --font: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --mono: ui-monospace, "SF Mono", "JetBrains Mono", "Roboto Mono", Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --ground:#0A0A0B; --surface:#0F0F10; --raised:#141415;
+      --ink:#F4F2F0; --muted:#9A9298; --accent:#FF6A52;
+      --line:rgba(255,255,255,0.12); --hair:rgba(255,255,255,0.06); }
+  }
+  :root[data-theme="dark"] { --ground:#0A0A0B; --surface:#0F0F10; --raised:#141415;
+    --ink:#F4F2F0; --muted:#9A9298; --accent:#FF6A52;
+    --line:rgba(255,255,255,0.12); --hair:rgba(255,255,255,0.06); }
+  :root[data-theme="light"] { --ground:#EFEAE4; --surface:#FBF9F6; --raised:#F4F0EA;
+    --ink:#1A1418; --muted:#6B6167; --accent:#C93A22;
+    --line:rgba(26,20,24,0.12); --hair:rgba(26,20,24,0.06); }
+
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--ground); color:var(--ink);
+    font-family:var(--font); font-size:17px; line-height:1.65; -webkit-text-size-adjust:100%; }
+  .wrap { max-width: 720px; margin: 0 auto; padding: 0 22px 80px; }
+
+  .topbar { border-bottom:1px solid var(--line); margin-bottom:44px; }
+  .topbar-inner { max-width:720px; margin:0 auto; padding:0 22px; height:62px;
+    display:flex; align-items:center; gap:11px; }
+  .topbar svg { width:28px; height:28px; border-radius:50%; flex:none; }
+  .topbar a { color:inherit; text-decoration:none; font-weight:700; letter-spacing:-0.01em; }
+  .topbar .back { margin-left:auto; font-weight:500; font-size:0.88rem; color:var(--muted); }
+  .topbar .back:hover { color:var(--accent); }
+
+  h1 { font-size: clamp(1.8rem,5vw,2.4rem); letter-spacing:-0.03em; line-height:1.15;
+       margin:0 0 10px; text-wrap:balance; }
+  .updated { font-family:var(--mono); font-size:0.76rem; color:var(--muted); }
+  .lede { color:var(--muted); margin:20px 0 0; }
+
+  h2 { font-size:1.2rem; letter-spacing:-0.02em; margin:44px 0 4px;
+       padding-top:20px; border-top:1px solid var(--hair); }
+  h3 { font-size:0.98rem; margin:24px 0 2px; }
+  p { margin:13px 0; }
+  ul { padding-left:20px; } li { margin:6px 0; }
+  a { color:var(--accent); }
+  code { font-family:var(--mono); font-size:0.87em; background:var(--raised);
+         padding:1px 5px; border-radius:5px; }
+
+  .box { background:var(--surface); border:1px solid var(--line);
+         border-radius:12px; padding:16px 20px; margin:22px 0; }
+  .box.accent { background:color-mix(in srgb, var(--accent) 8%, var(--surface)); }
+  .box p:first-child { margin-top:0; } .box p:last-child { margin-bottom:0; }
+  .box .tag { font-family:var(--mono); font-size:0.68rem; letter-spacing:0.12em;
+    text-transform:uppercase; font-weight:700; color:var(--accent); display:block; margin-bottom:6px; }
+
+  table { width:100%; border-collapse:collapse; font-size:0.9rem; margin:18px 0; }
+  th, td { text-align:left; padding:9px 10px; border-bottom:1px solid var(--hair); vertical-align:top; }
+  th { font-family:var(--mono); font-size:0.67rem; text-transform:uppercase;
+       letter-spacing:0.08em; color:var(--muted); font-weight:600; }
+  .scroll { overflow-x:auto; }
+
+  footer { margin-top:56px; padding-top:22px; border-top:1px solid var(--line);
+    font-size:0.85rem; color:var(--muted); }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="48" fill="#0A0A0B"/><text x="50" y="70" font-size="62" text-anchor="middle" font-family="sans-serif" font-weight="700" fill="#E8452C">Q</text></svg>
+    <a href="/quali/confidentialite.html">Quali</a>
+    <a class="back" href="/">← dooka.fr</a>
+  </div>
+</div>
+
+<div class="wrap">
+
+<h1>Politique de confidentialité</h1>
+<p class="updated">Dernière mise à jour : 1<sup>er</sup> septembre 2026</p>
+
+<p class="lede">Quali est une application de pronostics entre amis, pas un produit publicitaire. Cette page décrit exactement ce qui est collecté, pourquoi, et comment tout effacer. Elle est écrite pour être lue.</p>
+
+<div class="box accent">
+  <span class="tag">En résumé</span>
+  <p>Aucune publicité, aucun traceur, aucun outil d'analyse tiers, aucune revente de données. Aucun argent : on ne parie pas, on ne mise pas, il n'y a rien à gagner. Vos données servent à faire fonctionner l'application, rien d'autre. Vous pouvez exporter puis supprimer votre compte depuis l'application à tout moment, et tout part avec.</p>
+</div>
+
+<h2>1. Qui est responsable</h2>
+<p>Quali est édité par <b>Valentin Chefdor</b>, à titre individuel.</p>
+<p>Contact pour toute question ou demande relative à vos données : <a href="mailto:valentin.chefdor@dooka.fr">valentin.chefdor@dooka.fr</a></p>
+
+<h2>2. Quelles données sont collectées</h2>
+
+<div class="scroll">
+<table>
+  <thead><tr><th>Donnée</th><th>Pourquoi</th><th>Base légale</th></tr></thead>
+  <tbody>
+    <tr>
+      <td>Adresse e-mail <span style="color:var(--muted)">(saisie, ou fournie par votre compte Google ou Apple)</span></td>
+      <td>Créer votre compte et vous y reconnecter</td>
+      <td>Exécution du service</td>
+    </tr>
+    <tr>
+      <td>Pseudo, et la liste de vos pseudos précédents</td>
+      <td>Vous identifier auprès des autres joueurs de vos ligues. L'historique évite qu'un joueur change de nom au milieu d'une saison sans que personne ne s'y retrouve</td>
+      <td>Exécution du service</td>
+    </tr>
+    <tr>
+      <td>Photo de profil <span style="color:var(--muted)">(celle que vous choisissez dans vos photos, ou celle de votre compte Google)</span></td>
+      <td>Vous reconnaître dans les classements et le fil de ligue</td>
+      <td>Exécution du service</td>
+    </tr>
+    <tr>
+      <td>Vos pronostics, vos points et vos classements</td>
+      <td>C'est le jeu : enregistrer ce que vous avez pronostiqué, le comparer aux résultats officiels, tenir les classements de vos ligues</td>
+      <td>Exécution du service</td>
+    </tr>
+    <tr>
+      <td>Vos ligues <span style="color:var(--muted)">(appartenance, date d'arrivée, messages et réactions du fil)</span></td>
+      <td>Faire fonctionner les ligues privées et leur fil de discussion</td>
+      <td>Exécution du service</td>
+    </tr>
+    <tr>
+      <td>Jeton de notification</td>
+      <td>Vous prévenir avant la fermeture des pronostics et à la publication des résultats</td>
+      <td>Consentement <span style="color:var(--muted)">(réglable dans « Mon compte » et dans les réglages du téléphone)</span></td>
+    </tr>
+    <tr>
+      <td>Date de dernière ouverture et version installée</td>
+      <td>Savoir combien de personnes utilisent l'app et si les mises à jour sont bien installées. Consulté sous forme de totaux uniquement, jamais nominativement</td>
+      <td>Intérêt légitime</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<div class="box">
+  <p><b>Ce qui n'est pas collecté :</b> aucune donnée bancaire, aucune position géographique, aucun identifiant publicitaire, aucun historique de navigation, aucune donnée provenant d'autres applications, aucun contact de votre carnet d'adresses.</p>
+  <p>Deux autorisations sont demandées par l'application, et seulement au moment où vous touchez le bouton concerné :</p>
+  <ul>
+    <li><b>Vos photos</b> — uniquement pour choisir votre photo de profil. L'image que vous sélectionnez est la seule qui quitte le téléphone ; l'app ne lit pas votre galerie.</li>
+    <li><b>Votre calendrier</b> — uniquement pour y <i>ajouter</i> les dates des Grands Prix. Rien n'est lu, rien n'est envoyé : ces événements restent sur votre téléphone.</li>
+  </ul>
+</div>
+
+<h2>3. Avec qui elles sont partagées</h2>
+<p>Quali ne vend ni ne loue aucune donnée. Elles transitent uniquement par les prestataires techniques nécessaires à son fonctionnement :</p>
+<ul>
+  <li><b>Supabase</b> — hébergement de la base de données et des photos de profil, sur des serveurs situés dans l'<b>Union européenne</b></li>
+  <li><b>Google</b> — connexion avec votre compte Google, si vous choisissez ce mode de connexion</li>
+  <li><b>Apple</b> — connexion avec votre compte Apple, si vous choisissez ce mode de connexion</li>
+  <li><b>Expo</b> — acheminement des notifications</li>
+  <li><b>GitHub</b> — hébergement de cette page</li>
+</ul>
+<p>Les résultats des courses, les pilotes et les écuries ne sont pas vos données : ce sont des faits publics, saisis dans l'application.</p>
+
+<h3>Ce que les autres joueurs voient</h3>
+<p>Votre pseudo et votre photo de profil sont visibles par les membres de vos ligues.</p>
+<p><b>Vos pronostics ne sont visibles qu'après la fermeture des pronostics d'un Grand Prix</b>, et uniquement par les membres des ligues auxquelles vous appartenez. Personne ne peut les voir avant, y compris au niveau technique. Vos points et votre rang sont visibles dans ces mêmes ligues.</p>
+<p>Une ligue est privée : on n'y entre que par un code d'invitation. Rien de ce que vous publiez dans Quali n'est accessible publiquement sur Internet, à l'exception de votre photo de profil, dont le lien de téléchargement n'est pas devinable.</p>
+
+<h2>4. Combien de temps</h2>
+<p>Vos données sont conservées tant que votre compte existe. Elles sont effacées lorsque vous le supprimez, sans délai de rétention.</p>
+
+<h2>5. Exporter et supprimer vos données</h2>
+<p>Les deux se font dans l'application, sans rien demander à personne : touchez votre <b>photo de profil</b> en haut de l'accueil pour ouvrir <b>Mon compte</b>, puis la section <b>Mes données</b> → <b>Exporter mes données</b> ou <b>Supprimer mon compte</b>.</p>
+<p>L'export vous rend un fichier JSON contenant tout ce que la base sait de vous. La suppression demande deux confirmations, puis l'effacement est immédiat et définitif : profil, pseudos, photo, pronostics, points, appartenances aux ligues et jeton de notification.</p>
+<p>Si vous n'avez plus l'application installée, la procédure est décrite sur la page <a href="/quali/suppression-compte.html">Supprimer mon compte</a>.</p>
+
+<div class="box">
+  <p><b>Une exception, dans l'intérêt des autres joueurs.</b> Si vous étiez le créateur d'une ligue qui compte d'autres membres, elle n'est pas supprimée avec votre compte : elle est transmise au plus ancien des membres restants. Supprimer la ligue emporterait la saison de joueurs qui n'ont rien demandé. Il n'y reste aucune trace de vous — ni pseudo, ni e-mail, ni photo, ni pronostic.</p>
+</div>
+
+<h2>6. Vos droits</h2>
+<p>Le RGPD vous donne un droit d'accès, de rectification, d'effacement, de portabilité, de limitation et d'opposition sur vos données. L'accès, la portabilité et l'effacement se font directement dans l'application ; pour tout le reste, écrivez à <a href="mailto:valentin.chefdor@dooka.fr">valentin.chefdor@dooka.fr</a>. Une réponse vous sera apportée sous un mois.</p>
+<p>Si la réponse ne vous satisfait pas, vous pouvez saisir la <a href="https://www.cnil.fr/fr/plaintes" target="_blank" rel="noopener">CNIL</a>.</p>
+
+<h2>7. Âge minimum</h2>
+<p>Quali est un jeu de pronostics sans argent : on ne mise rien, on ne gagne rien, et l'application ne propose aucun paiement. Elle n'est pas destinée aux enfants de moins de 13 ans, et aucune donnée n'est sciemment collectée les concernant.</p>
+
+<h2>8. Modifications</h2>
+<p>Toute évolution de cette politique sera publiée sur cette page, avec une date de mise à jour actualisée. Un changement significatif sera signalé dans l'application.</p>
+
+<footer>
+  <p>Quali — application indépendante, sans aucun lien avec la Formula One group ni avec les écuries. <a href="/">dooka.fr</a></p>
+</footer>
+
+</div>
+</body>
+</html>
