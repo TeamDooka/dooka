@@ -538,7 +538,6 @@
     <nav class="topnav">
       <a href="#fonctions">Ce que ça fait</a>
       <a href="#appli">L'appli</a>
-      <a href="#gains">Top gains</a>
     </nav>
     <a class="btn btn-gold" href="https://github.com/TeamDooka/dooka/releases/latest/download/dooka.apk">Télécharger</a>
   </header>
@@ -590,7 +589,7 @@
     <div class="card">
       <p class="eyebrow">Tes tickets</p>
       <h3>Ce que tu as vraiment gratté</h3>
-      <p>Chaque ticket noté, ton solde réel et ton plus gros gain, photo à l'appui. Aucun gain potentiel n'est affiché : seulement ce qui a été joué.</p>
+      <p>Chaque ticket noté, ton solde réel et ton plus gros gain. Aucun gain potentiel n'est affiché : seulement ce qui a été joué.</p>
     </div>
     <div class="card">
       <p class="eyebrow">Ta bande</p>
@@ -598,9 +597,9 @@
       <p>On rejoint un groupe par code, on ajoute un ami sur acceptation, et une session n'est visible que de ceux qui y jouent. Rien n'est public sans un geste explicite.</p>
     </div>
     <div class="card">
-      <p class="eyebrow">Des badges</p>
-      <h3>Qui ne demandent pas de jouer plus</h3>
-      <p>Pas de série à entretenir, pas de compte à rebours, pas d'objectif chiffré à atteindre. Les classements comparent des bilans, ils ne fixent pas de but. <a href="/jeu-responsable.html">Ce qu'on fait, et ne fait pas</a>.</p>
+      <p class="eyebrow">Sans incitation</p>
+      <h3>Rien qui pousse à jouer plus</h3>
+      <p>Pas de niveau ni de badge, pas de série à entretenir, pas de compte à rebours, pas d'objectif chiffré à atteindre. Les classements comparent des bilans, ils ne fixent pas de but. <a href="/jeu-responsable.html">Ce qu'on fait, et ne fait pas</a>.</p>
     </div>
   </div>
 </section>
@@ -641,19 +640,6 @@
       <h3>Le classement de la bande</h3>
       <p>Un code d'invitation, et vos bilans nets se rangent dans le même tableau.</p>
     </div>
-  </div>
-</section>
-
-<section class="sec" id="gains">
-  <div class="board reveal">
-    <div class="board-head">
-      <p class="eyebrow">Top gains France</p>
-      <h2>Les plus gros gains de la communauté</h2>
-    </div>
-    <div id="leaderboard">
-      <p class="board-state">Chargement du classement…</p>
-    </div>
-    <p class="board-note">Montants déclarés par les joueurs eux-mêmes, photo du ticket à l'appui, et uniquement par ceux qui ont activé le partage. Aucun chiffre ne provient de la FDJ ni du PMU.</p>
   </div>
 </section>
 
@@ -699,132 +685,6 @@
         weekday: "long", day: "numeric", month: "long"
       });
     }
-
-    /* ---------- Top gains France (RPC anonyme, lecture seule) ---------- */
-    var SUPABASE_URL = "https://ybnacpzicldzsmmypupj.supabase.co";
-    var SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlibmFjcHppY2xkenNtbXlwdXBqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQyODg4OTAsImV4cCI6MjA5OTg2NDg5MH0.zk6cs62vw1Xx2IfL5UX88XWmXFYMdxU75qCkp_f7DCs";
-
-    function escapeHtml(str) {
-      return String(str).replace(/[&<>"']/g, function (c) {
-        return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
-      });
-    }
-
-    function formatAmount(n) {
-      return new Intl.NumberFormat("fr-FR", {
-        style: "currency", currency: "EUR", maximumFractionDigits: 0
-      }).format(n);
-    }
-
-    var METAL = ["or", "argent", "bronze"];
-
-    function renderLeaderboard(reponse) {
-      var el = document.getElementById("leaderboard");
-
-      // public_top_gains compte une partie comme publiable dès qu'elle a
-      // une photo de ticket OU un gain nul (voir 0040) : une partie
-      // perdante partagée remonte donc ici à 0 €. Sous un titre « Les plus
-      // gros gains », c'est absurde — et la jauge, calculee sur un maximum
-      // nul, s'affichait vide sur toute la largeur.
-      var rows = (reponse || []).filter(function (r) { return Number(r.amount_won) > 0; });
-
-      if (rows.length === 0) {
-        el.innerHTML = '<p class="board-state">Aucun gain partagé publiquement pour le moment.</p>';
-        return;
-      }
-
-      // La barre se lit par rapport au plus gros gain affiché, pas dans
-      // l'absolu : c'est une comparaison entre les lignes du tableau, pas
-      // une échelle. Le plancher à 6 % évite qu'une petite somme
-      // ressemble à une barre absente.
-      var max = rows.reduce(function (m, r) { return Math.max(m, Number(r.amount_won) || 0); }, 0);
-
-      el.innerHTML = rows.map(function (row, i) {
-        var nom = escapeHtml(row.display_name || "Joueur Dooka");
-        var lieu = row.place_name
-          ? '<p class="lieu">' + escapeHtml(row.place_name) + "</p>"
-          : "";
-        var jeu = row.ticket_name ? escapeHtml(row.ticket_name) : "";
-        var metal = METAL[i] ? " " + METAL[i] : "";
-        var pct = max > 0 ? Math.max(6, Math.round((Number(row.amount_won) || 0) / max * 100)) : 0;
-        return (
-          '<div class="row">' +
-            '<span class="rank' + metal + '">' + (i + 1) + "</span>" +
-            '<div class="who"><p class="nom">' + nom + "</p>" + lieu + "</div>" +
-            '<div class="jauge"><span data-pct="' + pct + '"></span></div>' +
-            '<span class="jeu">' + jeu + "</span>" +
-            '<span class="gain">' + formatAmount(row.amount_won) + "</span>" +
-          "</div>"
-        );
-      }).join("");
-
-      // Les largeurs sont posées après un temps de rendu, sinon la
-      // transition CSS n'a pas d'état de départ à animer.
-      window.requestAnimationFrame(function () {
-        window.requestAnimationFrame(function () {
-          el.querySelectorAll(".jauge span").forEach(function (bar) {
-            bar.style.width = bar.getAttribute("data-pct") + "%";
-          });
-        });
-      });
-    }
-
-    // Le classement se chargeait en une seule tentative, sans délai
-    // maximum : sur un réseau mobile — signal faible, changement
-    // d'antenne, portail captif — une requête tombe régulièrement, et le
-    // message d'indisponibilité restait affiché pour de bon alors que
-    // l'API répondait parfaitement. Deux tentatives, un délai maximum, et
-    // un bouton pour réessayer à la main plutôt qu'un cul-de-sac.
-    var LEADERBOARD_TIMEOUT = 8000;
-    var LEADERBOARD_RETRIES = 2;
-
-    function fetchLeaderboard(attempt) {
-      var controller = window.AbortController ? new AbortController() : null;
-      var timer = window.setTimeout(function () {
-        if (controller) controller.abort();
-      }, LEADERBOARD_TIMEOUT);
-
-      var options = {
-        method: "POST",
-        headers: {
-          apikey: SUPABASE_ANON_KEY,
-          Authorization: "Bearer " + SUPABASE_ANON_KEY,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ limit_count: 8 }),
-      };
-      if (controller) options.signal = controller.signal;
-
-      fetch(SUPABASE_URL + "/rest/v1/rpc/public_top_gains", options)
-        .then(function (res) {
-          window.clearTimeout(timer);
-          if (!res.ok) throw new Error("HTTP " + res.status);
-          return res.json();
-        })
-        .then(renderLeaderboard)
-        .catch(function () {
-          window.clearTimeout(timer);
-          if (attempt < LEADERBOARD_RETRIES) {
-            // Une seconde d'attente : le temps qu'un changement
-            // d'antenne se termine, sans faire patienter pour rien.
-            window.setTimeout(function () { fetchLeaderboard(attempt + 1); }, 1000);
-            return;
-          }
-          var el = document.getElementById("leaderboard");
-          el.innerHTML =
-            '<p class="board-state">Classement momentanément indisponible.' +
-            ' <button type="button" class="lb-retry" id="lbRetry">Réessayer</button></p>';
-          var retry = document.getElementById("lbRetry");
-          if (retry) {
-            retry.addEventListener("click", function () {
-              el.innerHTML = '<p class="board-state">Chargement du classement…</p>';
-              fetchLeaderboard(0);
-            });
-          }
-        });
-    }
-
-    fetchLeaderboard(0);
 
     /* ---------- Arrivée au défilement ---------- */
     var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
