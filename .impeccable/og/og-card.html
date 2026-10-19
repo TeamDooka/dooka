@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8">
+<!-- Source de og.jpg (1200 × 630), rendue par Chrome sans interface. -->
+<style>
+  @font-face { font-family: "Geist"; src: url("/fonts/geist.woff2") format("woff2"); font-weight: 300 800; }
+  @font-face { font-family: "Bricolage Grotesque"; src: url("/fonts/bricolage-grotesque.woff2") format("woff2"); font-weight: 500 800; }
+  html, body { margin: 0; }
+  body { width: 1200px; height: 630px; overflow: hidden; position: relative; background: #070B09; color: #F1F4F0; font-family: "Geist", sans-serif; -webkit-font-smoothing: antialiased; }
+  .glow { position: absolute; inset: 0; background: radial-gradient(520px 360px at 78% 40%, rgba(60,194,120,.20), transparent 70%), radial-gradient(500px 300px at 10% 0%, rgba(60,194,120,.10), transparent 70%); }
+  .grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px); background-size: 56px 56px; -webkit-mask-image: radial-gradient(520px 400px at 78% 45%, #000, transparent 75%); }
+  .brand { position: absolute; left: 72px; top: 64px; display: flex; align-items: center; gap: 12px; font-weight: 600; font-size: 26px; letter-spacing: -.3px; }
+  h1 { position: absolute; left: 72px; top: 190px; margin: 0; width: 560px; font-family: "Bricolage Grotesque", sans-serif; font-size: 92px; line-height: 1; font-weight: 600; letter-spacing: -.028em; }
+  .sub { position: absolute; left: 72px; top: 420px; width: 520px; font-size: 25px; line-height: 1.4; color: #A6AEA8; }
+  .sub b { color: #F1F4F0; font-weight: 500; }
+  .url { position: absolute; left: 72px; bottom: 56px; font-size: 20px; color: #7C847F; }
+  .card { position: absolute; right: 72px; top: 120px; width: 440px; padding: 22px; border-radius: 22px; background: linear-gradient(180deg, #141A17, #0F1311); border: 1px solid rgba(255,255,255,.13); box-shadow: 0 40px 90px rgba(0,0,0,.6); font-family: system-ui, "Segoe UI", sans-serif; }
+  .card::before { content: ""; position: absolute; left: 12%; right: 12%; top: -1px; height: 1px; background: linear-gradient(90deg, transparent, rgba(60,194,120,.8), rgba(255,255,255,.6), rgba(60,194,120,.8), transparent); }
+  .top { display: flex; justify-content: space-between; align-items: flex-start; }
+  .bar { font-family: "Bricolage Grotesque", sans-serif; font-size: 28px; font-weight: 700; letter-spacing: -.3px; }
+  .bar small { display: block; font-size: 16px; font-weight: 400; color: #A6AEA8; margin-top: 2px; }
+  .grp { text-align: right; font-size: 14px; color: #A6AEA8; }
+  .grp b { display: block; font-size: 19px; color: #4CCB84; }
+  .list { margin-top: 18px; background: #1A201D; border: 1px solid #2B3430; border-radius: 16px; overflow: hidden; }
+  .row { display: flex; align-items: center; gap: 14px; padding: 16px; }
+  .row + .row { border-top: 1px solid #2B3430; }
+  .rk { width: 30px; height: 30px; border-radius: 50%; background: #2A332F; font-size: 15px; font-weight: 600; display: flex; align-items: center; justify-content: center; }
+  .rk.g { background: #F7C948; color: #07140B; }
+  .ini { width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 16px; }
+  .nm { flex: 1; font-size: 20px; font-weight: 600; }
+  .nm small, .bar small { font-family: system-ui, "Segoe UI", sans-serif; letter-spacing: 0; }
+  .ini { font-family: "Bricolage Grotesque", sans-serif; }
+  .nm small { display: block; font-size: 15px; font-weight: 400; color: #A6AEA8; }
+  .net { font-size: 21px; font-weight: 700; color: #4CCB84; }
+  .net.neg, .grp b.neg { color: #FF7377; }
+  .net.zero { color: #A6AEA8; }
+</style></head><body>
+<div class="glow"></div><div class="grid"></div>
+<div class="brand"><svg width="40" height="40" viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="#178A45"/><circle cx="50" cy="50" r="38" fill="none" stroke="#F7C948" stroke-width="7" stroke-dasharray="13 12"/><text x="50" y="52" text-anchor="middle" dominant-baseline="central" font-family="Geist, sans-serif" font-weight="700" font-size="44" fill="#FCFCF8">D</text></svg>Dooka</div>
+<h1>Le zinc a son classement.</h1>
+<p class="sub"><b>Tickets notés, sessions suivies, bilans comparés</b> entre potes.</p>
+<div class="url">Android · gratuit · sans pub · dooka.fr</div>
+<div class="card">
+  <div class="top"><div class="bar">Le Balto<small>Session de la bande</small></div><div class="grp">Groupe<b class="neg">−2,00 €</b></div></div>
+  <div class="list">
+    <div class="row"><span class="rk g">1</span><span class="ini" style="background:#3B3420;color:#F2C14E">M</span><span class="nm">Momo<small>3 tickets · 1 gagnant</small></span><span class="net">+1,00 €</span></div>
+    <div class="row"><span class="rk">2</span><span class="ini" style="background:#22304A;color:#8DB4F5">S</span><span class="nm">Sam<small>5 tickets · 2 gagnants</small></span><span class="net neg">−1,00 €</span></div>
+    <div class="row"><span class="rk">3</span><span class="ini" style="background:#1F3B2C;color:#7FE0A8">L</span><span class="nm">Léa<small>4 tickets · 2 gagnants</small></span><span class="net neg">−2,00 €</span></div>
+  </div>
+</div>
+</body></html>

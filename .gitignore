@@ -1,0 +1,8 @@
+# GitHub Pages sert tout ce qui est versionné, dossiers à point compris
+# (.nojekyll). Les notes de conception restent donc hors du dépôt : elles
+# seraient en ligne sur dooka.fr sinon.
+/PRODUCT.md
+/DESIGN.md
+/.impeccable/*
+# Sauf la source de og.jpg, une simple page HTML sans rien d'interne.
+!/.impeccable/og/
