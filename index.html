@@ -209,7 +209,7 @@
   .stage {
     position: relative;
     margin-top: 56px;
-    height: 680px;
+    height: 860px;
     border-radius: 24px 24px 0 0;
     border: 1px solid var(--line);
     border-bottom: 0;
@@ -217,8 +217,8 @@
       radial-gradient(520px 340px at 50% 22%, rgba(60, 194, 120, .15), transparent 70%),
       linear-gradient(180deg, var(--bg-raise), var(--bg) 85%);
     overflow: hidden;
-    -webkit-mask-image: linear-gradient(180deg, #000 74%, transparent);
-    mask-image: linear-gradient(180deg, #000 74%, transparent);
+    -webkit-mask-image: linear-gradient(180deg, #000 90%, transparent);
+    mask-image: linear-gradient(180deg, #000 90%, transparent);
   }
   /* Le filet lumineux du bord haut. */
   .stage::before {
@@ -228,7 +228,7 @@
     height: 1px;
     background: linear-gradient(90deg, transparent, rgba(60, 194, 120, .7), rgba(255,255,255,.55), rgba(60, 194, 120, .7), transparent);
   }
-  .stage-phone { position: absolute; left: 50%; top: 56px; transform: translateX(-50%); z-index: 3; }
+  .stage-phone { position: absolute; left: 50%; top: 32px; transform: translateX(-50%); z-index: 3; }
 
   .frag {
     position: absolute;
@@ -241,11 +241,11 @@
     backdrop-filter: blur(12px) saturate(140%);
     font-family: var(--app);
   }
-  .frag-map { right: calc(50% + 172px); top: 262px; width: 280px; overflow: hidden; }
+  .frag-map { right: calc(50% + 172px); top: 300px; width: 280px; overflow: hidden; }
   .frag-map .head { display: flex; justify-content: space-between; align-items: center; padding: 12px 14px; font-size: 13px; color: var(--text-2); border-bottom: 1px solid var(--line); }
   .frag-map .head b { color: var(--text); font-weight: 600; }
   .frag-map svg { display: block; width: 100%; height: 160px; }
-  .frag-remind { left: calc(50% + 172px); top: 410px; width: 270px; padding: 14px 16px; display: flex; align-items: center; gap: 14px; }
+  .frag-remind { left: calc(50% + 172px); top: 470px; width: 270px; padding: 14px 16px; display: flex; align-items: center; gap: 14px; }
   .frag-remind .txt { flex: 1; min-width: 0; }
   .frag-remind b { display: block; font-size: 15px; font-weight: 600; }
   .frag-remind span { font-size: 13px; color: var(--text-2); }
@@ -270,7 +270,7 @@
 
   .hint {
     position: absolute; z-index: 5;
-    right: calc(50% + 206px); top: 192px;
+    right: calc(50% + 206px); top: 766px;
     margin: 0;
     display: flex; align-items: center; gap: 10px;
     font-size: 13px; color: var(--text-2);
@@ -572,6 +572,107 @@
   .fine strong { color: var(--text-2); font-weight: 500; }
   .fine a { color: var(--text); text-decoration: underline; text-underline-offset: 3px; white-space: nowrap; }
 
+
+  /* ---------- La fiche de session 3.13 (ouverte en plein écran) ---------- */
+  .sd { padding: 0 20px; }
+  .sd-meta { display: flex; align-items: center; gap: 4px; min-height: 44px; font-size: 14px; color: #A6AEA8; }
+  .sd-meta .i { width: 14px; height: 14px; color: #3CC278; }
+  .sd-meta span { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .sd-meta .sd-menu { flex: none; overflow: visible; }
+  .sd-menu { width: 44px; height: 44px; margin-right: -12px; display: flex; align-items: center; justify-content: center; color: #F1F4F0; }
+  .sd-menu .i { width: 22px; height: 22px; color: #F1F4F0; }
+  .sd-hero { display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; margin-top: 20px; }
+  .sd-total { flex: 1; min-width: 0; }
+  .sd-lbl { display: block; font-size: 14px; font-weight: 600; color: #A6AEA8; }
+  .sd-num { display: block; font-size: 58px; line-height: 64px; font-weight: 800; letter-spacing: -2px; font-variant-numeric: tabular-nums; color: #4CCB84; white-space: nowrap; }
+  .sd-num.neg { color: #FF7377; }
+  .sd-faces { display: flex; align-items: center; padding-bottom: 8px; }
+  .sd-faces .ini { border: 2px solid #0F1311; width: 36px; height: 36px; }
+  .sd-faces .ini + .ini { margin-left: -10px; }
+  .face-add { width: 36px; height: 36px; margin-left: 4px; border-radius: 50%; border: 1.5px dashed #2B3430; color: #A6AEA8; display: flex; align-items: center; justify-content: center; }
+  .face-add .i { width: 16px; height: 16px; stroke-width: 2.25; }
+  .sd-counters { margin-top: 4px; font-size: 14px; color: #A6AEA8; }
+  .sd-best { display: flex; align-items: center; gap: 8px; margin-top: 12px; padding: 10px 12px; border-radius: 12px; background: rgba(247,201,72,.14); font-size: 14px; }
+  .sd-best .i { width: 16px; height: 16px; color: #F2C14E; }
+  .sd-best .l { color: #F2C14E; font-weight: 500; }
+  .sd-best .w { flex: 1; min-width: 0; color: #F1F4F0; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .sd-best .a { color: #F2C14E; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .sd-section { margin: 20px 0 8px; }
+  .sd-head { display: flex; align-items: center; gap: 12px; padding: 0 16px 4px; font-size: 12px; font-weight: 600; color: #A6AEA8; }
+  .sd-head .lead { width: 38px; }
+  .sd-head .n { flex: 1; }
+  .sd-head .t { width: 64px; text-align: right; }
+  .sd-head .v { width: 72px; text-align: right; }
+  .sd .list { border-color: rgba(255,255,255,.08); }
+  .sd .row { gap: 12px; padding: 12px 16px; min-height: 60px; }
+  .ring { width: 38px; height: 38px; border-radius: 50%; border: 2px solid transparent; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: border-color .3s var(--ease); }
+  .ring.on { border-color: #F7C948; }
+  .sd .nm b { font-size: 16px; font-weight: 600; }
+  .ct { width: 64px; display: flex; flex-direction: column; align-items: flex-end; }
+  .ct b { font-size: 16px; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .ct small { font-size: 12px; font-weight: 600; color: #A6AEA8; white-space: nowrap; }
+  .ct small.win { color: #F2C14E; }
+  .sd .net { width: 72px; text-align: right; font-size: 16px; font-weight: 600; }
+  .sd-hint { margin: 8px 0 0; text-align: center; font-size: 12px; font-weight: 600; color: #A6AEA8; }
+  .sd-end { margin: 20px 0 0; text-align: center; font-size: 15px; font-weight: 600; color: #FF7377; }
+  .sd-footer { position: absolute; left: 0; right: 0; bottom: 0; padding: 8px 20px 26px; background: #0F1311; }
+  .sd-footer .add { margin-top: 0; }
+
+  /* La carte, en extrait fidèle de l'onglet Carte */
+  .map-search { position: absolute; left: 8px; right: 8px; top: 8px; z-index: 2; height: 48px; border-radius: 8px; background: #1A201D; border: 1px solid #2B3430; color: #A6AEA8; font-size: 16px; display: flex; align-items: center; padding: 0 14px; }
+  .p-map .legend { top: 66px; flex-direction: column; align-items: center; gap: 2px; padding: 6px 12px; white-space: normal; text-align: center; }
+  .p-map .legend > div { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+  .p-map .legend i.ring2 { width: 10px; height: 10px; border: 2px solid; background: transparent; }
+  .p-map .map-locate { position: absolute; right: 16px; bottom: 16px; z-index: 2; width: 44px; height: 44px; border-radius: 50%; background: #1A201D; color: #3CC278; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 6px rgba(0,0,0,.3); }
+  .p-map .map-locate .i { width: 22px; height: 22px; }
+  .mini-legend { position: absolute; left: 50%; top: 10px; transform: translateX(-50%); z-index: 2; background: rgba(17,24,39,.62); color: #fff; border-radius: 16px; padding: 5px 10px; font-size: 10.5px; line-height: 15px; display: flex; gap: 10px; white-space: nowrap; }
+  .mini-legend i, .p-map .legend i { display: inline-block; width: 8px; height: 8px; border-radius: 50%; border: 1px solid #fff; margin-right: 4px; vertical-align: -1px; }
+  .frag-map svg { height: 190px; }
+
+  /* La feuille « J'ai gratté ici » : QuickPlayEntryModal, mode solo */
+  .p-sheet { padding: 10px 20px 20px; border-radius: 20px; }
+  .grab { width: 48px; height: 5px; border-radius: 3px; background: #2B3430; margin: 0 auto 14px; }
+  .sh-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+  .sh-cancel { font-size: 16px; font-weight: 600; color: #A6AEA8; background: none; border: 0; padding: 8px 0 8px 12px; min-height: 44px; cursor: pointer; font-family: var(--app); }
+  .sh-sub { margin: 2px 0 0; font-size: 14px; color: #A6AEA8; }
+  .gauge { display: flex; gap: 4px; margin: 12px 0 16px; }
+  .gauge i { flex: 1; height: 3px; border-radius: 2px; background: #2A332F; transition: background-color .3s var(--ease); }
+  .gauge i.on { background: #3CC278; }
+  .p-sheet .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+  .tlist { padding: 0; }
+  .trow { display: flex; align-items: center; gap: 12px; width: 100%; min-height: 64px; padding: 10px 16px; background: none; border: 0; color: #F1F4F0; font: inherit; text-align: left; cursor: pointer; transition: background-color .2s var(--ease); }
+  .trow + .trow { border-top: 1px solid #2B3430; }
+  .trow:hover { background: rgba(255,255,255,.04); }
+  .trow .th { width: 44px; height: 44px; border-radius: 8px; background: #252D29; color: #A6AEA8; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .trow .th .i { width: 20px; height: 20px; }
+  .trow b { flex: 1; font-size: 16px; font-weight: 600; }
+  .pill { height: 26px; padding: 0 10px; border-radius: 999px; background: #252D29; color: #F1F4F0; font-size: 13px; font-weight: 600; display: inline-flex; align-items: center; gap: 4px; white-space: nowrap; }
+  .pcard { display: flex; align-items: center; gap: 12px; padding: 14px 16px; border-radius: 16px; background: #1A201D; border: 1px solid rgba(255,255,255,.08); margin-bottom: 12px; transition: border-color .2s var(--ease); }
+  .pcard.set { border-color: #3CC278; }
+  .pcard b { flex: 1; font-size: 16px; font-weight: 600; }
+  .tpill { height: 28px; padding: 0 10px; border-radius: 999px; background: rgba(76,203,132,.16); color: #4CCB84; border: 0; font: 600 13px var(--app); display: inline-flex; align-items: center; gap: 4px; cursor: pointer; }
+  .tpill .i { width: 13px; height: 13px; stroke-width: 2.5; }
+  .sh-foot { margin-top: 8px; }
+  .sh-hint { margin: 0 0 10px; text-align: center; font-size: 14px; color: #A6AEA8; }
+
+  /* Groupes : la carte d'invitation et les demandes d'ami */
+  .grp-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding: 0 4px; }
+  .grp-head span { font-size: 14px; color: #A6AEA8; }
+  .invite-card { margin-top: 14px; padding: 20px; border-radius: 12px; background: #1A201D; border: 1px dashed #2B3430; text-align: center; }
+  .invite-card .lbl { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 600; color: #A6AEA8; }
+  .invite-card .lbl .i { width: 16px; height: 16px; }
+  .invite-card .code { display: block; margin: 6px 0 4px; font-size: 26px; font-weight: 800; letter-spacing: 2px; color: #F1F4F0; font-variant-numeric: tabular-nums; }
+  .invite-card p { margin: 0 0 14px; font-size: 14px; color: #A6AEA8; }
+  .btn-app { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 0 18px; border-radius: 8px; background: #3CC278; color: #07140B; font: 600 15px var(--app); }
+  .btn-app .i { width: 16px; height: 16px; }
+  .btn-app.sm { min-height: 36px; padding: 0 14px; font-size: 14px; }
+  .req-card { margin-top: 14px; padding: 16px; border-radius: 16px; background: #1A201D; border: 1px solid rgba(255,255,255,.08); }
+  .req-card h5 { margin: 0 0 12px; font: 700 17px var(--app); color: #3CC278; }
+  .req-row { display: flex; align-items: center; gap: 12px; }
+  .req-row .ini { width: 40px; height: 40px; font-size: 15px; }
+  .req-row b { flex: 1; font-size: 16px; font-weight: 600; }
+  .req-row .refuse { font-size: 13px; color: #A6AEA8; }
+
   /* ---------- Arrivées au défilement ---------- */
   /* Visible par défaut : le script ne cache un élément qu'au moment où il
      va l'animer. */
@@ -588,7 +689,7 @@
   /* ---------- Écrans moyens ---------- */
 
   @media (max-width: 1080px) {
-    .stage { height: 640px; }
+    .stage { height: 760px; }
     .phone { --s: .86; }
     .frag-map { right: calc(50% + 150px); top: 236px; width: 240px; }
     .frag-map svg { height: 140px; }
@@ -605,7 +706,7 @@
     .frag-map, .frag-remind { display: none; }
     .toast { left: 50%; top: 12px; width: min(320px, calc(100% - 32px)); transform: translate(-50%, 8px) scale(.98); }
     .toast.on { transform: translate(-50%, 0); }
-    .stage-phone { top: 84px; }
+    .stage-phone { top: 32px; }
     .foot { grid-template-columns: 1fr 1fr; }
   }
 
@@ -613,7 +714,7 @@
     .nav-in { gap: 12px; }
     .nav .btn-ghost { display: none; }
     .hero-cta .btn { width: 100%; }
-    .stage { margin-top: 44px; height: 590px; border-radius: 20px 20px 0 0; }
+    .stage { margin-top: 44px; height: 700px; border-radius: 20px 20px 0 0; }
     .phone { --s: .8; }
     .stage-foot { flex-direction: column; align-items: flex-start; gap: 0; }
     .manifest { padding-top: 88px; }
@@ -640,7 +741,7 @@
 
   @media (max-width: 360px) {
     .phone { --s: .72; }
-    .stage { height: 540px; }
+    .stage { height: 640px; }
   }
 </style>
 </head>
@@ -663,6 +764,10 @@
   <symbol id="i-pencil" viewBox="0 0 24 24"><path d="M21.17 6.81a1 1 0 0 0-3.99-3.99L3.84 16.17a2 2 0 0 0-.5.83l-1.32 4.35a.5.5 0 0 0 .62.62l4.35-1.32a2 2 0 0 0 .83-.5z"/></symbol>
   <symbol id="i-store" viewBox="0 0 24 24"><path d="m2 7 4.41-4.41A2 2 0 0 1 7.83 2h8.34a2 2 0 0 1 1.42.59L22 7"/><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><path d="M15 22v-4a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v4"/><path d="M2 7h20"/><path d="M22 7v3a2 2 0 0 1-2 2 2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 16 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 12 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 8 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 4 12a2 2 0 0 1-2-2V7"/></symbol>
   <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2.06 12.35a1 1 0 0 1 0-.7 10.75 10.75 0 0 1 19.88 0 1 1 0 0 1 0 .7 10.75 10.75 0 0 1-19.88 0"/><circle cx="12" cy="12" r="3"/></symbol>
+  <symbol id="i-more-v" viewBox="0 0 24 24"><circle cx="12" cy="5" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="12" cy="19" r="1.2"/></symbol>
+  <symbol id="i-sparkles" viewBox="0 0 24 24"><path d="M9.94 15.5A2 2 0 0 0 8.5 14.06l-6.13-1.58a.5.5 0 0 1 0-.96L8.5 9.94A2 2 0 0 0 9.94 8.5l1.58-6.13a.5.5 0 0 1 .96 0L14.06 8.5A2 2 0 0 0 15.5 9.94l6.13 1.58a.5.5 0 0 1 0 .96L15.5 14.06a2 2 0 0 0-1.44 1.44l-1.58 6.13a.5.5 0 0 1-.96 0z"/></symbol>
+  <symbol id="i-hash" viewBox="0 0 24 24"><path d="M4 9h16M4 15h16M10 3 8 21M16 3l-2 18"/></symbol>
+  <symbol id="i-share" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 13.5 6.8 4M15.4 6.5l-6.8 4"/></symbol>
   <symbol id="i-rotate" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></symbol>
   <symbol id="t-map" viewBox="0 0 24 24"><path d="M12 2a7.5 7.5 0 0 0-7.5 7.5c0 5.3 6.2 11.6 6.9 12.2a.9.9 0 0 0 1.2 0c.7-.6 6.9-6.9 6.9-12.2A7.5 7.5 0 0 0 12 2z"/><circle cx="12" cy="9.5" r="2.6" fill="#252D29"/></symbol>
   <symbol id="t-sess" viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="4"/><circle cx="8" cy="12" r="1.6" fill="#252D29"/><circle cx="12" cy="12" r="1.6" fill="#252D29"/><circle cx="16" cy="12" r="1.6" fill="#252D29"/></symbol>
@@ -702,72 +807,57 @@
           <p class="hero-meta rv" style="--d:.22s">
             <span><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Gratuit</span>
             <span><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Sans pub</span>
-            <span><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Invité par un pote ? Installe, puis rouvre son lien.</span>
+            <span><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Invité par un pote ? Installe, crée ton compte, puis rouvre son lien.</span>
           </p>
         </div>
       </div>
 
       <div class="stage rv" style="--d:.3s" id="scene" role="region" aria-label="Démo interactive du classement d'une session">
         <div class="frag frag-map" aria-hidden="true">
-          <div class="head"><b>À proximité</b><span>6 PMU</span></div>
-          <svg viewBox="0 0 300 170" preserveAspectRatio="xMidYMid slice">
-            <rect width="300" height="170" fill="#111614"/>
-            <path d="M-10 120C60 100 120 130 180 110S260 70 310 84" fill="none" stroke="#0E2A38" stroke-width="12"/>
-            <g stroke="#1F2723" fill="none"><path d="M-10 40 310 28M70-10l14 190M210-10l18 190M-10 150l320-10" stroke-width="7"/><path d="M-10 90 310 96M140-10l-6 190" stroke-width="4"/></g>
-            <path d="M-10 66 310 50" stroke="#2C3530" stroke-width="9" fill="none"/>
-            <circle cx="150" cy="72" r="16" fill="rgba(242,84,27,.25)" stroke="rgba(242,84,27,.8)" stroke-width="1.5"/>
-            <g stroke="#0F1311" stroke-width="2"><circle cx="150" cy="72" r="6" fill="#FF7377"/><circle cx="60" cy="40" r="6" fill="#FF7377"/><circle cx="236" cy="120" r="6" fill="#FF7377"/><circle cx="96" cy="128" r="6" fill="#3CC278"/><circle cx="200" cy="40" r="5" fill="#2E7CF6"/><circle cx="270" cy="70" r="5" fill="#2E7CF6"/></g>
+          <svg viewBox="0 0 300 190" preserveAspectRatio="xMidYMid slice">
+            <rect width="300" height="190" fill="#111614"/>
+            <path d="M-10 136C60 116 120 146 180 126S260 86 310 100" fill="none" stroke="#0E2A38" stroke-width="12"/>
+            <g stroke="#1F2723" fill="none"><path d="M-10 56 310 44M70-10l14 210M210-10l18 210M-10 168l320-10" stroke-width="7"/><path d="M-10 106 310 112M140-10l-6 210" stroke-width="4"/></g>
+            <path d="M-10 82 310 66" stroke="#2C3530" stroke-width="9" fill="none"/>
+            <circle cx="150" cy="96" r="18" fill="rgba(242,84,27,.30)" stroke="rgba(242,84,27,.85)" stroke-width="1.5"/>
+            <circle cx="96" cy="150" r="14" fill="rgba(14,107,79,.22)" stroke="rgba(14,107,79,.62)" stroke-width="1.5"/>
+            <g stroke="#fff" stroke-width="2"><circle cx="150" cy="96" r="6" fill="#FF7377"/><circle cx="60" cy="58" r="6" fill="#FF7377"/><circle cx="236" cy="140" r="6" fill="#FF7377"/><circle cx="96" cy="150" r="6" fill="#3CC278"/><circle cx="204" cy="60" r="6" fill="#2E7CF6"/><circle cx="268" cy="92" r="6" fill="#2E7CF6"/></g>
+            <g transform="translate(150 74)"><rect x="-11" y="-14" width="22" height="16" rx="7" fill="#FF7377" stroke="#0F1311"/><path d="M-5 2 0 7 5 2z" fill="#FF7377"/><text y="-2" text-anchor="middle" font-size="10" font-weight="700" fill="#07140B" font-family="system-ui, sans-serif">12</text></g>
           </svg>
+          <div class="mini-legend"><span><i style="background:#FF7377"></i>PMU</span><span><i style="background:#2E7CF6"></i>à vérifier</span><span><i style="background:#3CC278"></i>déjà joué</span></div>
         </div>
         <div class="frag frag-remind" aria-hidden="true">
           <div class="txt"><b>Rappel de durée</b><span>Toutes les 30 minutes</span></div>
           <span class="switch"></span>
         </div>
-        <div class="frag toast" id="toast" aria-hidden="true">
-          <span class="dot"><svg class="i"><use href="#i-ticket"/></svg></span>
-          <span class="tx"><b id="toastWho">Ticket noté</b><span id="toastWhat">Le Balto</span></span>
-          <span class="amt" id="toastAmt"></span>
-        </div>
-        <p class="hint" id="hint" aria-hidden="true">Essaie : touche « Ajouter un ticket »<svg viewBox="0 0 48 16"><path d="M2 5c14 0 28 2 42 7"/><path d="M37 15l7-3-3-6"/></svg></p>
+        <p class="hint" id="hint" aria-hidden="true">Essaie : touche « Ajouter un ticket »<svg viewBox="0 0 48 16"><path d="M2 5c14 0 28 2 42 7"/><path d="M37 15l7-3-3-6"/></svg></p>
 
         <div class="stage-phone">
           <div class="phone">
             <div class="screen">
               <div class="sb" aria-hidden="true">21:12<svg viewBox="0 0 60 12"><use href="#s-bars"/></svg></div>
-              <div class="sess">
-                <div class="sess-top">
-                  <div>
-                    <div class="sess-bar app-title"><svg class="i" aria-hidden="true"><use href="#i-pin"/></svg>Le Balto<em aria-hidden="true">Changer</em></div>
-                    <div class="sess-date" id="dateSession">aujourd'hui</div>
-                  </div>
-                  <div class="sess-grp">Groupe<b id="grpNet" class="neg" data-v="-1">−1,00 €</b></div>
+              <div class="sd">
+                <div class="sd-meta" aria-hidden="true"><svg class="i"><use href="#i-pin"/></svg><span id="sdMeta">ce soir · depuis 1 h 12</span><span class="sd-menu"><svg class="i"><use href="#i-more-v"/></svg></span></div>
+                <div class="app-title">Le Balto</div>
+                <div class="sd-hero">
+                  <div class="sd-total"><span class="sd-lbl">Net de la table</span><span class="sd-num neg" id="tableNet">-1 €</span></div>
+                  <div class="sd-faces" aria-hidden="true"><span class="ini" style="background:#1F3B2C;color:#7FE0A8">L</span><span class="ini" style="background:#3B3420;color:#F2C14E">M</span><span class="ini" style="background:#22304A;color:#8DB4F5">S</span><span class="face-add"><svg class="i"><use href="#i-plus"/></svg></span></div>
                 </div>
-                <button class="add" id="add" type="button"><svg class="i" aria-hidden="true"><use href="#i-plus"/></svg>Ajouter un ticket</button>
-                <p class="sub-h app-sub">Classement</p>
-                <div class="list" id="ranking">
-                  <div class="row" data-id="lea"><span class="rk g">1</span><span class="ini" style="background:#1F3B2C;color:#7FE0A8">L</span><span class="nm"><b>Léa</b><span class="sub">3 tickets · 2 gagnants</span></span><span class="net">+3,00 €</span><svg class="i" aria-hidden="true"><use href="#i-chev-r"/></svg></div>
-                  <div class="row" data-id="momo"><span class="rk">2</span><span class="ini" style="background:#3B3420;color:#F2C14E">M</span><span class="nm"><b>Momo</b><span class="sub">3 tickets · 1 gagnant</span></span><span class="net">+1,00 €</span><svg class="i" aria-hidden="true"><use href="#i-chev-r"/></svg></div>
-                  <div class="row" data-id="sam"><span class="rk">3</span><span class="ini" style="background:#22304A;color:#8DB4F5">S</span><span class="nm"><b>Sam</b><span class="sub">3 tickets · 1 gagnant</span></span><span class="net neg">−5,00 €</span><svg class="i" aria-hidden="true"><use href="#i-chev-r"/></svg></div>
-                </div>
-                <p class="sub-h app-sub">Tickets de la session</p>
-                <div class="list" id="tickets">
-                  <div class="tk"><span>Astro · Léa</span><b>+4,00 €</b></div>
-                  <div class="tk"><span>Banco · Momo</span><b class="neg">−1,00 €</b></div>
-                  <div class="tk"><span>Cash · Sam</span><b class="neg">−5,00 €</b></div>
-                </div>
+                <div class="sd-counters" id="counters">9 tickets · 4 gagnants · 16 € misés</div>
+                <div class="sd-best"><svg class="i" aria-hidden="true"><use href="#i-sparkles"/></svg><span class="l">Plus beau gain</span><span class="w" id="bestWho">Léa · Astro</span><span class="a" id="bestAmt">6 €</span></div>
+                <p class="app-sub sd-section">Classement</p>
+                <div class="sd-head" aria-hidden="true"><span class="lead"></span><span class="n">Joueur</span><span class="t">Tickets</span><span class="v">Net</span></div>
+                <div class="list" id="ranking"></div>
+                <p class="sd-hint">Touche un joueur pour voir ses tickets</p>
+                <p class="sd-end">Terminer la session</p>
               </div>
-              <div class="tabs" aria-hidden="true">
-                <span><svg><use href="#t-map"/></svg>Carte</span>
-                <span class="on"><svg><use href="#t-sess"/></svg>Sessions</span>
-                <span><svg><use href="#t-tick"/></svg>Tickets</span>
-              </div>
-              <div class="legal" aria-hidden="true">Jouer comporte des risques : endettement, isolement, dépendance. Interdit aux mineurs. Appelez le 09 74 75 13 13. Dooka n'est pas affiliée au PMU.</div>
+              <div class="sd-footer"><button class="add" id="add" type="button"><svg class="i" aria-hidden="true"><use href="#i-plus"/></svg>Ajouter un ticket</button></div>
             </div>
           </div>
         </div>
       </div>
       <div class="stage-foot">
-        <span>Démo de l'écran d'une session, thème sombre. Noms et montants fictifs.</span>
+        <span>Démo de la fiche d'une session (version 3.13, thème sombre). Noms et montants fictifs.</span>
         <button type="button" id="reset" hidden><svg class="i" aria-hidden="true"><use href="#i-rotate"/></svg>Rejouer la démo</button>
       </div>
       <p class="sr" aria-live="polite" id="annonce"></p>
@@ -792,117 +882,123 @@
       <div class="feature">
         <div class="f-copy rv">
           <h3>Trouve le bar où ça se passe.</h3>
-          <p>La carte montre les PMU autour de toi, repérés via Google et confirmés par la communauté. Un halo signale les bars où quelqu'un gratte en ce moment.</p>
+          <p>La carte montre les PMU autour de toi, repérés via Google et confirmés par la communauté. Un halo orange signale une session en cours dans le bar, un halo vert des tickets grattés dans les dernières 24 heures.</p>
           <ul class="f-list">
-            <li><svg class="i" aria-hidden="true"><use href="#i-check"/></svg><span><b>Des points à vérifier.</b> Passé dans un bar marqué en bleu ? Tu confirmes d'un appui que c'est bien un PMU.</span></li>
-            <li><svg class="i" aria-hidden="true"><use href="#i-store"/></svg><span><b>Ce qu'on trouve sur place.</b> Tickets à gratter, courses en direct, Amigo, terrasse.</span></li>
+            <li><svg class="i" aria-hidden="true"><use href="#i-check"/></svg><span><b>Des points à vérifier.</b> Un bar marqué en bleu n'est pas encore confirmé : si tu y es allé, « J'y suis allé, c'est bien un PMU » sur sa fiche le confirme.</span></li>
+            <li><svg class="i" aria-hidden="true"><use href="#i-store"/></svg><span><b>Ce qu'on trouve sur place.</b> Tickets à gratter, courses en direct, Amigo, terrasse, et ses horaires.</span></li>
             <li><svg class="i" aria-hidden="true"><use href="#i-locate"/></svg><span><b>Le viseur.</b> Perdu en route, il te ramène à ta position.</span></li>
           </ul>
         </div>
         <div class="rv" style="--d:.1s">
-          <div class="panel p-map" role="img" aria-label="Exemple de carte de Dooka en thème sombre : des bars PMU en points de couleur, un halo orange sur Le Balto, et sa fiche ouverte en bas avec les boutons J'ai gratté ici et Session à plusieurs.">
+          <div class="panel p-map" role="img" aria-label="Exemple de l'onglet Carte de Dooka en thème sombre : champ de recherche, légende, bars PMU en points de couleur, halos d'activité et bulles de comptage.">
             <svg class="map" viewBox="0 0 700 460" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
               <rect width="700" height="460" fill="#111614"/>
               <path d="M420 30h170v110H420zM40 70h120v80H40z" fill="#12241A"/>
-              <path d="M-20 250C120 210 230 280 360 236S560 150 720 180" fill="none" stroke="#0E2A38" stroke-width="26"/>
+              <path d="M-20 300C120 260 230 330 360 286S560 200 720 230" fill="none" stroke="#0E2A38" stroke-width="26"/>
               <g stroke="#1C2420" fill="none" stroke-linecap="round">
-                <path d="M-10 40L710 24M200-10l10 480M520-10l26 480M60-10l12 480M-10 300l720-6M390-10l-12 480" stroke-width="5"/>
-                <path d="M-10 360l720-24M120-10l24 480M450-10l24 480M630-10l30 480M-10 180l720 12" stroke-width="10"/>
+                <path d="M-10 40L710 24M200-10l10 480M520-10l26 480M60-10l12 480M-10 350l720-6M390-10l-12 480" stroke-width="5"/>
+                <path d="M-10 410l720-24M120-10l24 480M450-10l24 480M630-10l30 480M-10 230l720 12" stroke-width="10"/>
               </g>
-              <g stroke="#2A332F" fill="none" stroke-width="13"><path d="M-10 120 710 76M280-10c30 150 76 260 100 480"/></g>
+              <g stroke="#2A332F" fill="none" stroke-width="13"><path d="M-10 170 710 126M280-10c30 150 76 260 100 480"/></g>
               <g font-family="system-ui, sans-serif">
-                <text x="300" y="200" font-size="15" font-weight="700" fill="#8C958F">Centre-ville</text>
-                <text x="440" y="96" font-size="11" fill="#5C8A6A">Jardin public</text>
+                <text x="300" y="262" font-size="15" font-weight="700" fill="#8C958F">Centre-ville</text>
+                <text x="440" y="150" font-size="11" fill="#5C8A6A">Jardin public</text>
               </g>
-              <circle class="halo-pulse" cx="352" cy="150" r="14" fill="rgba(242,84,27,.35)"/>
-              <circle cx="352" cy="150" r="16" fill="rgba(242,84,27,.28)" stroke="rgba(242,84,27,.85)" stroke-width="2"/>
-              <circle cx="104" cy="250" r="13" fill="rgba(14,107,79,.3)" stroke="rgba(60,194,120,.6)" stroke-width="2"/>
-              <g stroke="#0F1311" stroke-width="2">
-                <circle cx="352" cy="150" r="7" fill="#FF7377"/>
-                <circle cx="160" cy="98" r="7" fill="#FF7377"/>
-                <circle cx="470" cy="270" r="7" fill="#FF7377"/>
-                <circle cx="250" cy="300" r="7" fill="#FF7377"/>
-                <circle cx="640" cy="120" r="7" fill="#FF7377"/>
-                <circle cx="104" cy="250" r="7" fill="#3CC278"/>
-                <circle cx="300" cy="60" r="6" fill="#2E7CF6"/>
-                <circle cx="540" cy="190" r="6" fill="#2E7CF6"/>
-                <circle cx="210" cy="190" r="6" fill="#2E7CF6"/>
-                <circle cx="600" cy="300" r="6" fill="#2E7CF6"/>
+              <circle class="halo-pulse" cx="352" cy="214" r="14" fill="rgba(242,84,27,.30)"/>
+              <circle cx="352" cy="214" r="18" fill="rgba(242,84,27,.30)" stroke="rgba(242,84,27,.85)" stroke-width="2"/>
+              <circle cx="104" cy="306" r="15" fill="rgba(14,107,79,.22)" stroke="rgba(14,107,79,.62)" stroke-width="2"/>
+              <g stroke="#fff" stroke-width="2">
+                <circle cx="352" cy="214" r="7" fill="#FF7377"/>
+                <circle cx="160" cy="160" r="7" fill="#FF7377"/>
+                <circle cx="470" cy="330" r="7" fill="#FF7377"/>
+                <circle cx="250" cy="370" r="7" fill="#FF7377"/>
+                <circle cx="640" cy="180" r="7" fill="#FF7377"/>
+                <circle cx="104" cy="306" r="7" fill="#3CC278"/>
+                <circle cx="560" cy="250" r="7" fill="#2E7CF6"/>
+                <circle cx="210" cy="250" r="7" fill="#2E7CF6"/>
+                <circle cx="600" cy="380" r="7" fill="#2E7CF6"/>
               </g>
-              <g transform="translate(352 124)"><rect x="-13" y="-16" width="26" height="18" rx="7" fill="#FF7377" stroke="#0F1311"/><path d="M-5 2 0 8 5 2z" fill="#FF7377"/><text y="-3" text-anchor="middle" font-size="11" font-weight="700" fill="#fff" font-family="system-ui, sans-serif">12</text></g>
+              <g transform="translate(352 189)"><rect x="-13" y="-16" width="26" height="18" rx="8" fill="#FF7377" stroke="#0F1311"/><path d="M-5 2 0 9 5 2z" fill="#FF7377"/><text y="-3" text-anchor="middle" font-size="11" font-weight="700" fill="#07140B" font-family="system-ui, sans-serif">12</text></g>
+              <g transform="translate(104 282)"><rect x="-10" y="-16" width="20" height="18" rx="8" fill="#3CC278" stroke="#0F1311"/><path d="M-5 2 0 9 5 2z" fill="#3CC278"/><text y="-3" text-anchor="middle" font-size="11" font-weight="700" fill="#07140B" font-family="system-ui, sans-serif">4</text></g>
+              <g transform="translate(470 306)"><rect x="-10" y="-16" width="20" height="18" rx="8" fill="#FF7377" stroke="#0F1311"/><path d="M-5 2 0 9 5 2z" fill="#FF7377"/><text y="-3" text-anchor="middle" font-size="11" font-weight="700" fill="#07140B" font-family="system-ui, sans-serif">3</text></g>
             </svg>
-            <div class="legend" aria-hidden="true"><span><i style="background:#FF7377"></i>PMU</span><span><i style="background:#2E7CF6"></i>à vérifier</span><span><i style="background:#3CC278"></i>déjà joué</span><span class="opt"><i class="halo"></i>ça gratte maintenant</span></div>
-            <div class="sheet" aria-hidden="true">
-              <div class="sheet-top">
-                <div><h4 class="app-title">Le Balto</h4><div class="meta"><b>4,5</b> (128 avis Google) · Bar PMU · à 350 m</div></div>
-                <span class="open">Ouvert · ferme à 01:00</span>
-              </div>
-              <div class="pills">
-                <span class="yes"><svg class="i"><use href="#i-check"/></svg>Tickets à gratter</span>
-                <span class="yes"><svg class="i"><use href="#i-check"/></svg>Courses en direct</span>
-                <span class="no"><svg class="i"><use href="#i-x"/></svg>Amigo</span>
-              </div>
-              <div class="sheet-btns"><span class="p">J'ai gratté ici</span><span class="s">Session à plusieurs</span></div>
+            <div class="map-search" aria-hidden="true">Chercher une ville, un bar…</div>
+            <div class="legend" aria-hidden="true">
+              <div><span><i style="background:#FF7377"></i>PMU</span><span><i style="background:#2E7CF6"></i>à vérifier</span><span><i style="background:#3CC278"></i>déjà joué</span></div>
+              <div><span><i class="ring2" style="border-color:#F2541B"></i>ça gratte maintenant</span><span><i class="ring2" style="border-color:#0E6B4F"></i>gratté aujourd’hui</span></div>
+              <div>Le chiffre : tickets grattés ici sur 30 jours</div>
             </div>
+            <span class="map-locate" aria-hidden="true"><svg class="i"><use href="#i-locate"/></svg></span>
           </div>
-          <p class="panel-note">Exemple : bar, note et chiffres fictifs. La bulle compte les tickets grattés dans le bar sur 30 jours.</p>
+          <p class="panel-note">Exemple : bars et chiffres fictifs. Les bulles n'apparaissent qu'en zoomant sur un quartier.</p>
         </div>
       </div>
 
       <div class="feature flip">
         <div class="f-copy rv">
-          <h3>Note en deux appuis.</h3>
-          <p>« J'ai gratté ici » sur la fiche du bar : tu dis combien le ticket a rapporté, « Perdu » compris, et il est noté dans la session du jour. C'est toi qui donnes le résultat, l'appli ne fait que l'inscrire.</p>
+          <h3>Note un ticket en quelques appuis.</h3>
+          <p>« J'ai gratté ici » sur la fiche du bar ouvre la session du jour, sans rien créer à la main. Tu choisis le ticket, tu dis ce qu'il a rapporté, « Perdu » compris, puis Enregistrer. C'est toi qui donnes le résultat, l'appli ne fait que l'inscrire.</p>
           <ul class="f-list">
             <li><svg class="i" aria-hidden="true"><use href="#i-calc"/></svg><span><b>Un bilan net.</b> Ce que tu as gagné moins ce que tu as misé. Rien d'autre.</span></li>
-            <li><svg class="i" aria-hidden="true"><use href="#i-pencil"/></svg><span><b>Une erreur ?</b> Un ticket se corrige ou se supprime d'un geste.</span></li>
-            <li><svg class="i" aria-hidden="true"><use href="#i-ticket"/></svg><span><b>Le catalogue FDJ.</b> Les tickets à gratter du moment, avec leur prix et leurs lots.</span></li>
+            <li><svg class="i" aria-hidden="true"><use href="#i-pencil"/></svg><span><b>Une erreur ?</b> Sur ta page de joueur, touche un ticket pour corriger le montant gagné ou le supprimer.</span></li>
+            <li><svg class="i" aria-hidden="true"><use href="#i-ticket"/></svg><span><b>Le catalogue FDJ.</b> Chaque ticket à gratter avec son prix, sa chance de gain et son tableau des lots.</span></li>
           </ul>
         </div>
         <div class="rv" style="--d:.1s">
-          <div class="panel p-scratch" id="gratte" role="group" aria-label="Démo : noter un ticket gratté au Balto">
-            <div class="sc-head"><b class="app-title">Ajouter un ticket</b><span>Le Balto · démo</span></div>
-            <p class="sc-q" id="q-ticket">Quel ticket ?</p>
-            <div class="seg" role="radiogroup" aria-labelledby="q-ticket" id="seg">
-              <button class="chip" type="button" role="radio" aria-checked="true" data-k="astro">Astro · 2 €</button>
-              <button class="chip" type="button" role="radio" aria-checked="false" data-k="banco">Banco · 1 €</button>
-              <button class="chip" type="button" role="radio" aria-checked="false" data-k="cash">Cash · 5 €</button>
+          <div class="panel p-sheet" id="gratte" role="group" aria-label="Démo de la saisie d'un ticket après « J'ai gratté ici »">
+            <div class="grab" aria-hidden="true"></div>
+            <div class="sh-head"><b class="app-title" id="shTitle">Quel ticket ?</b><button class="sh-cancel" id="shCancel" type="button">Annuler</button></div>
+            <p class="sh-sub" id="shSub">Choisis le ticket gratté.</p>
+            <div class="gauge" aria-hidden="true"><i class="on"></i><i id="g2"></i></div>
+            <div id="step1">
+              <div class="chips" role="radiogroup" aria-label="Prix" id="prix">
+                <button class="chip" type="button" role="radio" aria-checked="true" data-p="0">Tous</button>
+                <button class="chip" type="button" role="radio" aria-checked="false" data-p="1">1 €</button>
+                <button class="chip" type="button" role="radio" aria-checked="false" data-p="2">2 €</button>
+                <button class="chip" type="button" role="radio" aria-checked="false" data-p="5">5 €</button>
+              </div>
+              <div class="list tlist" id="tlist">
+                <button class="trow" type="button" data-k="astro" data-p="2"><span class="th" aria-hidden="true"><svg class="i"><use href="#i-ticket"/></svg></span><b>Astro</b><span class="pill">2 €</span></button>
+                <button class="trow" type="button" data-k="banco" data-p="1"><span class="th" aria-hidden="true"><svg class="i"><use href="#i-ticket"/></svg></span><b>Banco</b><span class="pill">1 €</span></button>
+                <button class="trow" type="button" data-k="cash" data-p="5"><span class="th" aria-hidden="true"><svg class="i"><use href="#i-ticket"/></svg></span><b>Cash</b><span class="pill">5 €</span></button>
+              </div>
             </div>
-            <p class="sc-q" id="q-montant">Combien ce ticket a rapporté ?</p>
-            <div class="chips" role="radiogroup" aria-labelledby="q-montant" id="chips"></div>
-            <button class="save" id="save" type="button" disabled>Enregistrer</button>
-            <div class="sc-log" id="log" aria-live="polite"></div>
-            <div class="scratch-foot"><span>Ton net ce soir</span><b id="monNet">0,00 €</b></div>
+            <div id="step2" hidden>
+              <div class="pcard" id="pcard"><span class="ini" style="background:#22304A;color:#8DB4F5">S</span><b>Sam</b><button class="tpill" id="tpill" type="button"><span id="tpillName">Astro</span><svg class="i" aria-hidden="true"><use href="#i-pencil"/></svg></button></div>
+              <div class="chips" role="radiogroup" aria-label="Montant rapporté" id="chips"></div>
+              <div class="sh-foot"><p class="sh-hint" id="shHint">Il reste un joueur à renseigner.</p><button class="save" id="save" type="button" disabled>Enregistrer</button></div>
+            </div>
           </div>
-          <p class="panel-note">Démo : les montants proposés sont les deux lots les plus fréquents du ticket, comme dans l'app.</p>
+          <p class="panel-note" id="scNote" aria-live="polite">Démo : comme dans l'app, les montants proposés sont les deux lots les plus fréquents du ticket.</p>
         </div>
       </div>
 
       <div class="feature">
         <div class="f-copy rv">
-          <h3>Joue avec ta bande, pas avec tout le monde.</h3>
-          <p>Une session à plusieurs range la bande par bilan net. On rejoint un groupe par code d'invitation et on ajoute un ami sur acceptation.</p>
+          <h3>Joue avec ta bande.</h3>
+          <p>Une session à plusieurs range la tablée par bilan net. On crée un groupe ou on le rejoint avec son code à 6 caractères, et on ajoute un ami sur acceptation.</p>
           <ul class="f-list">
-            <li><svg class="i" aria-hidden="true"><use href="#i-lock"/></svg><span><b>Des sessions privées.</b> Une session n'est visible que de ceux qui y jouent.</span></li>
-            <li><svg class="i" aria-hidden="true"><use href="#i-users"/></svg><span><b>Tes parties en solo</b> ne se voient que de tes amis et de tes groupes.</span></li>
-            <li><svg class="i" aria-hidden="true"><use href="#i-link"/></svg><span><b>Un lien suffit.</b> Ton pote installe l'app, rouvre le lien, et rejoint le groupe.</span></li>
+            <li><svg class="i" aria-hidden="true"><use href="#i-lock"/></svg><span><b>Le détail d'une session</b> reste entre ceux qui y jouent.</span></li>
+            <li><svg class="i" aria-hidden="true"><use href="#i-users"/></svg><span><b>Tes amis et tes groupes</b> voient ton bilan : tickets, net, meilleur gain.</span></li>
+            <li><svg class="i" aria-hidden="true"><use href="#i-link"/></svg><span><b>Un lien d'invitation.</b> Ton pote installe Dooka et crée son compte, puis rouvre le lien, ou tape le code dans Sessions › Mes groupes › Rejoindre.</span></li>
           </ul>
         </div>
         <div class="rv" style="--d:.1s">
-          <div class="p-group" role="img" aria-label="Exemple d'écran des groupes : un groupe de cinq membres, un bouton pour partager le lien d'invitation, et une demande d'ami à accepter ou refuser.">
-            <div class="grp-card" aria-hidden="true">
-              <div class="top"><h4 class="app-title">La bande du jeudi</h4><span>5 membres</span></div>
-              <div class="avs"><span style="background:#1F3B2C;color:#7FE0A8">L</span><span style="background:#3B3420;color:#F2C14E">M</span><span style="background:#22304A;color:#8DB4F5">S</span><span style="background:#40262A;color:#FF9A9D">N</span><span class="more">+1</span></div>
-              <div class="invite"><span><b>Inviter dans le groupe</b><span>Par lien ou par code</span></span><em><svg class="i"><use href="#i-link"/></svg>Partager le lien</em></div>
+          <div class="p-group" role="img" aria-label="Exemple de l'écran d'un groupe : la carte du code d'invitation avec le bouton Partager, et une demande d'ami reçue avec Refuser et Accepter.">
+            <div class="grp-head" aria-hidden="true"><b class="app-title">La bande du jeudi</b><span>5 membres</span></div>
+            <div class="invite-card" aria-hidden="true">
+              <span class="lbl"><svg class="i"><use href="#i-hash"/></svg>Code d'invitation</span>
+              <span class="code">K4P9RX</span>
+              <p>Partage ce code pour inviter tes amis dans le groupe.</p>
+              <span class="btn-app"><svg class="i"><use href="#i-share"/></svg>Partager</span>
             </div>
-            <div class="grp-card req" aria-hidden="true">
-              <span class="ini" style="background:#33284A;color:#C9A8FF">N</span>
-              <span class="nm"><b>Nadia</b><span>veut t'ajouter en ami</span></span>
-              <span class="acts"><span class="ok">Accepter</span><span class="ko">Refuser</span></span>
+            <div class="req-card" aria-hidden="true">
+              <h5>Demandes reçues (1)</h5>
+              <div class="req-row"><span class="ini" style="background:#33284A;color:#C9A8FF">N</span><b>Nadia</b><span class="refuse">Refuser</span><span class="btn-app sm">Accepter</span></div>
             </div>
-            <p class="priv" aria-hidden="true"><svg class="i"><use href="#i-lock"/></svg>Rien n'est public sans un geste de ta part.</p>
+            <p class="priv" aria-hidden="true"><svg class="i"><use href="#i-eye"/></svg>Ton nom et ta photo sont visibles des autres joueurs.</p>
           </div>
-          <p class="panel-note">Exemple : noms fictifs.</p>
+          <p class="panel-note">Exemple : noms et code fictifs.</p>
         </div>
       </div>
     </div>
@@ -920,7 +1016,7 @@
         <h3 class="pledge-h">Ce qu'elle ne fait pas</h3>
         <ul class="nots">
           <li><span class="x" aria-hidden="true"><svg class="i"><use href="#i-x"/></svg></span><span><b>Aucun gros lot mis en avant</b><span class="d">Un ticket affiche sa vraie chance de gain ; sa fiche donne le tableau complet des lots, sans en désigner aucun.</span></span></li>
-          <li><span class="x" aria-hidden="true"><svg class="i"><use href="#i-x"/></svg></span><span><b>Ni badges ni niveaux</b><span class="d">Rien ne récompense le fait de jouer souvent.</span></span></li>
+          <li><span class="x" aria-hidden="true"><svg class="i"><use href="#i-x"/></svg></span><span><b>Ni badges ni niveaux</b><span class="d">Pas de points ni de paliers à débloquer.</span></span></li>
           <li><span class="x" aria-hidden="true"><svg class="i"><use href="#i-x"/></svg></span><span><b>Aucune série saluée</b><span class="d">Pas de félicitations pour une série de soirées gagnantes.</span></span></li>
           <li><span class="x" aria-hidden="true"><svg class="i"><use href="#i-x"/></svg></span><span><b>Aucun compte à rebours</b><span class="d">Rien n'expire, rien ne presse.</span></span></li>
           <li><span class="x" aria-hidden="true"><svg class="i"><use href="#i-x"/></svg></span><span><b>Aucune publicité</b><span class="d">Et aucun partenariat avec un opérateur de jeu.</span></span></li>
@@ -928,8 +1024,10 @@
 
         <h3 class="pledge-h pledge-h2">Ce qu'elle montre</h3>
         <ul class="nots">
+          <li><span class="x info" aria-hidden="true"><svg class="i"><use href="#i-eye"/></svg></span><span><b>Les classements de la bande</b><span class="d">Sessions et groupes rangent les joueurs par bilan net ; le groupe a son podium.</span></span></li>
           <li><span class="x info" aria-hidden="true"><svg class="i"><use href="#i-eye"/></svg></span><span><b>Le record de chaque bar</b><span class="d">Le plus gros gain noté dans un bar apparaît sur sa fiche, avec le nom du joueur. À partir de 100 €, seulement avec la photo du ticket.</span></span></li>
           <li><span class="x info" aria-hidden="true"><svg class="i"><use href="#i-eye"/></svg></span><span><b>Les gros gains de tes amis</b><span class="d">Une notification quand un ami gagne 50 € ou dix fois le prix de son ticket. Activée par défaut, elle se coupe dans les réglages.</span></span></li>
+          <li><span class="x info" aria-hidden="true"><svg class="i"><use href="#i-eye"/></svg></span><span><b>Les compteurs de chaque bar</b><span class="d">Halos, parties du jour, tickets les plus joués : des chiffres anonymes, tous joueurs confondus.</span></span></li>
         </ul>
 
         <div class="limits">
@@ -949,7 +1047,7 @@
   <section class="final" id="rejoindre" aria-labelledby="rejoindre-t">
     <div class="wrap">
       <h2 id="rejoindre-t" class="rv">Ta bande t'attend au comptoir.</h2>
-      <p class="rv" style="--d:.08s">Invité par un pote ? Installe Dooka, puis rouvre le lien qu'il t'a envoyé ou saisis le code du groupe pour le rejoindre.</p>
+      <p class="rv" style="--d:.08s">Invité par un pote ? Installe Dooka et crée ton compte, puis rouvre le lien qu'il t'a envoyé, ou tape le code du groupe dans Sessions › Mes groupes › Rejoindre.</p>
       <div class="hero-cta rv" style="--d:.16s">
         <a class="btn btn-light btn-lg" href="https://github.com/TeamDooka/dooka/releases/latest/download/dooka.apk"><svg class="i" aria-hidden="true"><use href="#i-download"/></svg>Télécharger pour Android</a>
         <a class="btn btn-ghost btn-lg" href="https://play.google.com/apps/testing/fr.dooka.app">Google Play · test fermé<svg class="i" aria-hidden="true"><use href="#i-chev-r"/></svg></a>
@@ -958,7 +1056,7 @@
         <span><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Gratuit</span>
         <span><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Sans pub</span>
         <span><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Sans abonnement</span>
-        <span><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Android</span>
+        <span><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Android, et iPhone en test sur invitation</span>
       </p>
     </div>
   </section>
@@ -1091,67 +1189,127 @@
       }
     }
 
-    /* ---------- La démo du classement ---------- */
-    // Écrite d'avance et honnête : plus de tickets perdus que gagnés, et le
-    // groupe finit plus bas qu'il n'a commencé. Chaque net est possible avec
-    // les vrais lots du ticket (Astro 2 € : 2, 4, 6 €… ; Banco 1 € : 1, 2,
-    // 5, 10 €… ; Cash 5 € : 5, 10, 20 €…). Chaque ticket change l'ordre.
-    var joueurs = {
-      lea: { nom: "Léa", net: 3, tickets: 3, gagnants: 2 },
-      momo: { nom: "Momo", net: 1, tickets: 3, gagnants: 1 },
-      sam: { nom: "Sam", net: -5, tickets: 3, gagnants: 1 }
+    /* ---------- La démo : la fiche d'une session (3.13) ---------- */
+    // Les montants s'écrivent comme dans l'app : « +3 € », « -1 € » (trait
+    // d'union, pas de signe moins), « 6 € » pour un gain, espace insécable
+    // avant l'euro.
+    var NB = " ";
+    function fmtSS(v) {
+      var r = Math.round(v * 100) / 100;
+      var txt = Number.isInteger(r) ? String(Math.abs(r)) : Math.abs(r).toFixed(2).replace(".", ",");
+      return (r >= 0 ? "+" : "-") + txt + NB + "€";
+    }
+    function fmtS(v) {
+      var r = Math.round(v * 100) / 100;
+      return (Number.isInteger(r) ? String(r) : r.toFixed(2).replace(".", ",")) + NB + "€";
+    }
+    function pluriel(n, mot) { return n + " " + mot + (n > 1 ? "s" : ""); }
+
+    // La date comme l'app l'écrit à la main : « mar. 20 oct. ».
+    var JOURS = ["dim.", "lun.", "mar.", "mer.", "jeu.", "ven.", "sam."];
+    var MOIS = ["janv.", "févr.", "mars", "avr.", "mai", "juin", "juil.", "août", "sept.", "oct.", "nov.", "déc."];
+    var auj = new Date();
+    var sdMeta = document.getElementById("sdMeta");
+    if (sdMeta) sdMeta.textContent = JOURS[auj.getDay()] + " " + auj.getDate() + " " + MOIS[auj.getMonth()] + " · depuis 1 h 12";
+
+    // Une démo honnête : plus de tickets perdus que gagnés, la table finit
+    // plus bas qu'elle n'a commencé, et chaque gain est un vrai lot du ticket
+    // (Astro 2 € : 2, 4, 6 € ; Banco 1 € : 1, 2, 5, 10 € ; Cash 5 € : 5, 10 €).
+    var depart = {
+      lea: { nom: "Léa", ini: "L", bg: "#1F3B2C", fg: "#7FE0A8", plays: [["Banco", 1, 2], ["Astro", 2, 0], ["Astro", 2, 6]] },
+      momo: { nom: "Momo", ini: "M", bg: "#3B3420", fg: "#F2C14E", plays: [["Banco", 1, 5], ["Astro", 2, 0], ["Banco", 1, 0]] },
+      sam: { nom: "Sam", ini: "S", bg: "#22304A", fg: "#8DB4F5", plays: [["Banco", 1, 2], ["Banco", 1, 0], ["Cash", 5, 0]] }
     };
-    var depart = JSON.stringify(joueurs);
     var suite = [
-      { p: "lea", t: "Cash", v: -5 },
-      { p: "sam", t: "Banco", v: 9 },
-      { p: "sam", t: "Cash", v: -5 },
-      { p: "momo", t: "Cash", v: -5 },
-      { p: "lea", t: "Astro", v: 4 }
+      ["lea", "Cash", 5, 0],
+      ["sam", "Banco", 1, 10],
+      ["sam", "Cash", 5, 0],
+      ["momo", "Cash", 5, 0],
+      ["lea", "Astro", 2, 6]
     ];
-    var pas = 0;
+    var joueurs, pas;
     var ranking = document.getElementById("ranking");
-    var tickets = document.getElementById("tickets");
-    var ticketsDepart = tickets.innerHTML;
-    var grpNet = document.getElementById("grpNet");
+    var tableNet = document.getElementById("tableNet");
+    var counters = document.getElementById("counters");
+    var bestWho = document.getElementById("bestWho");
+    var bestAmt = document.getElementById("bestAmt");
     var addBtn = document.getElementById("add");
     var resetBtn = document.getElementById("reset");
-    var toast = document.getElementById("toast");
     var hint = document.getElementById("hint");
     var annonce = document.getElementById("annonce");
-    var toastTimer;
 
-    function compter(el, de, a) {
-      if (still || de === a) { el.textContent = euros(a); return; }
+    function net(j) { return j.plays.reduce(function (s, p) { return s + p[2] - p[1]; }, 0); }
+    function gagnants(j) { return j.plays.filter(function (p) { return p[2] > 0; }).length; }
+
+    function compter(el, de, a, fmt) {
+      if (still || de === a) { el.textContent = fmt(a); return; }
       var t0 = performance.now(), d = 700;
       function f(t) {
         var k = Math.min(1, (t - t0) / d);
         k = 1 - Math.pow(1 - k, 4);
-        el.textContent = euros(Math.round((de + (a - de) * k) * 100) / 100);
-        if (k < 1) requestAnimationFrame(f);
+        el.textContent = fmt(Math.round(de + (a - de) * k));
+        if (k < 1) requestAnimationFrame(f); else el.textContent = fmt(a);
       }
       requestAnimationFrame(f);
     }
 
-    function sousLigne(j) {
-      var g = j.gagnants === 0 ? "aucun gagnant" : j.gagnants + (j.gagnants > 1 ? " gagnants" : " gagnant");
-      return j.tickets + " tickets · " + g;
+    function ligne(id) {
+      var j = joueurs[id];
+      var r = document.createElement("div");
+      r.className = "row";
+      r.dataset.id = id;
+      r.innerHTML = '<span class="ring"><span class="ini"></span></span><span class="nm"><b></b></span><span class="ct"><b></b><small></small></span><span class="net"></span>';
+      var ini = r.querySelector(".ini");
+      ini.textContent = j.ini;
+      ini.style.background = j.bg;
+      ini.style.color = j.fg;
+      r.querySelector(".nm b").textContent = j.nom;
+      return r;
+    }
+
+    function remplir(r, anime, de) {
+      var j = joueurs[r.dataset.id];
+      var n = net(j), g = gagnants(j);
+      r.querySelector(".ct b").textContent = j.plays.length;
+      var sm = r.querySelector(".ct small");
+      sm.textContent = g === 0 ? "aucun" : pluriel(g, "gagnant");
+      sm.classList.toggle("win", g > 0);
+      var el = r.querySelector(".net");
+      el.classList.toggle("neg", n < 0);
+      compter(el, anime ? de : n, n, fmtSS);
+    }
+
+    function table(anime) {
+      var plays = [];
+      Object.keys(joueurs).forEach(function (id) {
+        joueurs[id].plays.forEach(function (p) { plays.push({ id: id, t: p[0], c: p[1], w: p[2] }); });
+      });
+      var total = plays.reduce(function (s, p) { return s + p.w - p.c; }, 0);
+      var g = plays.filter(function (p) { return p.w > 0; }).length;
+      var mises = plays.reduce(function (s, p) { return s + p.c; }, 0);
+      var avant = parseFloat(tableNet.dataset.v || String(total));
+      tableNet.dataset.v = total;
+      tableNet.classList.toggle("neg", total < 0);
+      compter(tableNet, anime ? avant : total, total, fmtSS);
+      counters.textContent = [pluriel(plays.length, "ticket"), g === 0 ? "aucun gagnant" : pluriel(g, "gagnant"), fmtS(mises) + " misés"].join(" · ");
+      var best = null;
+      plays.forEach(function (p) { if (p.w > 0 && (!best || p.w > best.w)) best = p; });
+      if (best) {
+        bestWho.textContent = joueurs[best.id].nom + " · " + best.t;
+        bestAmt.textContent = fmtS(best.w);
+      }
     }
 
     function classer(anime) {
       var avant = {};
       Array.prototype.forEach.call(ranking.children, function (r) { avant[r.dataset.id] = r.getBoundingClientRect().top; });
-      var ordre = Object.keys(joueurs).sort(function (a, b) { return joueurs[b].net - joueurs[a].net; });
+      var ordre = Object.keys(joueurs).sort(function (a, b) { return net(joueurs[b]) - net(joueurs[a]); });
       ordre.forEach(function (id, i) {
         var r = ranking.querySelector('[data-id="' + id + '"]');
         ranking.appendChild(r);
-        var rk = r.querySelector(".rk");
-        rk.textContent = i + 1;
-        rk.classList.toggle("g", i === 0);
+        r.querySelector(".ring").classList.toggle("on", i === 0);
       });
       if (!anime || still) return ordre;
-      // FLIP : chaque ligne part de son ancienne place et glisse vers la
-      // nouvelle. L'échelle du téléphone est compensée par la mesure même.
       ordre.forEach(function (id) {
         var r = ranking.querySelector('[data-id="' + id + '"]');
         var s = r.getBoundingClientRect().height / r.offsetHeight || 1;
@@ -1171,82 +1329,43 @@
       return ordre;
     }
 
-    function groupe(anime) {
-      var avant = parseFloat(grpNet.dataset.v || "-1");
-      var t = 0;
-      Object.keys(joueurs).forEach(function (id) { t += joueurs[id].net; });
-      grpNet.dataset.v = t;
-      teinte(grpNet, t);
-      compter(grpNet, anime ? avant : t, t);
-    }
-
-    function montrerToast(e) {
-      document.getElementById("toastWho").textContent = joueurs[e.p].nom + " a noté un ticket";
-      document.getElementById("toastWhat").textContent = e.t + " · Le Balto";
-      var amt = document.getElementById("toastAmt");
-      amt.textContent = euros(e.v);
-      amt.style.color = e.v < 0 ? "var(--neg)" : "var(--pos)";
-      toast.classList.add("on");
-      clearTimeout(toastTimer);
-      if (!params.has("hold")) toastTimer = setTimeout(function () { toast.classList.remove("on"); }, 2600);
+    function initialiser() {
+      joueurs = JSON.parse(JSON.stringify(depart));
+      pas = 0;
+      ranking.textContent = "";
+      Object.keys(joueurs).forEach(function (id) {
+        var r = ligne(id);
+        ranking.appendChild(r);
+        remplir(r, false);
+      });
+      tableNet.dataset.v = "";
+      classer(false);
+      table(false);
     }
 
     function ajouter() {
       if (pas >= suite.length) return;
       var e = suite[pas++];
-      var j = joueurs[e.p];
-      var de = j.net;
-      j.net += e.v;
-      j.tickets += 1;
-      if (e.v > 0) j.gagnants += 1;
-
-      var row = ranking.querySelector('[data-id="' + e.p + '"]');
-      var net = row.querySelector(".net");
-      teinte(net, j.net);
-      compter(net, de, j.net);
-      row.querySelector(".sub").textContent = sousLigne(j);
-
-      var tk = document.createElement("div");
-      tk.className = "tk" + (still ? "" : " fresh");
-      var lib = document.createElement("span");
-      lib.textContent = e.t + " · " + j.nom;
-      var mt = document.createElement("b");
-      mt.textContent = euros(e.v);
-      if (e.v < 0) mt.className = "neg";
-      tk.appendChild(lib);
-      tk.appendChild(mt);
-      tickets.insertBefore(tk, tickets.firstElementChild);
-      while (tickets.children.length > 3) tickets.removeChild(tickets.lastElementChild);
-
+      var j = joueurs[e[0]];
+      var de = net(j);
+      j.plays.push([e[1], e[2], e[3]]);
+      remplir(ranking.querySelector('[data-id="' + e[0] + '"]'), true, de);
       var ordre = classer(true);
-      groupe(true);
-      montrerToast(e);
+      table(true);
       addBtn.classList.remove("ping");
       hint.classList.remove("on");
       var tete = joueurs[ordre[0]];
-      annonce.textContent = j.nom + " a noté un ticket " + e.t + ", " + euros(e.v) + ". En tête" + NNBSP + ": " + tete.nom + ", " + euros(tete.net) + ".";
+      annonce.textContent = j.nom + " : " + e[1] + ", " + (e[3] === 0 ? "perdu" : "rapporté " + fmtS(e[3])) + ". En tête" + NNBSP + ": " + tete.nom + ", " + fmtSS(net(tete)) + ".";
       if (pas >= suite.length) resetBtn.hidden = false;
     }
 
-    function rejouer() {
-      joueurs = JSON.parse(depart);
-      pas = 0;
-      Object.keys(joueurs).forEach(function (id) {
-        var row = ranking.querySelector('[data-id="' + id + '"]');
-        var net = row.querySelector(".net");
-        net.textContent = euros(joueurs[id].net);
-        teinte(net, joueurs[id].net);
-        row.querySelector(".sub").textContent = sousLigne(joueurs[id]);
-      });
-      tickets.innerHTML = ticketsDepart;
-      classer(true);
-      groupe(false);
+    initialiser();
+    addBtn.addEventListener("click", ajouter);
+    resetBtn.addEventListener("click", function () {
+      initialiser();
       resetBtn.hidden = true;
       annonce.textContent = "Démo remise à zéro.";
-    }
-
-    addBtn.addEventListener("click", ajouter);
-    resetBtn.addEventListener("click", rejouer);
+    });
 
     // Une seule fois, quand la scène est bien visible : un ticket s'ajoute
     // tout seul pour montrer le geste, puis la main passe au visiteur.
@@ -1262,92 +1381,103 @@
           if (pas === 0) ajouter();
           setTimeout(function () { if (pas > 0 && pas < suite.length) { addBtn.classList.add("ping"); hint.classList.add("on"); } }, 1400);
         }, 1600);
-      }, { threshold: 0.45 });
+      }, { threshold: 0.35 });
       io2.observe(scene);
     }
 
-    /* ---------- « Combien ce ticket a rapporté ? » ---------- */
-    // Comme dans l'app : on choisit le ticket, puis ce qu'il a rapporté
-    // (« Perdu », ou l'un des deux lots les plus fréquents). Le résultat,
-    // c'est le visiteur qui le donne ; la démo n'invente rien.
+    /* ---------- « J'ai gratté ici » : la saisie, comme dans l'app ---------- */
+    // QuickPlayEntryModal en mode solo : « Quel ticket ? », puis « Combien ? »
+    // avec « Perdu », les deux lots les plus fréquents et « Autre… », puis
+    // Enregistrer. Le résultat, c'est le visiteur qui le donne.
     var catalogue = {
       astro: { nom: "Astro", prix: 2, lots: [2, 4] },
       banco: { nom: "Banco", prix: 1, lots: [1, 2] },
       cash: { nom: "Cash", prix: 5, lots: [5, 10] }
     };
-    var choixTicket = "astro";
-    var choixMontant = null;
-    var monNet = 0;
-    var seg = document.getElementById("seg");
+    var choix = null, montant = null;
+    var shTitle = document.getElementById("shTitle");
+    var shSub = document.getElementById("shSub");
+    var g2 = document.getElementById("g2");
+    var step1 = document.getElementById("step1");
+    var step2 = document.getElementById("step2");
+    var prix = document.getElementById("prix");
+    var tlist = document.getElementById("tlist");
     var chips = document.getElementById("chips");
+    var pcard = document.getElementById("pcard");
+    var tpillName = document.getElementById("tpillName");
+    var shHint = document.getElementById("shHint");
     var save = document.getElementById("save");
-    var log = document.getElementById("log");
-    var monNetEl = document.getElementById("monNet");
+    var scNote = document.getElementById("scNote");
 
-    function puce(label, valeur, desactivee) {
+    function etape1() {
+      choix = null; montant = null;
+      shTitle.textContent = "Quel ticket" + NNBSP + "?";
+      shSub.textContent = "Choisis le ticket gratté.";
+      g2.classList.remove("on");
+      step1.hidden = false;
+      step2.hidden = true;
+    }
+
+    function puce(label, valeur, inactive) {
       var b = document.createElement("button");
       b.type = "button";
       b.className = "chip";
       b.setAttribute("role", "radio");
       b.setAttribute("aria-checked", "false");
       b.textContent = label;
-      if (desactivee) {
-        b.setAttribute("aria-disabled", "true");
-        b.title = "Saisie libre : dans l'app";
-      } else {
-        b.dataset.v = valeur;
-      }
+      if (inactive) { b.setAttribute("aria-disabled", "true"); b.title = "Les autres lots et la saisie libre : dans l'app"; }
+      else b.dataset.v = valeur;
       return b;
     }
 
-    function montants() {
-      var t = catalogue[choixTicket];
+    function etape2(k) {
+      choix = k; montant = null;
+      var t = catalogue[k];
+      shTitle.textContent = "Combien" + NNBSP + "?";
+      shSub.textContent = "Combien ce ticket a rapporté" + NNBSP + "?";
+      g2.classList.add("on");
+      tpillName.textContent = t.nom;
       chips.textContent = "";
       chips.appendChild(puce("Perdu", 0));
-      t.lots.forEach(function (l) { chips.appendChild(puce(l + " €", l)); });
+      t.lots.forEach(function (l) { chips.appendChild(puce(fmtS(l), l)); });
       chips.appendChild(puce("Autre…", null, true));
-      choixMontant = null;
+      pcard.classList.remove("set");
+      shHint.hidden = false;
       save.disabled = true;
+      step1.hidden = true;
+      step2.hidden = false;
     }
 
-    seg.addEventListener("click", function (e) {
+    prix.addEventListener("click", function (e) {
       var b = e.target.closest(".chip");
       if (!b) return;
-      choixTicket = b.dataset.k;
-      seg.querySelectorAll(".chip").forEach(function (c) { c.setAttribute("aria-checked", c === b ? "true" : "false"); });
-      montants();
+      var p = +b.dataset.p;
+      prix.querySelectorAll(".chip").forEach(function (c) { c.setAttribute("aria-checked", c === b ? "true" : "false"); });
+      tlist.querySelectorAll(".trow").forEach(function (r) { r.hidden = p !== 0 && +r.dataset.p !== p; });
     });
-
+    tlist.addEventListener("click", function (e) {
+      var r = e.target.closest(".trow");
+      if (r) etape2(r.dataset.k);
+    });
+    document.getElementById("tpill").addEventListener("click", etape1);
+    document.getElementById("shCancel").addEventListener("click", etape1);
     chips.addEventListener("click", function (e) {
       var b = e.target.closest(".chip");
       if (!b || b.getAttribute("aria-disabled") === "true") return;
-      choixMontant = +b.dataset.v;
+      montant = +b.dataset.v;
       chips.querySelectorAll(".chip").forEach(function (c) { c.setAttribute("aria-checked", c === b ? "true" : "false"); });
+      pcard.classList.add("set");
+      shHint.hidden = true;
       save.disabled = false;
     });
-
     save.addEventListener("click", function () {
-      if (choixMontant === null) return;
-      var t = catalogue[choixTicket];
-      var net = choixMontant - t.prix;
-      var de = monNet;
-      monNet += net;
-      var ligne = document.createElement("div");
-      var lib = document.createElement("span");
-      lib.textContent = t.nom + " · " + (choixMontant === 0 ? "perdu" : "rapporté " + euros(choixMontant).replace("+", ""));
-      var b = document.createElement("b");
-      b.textContent = euros(net);
-      teinte(b, net);
-      ligne.appendChild(lib);
-      ligne.appendChild(b);
-      log.insertBefore(ligne, log.firstElementChild);
-      while (log.children.length > 3) log.removeChild(log.lastElementChild);
-      compter(monNetEl, de, monNet);
-      monNetEl.className = monNet < 0 ? "neg" : monNet > 0 ? "pos" : "";
-      montants();
+      if (montant === null || !choix) return;
+      var t = catalogue[choix];
+      scNote.textContent = "Noté dans ta session du jour au Balto" + NNBSP + ": " + t.nom + ", " +
+        (montant === 0 ? "perdu" : "rapporté " + fmtS(montant)) + " (net " + fmtSS(montant - t.prix) + "). Démo, rien n'est enregistré.";
+      etape1();
     });
-
-    montants();
+    etape1();
   })();
 </script>
 </body>
