@@ -25,6 +25,7 @@
   <symbol id="i-download" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/></symbol>
   <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
   <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></symbol>
+  <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2.06 12.35a1 1 0 0 1 0-.7 10.75 10.75 0 0 1 19.88 0 1 1 0 0 1 0 .7 10.75 10.75 0 0 1-19.88 0"/><circle cx="12" cy="12" r="3"/></symbol>
   <symbol id="i-phone" viewBox="0 0 24 24"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"/></symbol>
   <symbol id="jeton" viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="#178A45"/><circle cx="50" cy="50" r="38" fill="none" stroke="#F7C948" stroke-width="7" stroke-dasharray="13 12"/><text x="50" y="52" text-anchor="middle" dominant-baseline="central" font-family="Bricolage Grotesque, Geist, system-ui, sans-serif" font-weight="700" font-size="44" fill="#FCFCF8">D</text></symbol>
 </svg>
@@ -47,16 +48,23 @@
 <main class="doc">
 
   <h1>Jouer doit rester un jeu.</h1>
-  <p class="lede">Dooka est un carnet, pas un casino. On n'encaisse aucun pari, on ne verse aucun gain, et l'application est construite pour ne jamais pousser à jouer davantage. Voici comment, et où trouver de l'aide si le jeu prend trop de place.</p>
+  <p class="lede">Dooka est un carnet, pas un casino. On n'encaisse aucun pari, on ne verse aucun gain, et l'application n'a rien à gagner à ce que vous jouiez davantage. Voici ce qu'elle fait et ne fait pas, et où trouver de l'aide si le jeu prend trop de place.</p>
 
   <h2>Ce que Dooka ne fait pas</h2>
   <p>Ce sont des choix assumés, et l'application s'y tient.</p>
   <ul class="marks">
-    <li><span class="m no" aria-hidden="true"><svg class="i"><use href="#i-x"/></svg></span><span><b>Aucun gain potentiel n'est affiché.</b> Ni gros lot à côté d'un ticket qu'on n'a pas acheté, ni taux de retour, ni « ce que vous auriez pu gagner ». On ne montre que ce qui a réellement été joué et gagné.</span></li>
+    <li><span class="m no" aria-hidden="true"><svg class="i"><use href="#i-x"/></svg></span><span><b>Aucun gros lot n'est mis en avant.</b> Un ticket affiche sa vraie chance de gain, pas le montant qu'on pourrait toucher ; sa fiche donne le tableau complet des lots, sans en désigner aucun. Et jamais de « ce que vous auriez pu gagner » : vos bilans ne comptent que ce qui a réellement été joué et gagné.</span></li>
     <li><span class="m no" aria-hidden="true"><svg class="i"><use href="#i-x"/></svg></span><span><b>Aucune série à entretenir.</b> Pas de « connectez-vous 7 jours d'affilée », pas de bonus de fréquence, pas de félicitations pour une série de soirées gagnantes.</span></li>
     <li><span class="m no" aria-hidden="true"><svg class="i"><use href="#i-x"/></svg></span><span><b>Aucun compte à rebours, aucune échéance.</b> Rien n'expire, rien ne presse.</span></li>
     <li><span class="m no" aria-hidden="true"><svg class="i"><use href="#i-x"/></svg></span><span><b>Aucune publicité, aucun partenariat avec un opérateur de jeu.</b> Dooka est gratuite et indépendante — elle n'a aucun intérêt à ce que vous jouiez plus.</span></li>
     <li><span class="m no" aria-hidden="true"><svg class="i"><use href="#i-x"/></svg></span><span><b>Aucun classement de perdants.</b> Les comparaisons entre amis portent sur des bilans réels, elles ne fixent pas d'objectif à atteindre.</span></li>
+  </ul>
+
+  <h2>Ce que l'application montre</h2>
+  <p>Deux choses mettent en avant des gains réels, et vous le savez avant de commencer.</p>
+  <ul class="marks">
+    <li><span class="m info" aria-hidden="true"><svg class="i"><use href="#i-eye"/></svg></span><span><b>Le record de chaque bar.</b> Le plus gros gain noté dans un bar apparaît sur sa fiche, avec le nom du joueur et le montant. Un gain de 100 € ou plus n'y figure que si la photo du ticket a été jointe.</span></li>
+    <li><span class="m info" aria-hidden="true"><svg class="i"><use href="#i-eye"/></svg></span><span><b>Les gros gains de vos amis.</b> Une notification quand un ami gagne 50 € ou dix fois le prix de son ticket. Elle est activée par défaut et se coupe dans les réglages de l'application.</span></li>
   </ul>
 
   <h2>Ce que l'application vous donne</h2>

@@ -167,6 +167,8 @@ code { font-family: var(--mono); font-size: .87em; background: var(--card); padd
 .marks .m .i { width: 15px; height: 15px; stroke-width: 2.4; }
 .marks .yes { background: rgba(60, 194, 120, .14); color: var(--green); }
 .marks .no { background: rgba(255, 115, 119, .10); color: var(--neg); }
+.marks .info { background: rgba(255, 255, 255, .06); color: var(--text-2); }
+.marks .info .i { stroke-width: 2; }
 .marks b { display: block; }
 
 /* L'aide : la seule chose qu'il faut trouver sans lire. */
