@@ -1,0 +1,228 @@
+/* --------------------------------------------------------------------
+   Dooka — pages de lecture (confidentialité, jeu responsable, compte)
+   --------------------------------------------------------------------
+   Même monde que l'accueil (voir DESIGN.md) : fond d'encre légèrement
+   vert, titres en Bricolage Grotesque, texte en Geist, le vert comme
+   seule couleur d'action. Ici la page se lit : une colonne de 720 px,
+   du texte clair, des filets plutôt que des cartes.
+   -------------------------------------------------------------------- */
+@font-face {
+  font-family: "Bricolage Grotesque";
+  src: url("/fonts/bricolage-grotesque.woff2") format("woff2");
+  font-weight: 500 800;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Geist";
+  src: url("/fonts/geist.woff2") format("woff2");
+  font-weight: 300 800;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Geist Mono";
+  src: url("/fonts/geist-mono.woff2") format("woff2");
+  font-weight: 400 600;
+  font-display: swap;
+}
+
+:root {
+  --bg: #070B09;
+  --bg-raise: #0B110E;
+  --surface: #0F1311;
+  --card: #1A201D;
+  --line: rgba(255, 255, 255, .08);
+  --line-2: rgba(255, 255, 255, .13);
+  --text: #F1F4F0;
+  --read: #D3D9D4;
+  --text-2: #A6AEA8;
+  --text-3: #7C847F;
+  --green: #3CC278;
+  --green-ink: #07140B;
+  --neg: #FF7377;
+
+  --display: "Bricolage Grotesque", "Geist", system-ui, sans-serif;
+  --font: "Geist", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --mono: "Geist Mono", ui-monospace, "SF Mono", Consolas, monospace;
+  --maxw: 1200px;
+  --col: 720px;
+  --gut: clamp(20px, 4vw, 40px);
+  --ease: cubic-bezier(.16, 1, .3, 1);
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+html { -webkit-text-size-adjust: 100%; scroll-padding-top: 80px; scrollbar-color: #2B3430 var(--bg); color-scheme: dark; }
+img, svg { max-width: 100%; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 17px;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+a { color: var(--green); text-underline-offset: 3px; text-decoration-thickness: 1px; }
+a:hover { color: #6FD69C; }
+::selection { background: rgba(60, 194, 120, .35); color: #fff; }
+:focus-visible { outline: 2px solid var(--green); outline-offset: 3px; border-radius: 6px; }
+[hidden] { display: none !important; }
+
+.i { width: 18px; height: 18px; flex-shrink: 0; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 var(--gut); }
+
+/* ---------- Boutons ---------- */
+
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  min-height: 44px; padding: 0 18px;
+  border-radius: 999px; border: 1px solid transparent;
+  font: 500 15px/1 var(--font); letter-spacing: -.1px;
+  text-decoration: none; cursor: pointer; white-space: nowrap;
+  transition: background-color .2s var(--ease), border-color .2s var(--ease), color .2s var(--ease), transform .2s var(--ease);
+}
+.btn:active { transform: scale(.98); }
+.btn .i { width: 16px; height: 16px; }
+.btn-light { background: var(--text); color: #0B0D0C; box-shadow: 0 1px 0 rgba(255,255,255,.4) inset, 0 8px 24px rgba(0,0,0,.35); }
+.btn-light:hover { background: #fff; color: #0B0D0C; }
+.btn-ghost { background: rgba(255,255,255,.04); color: var(--text); border-color: var(--line-2); }
+.btn-ghost:hover { background: rgba(255,255,255,.08); border-color: rgba(255,255,255,.22); color: var(--text); }
+.btn-green { background: var(--green); color: var(--green-ink); }
+.btn-green:hover { background: #52CF89; color: var(--green-ink); }
+.btn-green:disabled { opacity: .5; cursor: default; }
+.btn-lg { min-height: 50px; padding: 0 22px; font-size: 16px; }
+.btn-block { display: flex; width: 100%; }
+
+/* ---------- Navigation ---------- */
+
+.nav { position: sticky; top: 0; z-index: 50; background: rgba(7, 11, 9, .72); border-bottom: 1px solid var(--line); -webkit-backdrop-filter: saturate(160%) blur(14px); backdrop-filter: saturate(160%) blur(14px); }
+.nav-in { display: flex; align-items: center; gap: 32px; height: 64px; }
+.brand { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; font-weight: 600; font-size: 16px; letter-spacing: -.2px; color: var(--text); text-decoration: none; }
+.brand:hover { color: var(--text); }
+.jeton { width: 26px; height: 26px; display: block; }
+.nav-links { display: flex; gap: 4px; }
+.nav-links a { padding: 8px 12px; border-radius: 8px; font-size: 14px; color: var(--text-2); text-decoration: none; transition: color .2s var(--ease), background-color .2s var(--ease); }
+.nav-links a:hover, .nav-links a[aria-current="page"] { color: var(--text); background: rgba(255,255,255,.04); }
+.nav-cta { margin-left: auto; display: flex; gap: 8px; align-items: center; }
+.nav .btn { min-height: 38px; padding: 0 14px; font-size: 14px; }
+
+/* ---------- L'article ---------- */
+
+.doc { max-width: calc(var(--col) + 2 * var(--gut)); margin: 0 auto; padding: clamp(48px, 7vw, 88px) var(--gut) 40px; position: relative; overflow-x: clip; }
+.doc::before {
+  content: "";
+  position: absolute; left: 50%; top: -64px; width: 900px; height: 480px; margin-left: -450px;
+  background: radial-gradient(closest-side, rgba(60, 194, 120, .09), transparent);
+  pointer-events: none; z-index: -1;
+}
+.doc h1 { margin: 0; font-family: var(--display); font-weight: 600; font-size: clamp(36px, 5.4vw, 60px); line-height: 1.02; letter-spacing: -.026em; text-wrap: balance; }
+.doc .updated { margin: 14px 0 0; font-size: 13px; color: var(--text-3); }
+.updated time { font-family: var(--mono); font-size: 12px; }
+.doc .lede { margin: 22px 0 0; font-size: clamp(18px, 1.8vw, 20px); line-height: 1.55; color: var(--text-2); text-wrap: pretty; }
+.doc .lede strong { color: var(--text); font-weight: 500; }
+
+.doc h2 { margin: 56px 0 10px; padding-top: 28px; border-top: 1px solid var(--line); font-family: var(--display); font-weight: 600; font-size: 26px; line-height: 1.15; letter-spacing: -.015em; text-wrap: balance; }
+.doc h3 { margin: 28px 0 4px; font-size: 17px; font-weight: 600; color: var(--text); }
+.doc p, .doc li { color: var(--read); }
+.doc p { margin: 12px 0; text-wrap: pretty; }
+.doc b, .doc strong { color: var(--text); font-weight: 600; }
+.doc ul { margin: 12px 0; padding-left: 22px; }
+.doc li { margin: 8px 0; }
+.doc li::marker { color: var(--text-3); }
+.doc .muted { color: var(--text-3); }
+code { font-family: var(--mono); font-size: .87em; background: var(--card); padding: 1px 6px; border-radius: 5px; }
+
+/* Encadrés : une surface et un filet, rien de plus. */
+.box { margin: 26px 0; padding: 18px 20px; border-radius: 14px; background: var(--surface); border: 1px solid var(--line-2); }
+.box p:first-child { margin-top: 0; }
+.box p:last-child { margin-bottom: 0; }
+.box.accent { background: rgba(60, 194, 120, .07); border-color: rgba(60, 194, 120, .28); }
+
+/* Tableau de lecture */
+.scroll { overflow-x: auto; margin: 20px 0; }
+.doc table { width: 100%; min-width: 560px; border-collapse: collapse; font-size: 15px; line-height: 1.55; }
+.doc th, .doc td { text-align: left; padding: 12px 12px 12px 0; border-bottom: 1px solid var(--line); vertical-align: top; color: var(--read); }
+.doc th { font-size: 13px; font-weight: 500; color: var(--text-3); }
+.doc td:first-child { color: var(--text); font-weight: 500; }
+
+/* Étapes numérotées : la séquence porte l'information. */
+.steps { counter-reset: s; list-style: none; padding: 0 !important; margin: 22px 0; }
+.steps li { counter-increment: s; position: relative; padding-left: 48px; margin: 18px 0; }
+.steps li::before {
+  content: counter(s); position: absolute; left: 0; top: 0;
+  width: 30px; height: 30px; border-radius: 50%;
+  background: rgba(60, 194, 120, .16); color: var(--green);
+  font: 600 13px/30px var(--mono); text-align: center;
+}
+.steps b { display: block; }
+.steps span { color: var(--text-2); font-size: 15px; }
+
+/* Listes « fait / ne fait pas » */
+.marks { list-style: none; padding: 0 !important; margin: 18px 0; border-top: 1px solid var(--line); }
+.marks li { display: grid; grid-template-columns: 32px 1fr; gap: 14px; align-items: start; margin: 0; padding: 16px 0; border-bottom: 1px solid var(--line); }
+.marks .m { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+.marks .m .i { width: 15px; height: 15px; stroke-width: 2.4; }
+.marks .yes { background: rgba(60, 194, 120, .14); color: var(--green); }
+.marks .no { background: rgba(255, 115, 119, .10); color: var(--neg); }
+.marks b { display: block; }
+
+/* L'aide : la seule chose qu'il faut trouver sans lire. */
+.aide { margin: 40px 0; padding: 28px; border-radius: 20px; background: linear-gradient(180deg, #102018, var(--surface)); border: 1px solid rgba(60, 194, 120, .35); position: relative; overflow: hidden; }
+.aide::before { content: ""; position: absolute; left: 12%; right: 12%; top: -1px; height: 1px; background: linear-gradient(90deg, transparent, rgba(60,194,120,.8), rgba(255,255,255,.5), rgba(60,194,120,.8), transparent); }
+.aide h2 { margin: 0 0 8px !important; padding: 0 !important; border: 0 !important; }
+.aide .numero { display: inline-flex; align-items: center; gap: 12px; margin: 8px 0 4px; font-family: var(--display); font-weight: 600; font-size: clamp(32px, 6vw, 44px); letter-spacing: -.02em; color: var(--text); text-decoration: none; font-variant-numeric: tabular-nums; }
+.aide .numero .i { width: 28px; height: 28px; color: var(--green); }
+.aide .numero:hover { color: #fff; }
+
+/* Formulaire (page de confirmation) */
+.status { width: 56px; height: 56px; border-radius: 16px; display: flex; align-items: center; justify-content: center; margin-bottom: 24px; }
+.status .i { width: 26px; height: 26px; }
+.status.ok { background: rgba(60, 194, 120, .14); color: var(--green); }
+.status.ko { background: rgba(255, 115, 119, .12); color: var(--neg); }
+.status.wait { background: var(--card); color: var(--text-2); }
+.status.wait .i { animation: spin 1.1s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.field { margin-top: 22px; }
+.field label { display: block; font-size: 14px; font-weight: 500; color: var(--text); margin-bottom: 8px; }
+.field input { width: 100%; min-height: 50px; padding: 0 16px; border-radius: 12px; border: 1px solid var(--line-2); background: var(--surface); color: var(--text); font: 400 16px var(--font); transition: border-color .2s var(--ease), box-shadow .2s var(--ease); }
+.field input:focus { outline: none; border-color: var(--green); box-shadow: 0 0 0 3px rgba(60, 194, 120, .2); }
+.doc .hint { margin: 8px 0 0; font-size: 14px; color: var(--text-3); }
+.doc .err { margin: 16px 0 0; font-size: 15px; color: var(--neg); }
+
+/* ---------- Pied ---------- */
+
+footer { border-top: 1px solid var(--line); margin-top: 72px; }
+.foot { display: grid; grid-template-columns: 1.4fr repeat(3, 1fr); gap: 32px; padding: 56px 0 40px; }
+.foot h3 { margin: 0 0 10px; font-size: 13px; font-weight: 500; color: var(--text); }
+.foot ul { list-style: none; margin: 0; padding: 0; }
+.foot li a { display: inline-flex; align-items: center; min-height: 40px; font-size: 14px; color: var(--text-2); text-decoration: none; transition: color .2s var(--ease); }
+.foot li a:hover { color: var(--text); }
+.foot .tag { margin: 8px 0 0; font-size: 14px; color: var(--text-3); }
+.fine { padding: 24px 0 48px; border-top: 1px solid var(--line); display: grid; gap: 10px; font-size: 13px; line-height: 1.55; color: var(--text-3); }
+.fine p { margin: 0; max-width: 100ch; }
+.fine strong { color: var(--text-2); font-weight: 500; }
+.fine a { color: var(--text); white-space: nowrap; }
+
+@media (max-width: 420px) {
+  .doc .btn-lg { white-space: normal; text-align: center; line-height: 1.3; padding-top: 12px; padding-bottom: 12px; width: 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .status.wait .i { animation: none; }
+}
+
+@media (max-width: 900px) {
+  .nav-links { display: none; }
+  .foot { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 560px) {
+  .nav-in { gap: 12px; }
+  .nav .btn-ghost { display: none; }
+  .doc h2 { margin-top: 44px; padding-top: 24px; font-size: 23px; }
+  .aide { padding: 22px; }
+  .foot { grid-template-columns: 1fr; gap: 24px; }
+}

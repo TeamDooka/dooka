@@ -12,346 +12,120 @@
 <meta property="og:image" content="https://dooka.fr/og.jpg" />
 <meta property="og:locale" content="fr_FR" />
 <meta property="og:site_name" content="Dooka" />
-<meta name="theme-color" content="#15191F" />
+<meta name="theme-color" content="#070B09" />
+<meta name="color-scheme" content="dark" />
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%23178A45'/><text x='50' y='68' font-size='58' text-anchor='middle' font-family='sans-serif' font-weight='700' fill='%23F7F3E9'>D</text></svg>" />
+<link rel="preload" href="/fonts/bricolage-grotesque.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="preload" href="/fonts/geist.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="stylesheet" href="/assets/site.css" />
 </head>
 <body>
-<style>
-  /* Même palette que la page d'accueil refaite : bandes d'encre en haut et
-     en bas, corps crème. Les deux autres pages légales sont restées dans
-     l'ancienne palette — elles suivront. */
-  :root {
-    --ink: #15191F;
-    --ink-2: #2A2F36;
-    --on-ink: #F5F3EE;
-    --on-ink-dim: #C9CDD4;
 
-    --ground: #F5F3EE;
-    --surface: #FFFFFF;
-    --text: #15191F;
-    --text-dim: #5F6672;
-    --hair: rgba(20, 25, 31, .07);
-    --shadow: 0 1px 2px rgba(20, 25, 31, .05);
-    --rule: #E4E0D6;
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-download" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></symbol>
+  <symbol id="i-phone" viewBox="0 0 24 24"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"/></symbol>
+  <symbol id="jeton" viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="#178A45"/><circle cx="50" cy="50" r="38" fill="none" stroke="#F7C948" stroke-width="7" stroke-dasharray="13 12"/><text x="50" y="52" text-anchor="middle" dominant-baseline="central" font-family="Bricolage Grotesque, Geist, system-ui, sans-serif" font-weight="700" font-size="44" fill="#FCFCF8">D</text></symbol>
+</svg>
 
-    --gold: #F7C948;
-    --gold-ink: #1E1E1E;
-    --gold-deep: #9A6E05;
-    --green: #178A45;
-    --green-link: #0F5A2A;
-    --alert: #C32B30;
-
-    --font: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    --mono: ui-monospace, Menlo, "SF Mono", "JetBrains Mono", Consolas, monospace;
-    --maxw: 760px;
-  }
-
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --ground: #0E1216;
-      --surface: #171C22;
-      --text: #F1EFE7;
-      --text-dim: #98A0AB;
-      --hair: rgba(255, 255, 255, .08);
-      --shadow: 0 1px 2px rgba(0, 0, 0, .3);
-      --rule: #2A323A;
-      --gold-deep: #F0C15C;
-      --green-link: #3FBE72;
-      --alert: #E4676B;
-    }
-  }
-
-  * { box-sizing: border-box; }
-  html, body { margin: 0; padding: 0; }
-
-  body {
-    background: var(--ground);
-    color: var(--text);
-    font-family: var(--font);
-    font-size: 17px;
-    line-height: 1.6;
-    -webkit-font-smoothing: antialiased;
-    overflow-x: hidden;
-  }
-
-  a { color: var(--green-link); }
-  a:hover { color: var(--green); }
-  :focus-visible { outline: 2px solid var(--green); outline-offset: 3px; border-radius: 4px; }
-  ::selection { background: var(--gold); color: var(--gold-ink); }
-
-  .band-ink { background: var(--ink); color: var(--on-ink); }
-
-  .topbar {
-    max-width: var(--maxw);
-    margin: 0 auto;
-    padding: 18px 24px;
-    display: flex;
-    align-items: center;
-    gap: 16px;
-  }
-  .brand {
-    display: flex;
-    align-items: center;
-    gap: 9px;
-    color: var(--on-ink);
-    text-decoration: none;
-    font-weight: 700;
-    font-size: 17px;
-    letter-spacing: -.2px;
-  }
-  .brand:hover { color: var(--on-ink); }
-  .jeton { width: 30px; height: 30px; flex-shrink: 0; display: block; }
-  .back { margin-left: auto; font-size: 13px; font-weight: 600; color: var(--on-ink-dim); text-decoration: none; }
-  .back:hover { color: var(--gold); }
-
-  .hero {
-    max-width: var(--maxw);
-    margin: 0 auto;
-    padding: 20px 24px 48px;
-  }
-  .eyebrow {
-    font-family: var(--mono);
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: .9px;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin: 0 0 16px;
-  }
-  .hero h1 {
-    font-size: clamp(32px, 8vw, 50px);
-    line-height: 1.02;
-    font-weight: 800;
-    letter-spacing: -1.6px;
-    margin: 0 0 16px;
-    text-wrap: balance;
-  }
-  .hero p {
-    font-size: 17px;
-    color: var(--on-ink-dim);
-    margin: 0;
-    max-width: 52ch;
-    text-wrap: pretty;
-  }
-
-  main { max-width: var(--maxw); margin: 0 auto; padding: 48px 24px 24px; }
-
-  section { margin-bottom: 44px; }
-  h2 {
-    font-size: 26px;
-    font-weight: 800;
-    letter-spacing: -.5px;
-    margin: 0 0 14px;
-    text-wrap: balance;
-  }
-  p { margin: 0 0 14px; max-width: 68ch; text-wrap: pretty; }
-  strong { font-weight: 700; }
-
-  ul { margin: 0 0 14px; padding-left: 20px; max-width: 68ch; }
-  li { margin-bottom: 8px; }
-
-  .card {
-    background: var(--surface);
-    border: 1px solid var(--hair);
-    box-shadow: var(--shadow);
-    border-radius: 14px;
-    padding: 20px 22px;
-    margin-bottom: 14px;
-  }
-  .card h3 { font-size: 17px; font-weight: 700; margin: 0 0 6px; }
-  .card p { font-size: 15px; line-height: 21px; color: var(--text-dim); margin: 0; }
-
-  /* Le bloc d'aide, en jaune plein : c'est la seule chose de cette page
-     qu'il faut pouvoir trouver sans lire, et le numéro doit rester
-     composable au doigt. */
-  .aide {
-    background: var(--gold);
-    color: var(--gold-ink);
-    border-radius: 14px;
-    padding: 26px 24px;
-  }
-  .aide h2 { margin-bottom: 10px; }
-  .aide p { color: var(--gold-ink); max-width: 60ch; }
-  .aide a { color: var(--gold-ink); font-weight: 700; }
-  .numero {
-    display: inline-block;
-    font-size: clamp(28px, 7vw, 38px);
-    font-weight: 800;
-    letter-spacing: -1px;
-    font-variant-numeric: tabular-nums;
-    text-decoration: none;
-    margin: 6px 0 4px;
-  }
-  .numero:hover { text-decoration: underline; }
-
-  footer { background: var(--ink); color: var(--on-ink-dim); }
-  .foot {
-    max-width: var(--maxw);
-    margin: 0 auto;
-    padding: 32px 24px 40px;
-    display: flex;
-    gap: 24px;
-    flex-wrap: wrap;
-    align-items: flex-start;
-  }
-  .foot-links { display: flex; gap: 18px; flex-wrap: wrap; }
-  .foot-links a { font-size: 13px; color: var(--on-ink-dim); text-decoration: none; }
-  .foot-links a:hover { color: var(--gold); }
-  .legal { flex: 1; min-width: min(300px, 100%); display: flex; flex-direction: column; gap: 8px; }
-  .legal p { font-size: 13px; line-height: 1.5; margin: 0; color: var(--on-ink-dim); }
-  .legal strong { color: var(--on-ink); }
-  .legal .warn { font-size: 11px; line-height: 1.45; }
-  .legal .warn a { color: var(--gold); }
-</style>
-
-<div class="band-ink">
-  <header class="topbar">
-    <a class="brand" href="/">
-      <span class="jeton" aria-hidden="true"><svg viewBox="0 0 100 100" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="48" fill="#178A45"/><circle cx="50" cy="50" r="38" fill="none" stroke="#F7C948" stroke-width="7" stroke-dasharray="13 12"/><text x="50" y="52" text-anchor="middle" dominant-baseline="central" font-family="system-ui, sans-serif" font-weight="700" font-size="42" fill="#F7F3E9">D</text></svg></span>
-      Dooka
-    </a>
-    <a class="back" href="/">← Retour à l'accueil</a>
-  </header>
-
-  <div class="hero">
-    <p class="eyebrow">Jeu responsable</p>
-    <h1>Jouer doit rester un jeu.</h1>
-    <p>
-      Dooka est un carnet, pas un casino. On n'encaisse aucun pari, on ne verse aucun gain, et
-      l'application est construite pour ne jamais pousser à jouer davantage. Voici comment, et où
-      trouver de l'aide si le jeu prend trop de place.
-    </p>
+<header class="nav">
+  <div class="wrap nav-in">
+    <a class="brand" href="/"><svg class="jeton" aria-hidden="true"><use href="#jeton"/></svg>Dooka</a>
+    <nav class="nav-links" aria-label="Site">
+      <a href="/#fonctions">Fonctionnalités</a>
+      <a href="/jeu-responsable.html" aria-current="page">Jeu responsable</a>
+      <a href="/#rejoindre">Rejoindre une bande</a>
+    </nav>
+    <div class="nav-cta">
+      <a class="btn btn-ghost" href="https://play.google.com/apps/testing/fr.dooka.app">Google Play · test fermé</a>
+      <a class="btn btn-light" href="https://github.com/TeamDooka/dooka/releases/latest/download/dooka.apk"><svg class="i" aria-hidden="true"><use href="#i-download"/></svg>Télécharger</a>
+    </div>
   </div>
-</div>
+</header>
 
-<main>
-  <section>
-    <h2>Ce que Dooka ne fait pas</h2>
-    <p>
-      Ce ne sont pas des intentions : ce sont des choses qui ont été retirées de l'application,
-      parfois après avoir été construites.
-    </p>
-    <ul>
-      <li>
-        <strong>Aucun gain potentiel n'est affiché.</strong> Ni gros lot à côté d'un ticket qu'on
-        n'a pas acheté, ni taux de retour, ni « ce que vous auriez pu gagner ». On ne montre que ce
-        qui a réellement été joué et gagné.
-      </li>
-      <li>
-        <strong>Aucune série à entretenir.</strong> Pas de « connectez-vous 7 jours d'affilée », pas
-        de bonus de fréquence. Un système de points récompensant la régularité de jeu a été
-        abandonné pour cette raison.
-      </li>
-      <li>
-        <strong>Aucun compte à rebours, aucune échéance.</strong> Rien n'expire, rien ne presse.
-      </li>
-      <li>
-        <strong>Aucune publicité, aucun partenariat</strong> avec un opérateur de jeu. Dooka est
-        gratuite et indépendante — elle n'a aucun intérêt à ce que vous jouiez plus.
-      </li>
-      <li>
-        <strong>Aucun classement de perdants.</strong> Les comparaisons entre amis portent sur des
-        bilans réels, elles ne fixent pas d'objectif à atteindre.
-      </li>
-    </ul>
+<main class="doc">
+
+  <h1>Jouer doit rester un jeu.</h1>
+  <p class="lede">Dooka est un carnet, pas un casino. On n'encaisse aucun pari, on ne verse aucun gain, et l'application est construite pour ne jamais pousser à jouer davantage. Voici comment, et où trouver de l'aide si le jeu prend trop de place.</p>
+
+  <h2>Ce que Dooka ne fait pas</h2>
+  <p>Ce sont des choix assumés, et l'application s'y tient.</p>
+  <ul class="marks">
+    <li><span class="m no" aria-hidden="true"><svg class="i"><use href="#i-x"/></svg></span><span><b>Aucun gain potentiel n'est affiché.</b> Ni gros lot à côté d'un ticket qu'on n'a pas acheté, ni taux de retour, ni « ce que vous auriez pu gagner ». On ne montre que ce qui a réellement été joué et gagné.</span></li>
+    <li><span class="m no" aria-hidden="true"><svg class="i"><use href="#i-x"/></svg></span><span><b>Aucune série à entretenir.</b> Pas de « connectez-vous 7 jours d'affilée », pas de bonus de fréquence, pas de félicitations pour une série de soirées gagnantes.</span></li>
+    <li><span class="m no" aria-hidden="true"><svg class="i"><use href="#i-x"/></svg></span><span><b>Aucun compte à rebours, aucune échéance.</b> Rien n'expire, rien ne presse.</span></li>
+    <li><span class="m no" aria-hidden="true"><svg class="i"><use href="#i-x"/></svg></span><span><b>Aucune publicité, aucun partenariat avec un opérateur de jeu.</b> Dooka est gratuite et indépendante — elle n'a aucun intérêt à ce que vous jouiez plus.</span></li>
+    <li><span class="m no" aria-hidden="true"><svg class="i"><use href="#i-x"/></svg></span><span><b>Aucun classement de perdants.</b> Les comparaisons entre amis portent sur des bilans réels, elles ne fixent pas d'objectif à atteindre.</span></li>
+  </ul>
+
+  <h2>Ce que l'application vous donne</h2>
+  <p>Trois outils, dans votre profil, sous « Mes limites ».</p>
+  <ul class="marks">
+    <li><span class="m yes" aria-hidden="true"><svg class="i"><use href="#i-check"/></svg></span><span><b>Un budget hebdomadaire.</b> Vous fixez un montant, sur sept jours glissants ; l'application n'en propose aucun. Elle vous montre où vous en êtes par rapport à lui, sans jamais vous en empêcher — c'est un miroir, pas une barrière.</span></li>
+    <li><span class="m yes" aria-hidden="true"><svg class="i"><use href="#i-check"/></svg></span><span><b>Un rappel de durée.</b> Une notification toutes les 30, 45 ou 60 minutes pendant une session, selon votre choix. Le temps passe vite au comptoir.</span></li>
+    <li><span class="m yes" aria-hidden="true"><svg class="i"><use href="#i-check"/></svg></span><span><b>Une pause.</b> Suspendre votre suivi pendant 7, 30 ou 90 jours : le rappel de durée se tait, vos données restent, et vous levez la pause quand vous voulez.</span></li>
+  </ul>
+  <p>Et à tout moment, vous pouvez <a href="/suppression-compte.html">supprimer votre compte</a> : profil, historique et photos sont effacés définitivement.</p>
+
+  <h2>Les signes qui doivent alerter</h2>
+  <p>Le jeu devient un problème bien avant qu'on se l'avoue. Quelques signaux :</p>
+  <ul>
+    <li>jouer plus longtemps ou plus gros que prévu, régulièrement ;</li>
+    <li>rejouer pour « se refaire » après une perte ;</li>
+    <li>emprunter, ou puiser dans un budget prévu pour autre chose ;</li>
+    <li>cacher à ses proches combien on joue ;</li>
+    <li>y penser souvent, en dehors des moments de jeu ;</li>
+    <li>ressentir de l'irritation ou du vide quand on ne peut pas jouer.</li>
+  </ul>
+  <p>Un doute suffit pour en parler. Le test d'auto-évaluation de Joueurs Info Service prend quelques minutes et il est anonyme.</p>
+
+  <section class="aide" aria-labelledby="aide-t">
+    <h2 id="aide-t">Besoin d'en parler ?</h2>
+    <p><strong>Joueurs Info Service</strong> — anonyme, gratuit, 7 jours sur 7 de 8 h à 2 h.</p>
+    <a class="numero" href="tel:0974751313"><svg class="i" aria-hidden="true"><use href="#i-phone"/></svg>09 74 75 13 13</a>
+    <p>Appel non surtaxé. Également par chat et par e-mail sur <a href="https://www.joueurs-info-service.fr" target="_blank" rel="noopener">joueurs-info-service.fr</a>, qui propose aussi un accompagnement pour les proches.</p>
+    <p>Pour vous faire <strong>interdire de jeu</strong>, la démarche se fait auprès de l'Autorité nationale des jeux : <a href="https://anj.fr" target="_blank" rel="noopener">anj.fr</a>.</p>
   </section>
 
-  <section>
-    <h2>Ce que l'application vous donne</h2>
-    <p>Trois outils, dans votre profil, sous « Mes limites ».</p>
+  <h2>Ce que Dooka n'est pas</h2>
+  <p>Dooka <strong>ne permet ni de jouer, ni de parier, ni de recevoir de l'argent</strong>. C'est un carnet de suivi et un outil entre amis. Les tickets et les courses dont il est question se jouent ailleurs, dans un point de vente.</p>
+  <p>L'application est <strong>réservée aux personnes majeures</strong> et n'est affiliée ni au PMU, ni à la Française des Jeux. Les marques citées appartiennent à leurs propriétaires respectifs et ne servent qu'à décrire les points de vente et les jeux référencés.</p>
 
-    <div class="card">
-      <h3>Un budget hebdomadaire</h3>
-      <p>
-        Vous fixez un montant pour la semaine. L'application vous montre où vous en êtes par rapport
-        à lui, sans jamais vous en empêcher — c'est un miroir, pas une barrière.
-      </p>
-    </div>
-    <div class="card">
-      <h3>Un rappel de durée</h3>
-      <p>
-        Une notification au bout du temps que vous avez choisi, pendant une session. Le temps passe
-        vite au comptoir.
-      </p>
-    </div>
-    <div class="card">
-      <h3>Une pause</h3>
-      <p>
-        Suspendre votre suivi pendant 7, 30 ou 90 jours. Vos données restent, l'application se tait.
-      </p>
-    </div>
-
-    <p>
-      Et à tout moment, vous pouvez
-      <a href="/suppression-compte.html">supprimer votre compte</a> : profil, historique et photos
-      sont effacés définitivement.
-    </p>
-  </section>
-
-  <section>
-    <h2>Les signes qui doivent alerter</h2>
-    <p>Le jeu devient un problème bien avant qu'on se l'avoue. Quelques signaux :</p>
-    <ul>
-      <li>jouer plus longtemps ou plus gros que prévu, régulièrement ;</li>
-      <li>rejouer pour « se refaire » après une perte ;</li>
-      <li>emprunter, ou puiser dans un budget prévu pour autre chose ;</li>
-      <li>cacher à ses proches combien on joue ;</li>
-      <li>y penser souvent, en dehors des moments de jeu ;</li>
-      <li>ressentir de l'irritation ou du vide quand on ne peut pas jouer.</li>
-    </ul>
-    <p>
-      Un doute suffit pour en parler. Le test d'auto-évaluation de Joueurs Info Service prend
-      quelques minutes et il est anonyme.
-    </p>
-  </section>
-
-  <section>
-    <div class="aide">
-      <h2>Besoin d'en parler ?</h2>
-      <p><strong>Joueurs Info Service</strong> — anonyme, gratuit, 7 jours sur 7 de 8 h à 2 h.</p>
-      <a class="numero" href="tel:0974751313">09 74 75 13 13</a>
-      <p>
-        Appel non surtaxé. Également par chat et par e-mail sur
-        <a href="https://www.joueurs-info-service.fr" target="_blank" rel="noopener">joueurs-info-service.fr</a>,
-        qui propose aussi un accompagnement pour les proches.
-      </p>
-      <p>
-        Pour vous faire <strong>interdire de jeu</strong>, la démarche se fait auprès de l'Autorité
-        nationale des jeux :
-        <a href="https://anj.fr" target="_blank" rel="noopener">anj.fr</a>.
-      </p>
-    </div>
-  </section>
-
-  <section>
-    <h2>Ce que Dooka n'est pas</h2>
-    <p>
-      Dooka <strong>ne permet ni de jouer, ni de parier, ni de recevoir de l'argent</strong>. C'est
-      un carnet de suivi et un outil entre amis. Les tickets et les courses dont il est question se
-      jouent ailleurs, dans un point de vente.
-    </p>
-    <p>
-      L'application est <strong>réservée aux personnes majeures</strong> et n'est affiliée ni au
-      PMU, ni à la Française des Jeux. Les marques citées appartiennent à leurs propriétaires
-      respectifs et ne servent qu'à décrire les points de vente et les jeux référencés.
-    </p>
-  </section>
 </main>
 
 <footer>
-  <div class="foot">
-    <div class="foot-links">
-      <a href="/">Accueil</a>
-      <a href="/confidentialite.html">Confidentialité</a>
-      <a href="/jeu-responsable.html">Jeu responsable</a>
-      <a href="/suppression-compte.html">Supprimer mon compte</a>
+  <div class="wrap">
+    <div class="foot">
+      <div>
+        <a class="brand" href="/"><svg class="jeton" aria-hidden="true"><use href="#jeton"/></svg>Dooka</a>
+        <p class="tag">Le PMU entre potes.</p>
+      </div>
+      <div>
+        <h3>L'appli</h3>
+        <ul>
+          <li><a href="https://github.com/TeamDooka/dooka/releases/latest/download/dooka.apk">Télécharger pour Android</a></li>
+          <li><a href="https://play.google.com/apps/testing/fr.dooka.app">Google Play · test fermé</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Légal</h3>
+        <ul>
+          <li><a href="/confidentialite.html">Confidentialité</a></li>
+          <li><a href="/jeu-responsable.html" aria-current="page">Jeu responsable</a></li>
+          <li><a href="/suppression-compte.html">Supprimer mon compte</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Contact</h3>
+        <ul>
+          <li><a href="mailto:contact@dooka.fr">contact@dooka.fr</a></li>
+        </ul>
+      </div>
     </div>
-    <div class="legal">
-      <p><strong>Dooka est une application indépendante, non affiliée au PMU ni à la Française des Jeux.</strong></p>
-      <p class="warn">
-        Jouer comporte des risques : endettement, isolement, dépendance. Interdit aux mineurs.
-        Appelez le <a href="tel:0974751313">09 74 75 13 13</a> (appel non surtaxé).
-      </p>
+    <div class="fine">
+      <p><strong>Dooka est une application indépendante, non affiliée au PMU ni à la Française des Jeux.</strong> Les marques citées appartiennent à leurs propriétaires respectifs et ne servent qu'à décrire les points de vente et jeux référencés. Dooka ne permet ni de jouer, ni de parier, ni de recevoir de l'argent.</p>
+      <p>Jouer comporte des risques : endettement, isolement, dépendance. Interdit aux mineurs. Appelez le <a href="tel:0974751313">09 74 75 13 13</a> (Joueurs Info Service, appel non surtaxé).</p>
     </div>
   </div>
 </footer>

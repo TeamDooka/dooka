@@ -5,119 +5,66 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Dooka — Supprimer mon compte</title>
 <meta name="description" content="Comment supprimer votre compte Dooka et toutes les données associées." />
+<meta name="theme-color" content="#070B09" />
+<meta name="color-scheme" content="dark" />
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%23178A45'/><text x='50' y='68' font-size='58' text-anchor='middle' font-family='sans-serif' font-weight='700' fill='%23F7F3E9'>D</text></svg>" />
-<style>
-  :root {
-    --ground: #FAFAF7; --surface: #FFFFFF; --raised: #F3F2EC;
-    --ink: #17201A; --muted: #64716A; --turf: #178A45; --gold: #B4841E;
-    --line: rgba(23,32,26,0.11); --hair: rgba(23,32,26,0.06);
-    --font: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    --mono: ui-monospace, "SF Mono", "JetBrains Mono", "Roboto Mono", Consolas, monospace;
-  }
-  @media (prefers-color-scheme: dark) {
-    :root { --ground:#0C1310; --surface:#131C16; --raised:#1A241E;
-      --ink:#F1EFE7; --muted:#8D9A92; --turf:#3FBE72; --gold:#F0C15C;
-      --line:rgba(255,255,255,0.11); --hair:rgba(255,255,255,0.06); }
-  }
-  :root[data-theme="dark"] { --ground:#0C1310; --surface:#131C16; --raised:#1A241E;
-    --ink:#F1EFE7; --muted:#8D9A92; --turf:#3FBE72; --gold:#F0C15C;
-    --line:rgba(255,255,255,0.11); --hair:rgba(255,255,255,0.06); }
-  :root[data-theme="light"] { --ground:#FAFAF7; --surface:#FFFFFF; --raised:#F3F2EC;
-    --ink:#17201A; --muted:#64716A; --turf:#178A45; --gold:#B4841E;
-    --line:rgba(23,32,26,0.11); --hair:rgba(23,32,26,0.06); }
-
-  * { box-sizing: border-box; }
-  body { margin:0; background:var(--ground); color:var(--ink);
-    font-family:var(--font); font-size:17px; line-height:1.65; -webkit-text-size-adjust:100%; }
-  .wrap { max-width: 660px; margin: 0 auto; padding: 0 22px 80px; }
-
-  .topbar { border-bottom:1px solid var(--line); margin-bottom:44px; }
-  .topbar-inner { max-width:660px; margin:0 auto; padding:0 22px; height:62px;
-    display:flex; align-items:center; gap:11px; }
-  .topbar svg { width:28px; height:28px; border-radius:50%; flex:none; }
-  .topbar a { color:inherit; text-decoration:none; font-weight:700; letter-spacing:-0.01em; }
-  .topbar .back { margin-left:auto; font-weight:500; font-size:0.88rem; color:var(--muted); }
-  .topbar .back:hover { color:var(--turf); }
-
-  h1 { font-size: clamp(1.8rem,5vw,2.3rem); letter-spacing:-0.03em; line-height:1.15;
-       margin:0; text-wrap:balance; }
-  .lede { color:var(--muted); margin:16px 0 0; }
-  h2 { font-size:1.1rem; letter-spacing:-0.02em; margin:40px 0 4px;
-       padding-top:18px; border-top:1px solid var(--hair); }
-  p { margin:13px 0; }
-  a { color:var(--turf); }
-
-  ol.steps { counter-reset:s; list-style:none; padding:0; margin:20px 0; }
-  ol.steps li { counter-increment:s; position:relative; padding-left:44px; margin:16px 0; }
-  ol.steps li::before {
-    content: counter(s); position:absolute; left:0; top:1px;
-    width:28px; height:28px; border-radius:50%;
-    background:var(--turf); color:#fff; font-family:var(--mono);
-    font-size:0.82rem; font-weight:700;
-    display:flex; align-items:center; justify-content:center;
-  }
-  ol.steps b { display:block; }
-  ol.steps span { color:var(--muted); font-size:0.92rem; }
-
-  .box { background:var(--surface); border:1px solid var(--line);
-         border-radius:12px; padding:16px 20px; margin:24px 0; }
-  .box.accent { background:color-mix(in srgb, var(--turf) 7%, var(--surface)); }
-  .box p:first-child { margin-top:0; } .box p:last-child { margin-bottom:0; }
-  .box .tag { font-family:var(--mono); font-size:0.68rem; letter-spacing:0.12em;
-    text-transform:uppercase; font-weight:700; color:var(--turf); display:block; margin-bottom:6px; }
-
-  .btn { display:inline-flex; align-items:center; gap:9px; text-decoration:none;
-    background:var(--turf); color:#fff; font-weight:600; font-size:0.98rem;
-    padding:12px 22px; border-radius:10px; margin-top:6px; }
-  .btn:hover { background:color-mix(in srgb, var(--turf) 85%, black); }
-
-  ul.kept { padding-left:20px; } ul.kept li { margin:6px 0; }
-
-  footer { margin-top:52px; padding-top:22px; border-top:1px solid var(--line);
-    font-size:0.85rem; color:var(--muted); }
-</style>
+<link rel="preload" href="/fonts/bricolage-grotesque.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="preload" href="/fonts/geist.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="stylesheet" href="/assets/site.css" />
 </head>
 <body>
 
-<div class="topbar">
-  <div class="topbar-inner">
-    <svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="48" fill="#178A45"/><text x="50" y="68" font-size="58" text-anchor="middle" font-family="sans-serif" font-weight="700" fill="#F7F3E9">D</text></svg>
-    <a href="/">Dooka</a>
-    <a class="back" href="/">← Retour au site</a>
-  </div>
-</div>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-download" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></symbol>
+  <symbol id="jeton" viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="#178A45"/><circle cx="50" cy="50" r="38" fill="none" stroke="#F7C948" stroke-width="7" stroke-dasharray="13 12"/><text x="50" y="52" text-anchor="middle" dominant-baseline="central" font-family="Bricolage Grotesque, Geist, system-ui, sans-serif" font-weight="700" font-size="44" fill="#FCFCF8">D</text></symbol>
+</svg>
 
-<div class="wrap">
+<header class="nav">
+  <div class="wrap nav-in">
+    <a class="brand" href="/"><svg class="jeton" aria-hidden="true"><use href="#jeton"/></svg>Dooka</a>
+    <nav class="nav-links" aria-label="Site">
+      <a href="/#fonctions">Fonctionnalités</a>
+      <a href="/jeu-responsable.html">Jeu responsable</a>
+      <a href="/#rejoindre">Rejoindre une bande</a>
+    </nav>
+    <div class="nav-cta">
+      <a class="btn btn-ghost" href="https://play.google.com/apps/testing/fr.dooka.app">Google Play · test fermé</a>
+      <a class="btn btn-light" href="https://github.com/TeamDooka/dooka/releases/latest/download/dooka.apk"><svg class="i" aria-hidden="true"><use href="#i-download"/></svg>Télécharger</a>
+    </div>
+  </div>
+</header>
+
+<main class="doc">
 
 <h1>Supprimer mon compte</h1>
 <p class="lede">Vous pouvez effacer votre compte Dooka et les données associées à tout moment, sans avoir à le demander à qui que ce soit.</p>
 
 <h2>Depuis l'application</h2>
-<p>C'est la voie la plus rapide : l'effacement est immédiat.</p>
+<p>C'est la voie la plus rapide : l'effacement est immédiat.</p>
 
 <ol class="steps">
   <li><b>Ouvrez Dooka</b><span>Puis rendez-vous sur l'onglet Profil.</span></li>
   <li><b>Descendez tout en bas de la page</b><span>Sous votre historique de parties.</span></li>
-  <li><b>Touchez « Supprimer mon compte »</b><span>Deux confirmations vous seront demandées.</span></li>
+  <li><b>Touchez « Supprimer mon compte »</b><span>Deux confirmations vous seront demandées.</span></li>
 </ol>
 
 <h2>Si vous n'avez plus l'application</h2>
 <p>Écrivez-nous depuis <b>l'adresse e-mail associée à votre compte Dooka</b> — c'est ce qui nous permet de vérifier qu'il s'agit bien du vôtre. Votre demande sera traitée sous 30 jours, en pratique bien plus vite.</p>
 
-<p><a class="btn" href="mailto:contact@dooka.fr?subject=Suppression%20de%20mon%20compte%20Dooka&amp;body=Bonjour%2C%0A%0AJe%20demande%20la%20suppression%20de%20mon%20compte%20Dooka%20et%20de%20toutes%20les%20donn%C3%A9es%20associ%C3%A9es.%0A%0AMerci.">Demander la suppression par e-mail</a></p>
+<p><a class="btn btn-green btn-lg" href="mailto:contact@dooka.fr?subject=Suppression%20de%20mon%20compte%20Dooka&amp;body=Bonjour%2C%0A%0AJe%20demande%20la%20suppression%20de%20mon%20compte%20Dooka%20et%20de%20toutes%20les%20donn%C3%A9es%20associ%C3%A9es.%0A%0AMerci."><svg class="i" aria-hidden="true"><use href="#i-mail"/></svg>Demander la suppression par e-mail</a></p>
 
 <h2>Ce qui est effacé</h2>
-<ul class="kept">
-  <li>Votre profil : nom, adresse e-mail, photo</li>
+<ul>
+  <li>Votre profil : nom, adresse e-mail, photo</li>
   <li>Votre historique de parties et vos statistiques</li>
-  <li>Toutes vos photos : tickets, preuves de gain, avatar</li>
+  <li>Toutes vos photos : tickets, preuves de gain, avatar</li>
   <li>Vos amis, vos appartenances aux groupes, vos suggestions et vos votes</li>
   <li>Votre jeton de notification</li>
 </ul>
 
 <div class="box accent">
-  <span class="tag">Une exception</span>
-  <p>Vos résultats au sein des <b>sorties de groupe</b> restent enregistrés, sous la mention « Joueur supprimé ». Sans cela, les totaux d'une soirée à cinq changeraient rétroactivement pour les quatre autres participants.</p>
+  <p><b>Une exception.</b> Vos résultats au sein des <b>sorties de groupe</b> restent enregistrés, sous la mention « Joueur supprimé ». Sans cela, les totaux d'une soirée à cinq changeraient rétroactivement pour les quatre autres participants.</p>
   <p>Cette trace ne comporte plus ni votre nom, ni votre e-mail, ni votre photo, ni aucun moyen de remonter jusqu'à vous. Il ne reste qu'un montant dans une soirée, sans personne derrière.</p>
 </div>
 
@@ -128,12 +75,42 @@
 <h2>Une question</h2>
 <p>Écrivez à <a href="mailto:contact@dooka.fr">contact@dooka.fr</a>. Le détail de ce qui est collecté figure dans la <a href="/confidentialite.html">politique de confidentialité</a>.</p>
 
-<footer>
-  <p>Dooka — application indépendante, sans lien avec le PMU ni la Française des Jeux.</p>
-  <p><a href="/">Accueil</a> · <a href="/confidentialite.html">Confidentialité</a> · <a href="/jeu-responsable.html">Jeu responsable</a></p>
-  <p>Jouer comporte des risques : endettement, isolement, dépendance. Interdit aux mineurs. Appelez le <a href="tel:0974751313">09 74 75 13 13</a> (appel non surtaxé).</p>
-</footer>
+</main>
 
-</div>
+<footer>
+  <div class="wrap">
+    <div class="foot">
+      <div>
+        <a class="brand" href="/"><svg class="jeton" aria-hidden="true"><use href="#jeton"/></svg>Dooka</a>
+        <p class="tag">Le PMU entre potes.</p>
+      </div>
+      <div>
+        <h3>L'appli</h3>
+        <ul>
+          <li><a href="https://github.com/TeamDooka/dooka/releases/latest/download/dooka.apk">Télécharger pour Android</a></li>
+          <li><a href="https://play.google.com/apps/testing/fr.dooka.app">Google Play · test fermé</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Légal</h3>
+        <ul>
+          <li><a href="/confidentialite.html">Confidentialité</a></li>
+          <li><a href="/jeu-responsable.html">Jeu responsable</a></li>
+          <li><a href="/suppression-compte.html" aria-current="page">Supprimer mon compte</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Contact</h3>
+        <ul>
+          <li><a href="mailto:contact@dooka.fr">contact@dooka.fr</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="fine">
+      <p><strong>Dooka est une application indépendante, non affiliée au PMU ni à la Française des Jeux.</strong> Les marques citées appartiennent à leurs propriétaires respectifs et ne servent qu'à décrire les points de vente et jeux référencés. Dooka ne permet ni de jouer, ni de parier, ni de recevoir de l'argent.</p>
+      <p>Jouer comporte des risques : endettement, isolement, dépendance. Interdit aux mineurs. Appelez le <a href="tel:0974751313">09 74 75 13 13</a> (Joueurs Info Service, appel non surtaxé).</p>
+    </div>
+  </div>
+</footer>
 </body>
 </html>

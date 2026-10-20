@@ -6,155 +6,114 @@
 <title>Dooka — Confirmation</title>
 <meta name="description" content="Confirmation d'adresse e-mail et réinitialisation de mot de passe Dooka." />
 <meta name="robots" content="noindex" />
+<meta name="theme-color" content="#070B09" />
+<meta name="color-scheme" content="dark" />
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%23178A45'/><text x='50' y='68' font-size='58' text-anchor='middle' font-family='sans-serif' font-weight='700' fill='%23F7F3E9'>D</text></svg>" />
+<link rel="preload" href="/fonts/bricolage-grotesque.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="preload" href="/fonts/geist.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="stylesheet" href="/assets/site.css" />
 <style>
-  :root {
-    --ground: #FAFAF7; --surface: #FFFFFF; --raised: #F3F2EC;
-    --ink: #17201A; --muted: #64716A; --turf: #178A45; --gold: #B4841E;
-    --danger: #B3261E;
-    --line: rgba(23,32,26,0.11); --hair: rgba(23,32,26,0.06);
-    --font: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    --mono: ui-monospace, "SF Mono", "JetBrains Mono", "Roboto Mono", Consolas, monospace;
-  }
-  @media (prefers-color-scheme: dark) {
-    :root { --ground:#0C1310; --surface:#131C16; --raised:#1A241E;
-      --ink:#F1EFE7; --muted:#8D9A92; --turf:#3FBE72; --gold:#F0C15C;
-      --danger:#F2B8B5;
-      --line:rgba(255,255,255,0.11); --hair:rgba(255,255,255,0.06); }
-  }
-  :root[data-theme="dark"] { --ground:#0C1310; --surface:#131C16; --raised:#1A241E;
-    --ink:#F1EFE7; --muted:#8D9A92; --turf:#3FBE72; --gold:#F0C15C; --danger:#F2B8B5;
-    --line:rgba(255,255,255,0.11); --hair:rgba(255,255,255,0.06); }
-  :root[data-theme="light"] { --ground:#FAFAF7; --surface:#FFFFFF; --raised:#F3F2EC;
-    --ink:#17201A; --muted:#64716A; --turf:#178A45; --gold:#B4841E; --danger:#B3261E;
-    --line:rgba(23,32,26,0.11); --hair:rgba(23,32,26,0.06); }
-
-  * { box-sizing: border-box; }
-  body { margin:0; background:var(--ground); color:var(--ink);
-    font-family:var(--font); font-size:17px; line-height:1.65; -webkit-text-size-adjust:100%; }
-  .wrap { max-width: 520px; margin: 0 auto; padding: 0 22px 80px; }
-
-  .topbar { border-bottom:1px solid var(--line); margin-bottom:44px; }
-  .topbar-inner { max-width:520px; margin:0 auto; padding:0 22px; height:62px;
-    display:flex; align-items:center; gap:11px; }
-  .topbar svg { width:28px; height:28px; border-radius:50%; flex:none; }
-  .topbar a { color:inherit; text-decoration:none; font-weight:700; letter-spacing:-0.01em; }
-
-  h1 { font-size: clamp(1.6rem,5vw,2.1rem); letter-spacing:-0.03em; line-height:1.15;
-       margin:0; text-wrap:balance; }
-  .lede { color:var(--muted); margin:14px 0 0; }
-  p { margin:13px 0; }
-  a { color:var(--turf); }
-
-  /* Pastille d'état : la première chose que l'œil doit trouver, puisque
-     toute la question de l'utilisateur tient en « est-ce que ça a marché ». */
-  .mark { width:52px; height:52px; border-radius:50%; display:flex;
-    align-items:center; justify-content:center; font-size:26px; margin-bottom:20px; }
-  .mark.ok { background:color-mix(in srgb, var(--turf) 16%, var(--surface)); color:var(--turf); }
-  .mark.ko { background:color-mix(in srgb, var(--danger) 14%, var(--surface)); color:var(--danger); }
-  .mark.wait { background:var(--raised); color:var(--muted); }
-
-  .btn { display:inline-flex; align-items:center; justify-content:center; gap:9px;
-    text-decoration:none; background:var(--turf); color:#fff; font-weight:600;
-    font-size:1rem; padding:13px 24px; border-radius:10px; margin-top:8px;
-    border:none; cursor:pointer; font-family:inherit; }
-  .btn:hover { background:color-mix(in srgb, var(--turf) 85%, black); }
-  .btn:disabled { opacity:0.55; cursor:default; }
-  .btn.block { display:flex; width:100%; }
-
-  label { display:block; font-size:0.9rem; font-weight:600; margin:20px 0 6px; }
-  input[type=password] { width:100%; font-family:inherit; font-size:1rem;
-    padding:13px 15px; border-radius:10px; border:1px solid var(--line);
-    background:var(--surface); color:var(--ink); }
-  input[type=password]:focus { outline:2px solid var(--turf); outline-offset:1px; }
-  .hint { color:var(--muted); font-size:0.86rem; margin:7px 0 0; }
-  .err { color:var(--danger); font-size:0.9rem; margin:14px 0 0; }
-
-  .box { background:var(--surface); border:1px solid var(--line);
-         border-radius:12px; padding:16px 20px; margin:26px 0 0; }
-  .box p:first-child { margin-top:0; } .box p:last-child { margin-bottom:0; }
-  .box .tag { font-family:var(--mono); font-size:0.68rem; letter-spacing:0.12em;
-    text-transform:uppercase; font-weight:700; color:var(--turf); display:block; margin-bottom:6px; }
-
-  footer { margin-top:52px; padding-top:22px; border-top:1px solid var(--line);
-    font-size:0.85rem; color:var(--muted); }
-  [hidden] { display:none !important; }
+  /* Une page courte : la colonne se resserre, et l'état (en cours, réussi,
+     échoué) est la première chose que l'œil trouve. */
+  .doc { max-width: calc(520px + 2 * var(--gut)); }
+  .doc h1 { font-size: clamp(32px, 5vw, 44px); }
+  .doc form .btn { margin-top: 24px; }
+  .doc .actions { margin-top: 28px; }
+  /* L'état se lit sur la même ligne que le titre. */
+  .doc > section { display: grid; grid-template-columns: 44px minmax(0, 1fr); column-gap: 16px; }
+  .doc > section > * { grid-column: 1 / -1; }
+  .doc > section > .status { grid-column: 1; width: 44px; height: 44px; border-radius: 50%; margin: 0; align-self: center; }
+  .doc > section > .status .i { width: 22px; height: 22px; }
+  .doc > section > h1 { grid-column: 2; align-self: center; }
 </style>
 </head>
 <body>
 
-<div class="topbar">
-  <div class="topbar-inner">
-    <svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="48" fill="#178A45"/><text x="50" y="68" font-size="58" text-anchor="middle" font-family="sans-serif" font-weight="700" fill="#F7F3E9">D</text></svg>
-    <a href="/">Dooka</a>
-  </div>
-</div>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+  <symbol id="i-key" viewBox="0 0 24 24"><path d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z"/><circle cx="16.5" cy="7.5" r=".5" fill="currentColor"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></symbol>
+  <symbol id="i-loader" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></symbol>
+  <symbol id="i-open" viewBox="0 0 24 24"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></symbol>
+  <symbol id="jeton" viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="#178A45"/><circle cx="50" cy="50" r="38" fill="none" stroke="#F7C948" stroke-width="7" stroke-dasharray="13 12"/><text x="50" y="52" text-anchor="middle" dominant-baseline="central" font-family="Bricolage Grotesque, Geist, system-ui, sans-serif" font-weight="700" font-size="44" fill="#FCFCF8">D</text></symbol>
+</svg>
 
-<div class="wrap">
+<header class="nav">
+  <div class="wrap nav-in">
+    <a class="brand" href="/"><svg class="jeton" aria-hidden="true"><use href="#jeton"/></svg>Dooka</a>
+  </div>
+</header>
+
+<main class="doc">
 
   <section id="loading">
-    <div class="mark wait" aria-hidden="true">•••</div>
+    <div class="status wait" aria-hidden="true"><svg class="i"><use href="#i-loader"/></svg></div>
     <h1>Un instant…</h1>
     <p class="lede">On vérifie votre lien.</p>
   </section>
 
   <section id="confirmed" hidden>
-    <div class="mark ok" aria-hidden="true">✓</div>
+    <div class="status ok" aria-hidden="true"><svg class="i"><use href="#i-check"/></svg></div>
     <h1>Votre adresse est confirmée</h1>
     <p class="lede">Votre compte Dooka est prêt. Il ne reste qu'à ouvrir l'application et à vous connecter.</p>
-    <p><a class="btn" href="dooka://">Ouvrir Dooka</a></p>
+    <p class="actions"><a class="btn btn-green btn-lg" href="dooka://"><svg class="i" aria-hidden="true"><use href="#i-open"/></svg>Ouvrir Dooka</a></p>
     <div class="box">
-      <span class="tag">Si rien ne s'ouvre</span>
-      <p>C'est que vous lisez ce message sur un ordinateur. Ouvrez simplement Dooka sur votre téléphone : votre compte y est déjà actif.</p>
+      <p><b>Si rien ne s'ouvre.</b> C'est que vous lisez ce message sur un ordinateur. Ouvrez simplement Dooka sur votre téléphone : votre compte y est déjà actif.</p>
     </div>
   </section>
 
   <section id="reset" hidden>
-    <div class="mark ok" aria-hidden="true">🔑</div>
+    <div class="status ok" aria-hidden="true"><svg class="i"><use href="#i-key"/></svg></div>
     <h1>Nouveau mot de passe</h1>
     <p class="lede">Choisissez-en un nouveau, puis reconnectez-vous dans l'application.</p>
 
     <form id="reset-form" novalidate>
-      <label for="pw1">Nouveau mot de passe</label>
-      <input type="password" id="pw1" autocomplete="new-password" required minlength="8" />
-      <p class="hint">8 caractères au minimum.</p>
+      <div class="field">
+        <label for="pw1">Nouveau mot de passe</label>
+        <input type="password" id="pw1" autocomplete="new-password" required minlength="8" />
+        <p class="hint">8 caractères au minimum.</p>
+      </div>
 
-      <label for="pw2">Confirmez-le</label>
-      <input type="password" id="pw2" autocomplete="new-password" required minlength="8" />
+      <div class="field">
+        <label for="pw2">Confirmez-le</label>
+        <input type="password" id="pw2" autocomplete="new-password" required minlength="8" />
+      </div>
 
-      <p class="err" id="reset-error" hidden></p>
-      <p><button class="btn block" type="submit" id="reset-submit">Enregistrer</button></p>
+      <p class="err" id="reset-error" role="alert" hidden></p>
+      <button class="btn btn-green btn-lg btn-block" type="submit" id="reset-submit">Enregistrer</button>
     </form>
   </section>
 
   <section id="done" hidden>
-    <div class="mark ok" aria-hidden="true">✓</div>
+    <div class="status ok" aria-hidden="true"><svg class="i"><use href="#i-check"/></svg></div>
     <h1>Mot de passe modifié</h1>
     <p class="lede">Vous pouvez vous connecter à Dooka avec votre nouveau mot de passe.</p>
-    <p><a class="btn" href="dooka://">Ouvrir Dooka</a></p>
+    <p class="actions"><a class="btn btn-green btn-lg" href="dooka://"><svg class="i" aria-hidden="true"><use href="#i-open"/></svg>Ouvrir Dooka</a></p>
     <div class="box">
-      <span class="tag">Si rien ne s'ouvre</span>
-      <p>C'est que vous lisez ce message sur un ordinateur : ce bouton ne fonctionne que depuis un téléphone où Dooka est installé. Ouvrez simplement l'application, votre nouveau mot de passe y est déjà actif.</p>
+      <p><b>Si rien ne s'ouvre.</b> C'est que vous lisez ce message sur un ordinateur : ce bouton ne fonctionne que depuis un téléphone où Dooka est installé. Ouvrez simplement l'application, votre nouveau mot de passe y est déjà actif.</p>
     </div>
   </section>
 
   <section id="failed" hidden>
-    <div class="mark ko" aria-hidden="true">!</div>
+    <div class="status ko" aria-hidden="true"><svg class="i"><use href="#i-alert"/></svg></div>
     <h1 id="failed-title">Ce lien n'est plus valable</h1>
     <p class="lede" id="failed-text">
       Les liens de confirmation expirent au bout de 24 heures, et ne servent qu'une fois.
     </p>
     <div class="box">
-      <span class="tag">Que faire</span>
-      <p>Retournez dans l'application et redemandez un lien — celui-ci arrivera dans la foulée. Si le problème persiste, écrivez-nous à <a href="mailto:contact@dooka.fr">contact@dooka.fr</a>.</p>
+      <p><b>Que faire.</b> Retournez dans l'application et redemandez un lien — celui-ci arrivera dans la foulée. Si le problème persiste, écrivez-nous à <a href="mailto:contact@dooka.fr">contact@dooka.fr</a>.</p>
     </div>
   </section>
 
-  <footer>
-    <p>Dooka — application indépendante, sans lien avec le PMU ni la Française des Jeux. <a href="/">Retour au site</a></p>
-  </footer>
+</main>
 
-</div>
+<footer>
+  <div class="wrap">
+    <div class="fine">
+      <p><strong>Dooka est une application indépendante, non affiliée au PMU ni à la Française des Jeux.</strong> <a href="/">Retour au site</a></p>
+    </div>
+  </div>
+</footer>
 
 <script>
 (function () {

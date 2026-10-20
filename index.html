@@ -517,13 +517,11 @@
   .link-arrow:hover { border-color: var(--text); gap: 10px; }
   .link-arrow .i { width: 16px; height: 16px; }
   .nots { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
-  .nots li { display: grid; grid-template-columns: 32px 1fr auto; gap: 16px; align-items: center; padding: 16px 0; border-bottom: 1px solid var(--line); }
+  .nots li { display: grid; grid-template-columns: 32px 1fr; gap: 16px; align-items: center; padding: 16px 0; border-bottom: 1px solid var(--line); }
   .nots .x { width: 32px; height: 32px; border-radius: 50%; background: rgba(255,115,119,.10); color: var(--neg); display: flex; align-items: center; justify-content: center; }
   .nots .x .i { width: 15px; height: 15px; stroke-width: 2.4; }
   .nots b { font-weight: 500; font-size: 16px; display: block; }
   .nots .d { color: var(--text-2); font-size: 15px; }
-  .nots small { font-size: 12px; color: var(--text-3); white-space: nowrap; }
-  .nots small code { font: 500 12px var(--mono); }
 
   .limits { margin-top: 40px; }
   .limits-card { border-radius: 16px; }
@@ -534,7 +532,8 @@
   .limits-card .txt span { font-size: 13px; color: #A6AEA8; }
   .limits-card .red b { color: #FF7377; }
   .limits-card .chev { width: 18px; height: 18px; color: #7C847F; }
-  .limits-label { font-size: 13px; font-weight: 700; color: #A6AEA8; margin: 0 0 8px 4px; font-family: var(--app); }
+  .pledge-h { margin: 0 0 12px; font-size: 15px; font-weight: 600; color: var(--text-2); letter-spacing: 0; }
+  .limits .pledge-h { margin-bottom: 14px; }
   .limits-note { margin: 16px 0 0; font-size: 14px; color: var(--text-2); max-width: 64ch; }
 
   /* ---------- Appel final ---------- */
@@ -624,8 +623,6 @@
     .p-scratch { padding: 14px; }
     .req { flex-wrap: wrap; }
     .req .acts { margin-left: 44px; }
-    .nots li { grid-template-columns: 32px 1fr; }
-    .nots small { grid-column: 2; }
     .final { margin-top: 100px; padding: 88px 0 96px; }
     .foot { grid-template-columns: 1fr; gap: 24px; }
   }
@@ -912,20 +909,21 @@
     <div class="wrap pledge">
       <div class="pledge-copy rv">
         <h2 id="engagements-t">Rien qui pousse à jouer plus.</h2>
-        <p>Dooka est gratuite, sans pub et sans partenariat avec un opérateur de jeu : elle n'a aucun intérêt à ce que tu joues davantage. Plusieurs fonctions ont été retirées pour cette raison, parfois après avoir été construites.</p>
+        <p>Dooka est gratuite, sans pub et sans partenariat avec un opérateur de jeu : elle n'a aucun intérêt à ce que tu joues davantage. Voici ce qu'elle ne fait pas, et ce qu'elle te donne pour garder la main.</p>
         <a class="link-arrow" href="/jeu-responsable.html">Notre page jeu responsable<svg class="i" aria-hidden="true"><use href="#i-arrow-r"/></svg></a>
       </div>
       <div class="rv" style="--d:.1s">
+        <h3 class="pledge-h">Ce qu'elle ne fait pas</h3>
         <ul class="nots">
-          <li><span class="x" aria-hidden="true"><svg class="i"><use href="#i-x"/></svg></span><span><b>Aucun gain potentiel affiché</b><span class="d">Ni gros lot, ni « ce que tu aurais pu gagner ».</span></span><small>retiré en <code>3.9</code></small></li>
-          <li><span class="x" aria-hidden="true"><svg class="i"><use href="#i-x"/></svg></span><span><b>Ni badges ni niveaux</b><span class="d">Pas de récompense pour jouer souvent.</span></span><small>retirés en <code>3.9</code></small></li>
-          <li><span class="x" aria-hidden="true"><svg class="i"><use href="#i-x"/></svg></span><span><b>Aucune série saluée</b><span class="d">Plus de « 3ᵉ session positive d'affilée » en fin de soirée.</span></span><small>retirée en <code>3.9</code></small></li>
+          <li><span class="x" aria-hidden="true"><svg class="i"><use href="#i-x"/></svg></span><span><b>Aucun gain potentiel affiché</b><span class="d">Ni gros lot, ni « ce que tu aurais pu gagner ».</span></span></li>
+          <li><span class="x" aria-hidden="true"><svg class="i"><use href="#i-x"/></svg></span><span><b>Ni badges ni niveaux</b><span class="d">Rien ne récompense le fait de jouer souvent.</span></span></li>
+          <li><span class="x" aria-hidden="true"><svg class="i"><use href="#i-x"/></svg></span><span><b>Aucune série saluée</b><span class="d">Pas de félicitations pour une série de soirées gagnantes.</span></span></li>
           <li><span class="x" aria-hidden="true"><svg class="i"><use href="#i-x"/></svg></span><span><b>Aucun compte à rebours</b><span class="d">Rien n'expire, rien ne presse.</span></span></li>
-          <li><span class="x" aria-hidden="true"><svg class="i"><use href="#i-x"/></svg></span><span><b>Aucune publicité</b><span class="d">Et aucun partenariat avec un opérateur.</span></span></li>
+          <li><span class="x" aria-hidden="true"><svg class="i"><use href="#i-x"/></svg></span><span><b>Aucune publicité</b><span class="d">Et aucun partenariat avec un opérateur de jeu.</span></span></li>
         </ul>
 
         <div class="limits">
-          <p class="limits-label">Mes limites</p>
+          <h3 class="pledge-h">Ce qu'elle te donne : « Mes limites »</h3>
           <div class="panel limits-card" role="img" aria-label="Réglages Mes limites de l'app : budget hebdomadaire, rappel de durée activé toutes les 30 minutes, et suspension du suivi.">
             <div class="lr" aria-hidden="true"><span class="txt"><b>Budget hebdomadaire</b><span>Aucun budget fixé</span></span><svg class="i chev"><use href="#i-chev-r"/></svg></div>
             <div class="lr" aria-hidden="true"><span class="txt"><b>Rappel de durée</b><span>Toutes les 30 minutes</span></span><span class="switch"></span></div>

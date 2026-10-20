@@ -5,96 +5,49 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Dooka — Politique de confidentialité</title>
 <meta name="description" content="Quelles données Dooka collecte, pourquoi, avec qui elles sont partagées et comment les supprimer." />
+<meta name="theme-color" content="#070B09" />
+<meta name="color-scheme" content="dark" />
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%23178A45'/><text x='50' y='68' font-size='58' text-anchor='middle' font-family='sans-serif' font-weight='700' fill='%23F7F3E9'>D</text></svg>" />
-<style>
-  :root {
-    --ground: #FAFAF7; --surface: #FFFFFF; --raised: #F3F2EC;
-    --ink: #17201A; --muted: #64716A; --turf: #178A45; --gold: #B4841E;
-    --line: rgba(23,32,26,0.11); --hair: rgba(23,32,26,0.06);
-    --font: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    --mono: ui-monospace, "SF Mono", "JetBrains Mono", "Roboto Mono", Consolas, monospace;
-  }
-  @media (prefers-color-scheme: dark) {
-    :root { --ground:#0C1310; --surface:#131C16; --raised:#1A241E;
-      --ink:#F1EFE7; --muted:#8D9A92; --turf:#3FBE72; --gold:#F0C15C;
-      --line:rgba(255,255,255,0.11); --hair:rgba(255,255,255,0.06); }
-  }
-  :root[data-theme="dark"] { --ground:#0C1310; --surface:#131C16; --raised:#1A241E;
-    --ink:#F1EFE7; --muted:#8D9A92; --turf:#3FBE72; --gold:#F0C15C;
-    --line:rgba(255,255,255,0.11); --hair:rgba(255,255,255,0.06); }
-  :root[data-theme="light"] { --ground:#FAFAF7; --surface:#FFFFFF; --raised:#F3F2EC;
-    --ink:#17201A; --muted:#64716A; --turf:#178A45; --gold:#B4841E;
-    --line:rgba(23,32,26,0.11); --hair:rgba(23,32,26,0.06); }
-
-  * { box-sizing: border-box; }
-  body { margin:0; background:var(--ground); color:var(--ink);
-    font-family:var(--font); font-size:17px; line-height:1.65; -webkit-text-size-adjust:100%; }
-  .wrap { max-width: 720px; margin: 0 auto; padding: 0 22px 80px; }
-
-  .topbar { border-bottom:1px solid var(--line); margin-bottom:44px; }
-  .topbar-inner { max-width:720px; margin:0 auto; padding:0 22px; height:62px;
-    display:flex; align-items:center; gap:11px; }
-  .topbar svg { width:28px; height:28px; border-radius:50%; flex:none; }
-  .topbar a { color:inherit; text-decoration:none; font-weight:700; letter-spacing:-0.01em; }
-  .topbar .back { margin-left:auto; font-weight:500; font-size:0.88rem; color:var(--muted); }
-  .topbar .back:hover { color:var(--turf); }
-
-  h1 { font-size: clamp(1.8rem,5vw,2.4rem); letter-spacing:-0.03em; line-height:1.15;
-       margin:0 0 10px; text-wrap:balance; }
-  .updated { font-family:var(--mono); font-size:0.76rem; color:var(--muted); }
-  .lede { color:var(--muted); margin:20px 0 0; }
-
-  h2 { font-size:1.2rem; letter-spacing:-0.02em; margin:44px 0 4px;
-       padding-top:20px; border-top:1px solid var(--hair); }
-  h3 { font-size:0.98rem; margin:24px 0 2px; }
-  p { margin:13px 0; }
-  ul { padding-left:20px; } li { margin:6px 0; }
-  a { color:var(--turf); }
-  code { font-family:var(--mono); font-size:0.87em; background:var(--raised);
-         padding:1px 5px; border-radius:5px; }
-
-  .box { background:var(--surface); border:1px solid var(--line);
-         border-radius:12px; padding:16px 20px; margin:22px 0; }
-  .box.accent { background:color-mix(in srgb, var(--turf) 7%, var(--surface)); }
-  .box p:first-child { margin-top:0; } .box p:last-child { margin-bottom:0; }
-  .box .tag { font-family:var(--mono); font-size:0.68rem; letter-spacing:0.12em;
-    text-transform:uppercase; font-weight:700; color:var(--turf); display:block; margin-bottom:6px; }
-
-  table { width:100%; border-collapse:collapse; font-size:0.9rem; margin:18px 0; }
-  th, td { text-align:left; padding:9px 10px; border-bottom:1px solid var(--hair); vertical-align:top; }
-  th { font-family:var(--mono); font-size:0.67rem; text-transform:uppercase;
-       letter-spacing:0.08em; color:var(--muted); font-weight:600; }
-  .scroll { overflow-x:auto; }
-
-  footer { margin-top:56px; padding-top:22px; border-top:1px solid var(--line);
-    font-size:0.85rem; color:var(--muted); }
-</style>
+<link rel="preload" href="/fonts/bricolage-grotesque.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="preload" href="/fonts/geist.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="stylesheet" href="/assets/site.css" />
 </head>
 <body>
 
-<div class="topbar">
-  <div class="topbar-inner">
-    <svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="48" fill="#178A45"/><text x="50" y="68" font-size="58" text-anchor="middle" font-family="sans-serif" font-weight="700" fill="#F7F3E9">D</text></svg>
-    <a href="/">Dooka</a>
-    <a class="back" href="/">← Retour au site</a>
-  </div>
-</div>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-download" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/></symbol>
+  <symbol id="jeton" viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="#178A45"/><circle cx="50" cy="50" r="38" fill="none" stroke="#F7C948" stroke-width="7" stroke-dasharray="13 12"/><text x="50" y="52" text-anchor="middle" dominant-baseline="central" font-family="Bricolage Grotesque, Geist, system-ui, sans-serif" font-weight="700" font-size="44" fill="#FCFCF8">D</text></symbol>
+</svg>
 
-<div class="wrap">
+<header class="nav">
+  <div class="wrap nav-in">
+    <a class="brand" href="/"><svg class="jeton" aria-hidden="true"><use href="#jeton"/></svg>Dooka</a>
+    <nav class="nav-links" aria-label="Site">
+      <a href="/#fonctions">Fonctionnalités</a>
+      <a href="/jeu-responsable.html">Jeu responsable</a>
+      <a href="/#rejoindre">Rejoindre une bande</a>
+    </nav>
+    <div class="nav-cta">
+      <a class="btn btn-ghost" href="https://play.google.com/apps/testing/fr.dooka.app">Google Play · test fermé</a>
+      <a class="btn btn-light" href="https://github.com/TeamDooka/dooka/releases/latest/download/dooka.apk"><svg class="i" aria-hidden="true"><use href="#i-download"/></svg>Télécharger</a>
+    </div>
+  </div>
+</header>
+
+<main class="doc">
 
 <h1>Politique de confidentialité</h1>
-<p class="updated">Dernière mise à jour : 14 octobre 2026</p>
+<p class="updated">Dernière mise à jour : <time datetime="2026-10-14">14 octobre 2026</time></p>
 
 <p class="lede">Dooka est une application entre amis, pas un produit publicitaire. Cette page décrit exactement ce qui est collecté, pourquoi, et comment tout effacer. Elle est écrite pour être lue.</p>
 
 <div class="box accent">
-  <span class="tag">En résumé</span>
-  <p>Aucune publicité, aucun traceur, aucun outil d'analyse tiers, aucune revente de données. Vos données servent à faire fonctionner l'application, rien d'autre. Vous pouvez supprimer votre compte depuis l'application à tout moment, et tout part avec.</p>
+  <p><b>En résumé.</b> Aucune publicité, aucun traceur, aucun outil d'analyse tiers, aucune revente de données. Vos données servent à faire fonctionner l'application, rien d'autre. Vous pouvez supprimer votre compte depuis l'application à tout moment, et tout part avec.</p>
 </div>
 
 <h2>1. Qui est responsable</h2>
 <p>Dooka est édité par <b>Pierre Laurent</b>, à titre individuel.</p>
-<p>Contact pour toute question ou demande relative à vos données : <a href="mailto:contact@dooka.fr">contact@dooka.fr</a></p>
+<p>Contact pour toute question ou demande relative à vos données : <a href="mailto:contact@dooka.fr">contact@dooka.fr</a></p>
 
 <h2>2. Quelles données sont collectées</h2>
 
@@ -103,34 +56,34 @@
   <thead><tr><th>Donnée</th><th>Pourquoi</th><th>Base légale</th></tr></thead>
   <tbody>
     <tr>
-      <td>Nom affiché, adresse e-mail, photo de profil <span style="color:var(--muted)">(via votre compte Google)</span></td>
+      <td>Nom affiché, adresse e-mail, photo de profil <span class="muted">(via votre compte Google)</span></td>
       <td>Créer votre compte, vous identifier auprès de vos amis</td>
       <td>Exécution du service</td>
     </tr>
     <tr>
       <td>Position géographique</td>
-      <td>Afficher les bars PMU proches de vous. Utilisée pendant que l'app est ouverte ; les zones déjà explorées sont mises en cache pour éviter de réinterroger Google à chaque fois</td>
+      <td>Afficher les bars PMU proches de vous. Utilisée pendant que l'app est ouverte ; les zones déjà explorées sont mises en cache pour éviter de réinterroger Google à chaque fois</td>
       <td>Exécution du service</td>
     </tr>
     <tr>
-      <td>Photos que vous prenez <span style="color:var(--muted)">(tickets, preuves de gain, avatar, image de groupe)</span></td>
+      <td>Photos que vous prenez <span class="muted">(tickets, preuves de gain, avatar, image de groupe)</span></td>
       <td>Illustrer un ticket, attester un gain auprès des autres joueurs</td>
       <td>Exécution du service</td>
     </tr>
     <tr>
-      <td>Activité de jeu <span style="color:var(--muted)">(tickets joués, montants, lieux, dates — et, jusqu'à la version 3.8, le code-barres scanné)</span></td>
-      <td>Tenir votre historique, calculer vos statistiques et le classement de vos groupes. Le code-barres sert à empêcher qu'un même ticket soit déclaré deux fois ; la version 3.9 ne le demande plus</td>
+      <td>Activité de jeu <span class="muted">(tickets joués, montants, lieux, dates — et, jusqu'à la version 3.8, le code-barres scanné)</span></td>
+      <td>Tenir votre historique, calculer vos statistiques et le classement de vos groupes. Le code-barres sert à empêcher qu'un même ticket soit déclaré deux fois ; la version 3.9 ne le demande plus</td>
       <td>Exécution du service</td>
     </tr>
     <tr>
-      <td>Relations sociales <span style="color:var(--muted)">(amis, groupes, sessions, événements, suggestions)</span></td>
+      <td>Relations sociales <span class="muted">(amis, groupes, sessions, événements, suggestions)</span></td>
       <td>Faire fonctionner les fonctionnalités de groupe</td>
       <td>Exécution du service</td>
     </tr>
     <tr>
       <td>Jeton de notification</td>
       <td>Vous prévenir d'une demande d'ami, ou quand un ami décroche un gros gain</td>
-      <td>Consentement <span style="color:var(--muted)">(révocable dans les réglages du téléphone)</span></td>
+      <td>Consentement <span class="muted">(révocable dans les réglages du téléphone)</span></td>
     </tr>
     <tr>
       <td>Date de dernière ouverture et version installée</td>
@@ -138,8 +91,8 @@
       <td>Intérêt légitime</td>
     </tr>
     <tr>
-      <td>Nombre d'ouvertures de chaque écran <span style="color:var(--muted)">(sans aucun identifiant, à partir de la version 3.9)</span></td>
-      <td>Savoir quels écrans servent vraiment. Seul un total par écran et par jour est enregistré : ni votre compte, ni votre appareil, ni l'heure</td>
+      <td>Nombre d'ouvertures de chaque écran <span class="muted">(sans aucun identifiant, à partir de la version 3.9)</span></td>
+      <td>Savoir quels écrans servent vraiment. Seul un total par écran et par jour est enregistré : ni votre compte, ni votre appareil, ni l'heure</td>
       <td>Intérêt légitime</td>
     </tr>
   </tbody>
@@ -147,11 +100,11 @@
 </div>
 
 <div class="box">
-  <p><b>Ce qui n'est pas collecté :</b> aucune donnée bancaire, aucun identifiant publicitaire, aucun historique de navigation, aucune donnée provenant d'autres applications. Dooka n'a pas d'accès à vos comptes PMU ou FDJ — les montants que vous enregistrez sont ceux que vous saisissez vous-même.</p>
+  <p><b>Ce qui n'est pas collecté :</b> aucune donnée bancaire, aucun identifiant publicitaire, aucun historique de navigation, aucune donnée provenant d'autres applications. Dooka n'a pas d'accès à vos comptes PMU ou FDJ — les montants que vous enregistrez sont ceux que vous saisissez vous-même.</p>
 </div>
 
 <h2>3. Avec qui elles sont partagées</h2>
-<p>Dooka ne vend ni ne loue aucune donnée. Elles transitent uniquement par les prestataires techniques nécessaires à son fonctionnement :</p>
+<p>Dooka ne vend ni ne loue aucune donnée. Elles transitent uniquement par les prestataires techniques nécessaires à son fonctionnement :</p>
 <ul>
   <li><b>Supabase</b> — hébergement de la base de données et des photos, sur des serveurs situés à <b>Paris, dans l'Union européenne</b></li>
   <li><b>Google</b> — connexion à votre compte, cartes et recherche de lieux</li>
@@ -163,35 +116,67 @@
 <h3>Ce que les autres utilisateurs voient</h3>
 <p>Votre nom et votre photo de profil sont visibles par les autres utilisateurs de l'application.</p>
 <p><b>Votre historique de parties n'est visible que de vous, de vos amis et des membres de vos groupes.</b> Personne d'autre n'y a accès, y compris au niveau technique.</p>
-<p>Une exception, visible de tous : <b>le record d'un bar</b>. Votre meilleur gain dans un bar peut apparaître, avec votre nom et son montant, sur la fiche de ce bar. Un gain de 100 € ou plus n'y figure que si vous avez joint la photo du ticket. Vos gains comptent aussi dans le classement des groupes dont vous êtes membre.</p>
+<p>Une exception, visible de tous : <b>le record d'un bar</b>. Votre meilleur gain dans un bar peut apparaître, avec votre nom et son montant, sur la fiche de ce bar. Un gain de 100 € ou plus n'y figure que si vous avez joint la photo du ticket. Vos gains comptent aussi dans le classement des groupes dont vous êtes membre.</p>
 
 <h2>4. Combien de temps</h2>
 <p>Vos données sont conservées tant que votre compte existe. Elles sont effacées lorsque vous le supprimez, sans délai de rétention.</p>
 
 <h2>5. Supprimer votre compte</h2>
-<p>Dans l'application : <b>Profil</b> → tout en bas → <b>Supprimer mon compte</b>. Deux confirmations, puis l'effacement est immédiat et définitif.</p>
+<p>Dans l'application : <b>Profil</b> → tout en bas → <b>Supprimer mon compte</b>. Deux confirmations, puis l'effacement est immédiat et définitif.</p>
 <p>Si vous n'avez plus l'application installée, la procédure est décrite sur la page <a href="/suppression-compte.html">Supprimer mon compte</a>.</p>
 
 <div class="box">
-  <p><b>Une exception, dans l'intérêt des autres joueurs.</b> Vos résultats au sein des sorties de groupe restent enregistrés, sous la mention « Joueur supprimé ». Sans cela, les totaux d'une soirée à cinq changeraient rétroactivement pour les quatre autres. Cette trace ne comporte plus ni votre nom, ni votre e-mail, ni votre photo, ni aucun moyen de remonter jusqu'à vous.</p>
+  <p><b>Une exception, dans l'intérêt des autres joueurs.</b> Vos résultats au sein des sorties de groupe restent enregistrés, sous la mention « Joueur supprimé ». Sans cela, les totaux d'une soirée à cinq changeraient rétroactivement pour les quatre autres. Cette trace ne comporte plus ni votre nom, ni votre e-mail, ni votre photo, ni aucun moyen de remonter jusqu'à vous.</p>
 </div>
 
 <h2>6. Vos droits</h2>
-<p>Le RGPD vous donne un droit d'accès, de rectification, d'effacement, de portabilité, de limitation et d'opposition sur vos données. La rectification et l'effacement se font directement dans l'application ; pour tout le reste, écrivez à <a href="mailto:contact@dooka.fr">contact@dooka.fr</a>. Une réponse vous sera apportée sous un mois.</p>
+<p>Le RGPD vous donne un droit d'accès, de rectification, d'effacement, de portabilité, de limitation et d'opposition sur vos données. La rectification et l'effacement se font directement dans l'application ; pour tout le reste, écrivez à <a href="mailto:contact@dooka.fr">contact@dooka.fr</a>. Une réponse vous sera apportée sous un mois.</p>
 <p>Si la réponse ne vous satisfait pas, vous pouvez saisir la <a href="https://www.cnil.fr/fr/plaintes" target="_blank" rel="noopener">CNIL</a>.</p>
 
 <h2>7. Âge minimum</h2>
-<p>Dooka porte sur des jeux d'argent et de hasard : son usage est <b>réservé aux personnes majeures</b>. L'application ne permet ni de jouer, ni de parier, ni de recevoir de l'argent — c'est un carnet de suivi et un outil entre amis, sans lien avec le PMU ni la Française des Jeux.</p>
+<p>Dooka porte sur des jeux d'argent et de hasard : son usage est <b>réservé aux personnes majeures</b>. L'application ne permet ni de jouer, ni de parier, ni de recevoir de l'argent — c'est un carnet de suivi et un outil entre amis, sans lien avec le PMU ni la Française des Jeux.</p>
 <p>À partir de la version 3.10, l'application vous demande une fois, après la connexion, de confirmer que vous avez 18 ans ou plus. Seule la date de cette confirmation est conservée, avec votre compte, et disparaît avec lui. Répondre que vous n'avez pas 18 ans vous déconnecte.</p>
-<p>Jouer comporte des risques : endettement, isolement, dépendance. Information et aide sur <a href="https://www.joueurs-info-service.fr" target="_blank" rel="noopener">joueurs-info-service.fr</a> (09 74 75 13 13, appel non surtaxé). Voir aussi notre page <a href="/jeu-responsable.html">jeu responsable</a>.</p>
+<p>Jouer comporte des risques : endettement, isolement, dépendance. Information et aide sur <a href="https://www.joueurs-info-service.fr" target="_blank" rel="noopener">joueurs-info-service.fr</a> (09 74 75 13 13, appel non surtaxé). Voir aussi notre page <a href="/jeu-responsable.html">jeu responsable</a>.</p>
 
 <h2>8. Modifications</h2>
 <p>Toute évolution de cette politique sera publiée sur cette page, avec une date de mise à jour actualisée. Un changement significatif sera signalé dans l'application.</p>
 
-<footer>
-  <p>Dooka — application indépendante, sans lien avec le PMU ni la Française des Jeux. <a href="/">Retour au site</a></p>
-</footer>
+</main>
 
-</div>
+<footer>
+  <div class="wrap">
+    <div class="foot">
+      <div>
+        <a class="brand" href="/"><svg class="jeton" aria-hidden="true"><use href="#jeton"/></svg>Dooka</a>
+        <p class="tag">Le PMU entre potes.</p>
+      </div>
+      <div>
+        <h3>L'appli</h3>
+        <ul>
+          <li><a href="https://github.com/TeamDooka/dooka/releases/latest/download/dooka.apk">Télécharger pour Android</a></li>
+          <li><a href="https://play.google.com/apps/testing/fr.dooka.app">Google Play · test fermé</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Légal</h3>
+        <ul>
+          <li><a href="/confidentialite.html" aria-current="page">Confidentialité</a></li>
+          <li><a href="/jeu-responsable.html">Jeu responsable</a></li>
+          <li><a href="/suppression-compte.html">Supprimer mon compte</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Contact</h3>
+        <ul>
+          <li><a href="mailto:contact@dooka.fr">contact@dooka.fr</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="fine">
+      <p><strong>Dooka est une application indépendante, non affiliée au PMU ni à la Française des Jeux.</strong> Les marques citées appartiennent à leurs propriétaires respectifs et ne servent qu'à décrire les points de vente et jeux référencés. Dooka ne permet ni de jouer, ni de parier, ni de recevoir de l'argent.</p>
+      <p>Jouer comporte des risques : endettement, isolement, dépendance. Interdit aux mineurs. Appelez le <a href="tel:0974751313">09 74 75 13 13</a> (Joueurs Info Service, appel non surtaxé).</p>
+    </div>
+  </div>
+</footer>
 </body>
 </html>
