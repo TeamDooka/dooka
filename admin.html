@@ -384,7 +384,12 @@
   </main>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<!-- Version exacte et empreinte d'intégrité : ce script tourne avec la
+     session d'un administrateur. Avec « @2 », une version compromise du
+     paquet aurait pu lire son jeton ; avec l'empreinte, le navigateur
+     refuse tout fichier qui n'est pas exactement celui-ci. Même version
+     que l'app (package-lock.json). -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.7/dist/umd/supabase.min.js" integrity="sha384-BmlQlKlDvXvKoxkn5OQuUo/aJQCTXeB+Kls6EccBmG4Kf8AXvp89RtO9MtPxP/r5" crossorigin="anonymous"></script>
 <script>
 (function () {
   'use strict';
