@@ -673,6 +673,149 @@
   .req-row b { flex: 1; font-size: 16px; font-weight: 600; }
   .req-row .refuse { font-size: 13px; color: #A6AEA8; }
 
+  /* ---------- La fiche de session : de quoi refaire le calcul ---------- */
+  /* Chaque joueur se déplie sur ses tickets, mise et gain compris ; l'écran
+     défile alors entre la barre d'état et le bouton du bas, comme l'app. */
+  .sd { position: absolute; top: 36px; left: 0; right: 0; bottom: 82px; overflow-y: auto; scrollbar-width: none; padding-bottom: 20px; }
+  .sd::-webkit-scrollbar { display: none; }
+  .pl + .pl { border-top: 1px solid var(--app-border); }
+  .sd .row { cursor: pointer; transition: background-color .2s var(--ease); }
+  .sd .row:hover { background: #1E2521; }
+  .sd .row:focus-visible { outline: 2px solid #3CC278; outline-offset: -2px; border-radius: 0; }
+  .tks { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .5s var(--ease); }
+  .pl.deplie .tks { grid-template-rows: 1fr; }
+  .tks > div { min-height: 0; overflow: hidden; background: #151B18; }
+  .pl.deplie .tks > div { border-top: 1px solid var(--app-border); }
+  .tks .tk { gap: 8px; padding: 9px 16px 9px 66px; font-size: 13px; }
+  .tks .tk span { min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .tk em { font-style: normal; font-weight: 600; color: #F1F4F0; }
+  .tk b.zero { color: #A6AEA8; }
+  .toast .amt { color: var(--text-2); }
+  .toast .amt.pos { color: var(--pos); }
+  .toast .amt.neg { color: var(--neg); }
+
+  /* ---------- Les cartes se touchent ---------- */
+  .pin { cursor: pointer; outline: none; }
+  .pin .hit { fill: transparent; }
+  .pin .dot { transform-box: fill-box; transform-origin: center; transition: transform .35s var(--ease), fill .6s var(--ease), stroke .2s var(--ease); }
+  .pin:hover .dot { transform: scale(1.3); }
+  .pin.sel .dot { transform: scale(1.5); }
+  .pin:focus-visible .dot { stroke: #3CC278; stroke-width: 3; }
+  .bubble-in { transform-box: fill-box; transform-origin: 50% 100%; }
+  .bump { animation: bump .7s var(--ease); }
+  @keyframes bump { 0% { transform: scale(1.5); } 100% { transform: none; } }
+  .ripple { fill: none; stroke-width: 2; transform-box: fill-box; transform-origin: center; animation: ripple 1.4s var(--ease) forwards; pointer-events: none; }
+  @keyframes ripple { 0% { transform: scale(.6); opacity: .9; } 100% { transform: scale(3.2); opacity: 0; } }
+
+  /* L'extrait du héros : un résumé, et le lien vers la vraie fiche plus bas. */
+  .frag-map .pin.sel .dot { transform: scale(1.4); }
+  .mini-card {
+    position: absolute; left: 8px; right: 8px; bottom: 8px; z-index: 3;
+    display: flex; align-items: center; gap: 10px; padding: 10px 10px 10px 12px;
+    border-radius: 12px; background: rgba(15, 19, 17, .95); border: 1px solid var(--app-border);
+    transform: translateY(calc(100% + 12px)); visibility: hidden;
+    transition: transform .5s var(--ease), visibility 0s linear .5s;
+  }
+  .mini-card.on { transform: none; visibility: visible; transition: transform .5s var(--ease), visibility 0s; }
+  .mini-card .tx { flex: 1; min-width: 0; }
+  .mini-card b { display: block; font-size: 14px; font-weight: 600; }
+  .mini-card span { display: block; font-size: 12px; color: #A6AEA8; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .mini-card button { flex: none; min-height: 34px; padding: 0 12px; border-radius: 8px; border: 0; background: #3CC278; color: #07140B; font: 600 13px var(--app); cursor: pointer; }
+  .mini-card button:hover { background: #52CF89; }
+
+  /* La grande carte : la fiche monte du bas, la carte glisse pour garder
+     le bar choisi en vue au-dessus d'elle. */
+  #world { transition: transform 1s var(--ease); }
+  .p-map .pin { transition: opacity .4s var(--ease); }
+  .p-map.has-sel .pin:not(.sel) { opacity: .5; }
+  .p-map .sel-ring { fill: none; stroke: #F1F4F0; stroke-width: 2; opacity: 0; transform-box: fill-box; transform-origin: center; transform: scale(.5); transition: opacity .3s var(--ease), transform .5s var(--ease); }
+  .p-map .pin.sel .sel-ring { opacity: 1; transform: none; }
+  .pin-in { transform-box: fill-box; transform-origin: 50% 100%; }
+  .p-map.armed .pin-in { opacity: 0; }
+  .p-map.in .pin-in { animation: pin-in .8s var(--ease) backwards; animation-delay: var(--pd, 0s); }
+  @keyframes pin-in { 0% { opacity: 0; transform: translateY(-18px) scale(.4); } 100% { opacity: 1; transform: none; } }
+  .p-map .legend { transition: opacity .3s var(--ease); }
+  .p-map.has-sel .legend { opacity: 0; }
+  .map-hint { position: absolute; left: 12px; bottom: 20px; z-index: 2; margin: 0; display: inline-flex; align-items: center; gap: 8px; min-height: 36px; padding: 0 14px; border-radius: 999px; background: rgba(17, 24, 39, .72); color: #fff; font-size: 12.5px; pointer-events: none; transition: opacity .4s var(--ease); }
+  .map-hint .i { width: 14px; height: 14px; color: #3CC278; }
+  .p-map.touched .map-hint { opacity: 0; }
+  .p-map .map-locate { border: 0; padding: 0; cursor: pointer; transition: background-color .2s var(--ease); }
+  .p-map .map-locate:hover { background: #252D29; }
+
+  .bs {
+    position: absolute; left: 8px; right: 8px; bottom: 8px; z-index: 4;
+    max-height: min(calc(100% - 72px), 340px);
+    display: flex; flex-direction: column;
+    background: var(--app-bg); border: 1px solid var(--app-border); border-radius: 20px;
+    box-shadow: 0 -12px 48px rgba(0, 0, 0, .55);
+    transform: translateY(calc(100% + 16px)); visibility: hidden;
+    transition: transform .6s var(--ease), visibility 0s linear .6s;
+  }
+  .bs.on { transform: none; visibility: visible; transition: transform .6s var(--ease), visibility 0s; }
+  /* Sur un panneau large, la fiche se range à droite et laisse la carte à
+     gauche, comme sur une tablette. */
+  .p-map.side .bs { left: auto; top: 64px; width: 300px; max-height: none; transform: translateX(calc(100% + 16px)); }
+  .p-map.side .bs.on { transform: none; }
+  .p-map.side.has-sel .map-locate { opacity: 0; pointer-events: none; }
+  .p-map.side .bs-actions button { font-size: 13px; white-space: nowrap; }
+  .bs-body { flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: 8px 16px 14px; scrollbar-width: thin; scrollbar-color: #2B3430 transparent; transition: opacity .18s var(--ease); }
+  .bs-body.swap { opacity: 0; }
+  .bs .grab { width: 40px; margin-bottom: 10px; }
+  .bs-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+  .bs-name { margin: 0; font-family: var(--display); font-weight: 700; font-size: 22px; line-height: 28px; letter-spacing: -.25px; color: #F1F4F0; }
+  .bs-close { flex: none; width: 36px; height: 36px; margin: -2px -6px 0 0; border-radius: 50%; border: 0; background: #252D29; color: #F1F4F0; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+  .bs-close:hover { background: #2E3833; }
+  .bs-close .i { width: 18px; height: 18px; }
+  .bs-meta, .bs-addr { margin: 2px 0 0; font-size: 13px; color: #A6AEA8; }
+  .bs-meta .st { color: #F7C948; }
+  .bs-meta .rt { color: #E8B93C; font-weight: 600; }
+  .bs-card { margin-top: 12px; padding: 10px 12px; border-radius: 12px; border: 1px solid #2B3430; display: flex; align-items: center; gap: 10px; }
+  .bs-dot { width: 10px; height: 10px; border-radius: 5px; flex: none; }
+  .bs-card b { display: block; font-size: 14px; font-weight: 600; color: #F1F4F0; }
+  .bs-card span { display: block; font-size: 12.5px; color: #A6AEA8; }
+  .bs-heat.live { border-color: #F2541B; background: rgba(242, 84, 27, .12); }
+  .bs-heat.recent { border-color: #0E6B4F; background: rgba(247, 201, 72, .16); }
+  .bs-notice { margin-top: 12px; padding: 10px 12px; border-radius: 12px; background: rgba(247, 201, 72, .14); color: #F2C14E; font-size: 13px; transition: background-color .4s var(--ease), color .4s var(--ease); }
+  .bs-notice button { display: block; margin-top: 4px; padding: 6px 0; min-height: 32px; background: none; border: 0; color: inherit; font: 700 13px var(--app); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+  .bs-notice.ok { background: rgba(76, 203, 132, .16); color: #4CCB84; }
+  .bs-quick { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 12px; }
+  .bs-quick span { min-height: 54px; border-radius: 12px; border: 1px solid #2B3430; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; font-size: 12px; font-weight: 600; color: #F1F4F0; }
+  .bs-quick .i { width: 18px; height: 18px; color: #4CCB84; }
+  .bs-h { margin: 16px 0 8px; font-family: var(--display); font-size: 16px; font-weight: 600; color: #F1F4F0; }
+  .bs-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .bs-chips span { height: 28px; padding: 0 10px; border-radius: 999px; display: inline-flex; align-items: center; font-size: 12.5px; font-weight: 600; }
+  .bs-chips .yes { background: rgba(76, 203, 132, .16); color: #4CCB84; }
+  .bs-chips .no { background: #252D29; color: #A6AEA8; }
+  .bs-chips .unk { border: 1px solid #2B3430; color: #A6AEA8; }
+  .bs-more { margin: 8px 0 0; font-size: 13px; font-weight: 600; color: #4CCB84; }
+  .bs-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .bs-stats div { padding: 10px 6px; border-radius: 12px; background: #1A201D; text-align: center; }
+  .bs-stats b { display: block; font-size: 20px; line-height: 24px; font-weight: 700; font-variant-numeric: tabular-nums; color: #F1F4F0; }
+  .bs-stats b.gold { color: #F2C14E; }
+  .bs-stats span { display: block; font-size: 12px; color: #A6AEA8; }
+  .bs-stats small { display: block; font-size: 11px; color: #7C847F; }
+  .bs-empty { margin: 0; padding: 12px; border-radius: 12px; border: 1px solid #2B3430; font-size: 13px; color: #A6AEA8; }
+  .bs-rec { padding: 2px 12px; border-radius: 12px; background: #1A201D; }
+  .bs-rec > div { display: flex; align-items: center; gap: 10px; padding: 8px 0; }
+  .bs-rec > div + div { border-top: 1px solid #2B3430; }
+  .bs-rec .ic { font-size: 18px; width: 22px; text-align: center; }
+  .bs-rec b { display: block; font-size: 16px; font-weight: 700; color: #E8B93C; }
+  .bs-rec span { display: block; font-size: 12.5px; color: #A6AEA8; }
+  .bs-friends { margin-top: 12px; padding: 10px 12px; border-radius: 12px; background: #1A201D; display: flex; align-items: center; gap: 10px; }
+  .bs-friends .avs2 { display: flex; }
+  .bs-friends .ini { width: 28px; height: 28px; font-size: 12px; border: 2px solid #1A201D; }
+  .bs-friends .ini + .ini { margin-left: -8px; }
+  .bs-friends b { display: block; font-size: 14px; font-weight: 600; }
+  .bs-friends .who { display: block; font-size: 12.5px; color: #A6AEA8; }
+  .bs-actions { flex: none; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 10px 12px 12px; border-top: 1px solid #2B3430; }
+  .bs-actions button { min-height: 44px; border-radius: 8px; border: 1px solid transparent; font: 600 14px var(--app); cursor: pointer; transition: background-color .2s var(--ease); }
+  .bs-actions .p { background: #3CC278; color: #07140B; }
+  .bs-actions .p:hover { background: #52CF89; }
+  .bs-actions .s { background: #252D29; color: #F1F4F0; border-color: #2B3430; }
+  .bs-actions .s:hover { background: #2E3833; }
+  .flash { animation: flash 1.6s var(--ease); }
+  @keyframes flash { 0% { box-shadow: 0 0 0 3px rgba(60, 194, 120, .7), 0 30px 80px rgba(0,0,0,.45); } 100% { box-shadow: 0 0 0 3px rgba(60, 194, 120, 0), 0 30px 80px rgba(0,0,0,.45); } }
+
   /* ---------- Arrivées au défilement ---------- */
   /* Visible par défaut : le script ne cache un élément qu'au moment où il
      va l'animer. */
@@ -682,8 +825,8 @@
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
     .rv-wait { opacity: 1; transform: none; filter: none; }
-    .halo-pulse, .add.ping::after, .tk.fresh { animation: none; }
-    .toast, .row, .manifest .w { transition: none !important; }
+    .halo-pulse, .add.ping::after, .tk.fresh, .bump, .ripple, .flash, .p-map.in .pin-in { animation: none; }
+    .toast, .row, .manifest .w, .tks, #world, .bs, .mini-card { transition: none !important; }
   }
 
   /* ---------- Écrans moyens ---------- */
@@ -722,6 +865,8 @@
     .section-head { margin-bottom: 40px; }
     .feature { padding: 44px 0; }
     .p-map { height: 430px; }
+    .bs { max-height: 70%; }
+    .bs-quick span { min-height: 48px; font-size: 11.5px; }
     .p-map .legend { gap: 8px; font-size: 10px; padding: 5px 10px; }
     .p-map .legend .opt { display: none; }
     .p-scratch { padding: 14px; }
@@ -813,23 +958,39 @@
       </div>
 
       <div class="stage rv" style="--d:.3s" id="scene" role="region" aria-label="Démo interactive du classement d'une session">
-        <div class="frag frag-map" aria-hidden="true">
+        <!-- Extrait de la carte : chaque point s'ouvre sur un résumé du bar,
+             et Le Balto, où se joue la session d'à côté, compte les tickets
+             qu'on y ajoute. -->
+        <div class="frag frag-map" id="fragMap" role="group" aria-label="Extrait de la carte : touche un bar">
           <svg viewBox="0 0 300 190" preserveAspectRatio="xMidYMid slice">
-            <rect width="300" height="190" fill="#111614"/>
-            <path d="M-10 136C60 116 120 146 180 126S260 86 310 100" fill="none" stroke="#0E2A38" stroke-width="12"/>
-            <g stroke="#1F2723" fill="none"><path d="M-10 56 310 44M70-10l14 210M210-10l18 210M-10 168l320-10" stroke-width="7"/><path d="M-10 106 310 112M140-10l-6 210" stroke-width="4"/></g>
-            <path d="M-10 82 310 66" stroke="#2C3530" stroke-width="9" fill="none"/>
-            <circle cx="150" cy="96" r="18" fill="rgba(242,84,27,.30)" stroke="rgba(242,84,27,.85)" stroke-width="1.5"/>
-            <circle cx="96" cy="150" r="14" fill="rgba(14,107,79,.22)" stroke="rgba(14,107,79,.62)" stroke-width="1.5"/>
-            <g stroke="#fff" stroke-width="2"><circle cx="150" cy="96" r="6" fill="#FF7377"/><circle cx="60" cy="58" r="6" fill="#FF7377"/><circle cx="236" cy="140" r="6" fill="#FF7377"/><circle cx="96" cy="150" r="6" fill="#3CC278"/><circle cx="204" cy="60" r="6" fill="#2E7CF6"/><circle cx="268" cy="92" r="6" fill="#2E7CF6"/></g>
-            <g transform="translate(150 74)"><rect x="-11" y="-14" width="22" height="16" rx="7" fill="#FF7377" stroke="#0F1311"/><path d="M-5 2 0 7 5 2z" fill="#FF7377"/><text y="-2" text-anchor="middle" font-size="10" font-weight="700" fill="#07140B" font-family="system-ui, sans-serif">12</text></g>
+            <rect class="map-bg" width="300" height="190" fill="#111614"/>
+            <g aria-hidden="true">
+              <path d="M-10 136C60 116 120 146 180 126S260 86 310 100" fill="none" stroke="#0E2A38" stroke-width="12"/>
+              <g stroke="#1F2723" fill="none"><path d="M-10 56 310 44M70-10l14 210M210-10l18 210M-10 168l320-10" stroke-width="7"/><path d="M-10 106 310 112M140-10l-6 210" stroke-width="4"/></g>
+              <path d="M-10 82 310 66" stroke="#2C3530" stroke-width="9" fill="none"/>
+              <circle class="halo-pulse" cx="150" cy="96" r="12" fill="rgba(242,84,27,.30)"/>
+              <circle cx="150" cy="96" r="18" fill="rgba(242,84,27,.30)" stroke="rgba(242,84,27,.85)" stroke-width="1.5"/>
+              <circle cx="96" cy="150" r="14" fill="rgba(14,107,79,.22)" stroke="rgba(14,107,79,.62)" stroke-width="1.5"/>
+            </g>
+            <g class="pin" data-bar="narval" role="button" tabindex="0"><circle class="hit" cx="60" cy="58" r="16"/><circle class="dot" cx="60" cy="58" r="6" fill="#FF7377" stroke="#fff" stroke-width="2"/></g>
+            <g class="pin" data-bar="longchamp" role="button" tabindex="0"><circle class="hit" cx="236" cy="140" r="16"/><circle class="dot" cx="236" cy="140" r="6" fill="#FF7377" stroke="#fff" stroke-width="2"/></g>
+            <g class="pin" data-bar="sporting" role="button" tabindex="0"><circle class="hit" cx="96" cy="150" r="16"/><circle class="dot" cx="96" cy="150" r="6" fill="#3CC278" stroke="#fff" stroke-width="2"/></g>
+            <g class="pin" data-bar="sports" role="button" tabindex="0"><circle class="hit" cx="204" cy="60" r="16"/><circle class="dot" cx="204" cy="60" r="6" fill="#2E7CF6" stroke="#fff" stroke-width="2"/></g>
+            <g class="pin" data-bar="weekend" role="button" tabindex="0"><circle class="hit" cx="268" cy="92" r="16"/><circle class="dot" cx="268" cy="92" r="6" fill="#2E7CF6" stroke="#fff" stroke-width="2"/></g>
+            <g class="pin" data-bar="balto" role="button" tabindex="0">
+              <circle class="hit" cx="150" cy="90" r="20"/>
+              <circle class="dot" cx="150" cy="96" r="6" fill="#FF7377" stroke="#fff" stroke-width="2"/>
+              <g transform="translate(150 74)"><g class="bubble-in"><rect x="-11" y="-14" width="22" height="16" rx="7" fill="#FF7377" stroke="#0F1311"/><path d="M-5 2 0 7 5 2z" fill="#FF7377"/><text class="count-balto" y="-2" text-anchor="middle" font-size="10" font-weight="700" fill="#07140B" font-family="system-ui, sans-serif">12</text></g></g>
+            </g>
           </svg>
-          <div class="mini-legend"><span><i style="background:#FF7377"></i>PMU</span><span><i style="background:#2E7CF6"></i>à vérifier</span><span><i style="background:#3CC278"></i>déjà joué</span></div>
+          <div class="mini-legend" aria-hidden="true"><span><i style="background:#FF7377"></i>PMU</span><span><i style="background:#2E7CF6"></i>à vérifier</span><span><i style="background:#3CC278"></i>déjà joué</span></div>
+          <div class="mini-card" id="miniCard"><div class="tx"><b id="miniNom"></b><span id="miniLigne"></span></div><button type="button" id="miniOuvrir">Voir la fiche</button></div>
         </div>
         <div class="frag frag-remind" aria-hidden="true">
           <div class="txt"><b>Rappel de durée</b><span>Toutes les 30 minutes</span></div>
           <span class="switch"></span>
         </div>
+        <div class="frag toast" id="toast" aria-hidden="true"><span class="dot"><svg class="i"><use href="#i-ticket"/></svg></span><div class="tx"><b id="toastT"></b><span id="toastS"></span></div><span class="amt" id="toastA"></span></div>
         <p class="hint" id="hint" aria-hidden="true">Essaie : touche « Ajouter un ticket »<svg viewBox="0 0 48 16"><path d="M2 5c14 0 28 2 42 7"/><path d="M37 15l7-3-3-6"/></svg></p>
 
         <div class="stage-phone">
@@ -890,47 +1051,65 @@
           </ul>
         </div>
         <div class="rv" style="--d:.1s">
-          <div class="panel p-map" role="img" aria-label="Exemple de l'onglet Carte de Dooka en thème sombre : champ de recherche, légende, bars PMU en points de couleur, halos d'activité et bulles de comptage.">
-            <svg class="map" viewBox="0 0 700 460" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-              <rect width="700" height="460" fill="#111614"/>
-              <path d="M420 30h170v110H420zM40 70h120v80H40z" fill="#12241A"/>
-              <path d="M-20 300C120 260 230 330 360 286S560 200 720 230" fill="none" stroke="#0E2A38" stroke-width="26"/>
-              <g stroke="#1C2420" fill="none" stroke-linecap="round">
-                <path d="M-10 40L710 24M200-10l10 480M520-10l26 480M60-10l12 480M-10 350l720-6M390-10l-12 480" stroke-width="5"/>
-                <path d="M-10 410l720-24M120-10l24 480M450-10l24 480M630-10l30 480M-10 230l720 12" stroke-width="10"/>
+          <!-- La carte se touche : chaque point ouvre la fiche du bar, avec ce
+               qu'en montre l'app (PmuPlaceSheet). Les fiches sont dans le
+               script, à BARS ; les points restent écrits ici pour que la
+               carte s'affiche même sans lui. -->
+          <div class="panel p-map" id="carte" role="group" aria-label="Démo de l'onglet Carte : touche un bar pour ouvrir sa fiche">
+            <svg class="map" viewBox="0 0 700 460" preserveAspectRatio="xMidYMid slice">
+              <rect class="map-bg" x="-400" y="-400" width="1500" height="1260" fill="#111614"/>
+              <g id="world">
+                <g aria-hidden="true">
+                  <path d="M420 30h170v110H420zM40 70h120v80H40zM-200 400h150v120h-150zM760 290h150v110H760z" fill="#12241A"/>
+                  <path d="M-320 345C-200 330-110 318-20 300C120 260 230 330 360 286S560 200 720 230S900 280 1020 262" fill="none" stroke="#0E2A38" stroke-width="26"/>
+                  <g stroke="#1C2420" fill="none" stroke-linecap="round">
+                    <path d="M-310 47L1010 17M194-310L216 770M504-310L562 770M52-310L80 770M-310 352L1010 341M398-310L370 770" stroke-width="5"/>
+                    <path d="M-310 420L1010 376M105-310L159 770M435-310L489 770M611-310L679 770M-310 225L1010 247" stroke-width="10"/>
+                  </g>
+                  <g stroke="#2A332F" fill="none" stroke-width="13"><path d="M-310 188L1010 108M220-310L280-10c30 150 76 260 100 480l16 300"/></g>
+                  <g font-family="system-ui, sans-serif">
+                    <text x="300" y="262" font-size="15" font-weight="700" fill="#8C958F">Centre-ville</text>
+                    <text x="440" y="150" font-size="11" fill="#5C8A6A">Jardin public</text>
+                  </g>
+                  <circle class="halo-pulse" cx="352" cy="214" r="14" fill="rgba(242,84,27,.30)"/>
+                  <circle cx="352" cy="214" r="18" fill="rgba(242,84,27,.30)" stroke="rgba(242,84,27,.85)" stroke-width="2"/>
+                  <circle cx="104" cy="306" r="15" fill="rgba(14,107,79,.22)" stroke="rgba(14,107,79,.62)" stroke-width="2"/>
+                </g>
+                <g class="pin" data-bar="narval" role="button" tabindex="0"><g class="pin-in" style="--pd:.12s"><circle class="hit" cx="160" cy="160" r="20"/><circle class="sel-ring" cx="160" cy="160" r="15"/><circle class="dot" cx="160" cy="160" r="7" fill="#FF7377" stroke="#fff" stroke-width="2"/></g></g>
+                <g class="pin" data-bar="boncoin" role="button" tabindex="0"><g class="pin-in" style="--pd:.3s"><circle class="hit" cx="250" cy="370" r="20"/><circle class="sel-ring" cx="250" cy="370" r="15"/><circle class="dot" cx="250" cy="370" r="7" fill="#FF7377" stroke="#fff" stroke-width="2"/></g></g>
+                <g class="pin" data-bar="diplomate" role="button" tabindex="0"><g class="pin-in" style="--pd:.36s"><circle class="hit" cx="640" cy="180" r="20"/><circle class="sel-ring" cx="640" cy="180" r="15"/><circle class="dot" cx="640" cy="180" r="7" fill="#FF7377" stroke="#fff" stroke-width="2"/></g></g>
+                <g class="pin" data-bar="sports" role="button" tabindex="0"><g class="pin-in" style="--pd:.18s"><circle class="hit" cx="210" cy="250" r="20"/><circle class="sel-ring" cx="210" cy="250" r="15"/><circle class="dot" cx="210" cy="250" r="7" fill="#2E7CF6" stroke="#fff" stroke-width="2"/></g></g>
+                <g class="pin" data-bar="weekend" role="button" tabindex="0"><g class="pin-in" style="--pd:.24s"><circle class="hit" cx="560" cy="250" r="20"/><circle class="sel-ring" cx="560" cy="250" r="15"/><circle class="dot" cx="560" cy="250" r="7" fill="#2E7CF6" stroke="#fff" stroke-width="2"/></g></g>
+                <g class="pin" data-bar="escale" role="button" tabindex="0"><g class="pin-in" style="--pd:.42s"><circle class="hit" cx="600" cy="380" r="20"/><circle class="sel-ring" cx="600" cy="380" r="15"/><circle class="dot" cx="600" cy="380" r="7" fill="#2E7CF6" stroke="#fff" stroke-width="2"/></g></g>
+                <g class="pin" data-bar="sporting" role="button" tabindex="0"><g class="pin-in" style="--pd:.08s">
+                  <circle class="hit" cx="104" cy="300" r="22"/><circle class="sel-ring" cx="104" cy="306" r="15"/><circle class="dot" cx="104" cy="306" r="7" fill="#3CC278" stroke="#fff" stroke-width="2"/>
+                  <g transform="translate(104 282)"><g class="bubble-in"><rect x="-10" y="-16" width="20" height="18" rx="8" fill="#3CC278" stroke="#0F1311"/><path d="M-5 2 0 9 5 2z" fill="#3CC278"/><text y="-3" text-anchor="middle" font-size="11" font-weight="700" fill="#07140B" font-family="system-ui, sans-serif">4</text></g></g>
+                </g></g>
+                <g class="pin" data-bar="longchamp" role="button" tabindex="0"><g class="pin-in" style="--pd:.2s">
+                  <circle class="hit" cx="470" cy="324" r="22"/><circle class="sel-ring" cx="470" cy="330" r="15"/><circle class="dot" cx="470" cy="330" r="7" fill="#FF7377" stroke="#fff" stroke-width="2"/>
+                  <g transform="translate(470 306)"><g class="bubble-in"><rect x="-10" y="-16" width="20" height="18" rx="8" fill="#FF7377" stroke="#0F1311"/><path d="M-5 2 0 9 5 2z" fill="#FF7377"/><text y="-3" text-anchor="middle" font-size="11" font-weight="700" fill="#07140B" font-family="system-ui, sans-serif">3</text></g></g>
+                </g></g>
+                <g class="pin" data-bar="balto" role="button" tabindex="0"><g class="pin-in" style="--pd:0s">
+                  <circle class="hit" cx="352" cy="206" r="24"/><circle class="sel-ring" cx="352" cy="214" r="15"/><circle class="dot" cx="352" cy="214" r="7" fill="#FF7377" stroke="#fff" stroke-width="2"/>
+                  <g transform="translate(352 189)"><g class="bubble-in"><rect x="-13" y="-16" width="26" height="18" rx="8" fill="#FF7377" stroke="#0F1311"/><path d="M-5 2 0 9 5 2z" fill="#FF7377"/><text class="count-balto" y="-3" text-anchor="middle" font-size="11" font-weight="700" fill="#07140B" font-family="system-ui, sans-serif">12</text></g></g>
+                </g></g>
               </g>
-              <g stroke="#2A332F" fill="none" stroke-width="13"><path d="M-10 170 710 126M280-10c30 150 76 260 100 480"/></g>
-              <g font-family="system-ui, sans-serif">
-                <text x="300" y="262" font-size="15" font-weight="700" fill="#8C958F">Centre-ville</text>
-                <text x="440" y="150" font-size="11" fill="#5C8A6A">Jardin public</text>
-              </g>
-              <circle class="halo-pulse" cx="352" cy="214" r="14" fill="rgba(242,84,27,.30)"/>
-              <circle cx="352" cy="214" r="18" fill="rgba(242,84,27,.30)" stroke="rgba(242,84,27,.85)" stroke-width="2"/>
-              <circle cx="104" cy="306" r="15" fill="rgba(14,107,79,.22)" stroke="rgba(14,107,79,.62)" stroke-width="2"/>
-              <g stroke="#fff" stroke-width="2">
-                <circle cx="352" cy="214" r="7" fill="#FF7377"/>
-                <circle cx="160" cy="160" r="7" fill="#FF7377"/>
-                <circle cx="470" cy="330" r="7" fill="#FF7377"/>
-                <circle cx="250" cy="370" r="7" fill="#FF7377"/>
-                <circle cx="640" cy="180" r="7" fill="#FF7377"/>
-                <circle cx="104" cy="306" r="7" fill="#3CC278"/>
-                <circle cx="560" cy="250" r="7" fill="#2E7CF6"/>
-                <circle cx="210" cy="250" r="7" fill="#2E7CF6"/>
-                <circle cx="600" cy="380" r="7" fill="#2E7CF6"/>
-              </g>
-              <g transform="translate(352 189)"><rect x="-13" y="-16" width="26" height="18" rx="8" fill="#FF7377" stroke="#0F1311"/><path d="M-5 2 0 9 5 2z" fill="#FF7377"/><text y="-3" text-anchor="middle" font-size="11" font-weight="700" fill="#07140B" font-family="system-ui, sans-serif">12</text></g>
-              <g transform="translate(104 282)"><rect x="-10" y="-16" width="20" height="18" rx="8" fill="#3CC278" stroke="#0F1311"/><path d="M-5 2 0 9 5 2z" fill="#3CC278"/><text y="-3" text-anchor="middle" font-size="11" font-weight="700" fill="#07140B" font-family="system-ui, sans-serif">4</text></g>
-              <g transform="translate(470 306)"><rect x="-10" y="-16" width="20" height="18" rx="8" fill="#FF7377" stroke="#0F1311"/><path d="M-5 2 0 9 5 2z" fill="#FF7377"/><text y="-3" text-anchor="middle" font-size="11" font-weight="700" fill="#07140B" font-family="system-ui, sans-serif">3</text></g>
             </svg>
             <div class="map-search" aria-hidden="true">Chercher une ville, un bar…</div>
             <div class="legend" aria-hidden="true">
               <div><span><i style="background:#FF7377"></i>PMU</span><span><i style="background:#2E7CF6"></i>à vérifier</span><span><i style="background:#3CC278"></i>déjà joué</span></div>
               <div><span><i class="ring2" style="border-color:#F2541B"></i>ça gratte maintenant</span><span><i class="ring2" style="border-color:#0E6B4F"></i>gratté aujourd’hui</span></div>
-              <div>Le chiffre : tickets grattés ici sur 30 jours</div>
+              <div>Le chiffre&#8239;: tickets grattés ici sur 30 jours</div>
             </div>
-            <span class="map-locate" aria-hidden="true"><svg class="i"><use href="#i-locate"/></svg></span>
+            <p class="map-hint" aria-hidden="true"><svg class="i"><use href="#i-pin"/></svg>Touche un bar</p>
+            <button class="map-locate" id="viseur" type="button" aria-label="Recentrer la carte"><svg class="i" aria-hidden="true"><use href="#i-locate"/></svg></button>
+            <div class="bs" id="fiche" role="region" aria-label="Fiche du bar">
+              <div class="bs-body" id="ficheCorps"></div>
+              <div class="bs-actions"><button class="p" type="button" id="ficheGratte">J'ai gratté ici</button><button class="s" type="button" id="ficheSession">Session à plusieurs</button></div>
+            </div>
+            <p class="sr" aria-live="polite" id="carteAnnonce"></p>
           </div>
-          <p class="panel-note">Exemple : bars et chiffres fictifs. Les bulles n'apparaissent qu'en zoomant sur un quartier.</p>
+          <p class="panel-note">Démo&#8239;: bars, notes et chiffres fictifs. Dans l'app, les bulles n'apparaissent qu'en zoomant sur un quartier.</p>
         </div>
       </div>
 
@@ -1253,12 +1432,15 @@
       requestAnimationFrame(f);
     }
 
+    // Un joueur : sa ligne du classement, et ses tickets dessous, repliés.
+    // Déplié, on y lit chaque mise et chaque gain : le net de la ligne en
+    // est la somme, et le net de la table la somme des lignes.
     function ligne(id) {
       var j = joueurs[id];
       var r = document.createElement("div");
-      r.className = "row";
+      r.className = "pl";
       r.dataset.id = id;
-      r.innerHTML = '<span class="ring"><span class="ini"></span></span><span class="nm"><b></b></span><span class="ct"><b></b><small></small></span><span class="net"></span>';
+      r.innerHTML = '<div class="row" role="button" tabindex="0" aria-expanded="false"><span class="ring"><span class="ini"></span></span><span class="nm"><b></b></span><span class="ct"><b></b><small></small></span><span class="net"></span></div><div class="tks"><div></div></div>';
       var ini = r.querySelector(".ini");
       ini.textContent = j.ini;
       ini.style.background = j.bg;
@@ -1267,7 +1449,7 @@
       return r;
     }
 
-    function remplir(r, anime, de) {
+    function remplir(r, anime, de, neuf) {
       var j = joueurs[r.dataset.id];
       var n = net(j), g = gagnants(j);
       r.querySelector(".ct b").textContent = j.plays.length;
@@ -1277,6 +1459,70 @@
       var el = r.querySelector(".net");
       el.classList.toggle("neg", n < 0);
       compter(el, anime ? de : n, n, fmtSS);
+      // Le plus récent en haut, comme « Derniers tickets » dans l'app.
+      var box = r.querySelector(".tks > div");
+      box.textContent = "";
+      j.plays.slice().reverse().forEach(function (p, i) {
+        var d = document.createElement("div");
+        d.className = "tk" + (neuf && i === 0 ? " fresh" : "");
+        var s = document.createElement("span");
+        var em = document.createElement("em");
+        em.textContent = p[0];
+        s.appendChild(em);
+        s.appendChild(document.createTextNode(" · mise " + fmtS(p[1]) + " · " + (p[2] === 0 ? "perdu" : "gagné " + fmtS(p[2]))));
+        var b = document.createElement("b");
+        var v = p[2] - p[1];
+        b.textContent = fmtSS(v);
+        if (v < 0) b.className = "neg"; else if (v === 0) b.className = "zero";
+        d.appendChild(s);
+        d.appendChild(b);
+        box.appendChild(d);
+      });
+    }
+
+    var sdEl = document.querySelector(".sd");
+    function deplier(r) {
+      var ouvert = !r.classList.contains("deplie");
+      r.classList.toggle("deplie", ouvert);
+      r.querySelector(".row").setAttribute("aria-expanded", ouvert ? "true" : "false");
+      if (!ouvert) return;
+      // Une fois déplié, on fait défiler l'écran du téléphone juste assez
+      // pour que le dernier ticket ne reste pas sous le bouton du bas.
+      setTimeout(function () {
+        var a = r.getBoundingClientRect(), c = sdEl.getBoundingClientRect();
+        var k = c.height / sdEl.offsetHeight || 1;
+        var bas = (a.bottom - c.bottom) / k;
+        if (bas > 0) sdEl.scrollBy({ top: bas + 12, behavior: still ? "auto" : "smooth" });
+      }, still ? 0 : 520);
+    }
+    ranking.addEventListener("click", function (e) {
+      var row = e.target.closest(".row");
+      if (row) deplier(row.parentNode);
+    });
+    ranking.addEventListener("keydown", function (e) {
+      if (e.key !== "Enter" && e.key !== " ") return;
+      var row = e.target.closest(".row");
+      if (!row) return;
+      e.preventDefault();
+      deplier(row.parentNode);
+    });
+
+    // La bulle qui dit ce qui vient d'être noté : le total bouge, elle dit
+    // de combien et pourquoi.
+    var toast = document.getElementById("toast");
+    var toastT = document.getElementById("toastT");
+    var toastS = document.getElementById("toastS");
+    var toastA = document.getElementById("toastA");
+    var toastMinuteur;
+    function signaler(j, e) {
+      var v = e[3] - e[2];
+      toastT.textContent = "Ticket noté pour " + j.nom;
+      toastS.textContent = e[1] + " · mise " + fmtS(e[2]) + " · " + (e[3] === 0 ? "perdu" : "gagné " + fmtS(e[3]));
+      toastA.textContent = fmtSS(v);
+      toastA.className = "amt" + (v > 0 ? " pos" : v < 0 ? " neg" : "");
+      toast.classList.add("on");
+      clearTimeout(toastMinuteur);
+      toastMinuteur = setTimeout(function () { toast.classList.remove("on"); }, 3200);
     }
 
     function table(anime) {
@@ -1339,6 +1585,7 @@
         remplir(r, false);
       });
       tableNet.dataset.v = "";
+      sdEl.scrollTop = 0;
       classer(false);
       table(false);
     }
@@ -1349,9 +1596,13 @@
       var j = joueurs[e[0]];
       var de = net(j);
       j.plays.push([e[1], e[2], e[3]]);
-      remplir(ranking.querySelector('[data-id="' + e[0] + '"]'), true, de);
+      remplir(ranking.querySelector('[data-id="' + e[0] + '"]'), true, de, true);
       var ordre = classer(true);
       table(true);
+      signaler(j, e);
+      // Le ticket est gratté au Balto : sa bulle sur la carte le compte.
+      baltoSession++;
+      majBalto(true);
       addBtn.classList.remove("ping");
       hint.classList.remove("on");
       var tete = joueurs[ordre[0]];
@@ -1363,6 +1614,9 @@
     addBtn.addEventListener("click", ajouter);
     resetBtn.addEventListener("click", function () {
       initialiser();
+      baltoSession = 0;
+      majBalto(false);
+      toast.classList.remove("on");
       resetBtn.hidden = true;
       annonce.textContent = "Démo remise à zéro.";
     });
@@ -1384,6 +1638,409 @@
       }, { threshold: 0.35 });
       io2.observe(scene);
     }
+
+    /* ---------- Les cartes : chaque bar a sa fiche ---------- */
+    // Ce que montre la fiche d'un bar dans l'app (PmuPlaceSheet), réduit à
+    // une feuille qui monte du bas. Bars, notes et chiffres fictifs, mais
+    // cohérents entre eux : la bulle d'un bar compte ses tickets sur 30
+    // jours, donc il n'a pas plus de joueurs ni de parties sur 7 jours. Les
+    // records sont de vrais lots des tickets nommés.
+    // chaleur : [niveau, titre, détail] ; surPlace : tickets à gratter,
+    // courses en direct, Amigo, terrasse (o oui, n non, ? inconnu) ;
+    // freq : parties depuis toujours, joueurs sur 30 jours, parties sur 7.
+    var BARS = {
+      balto: { nom: "Le Balto", note: "4,3", avis: 212, type: "Bar PMU", dist: "350 m", adresse: "8 place du Marché",
+        statut: "pmu", chaleur: ["live", "3 personnes grattent ici en ce moment", "Léa, Momo et Sam, à la même table"],
+        heures: ["open", "Ouvert · ferme à 23 h"], surPlace: "ooo?", freq: [86, 9, 7],
+        record: ["100 €", "Record du bar — Momo · Cash"], amis: ["Léa", "Momo", "Sam"] },
+      narval: { nom: "Le Narval", note: "4,1", avis: 86, type: "Bar PMU", dist: "1,2 km", adresse: "21 rue Gambetta",
+        statut: "pmu", heures: ["open", "Ouvert · ferme à 20 h"], surPlace: "on?o", freq: [23, 4, 2],
+        record: ["20 €", "Record du bar — Nadia · Astro"], amis: ["Nadia"] },
+      longchamp: { nom: "Le Longchamp", note: "4,4", avis: 51, type: "Bar PMU", dist: "800 m", adresse: "2 avenue de la Gare",
+        statut: "pmu", heures: ["closed", "Fermé · ouvre demain à 7 h"], surPlace: "oonn", freq: [64, 2, 1],
+        record: ["50 €", "Record du bar — Karim · Cash"], amis: [] },
+      boncoin: { nom: "Le Bon Coin", note: "3,9", avis: 34, type: "Bar PMU", dist: "1 km", adresse: "47 rue de la République",
+        statut: "pmu", heures: ["open", "Ouvert · ferme à 21 h"], surPlace: "o???", freq: null, amis: [] },
+      diplomate: { nom: "Le Diplomate", note: "4,0", avis: 128, type: "Point de vente PMU", dist: "1,5 km", adresse: "3 boulevard Carnot",
+        statut: "pmu", heures: ["open", "Ouvert · ferme à 19 h 30"], surPlace: "ooon", freq: [12, 3, 1],
+        record: ["10 €", "Record du bar — Sam · Banco"], amis: ["Sam"] },
+      sporting: { nom: "Le Sporting", note: "4,5", avis: 97, type: "Bar PMU", dist: "1,4 km", adresse: "15 quai des Tanneurs",
+        statut: "joue", chaleur: ["recent", "2 parties grattées ici aujourd’hui", ""],
+        heures: ["open", "Ouvert · ferme à minuit"], surPlace: "oo?o", freq: [31, 3, 4],
+        record: ["20 €", "Record du bar — toi · Astro"], toi: true, moi: "20 €", amis: ["Sam"] },
+      sports: { nom: "Bar des Sports", note: "4,2", avis: 18, type: "Bar PMU", dist: "600 m", adresse: "30 rue Victor-Hugo",
+        statut: "verif", heures: ["unknown", "Horaires non communiqués"], surPlace: "????", freq: null, amis: [] },
+      weekend: { nom: "Le Week-End", note: "3,8", avis: 41, type: "Bar PMU", dist: "900 m", adresse: "5 rue des Halles",
+        statut: "verif", heures: ["open", "Ouvert · ferme à 2 h"], surPlace: "????", freq: null, amis: [] },
+      escale: { nom: "L'Escale", note: "4,6", avis: 23, type: "Bar PMU", dist: "1,3 km", adresse: "62 avenue Jean-Jaurès",
+        statut: "verif", heures: ["closed", "Fermé · ouvre à 16 h"], surPlace: "????", freq: null, amis: [] }
+    };
+    var SUR_PLACE = ["Tickets à gratter", "Courses en direct", "Amigo", "Terrasse"];
+    var AMIS = { "Léa": ["L", "#1F3B2C", "#7FE0A8"], "Momo": ["M", "#3B3420", "#F2C14E"], "Sam": ["S", "#22304A", "#8DB4F5"], "Nadia": ["N", "#33284A", "#C9A8FF"] };
+
+    // Le Balto compte, sur les deux cartes, les tickets de la session du
+    // héros et ceux qui s'y ajoutent pendant qu'on regarde.
+    var baltoSession = 0, baltoDirect = 0;
+    function majBalto(anime) {
+      var n = 12 + baltoSession + baltoDirect;
+      document.querySelectorAll(".count-balto").forEach(function (t) {
+        t.textContent = n;
+        if (anime && !still) rejouer(t.parentNode, "bump");
+      });
+      if (anime && !still) document.querySelectorAll('.pin[data-bar="balto"] .dot').forEach(function (d) { onde(d, "#F2541B"); });
+      if (ficheId === "balto") remplirFiche("balto");
+      majMini();
+    }
+    function rejouer(el, cls) {
+      el.classList.remove(cls);
+      void el.getBoundingClientRect();
+      el.classList.add(cls);
+    }
+    function onde(dot, couleur) {
+      var c = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+      c.setAttribute("class", "ripple");
+      c.setAttribute("cx", dot.getAttribute("cx"));
+      c.setAttribute("cy", dot.getAttribute("cy"));
+      c.setAttribute("r", dot.getAttribute("r"));
+      c.setAttribute("stroke", couleur);
+      dot.parentNode.insertBefore(c, dot);
+      setTimeout(function () { c.remove(); }, 1500);
+    }
+
+    function el(tag, cls, txt) {
+      var e = document.createElement(tag);
+      if (cls) e.className = cls;
+      if (txt != null) e.textContent = txt;
+      return e;
+    }
+    function ico(id) {
+      var s = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+      s.setAttribute("class", "i");
+      s.setAttribute("aria-hidden", "true");
+      var u = document.createElementNS("http://www.w3.org/2000/svg", "use");
+      u.setAttribute("href", "#" + id);
+      s.appendChild(u);
+      return s;
+    }
+    function freqDe(id) {
+      var b = BARS[id];
+      if (!b.freq) return null;
+      if (id !== "balto") return b.freq;
+      return [b.freq[0] + baltoSession + baltoDirect, b.freq[1], b.freq[2] + baltoSession + baltoDirect];
+    }
+    // La ligne qui résume un bar, pour les lecteurs d'écran et l'extrait.
+    function resume(id) {
+      var b = BARS[id];
+      if (b.statut === "verif") return "PMU à vérifier · " + b.heures[1];
+      if (b.chaleur) return b.chaleur[1];
+      return b.heures[1];
+    }
+
+    var carte = document.getElementById("carte");
+    var world = document.getElementById("world");
+    var fiche = document.getElementById("fiche");
+    var ficheCorps = document.getElementById("ficheCorps");
+    var carteAnnonce = document.getElementById("carteAnnonce");
+    var ficheId = null;
+
+    function remplirFiche(id) {
+      var b = BARS[id];
+      var f = document.createDocumentFragment();
+      f.appendChild(el("div", "grab"));
+      var head = el("div", "bs-head");
+      head.appendChild(el("h4", "bs-name", b.nom));
+      var x = el("button", "bs-close");
+      x.type = "button";
+      x.setAttribute("aria-label", "Fermer la fiche");
+      x.appendChild(ico("i-x"));
+      x.addEventListener("click", function () { fermer(true); });
+      head.appendChild(x);
+      f.appendChild(head);
+
+      var meta = el("p", "bs-meta");
+      meta.appendChild(el("span", "st", "★ "));
+      meta.appendChild(el("span", "rt", b.note));
+      meta.appendChild(document.createTextNode(" (" + b.avis + " avis Google) · " + b.type + " · à " + b.dist));
+      f.appendChild(meta);
+      f.appendChild(el("p", "bs-addr", b.adresse));
+
+      if (b.statut === "verif") {
+        var no = el("div", "bs-notice");
+        no.appendChild(document.createTextNode("PMU non confirmé — ce lieu vient d’une recherche approximative, personne n’a encore vérifié qu’on y joue vraiment."));
+        var ok = el("button", null, "J’y suis allé, c’est bien un PMU");
+        ok.type = "button";
+        ok.addEventListener("click", function () { confirmer(id, no); });
+        no.appendChild(ok);
+        f.appendChild(no);
+      } else if (b.confirme) {
+        f.appendChild(el("div", "bs-notice ok", "Merci, c’est noté : le lieu est confirmé, et son point passe au rouge des PMU."));
+      }
+
+      if (b.chaleur) {
+        var h = el("div", "bs-card bs-heat " + b.chaleur[0]);
+        var dot = el("span", "bs-dot");
+        dot.style.background = b.chaleur[0] === "live" ? "#F2541B" : "#0E6B4F";
+        h.appendChild(dot);
+        var ht = el("div");
+        ht.appendChild(el("b", null, b.chaleur[1]));
+        if (b.chaleur[2]) ht.appendChild(el("span", null, b.chaleur[2]));
+        h.appendChild(ht);
+        f.appendChild(h);
+      }
+
+      var hr = el("div", "bs-card");
+      var hd = el("span", "bs-dot");
+      hd.style.background = { open: "#4CCB84", closed: "#FF7377", unknown: "#A6AEA8" }[b.heures[0]];
+      hr.appendChild(hd);
+      hr.appendChild(el("b", null, b.heures[1]));
+      f.appendChild(hr);
+
+      var q = el("div", "bs-quick");
+      q.setAttribute("aria-hidden", "true");
+      [["i-arrow-r", "Itinéraire"], ["i-share", "Partager"], ["i-sparkles", "Favori"]].forEach(function (a) {
+        var s = el("span");
+        s.appendChild(ico(a[0]));
+        s.appendChild(document.createTextNode(a[1]));
+        q.appendChild(s);
+      });
+      f.appendChild(q);
+
+      f.appendChild(el("h5", "bs-h", "Sur place"));
+      var ch = el("div", "bs-chips");
+      var inconnus = 0;
+      b.surPlace.split("").forEach(function (v, i) {
+        if (v === "?") inconnus++;
+        ch.appendChild(el("span", v === "o" ? "yes" : v === "n" ? "no" : "unk", (v === "o" ? "✓ " : v === "n" ? "✕ " : "? ") + SUR_PLACE[i]));
+      });
+      f.appendChild(ch);
+      if (inconnus) f.appendChild(el("p", "bs-more", inconnus > 1 ? inconnus + " infos manquent ici — complète la fiche" : "Une info manque ici — complète la fiche"));
+
+      f.appendChild(el("h5", "bs-h", "Fréquentation"));
+      var fr = freqDe(id);
+      if (!fr) {
+        f.appendChild(el("p", "bs-empty", "Aucune partie enregistrée ici pour l’instant."));
+      } else {
+        var st = el("div", "bs-stats");
+        [[fr[0], "Parties", "depuis toujours", ""], [fr[1], "Joueurs", "30 derniers jours", "gold"], [fr[2], "Parties", "7 derniers jours", ""]].forEach(function (t) {
+          var c = el("div");
+          c.appendChild(el("b", t[3], String(t[0])));
+          c.appendChild(el("span", null, t[1]));
+          c.appendChild(el("small", null, t[2]));
+          st.appendChild(c);
+        });
+        f.appendChild(st);
+      }
+
+      if (b.record) {
+        f.appendChild(el("h5", "bs-h", "Les gains d’ici"));
+        var rc = el("div", "bs-rec");
+        var l1 = el("div");
+        l1.appendChild(el("span", "ic", b.toi ? "👑" : "🏆"));
+        var t1 = el("div");
+        t1.appendChild(el("b", null, b.record[0]));
+        t1.appendChild(el("span", null, b.record[1]));
+        l1.appendChild(t1);
+        rc.appendChild(l1);
+        if (b.moi) {
+          var l2 = el("div");
+          l2.appendChild(el("span", "ic", "👤"));
+          var t2 = el("div");
+          t2.appendChild(el("b", null, b.moi));
+          t2.appendChild(el("span", null, "Ton meilleur gain ici"));
+          l2.appendChild(t2);
+          rc.appendChild(l2);
+        }
+        f.appendChild(rc);
+      }
+
+      if (b.amis.length) {
+        var am = el("div", "bs-friends");
+        var avs = el("div", "avs2");
+        b.amis.slice(0, 3).forEach(function (n) {
+          var a = AMIS[n];
+          var s = el("span", "ini", a[0]);
+          s.style.background = a[1];
+          s.style.color = a[2];
+          avs.appendChild(s);
+        });
+        am.appendChild(avs);
+        var at = el("div");
+        at.appendChild(el("b", null, b.amis.length > 1 ? b.amis.length + " amis ont joué ici" : "1 ami a joué ici"));
+        at.appendChild(el("span", "who", b.amis.length > 2 ? b.amis.slice(0, 2).join(", ") + " et " + pluriel(b.amis.length - 2, "autre") : b.amis.join(", ")));
+        am.appendChild(at);
+        f.appendChild(am);
+      }
+
+      ficheCorps.textContent = "";
+      ficheCorps.appendChild(f);
+    }
+
+    // Le point bleu « à vérifier » devient un PMU : c'est ce que fait le
+    // bouton dans l'app, et la seule écriture qu'on montre ici.
+    function confirmer(id, notice) {
+      var b = BARS[id];
+      b.statut = "pmu";
+      b.confirme = true;
+      document.querySelectorAll('.pin[data-bar="' + id + '"] .dot').forEach(function (d) {
+        d.setAttribute("fill", "#FF7377");
+        if (!still) onde(d, "#FF7377");
+      });
+      notice.classList.add("ok");
+      notice.textContent = "Merci, c’est noté : le lieu est confirmé, et son point passe au rouge des PMU.";
+      etiqueter();
+      carteAnnonce.textContent = b.nom + " confirmé comme PMU.";
+    }
+
+    // La carte glisse et zoome un peu pour poser le bar choisi au milieu de
+    // ce qui reste visible au-dessus de la fiche. Le SVG est en « slice » :
+    // son échelle et son décalage se recalculent sur la taille du panneau.
+    function cadrer(id) {
+      if (!id) { world.style.transform = ""; return; }
+      var dot = carte.querySelector('.pin[data-bar="' + id + '"] .dot');
+      var x = +dot.getAttribute("cx"), y = +dot.getAttribute("cy");
+      var w = carte.clientWidth, h = carte.clientHeight;
+      var s = Math.max(w / 700, h / 460);
+      var ox = (w - 700 * s) / 2, oy = (h - 460 * s) / 2;
+      var cible;
+      if (carte.classList.contains("side")) {
+        cible = [(w - fiche.offsetWidth - 16) / 2, 64 + (h - 64) / 2];
+      } else {
+        var haut = 64, bas = h - fiche.offsetHeight - 8;
+        cible = [w / 2, haut + Math.max(36, (bas - haut) / 2)];
+      }
+      var dx = (cible[0] - (ox + x * s)) / s, dy = (cible[1] - (oy + y * s)) / s;
+      dx = Math.max(-260, Math.min(260, dx));
+      dy = Math.max(-260, Math.min(260, dy));
+      world.style.transformOrigin = x + "px " + y + "px";
+      world.style.transform = "translate(" + dx + "px, " + dy + "px) scale(1.15)";
+    }
+
+    function ouvrir(id) {
+      var deja = ficheId !== null;
+      ficheId = id;
+      carte.classList.add("has-sel", "touched");
+      carte.querySelectorAll(".pin").forEach(function (p) { p.classList.toggle("sel", p.dataset.bar === id); });
+      if (deja && !still) {
+        ficheCorps.classList.add("swap");
+        setTimeout(function () { remplirFiche(id); ficheCorps.scrollTop = 0; ficheCorps.classList.remove("swap"); cadrer(id); }, 180);
+      } else {
+        remplirFiche(id);
+        ficheCorps.scrollTop = 0;
+        fiche.classList.add("on");
+        cadrer(id);
+      }
+      carteAnnonce.textContent = "Fiche ouverte : " + BARS[id].nom + ". " + resume(id) + ".";
+    }
+    function fermer(rendreFocus) {
+      if (ficheId === null) return;
+      var id = ficheId;
+      ficheId = null;
+      fiche.classList.remove("on");
+      carte.classList.remove("has-sel");
+      carte.querySelectorAll(".pin.sel").forEach(function (p) { p.classList.remove("sel"); });
+      cadrer(null);
+      if (rendreFocus) {
+        var p = carte.querySelector('.pin[data-bar="' + id + '"]');
+        if (p) p.focus({ preventScroll: true });
+      }
+    }
+
+    function etiqueter() {
+      document.querySelectorAll(".pin[data-bar]").forEach(function (p) {
+        var b = BARS[p.dataset.bar];
+        p.setAttribute("aria-label", b.nom + ", " + resume(p.dataset.bar));
+      });
+    }
+    etiqueter();
+
+    carte.addEventListener("click", function (e) {
+      var p = e.target.closest(".pin");
+      if (p) { ouvrir(p.dataset.bar); return; }
+      if (e.target.closest(".map-bg") || e.target.closest("#world")) fermer(false);
+    });
+    carte.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") { fermer(true); return; }
+      if (e.key !== "Enter" && e.key !== " ") return;
+      var p = e.target.closest(".pin");
+      if (!p) return;
+      e.preventDefault();
+      ouvrir(p.dataset.bar);
+    });
+    document.getElementById("viseur").addEventListener("click", function () { fermer(false); });
+    function disposer() { carte.classList.toggle("side", carte.clientWidth >= 560); }
+    disposer();
+    window.addEventListener("resize", function () { disposer(); if (ficheId) cadrer(ficheId); });
+
+    // Les deux gestes de la fiche mènent aux démos qui les montrent.
+    function mener(cible) {
+      cible.scrollIntoView({ behavior: still ? "auto" : "smooth", block: "center" });
+      if (!still) setTimeout(function () { rejouer(cible, "flash"); }, 500);
+    }
+    document.getElementById("ficheGratte").addEventListener("click", function () { mener(document.getElementById("gratte")); });
+    document.getElementById("ficheSession").addEventListener("click", function () { mener(document.getElementById("scene")); });
+
+    // L'arrivée : les points tombent sur la carte, puis, tant qu'elle est
+    // à l'écran, quelques tickets s'ajoutent au Balto, où la session joue.
+    if (!still && "IntersectionObserver" in window) {
+      carte.classList.add("armed");
+      var direct = null, coups = 0;
+      var io3 = new IntersectionObserver(function (e) {
+        if (e[0].isIntersecting) {
+          if (carte.classList.contains("armed")) {
+            carte.classList.remove("armed");
+            carte.classList.add("in");
+          }
+          if (!direct && coups < 5) {
+            direct = setInterval(function () {
+              baltoDirect++;
+              coups++;
+              majBalto(true);
+              if (coups >= 5) { clearInterval(direct); direct = null; }
+            }, 6500);
+          }
+        } else if (direct) {
+          clearInterval(direct);
+          direct = null;
+        }
+      }, { threshold: 0.4 });
+      io3.observe(carte);
+    }
+
+    // L'extrait du héros : un résumé du bar, puis la vraie fiche plus bas.
+    var fragMap = document.getElementById("fragMap");
+    var miniCard = document.getElementById("miniCard");
+    var miniNom = document.getElementById("miniNom");
+    var miniLigne = document.getElementById("miniLigne");
+    var miniId = null;
+    function majMini() {
+      if (!miniId) return;
+      miniNom.textContent = BARS[miniId].nom;
+      miniLigne.textContent = miniId === "balto" ? resume("balto") + " · " + (12 + baltoSession + baltoDirect) + " tickets sur 30 jours" : resume(miniId);
+    }
+    function mini(id) {
+      miniId = id;
+      fragMap.querySelectorAll(".pin").forEach(function (p) { p.classList.toggle("sel", p.dataset.bar === id); });
+      miniCard.classList.toggle("on", !!id);
+      majMini();
+    }
+    fragMap.addEventListener("click", function (e) {
+      if (e.target.closest(".mini-card")) return;
+      var p = e.target.closest(".pin");
+      mini(p ? p.dataset.bar : null);
+    });
+    fragMap.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") { mini(null); return; }
+      if (e.key !== "Enter" && e.key !== " ") return;
+      var p = e.target.closest(".pin");
+      if (!p) return;
+      e.preventDefault();
+      mini(p.dataset.bar);
+    });
+    document.getElementById("miniOuvrir").addEventListener("click", function () {
+      var id = miniId;
+      carte.scrollIntoView({ behavior: still ? "auto" : "smooth", block: "center" });
+      setTimeout(function () { ouvrir(id); }, still ? 0 : 650);
+    });
 
     /* ---------- « J'ai gratté ici » : la saisie, comme dans l'app ---------- */
     // QuickPlayEntryModal en mode solo : « Quel ticket ? », puis « Combien ? »
