@@ -37,7 +37,7 @@
 <main class="doc">
 
 <h1>Politique de confidentialité</h1>
-<p class="updated">Dernière mise à jour : <time datetime="2026-10-20">20 octobre 2026</time></p>
+<p class="updated">Dernière mise à jour : <time datetime="2026-10-24">24 octobre 2026</time></p>
 
 <p class="lede">Dooka est une application entre amis, pas un produit publicitaire. Cette page décrit exactement ce qui est collecté, pourquoi, et comment tout effacer. Elle est écrite pour être lue.</p>
 
@@ -91,9 +91,14 @@
       <td>Consentement <span class="muted">(révocable dans les réglages du téléphone)</span></td>
     </tr>
     <tr>
-      <td>Vos réglages <span class="muted">(limites de jeu, préférences de notification, thème, date de confirmation de majorité)</span></td>
+      <td>Vos réglages <span class="muted">(limites de jeu, pause, préférences de notification, date de confirmation de majorité)</span></td>
       <td>Appliquer vos choix dans l'application</td>
       <td>Exécution du service</td>
+    </tr>
+    <tr>
+      <td>Adresse e-mail d'un ami que vous invitez <span class="muted">(s'il n'a pas encore de compte)</span></td>
+      <td>Lui envoyer l'invitation que vous demandez, une seule fois. Elle n'est pas enregistrée dans la base de Dooka : seul le prestataire d'envoi en garde une trace dans ses journaux techniques</td>
+      <td>Intérêt légitime <span class="muted">(l'envoi se fait à votre demande)</span></td>
     </tr>
     <tr>
       <td>Date de dernière ouverture et version installée</td>
@@ -109,6 +114,9 @@
 </table>
 </div>
 
+<h3>Ce qui reste sur votre téléphone</h3>
+<p>Quelques informations ne sont enregistrées que sur votre appareil et ne nous parviennent jamais : le thème choisi (clair, sombre ou automatique), la dernière position de la carte, la session en cours, les écrans de présentation déjà vus et la dernière version des nouveautés lue. Elles disparaissent quand vous désinstallez l'application.</p>
+
 <div class="box">
   <p><b>Ce qui n'est pas collecté :</b> aucune donnée bancaire, aucun identifiant publicitaire, aucun historique de navigation, aucune donnée provenant d'autres applications. Dooka n'a pas d'accès à vos comptes PMU ou FDJ — les montants que vous enregistrez sont ceux que vous saisissez vous-même.</p>
 </div>
@@ -119,11 +127,14 @@
   <li><b>Supabase</b> — hébergement de la base de données et des photos, sur des serveurs situés à <b>Paris, dans l'Union européenne</b></li>
   <li><b>Google</b> — connexion à votre compte, cartes et recherche de lieux</li>
   <li><b>Expo</b> — acheminement des notifications</li>
-  <li><b>Resend</b> — envoi des e-mails (invitations, demandes d'ami, suivi de vos suggestions)</li>
-  <li><b>GitHub</b> — hébergement de ce site, du fichier d'installation et du suivi des suggestions</li>
+  <li><b>Resend</b> — envoi des e-mails (invitations, demandes d'ami, suivi de vos suggestions, confirmation de suppression du compte)</li>
+  <li><b>GitHub</b> — hébergement de ce site, du fichier d'installation et du suivi des suggestions. À chaque lancement, l'application Android demande à GitHub si une nouvelle version est disponible : comme pour toute page web, GitHub reçoit alors l'adresse IP du téléphone, mais aucune donnée de votre compte</li>
   <li><b>Anthropic</b> (États-Unis) — tri automatique des suggestions que vous envoyez depuis l'application (leur titre et leur description), avant leur prise en charge par l'équipe</li>
   <li><b>Google Play</b> et <b>Apple TestFlight</b> — distribution de l'application aux testeurs</li>
 </ul>
+
+<h3>Transferts hors de l'Union européenne</h3>
+<p>Vos données sont hébergées en France, chez Supabase. Mais Google, Expo, Resend, GitHub et Anthropic sont établis aux États-Unis : ce qu'ils traitent pour Dooka (connexion, recherche de lieux, notifications, e-mails, vérification de mise à jour, tri des suggestions) peut donc quitter l'Union européenne. Ces transferts reposent sur les garanties prévues par le RGPD que ces prestataires proposent, comme le cadre de protection des données UE–États-Unis ou les clauses contractuelles types de la Commission européenne.</p>
 
 <h3>Ce que les autres utilisateurs voient</h3>
 <p>Votre nom et votre photo de profil sont visibles par les autres utilisateurs de l'application, qui peuvent vous retrouver par votre nom.</p>

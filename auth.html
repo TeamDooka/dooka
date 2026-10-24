@@ -70,13 +70,13 @@
     <form id="reset-form" novalidate>
       <div class="field">
         <label for="pw1">Nouveau mot de passe</label>
-        <input type="password" id="pw1" autocomplete="new-password" required minlength="8" />
-        <p class="hint">8 caractères au minimum.</p>
+        <input type="password" id="pw1" autocomplete="new-password" required minlength="10" />
+        <p class="hint">10 caractères au minimum, avec des lettres et des chiffres.</p>
       </div>
 
       <div class="field">
         <label for="pw2">Confirmez-le</label>
-        <input type="password" id="pw2" autocomplete="new-password" required minlength="8" />
+        <input type="password" id="pw2" autocomplete="new-password" required minlength="10" />
       </div>
 
       <p class="err" id="reset-error" role="alert" hidden></p>
@@ -188,7 +188,29 @@
     }
 
     errorEl.hidden = true;
-    if (pw1.length < 8) return showError('Il faut au moins 8 caractères.');
+    // Même règle que l'application (src/utils/motDePasse.ts du dépôt de
+    // l'app) et que le réglage de Supabase Auth, qui fait foi : 10
+    // caractères, des lettres et des chiffres, et pas un mot de passe parmi
+    // les plus courants. Les deux listes sont à garder identiques.
+    var tropCourants = ['azerty1234', 'azertyuiop1', 'azertyuiop123', 'qwerty1234',
+      'qwertyuiop1', 'qwertyuiop123', 'password123', 'password1234', 'motdepasse1',
+      'motdepasse12', 'motdepasse123', 'motdepasse1234', 'abcdef1234', 'abcd123456',
+      'abc1234567', 'a123456789', '123456789a', 'iloveyou123', 'jetaime1234',
+      'bonjour1234', 'soleil1234', 'doudou1234', 'chouchou123', 'marseille13',
+      'loulou1234', 'football123', 'dooka12345', 'dooka123456'];
+    var minuscule = pw1.toLowerCase();
+    var distincts = {};
+    for (var i = 0; i < minuscule.length; i++) distincts[minuscule[i]] = true;
+    if (pw1.length < 10) return showError('Il faut au moins 10 caractères.');
+    if (!/[a-zA-ZÀ-ɏ]/.test(pw1) || !/[0-9]/.test(pw1)) {
+      return showError('Il faut mêler des lettres et des chiffres.');
+    }
+    if (tropCourants.indexOf(minuscule) !== -1) {
+      return showError('Ce mot de passe fait partie des plus utilisés : choisissez-en un autre.');
+    }
+    if (Object.keys(distincts).length < 4) {
+      return showError('Ce mot de passe répète trop les mêmes caractères.');
+    }
     if (pw1 !== pw2) return showError('Les deux mots de passe ne sont pas identiques.');
 
     submit.disabled = true;
