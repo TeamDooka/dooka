@@ -961,7 +961,7 @@
       <div class="hero-top">
         <h1 id="titre" class="rv">Dooka tient les comptes de la bande.</h1>
         <div class="hero-side">
-          <p class="hero-sub rv" style="--d:.08s"><strong>Tickets notés, sessions suivies, bilans comparés.</strong> Dooka met ta bande et ton bar dans la même appli : elle relève ce qui a été joué, et ne promet rien.</p>
+          <p class="hero-sub rv" style="--d:.08s"><strong>Tickets notés, sessions suivies, bilans comparés.</strong> Ta bande et ton bar dans la même appli.</p>
           <div class="hero-cta rv" style="--d:.16s">
             <a class="btn btn-light btn-lg" href="https://github.com/TeamDooka/dooka/releases/latest/download/dooka.apk"><svg class="i" aria-hidden="true"><use href="#i-download"/></svg>Télécharger pour Android</a>
             <a class="btn btn-ghost btn-lg" href="https://play.google.com/apps/testing/fr.dooka.app">Google Play · test fermé<svg class="i" aria-hidden="true"><use href="#i-chev-r"/></svg></a>
@@ -969,7 +969,6 @@
           <p class="hero-meta rv" style="--d:.22s">
             <span><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Gratuit</span>
             <span><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Sans pub</span>
-            <span><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Invité par un pote ? Installe, crée ton compte, puis rouvre son lien.</span>
           </p>
         </div>
       </div>
@@ -1035,7 +1034,7 @@
         </div>
       </div>
       <div class="stage-foot">
-        <span>Démo de la fiche d'une session (version 3.13, thème sombre). Noms et montants fictifs.</span>
+        <span>Démo, noms et montants fictifs.</span>
         <button type="button" id="reset" hidden><svg class="i" aria-hidden="true"><use href="#i-rotate"/></svg>Rejouer la démo</button>
       </div>
       <p class="sr" aria-live="polite" id="annonce"></p>
@@ -1045,7 +1044,7 @@
   <!-- ============ Manifeste ============ -->
   <section class="manifest" aria-label="Ce qu'est Dooka">
     <div class="wrap">
-      <p id="manifeste">Dooka est un <span>carnet</span>, pas un casino. Elle n'encaisse aucun pari, ne verse aucun gain et n'a rien à gagner à ce que tu rejoues. Elle note ce que ta bande a joué, au bar, et range les <span>bilans</span>.</p>
+      <p id="manifeste">Dooka est un <span>carnet</span>, pas un casino. Elle note ce que ta bande a joué, et n'a rien à gagner à ce que tu rejoues.</p>
     </div>
   </section>
 
@@ -1054,18 +1053,12 @@
     <div class="wrap">
       <div class="section-head rv">
         <h2 id="fonctions-t">Tout ce qu'il faut pour une soirée au comptoir.</h2>
-        <p>Trois onglets, Carte, Sessions et Tickets, et les gestes qui comptent : trouver le bar, noter ce qui est joué, comparer avec ta bande.</p>
       </div>
 
       <div class="feature">
         <div class="f-copy rv">
           <h3>Trouve le bar où ça se passe.</h3>
-          <p>La carte montre les PMU autour de toi, repérés via Google et confirmés par la communauté. Un halo orange signale une session en cours dans le bar, un halo vert des tickets grattés dans les dernières 24 heures.</p>
-          <ul class="f-list">
-            <li><svg class="i" aria-hidden="true"><use href="#i-check"/></svg><span><b>Des points à vérifier.</b> Un bar marqué en bleu n'est pas encore confirmé : si tu y es allé, « J'y suis allé, c'est bien un PMU » sur sa fiche le confirme.</span></li>
-            <li><svg class="i" aria-hidden="true"><use href="#i-store"/></svg><span><b>Ce qu'on trouve sur place.</b> Tickets à gratter, courses en direct, Amigo, terrasse, et ses horaires.</span></li>
-            <li><svg class="i" aria-hidden="true"><use href="#i-locate"/></svg><span><b>Le viseur.</b> Perdu en route, il te ramène à ta position.</span></li>
-          </ul>
+          <p>Les PMU autour de toi, et ceux où ça joue ce soir.</p>
         </div>
         <div class="rv" style="--d:.1s">
           <!-- La carte se touche : chaque point ouvre la fiche du bar, avec ce
@@ -1129,19 +1122,14 @@
             </div>
             <p class="sr" aria-live="polite" id="carteAnnonce"></p>
           </div>
-          <p class="panel-note">Démo&#8239;: bars, notes et chiffres fictifs. Dans l'app, les bulles n'apparaissent qu'en zoomant sur un quartier.</p>
+          <p class="panel-note">Démo : bars et chiffres fictifs.</p>
         </div>
       </div>
 
       <div class="feature flip">
         <div class="f-copy rv">
           <h3>Note un ticket en quelques appuis.</h3>
-          <p>« J'ai gratté ici » sur la fiche du bar ouvre la session du jour, sans rien créer à la main. Tu choisis le ticket, tu dis ce qu'il a rapporté, « Perdu » compris, puis Enregistrer. C'est toi qui donnes le résultat, l'appli ne fait que l'inscrire.</p>
-          <ul class="f-list">
-            <li><svg class="i" aria-hidden="true"><use href="#i-calc"/></svg><span><b>Un bilan net.</b> Ce que tu as gagné moins ce que tu as misé. Rien d'autre.</span></li>
-            <li><svg class="i" aria-hidden="true"><use href="#i-pencil"/></svg><span><b>Une erreur ?</b> Sur ta page de joueur, touche un ticket pour corriger le montant gagné ou le supprimer.</span></li>
-            <li><svg class="i" aria-hidden="true"><use href="#i-ticket"/></svg><span><b>Le catalogue FDJ.</b> Chaque ticket à gratter avec son prix, sa chance de gain et son tableau des lots.</span></li>
-          </ul>
+          <p>Le ticket, ce qu'il a rapporté, Enregistrer. Ton bilan, c'est ce que tu as gagné moins ce que tu as misé. Rien d'autre.</p>
         </div>
         <div class="rv" style="--d:.1s">
           <div class="panel p-sheet" id="gratte" role="group" aria-label="Démo de la saisie d'un ticket après « J'ai gratté ici »">
@@ -1168,19 +1156,14 @@
               <div class="sh-foot"><p class="sh-hint" id="shHint">Il reste un joueur à renseigner.</p><button class="save" id="save" type="button" disabled>Enregistrer</button></div>
             </div>
           </div>
-          <p class="panel-note" id="scNote" aria-live="polite">Démo : comme dans l'app, les montants proposés sont les deux lots les plus fréquents du ticket.</p>
+          <p class="panel-note" id="scNote" aria-live="polite"></p>
         </div>
       </div>
 
       <div class="feature">
         <div class="f-copy rv">
           <h3>Joue avec ta bande.</h3>
-          <p>Une session à plusieurs range la tablée par bilan net. On crée un groupe ou on le rejoint avec son code à 6 caractères, et on ajoute un ami sur acceptation.</p>
-          <ul class="f-list">
-            <li><svg class="i" aria-hidden="true"><use href="#i-lock"/></svg><span><b>Le détail d'une session</b> reste entre ceux qui y jouent.</span></li>
-            <li><svg class="i" aria-hidden="true"><use href="#i-users"/></svg><span><b>Tes amis et tes groupes</b> voient ton bilan : tickets, net, meilleur gain.</span></li>
-            <li><svg class="i" aria-hidden="true"><use href="#i-link"/></svg><span><b>Un lien d'invitation.</b> Ton pote installe Dooka et crée son compte, puis rouvre le lien, ou tape le code dans Sessions › Mes groupes › Rejoindre.</span></li>
-          </ul>
+          <p>La tablée se classe par bilan net. On rejoint un groupe avec un code, et le détail d'une session reste entre ceux qui y jouent.</p>
         </div>
         <div class="rv" style="--d:.1s">
           <div class="p-group" role="img" aria-label="Exemple de l'écran d'un groupe : la carte du code d'invitation avec le bouton Partager, et une demande d'ami reçue avec Refuser et Accepter.">
@@ -1197,7 +1180,6 @@
             </div>
             <p class="priv" aria-hidden="true"><svg class="i"><use href="#i-eye"/></svg>Ton nom et ta photo sont visibles des autres joueurs.</p>
           </div>
-          <p class="panel-note">Exemple : noms et code fictifs.</p>
         </div>
       </div>
     </div>
@@ -1208,31 +1190,25 @@
     <div class="wrap pledge">
       <div class="pledge-copy rv">
         <h2 id="engagements-t">Ce que Dooka fait, et ne fait pas.</h2>
-        <p>Dooka montre ce qui a été gagné, jamais ce qu'on pourrait gagner. Et elle te donne de quoi garder la main.</p>
+        <p>Dooka montre ce qui a été gagné, jamais ce qu'on pourrait gagner.</p>
         <a class="link-arrow" href="/jeu-responsable.html">Notre page jeu responsable<svg class="i" aria-hidden="true"><use href="#i-arrow-r"/></svg></a>
       </div>
       <div class="rv" style="--d:.1s">
         <h3 class="pledge-h">Elle ne te pousse pas à jouer</h3>
         <ul class="nots">
-          <li><span class="x" aria-hidden="true"><svg class="i"><use href="#i-x"/></svg></span><span><b>Aucun gain promis</b><span class="d">Un ticket affiche sa vraie chance de gain, et son tableau des lots n'en met aucun en vedette. Tes bilans ne comptent jamais « ce que tu aurais pu gagner ».</span></span></li>
-          <li><span class="x" aria-hidden="true"><svg class="i"><use href="#i-x"/></svg></span><span><b>Rien pour te faire revenir</b><span class="d">Ni points ni niveaux, ni série saluée, ni compte à rebours.</span></span></li>
-          <li><span class="x" aria-hidden="true"><svg class="i"><use href="#i-x"/></svg></span><span><b>Personne derrière</b><span class="d">Ni pub ni partenariat avec un opérateur de jeu.</span></span></li>
-        </ul>
-
-        <h3 class="pledge-h pledge-h2">Elle montre ce qui a vraiment été gagné</h3>
-        <ul class="nots">
-          <li><span class="x info" aria-hidden="true"><svg class="i"><use href="#i-eye"/></svg></span><span><b>Le record de chaque bar</b><span class="d">Le plus gros gain noté dans un bar, avec le nom du joueur. À partir de 100&#8239;€, seulement avec la photo du ticket.</span></span></li>
-          <li><span class="x info" aria-hidden="true"><svg class="i"><use href="#i-eye"/></svg></span><span><b>Les gros gains de tes amis, si tu le demandes</b><span class="d">Une notification dès 50&#8239;€ ou dix fois la mise. Désactivée par défaut, et muette pendant une pause.</span></span></li>
+          <li><span class="x" aria-hidden="true"><svg class="i"><use href="#i-x"/></svg></span><span><b>Aucun gain promis</b><span class="d">La vraie chance de gain, aucun lot en vedette.</span></span></li>
+          <li><span class="x" aria-hidden="true"><svg class="i"><use href="#i-x"/></svg></span><span><b>Rien pour te faire revenir</b><span class="d">Ni points, ni séries, ni compte à rebours.</span></span></li>
+          <li><span class="x" aria-hidden="true"><svg class="i"><use href="#i-x"/></svg></span><span><b>Personne derrière</b><span class="d">Ni pub, ni opérateur de jeu.</span></span></li>
         </ul>
 
         <div class="limits">
-          <h3 class="pledge-h">Ce qu'elle te donne : « Mes limites »</h3>
+          <h3 class="pledge-h">Et de quoi garder la main : « Mes limites »</h3>
           <div class="panel limits-card" role="img" aria-label="Réglages Mes limites de l'app : budget hebdomadaire, rappel de durée activé toutes les 30 minutes, et suspension du suivi.">
             <div class="lr" aria-hidden="true"><span class="txt"><b>Budget hebdomadaire</b><span>Aucun budget fixé</span></span><svg class="i chev"><use href="#i-chev-r"/></svg></div>
             <div class="lr" aria-hidden="true"><span class="txt"><b>Rappel de durée</b><span>Toutes les 30 minutes</span></span><span class="switch"></span></div>
             <div class="lr red" aria-hidden="true"><span class="txt"><b>Suspendre mon suivi</b><span>Mettre le suivi en pause 7, 30 ou 90 jours</span></span><svg class="i chev"><use href="#i-chev-r"/></svg></div>
           </div>
-          <p class="limits-note">Le budget, c'est toi qui le fixes, sur sept jours glissants : l'app n'en suggère aucun et ne t'arrête pas, elle te montre où tu en es. Le rappel sonne toutes les 30, 45 ou 60 minutes pendant une session ; la pause le fait taire, comme les gains des amis.</p>
+          <p class="limits-note">Le budget, c'est toi qui le fixes. L'app ne t'arrête pas, elle te montre où tu en es.</p>
         </div>
       </div>
     </div>
@@ -1242,7 +1218,7 @@
   <section class="final" id="rejoindre" aria-labelledby="rejoindre-t">
     <div class="wrap">
       <h2 id="rejoindre-t" class="rv">Ta bande t'attend au comptoir.</h2>
-      <p class="rv" style="--d:.08s">Invité par un pote ? Installe Dooka et crée ton compte, puis rouvre le lien qu'il t'a envoyé, ou tape le code du groupe dans Sessions › Mes groupes › Rejoindre.</p>
+      <p class="rv" style="--d:.08s">Invité par un pote ? Installe Dooka, crée ton compte, puis rouvre son lien.</p>
       <div class="hero-cta rv" style="--d:.16s">
         <a class="btn btn-light btn-lg" href="https://github.com/TeamDooka/dooka/releases/latest/download/dooka.apk"><svg class="i" aria-hidden="true"><use href="#i-download"/></svg>Télécharger pour Android</a>
         <a class="btn btn-ghost btn-lg" href="https://play.google.com/apps/testing/fr.dooka.app">Google Play · test fermé<svg class="i" aria-hidden="true"><use href="#i-chev-r"/></svg></a>
@@ -1250,8 +1226,7 @@
       <p class="hero-meta rv" style="--d:.22s">
         <span><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Gratuit</span>
         <span><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Sans pub</span>
-        <span><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Sans abonnement</span>
-        <span><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Android, et iPhone en test sur invitation</span>
+        <span><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>iPhone sur invitation</span>
       </p>
     </div>
   </section>
