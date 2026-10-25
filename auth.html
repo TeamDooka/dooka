@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Dooka — Confirmation</title>
-<meta name="description" content="Confirmation d'adresse e-mail et réinitialisation de mot de passe Dooka." />
+<meta name="description" content="Confirmation d’adresse e-mail et réinitialisation de mot de passe Dooka." />
 <meta name="robots" content="noindex" />
 <meta name="theme-color" content="#070B09" />
 <meta name="color-scheme" content="dark" />
@@ -55,17 +55,17 @@
   <section id="confirmed" hidden>
     <div class="status ok" aria-hidden="true"><svg class="i"><use href="#i-check"/></svg></div>
     <h1>Votre adresse est confirmée</h1>
-    <p class="lede">Votre compte Dooka est prêt. Il ne reste qu'à ouvrir l'application et à vous connecter.</p>
+    <p class="lede">Votre compte Dooka est prêt. Il ne reste qu’à ouvrir l’application et à vous connecter.</p>
     <p class="actions"><a class="btn btn-green btn-lg" href="dooka://"><svg class="i" aria-hidden="true"><use href="#i-open"/></svg>Ouvrir Dooka</a></p>
     <div class="box">
-      <p><b>Si rien ne s'ouvre.</b> C'est que vous lisez ce message sur un ordinateur. Ouvrez simplement Dooka sur votre téléphone : votre compte y est déjà actif.</p>
+      <p><b>Si rien ne s’ouvre.</b> C’est que vous lisez ce message sur un ordinateur. Ouvrez simplement Dooka sur votre téléphone : votre compte y est déjà actif.</p>
     </div>
   </section>
 
   <section id="reset" hidden>
     <div class="status ok" aria-hidden="true"><svg class="i"><use href="#i-key"/></svg></div>
     <h1>Nouveau mot de passe</h1>
-    <p class="lede">Choisissez-en un nouveau, puis reconnectez-vous dans l'application.</p>
+    <p class="lede">Choisissez-en un nouveau, puis reconnectez-vous dans l’application.</p>
 
     <form id="reset-form" novalidate>
       <div class="field">
@@ -90,18 +90,18 @@
     <p class="lede">Vous pouvez vous connecter à Dooka avec votre nouveau mot de passe.</p>
     <p class="actions"><a class="btn btn-green btn-lg" href="dooka://"><svg class="i" aria-hidden="true"><use href="#i-open"/></svg>Ouvrir Dooka</a></p>
     <div class="box">
-      <p><b>Si rien ne s'ouvre.</b> C'est que vous lisez ce message sur un ordinateur : ce bouton ne fonctionne que depuis un téléphone où Dooka est installé. Ouvrez simplement l'application, votre nouveau mot de passe y est déjà actif.</p>
+      <p><b>Si rien ne s’ouvre.</b> C’est que vous lisez ce message sur un ordinateur : ce bouton ne fonctionne que depuis un téléphone où Dooka est installé. Ouvrez simplement l’application, votre nouveau mot de passe y est déjà actif.</p>
     </div>
   </section>
 
   <section id="failed" hidden>
     <div class="status ko" aria-hidden="true"><svg class="i"><use href="#i-alert"/></svg></div>
-    <h1 id="failed-title">Ce lien n'est plus valable</h1>
+    <h1 id="failed-title">Ce lien n’est plus valable</h1>
     <p class="lede" id="failed-text">
-      Les liens de confirmation expirent au bout de 24 heures, et ne servent qu'une fois.
+      Les liens de confirmation expirent au bout de 24 heures, et ne servent qu’une fois.
     </p>
     <div class="box">
-      <p><b>Que faire.</b> Retournez dans l'application et redemandez un lien — celui-ci arrivera dans la foulée. Si le problème persiste, écrivez-nous à <a href="mailto:contact@dooka.fr">contact@dooka.fr</a>.</p>
+      <p><b>Que faire.</b> Retournez dans l’application et redemandez un lien — celui-ci arrivera dans la foulée. Si le problème persiste, écrivez-nous à <a href="mailto:contact@dooka.fr">contact@dooka.fr</a>.</p>
     </div>
   </section>
 
@@ -141,7 +141,7 @@
   }
 
   if (!tokenHash) {
-    fail('Lien incomplet', "Ce lien ne contient pas de jeton de vérification. Ouvrez-le directement depuis l'e-mail reçu, sans le recopier à la main.");
+    fail('Lien incomplet', "Ce lien ne contient pas de jeton de vérification. Ouvrez-le directement depuis l’e-mail reçu, sans le recopier à la main.");
     return;
   }
 
@@ -162,7 +162,7 @@
       if (!result.ok) {
         fail(null, result.body && result.body.error_description
           ? result.body.error_description
-          : "Les liens de confirmation expirent au bout de 24 heures, et ne servent qu'une fois.");
+          : "Les liens de confirmation expirent au bout de 24 heures, et ne servent qu’une fois.");
         return;
       }
       accessToken = result.body.access_token;
@@ -237,7 +237,7 @@
           return showError(
             result.body && (result.body.msg || result.body.error_description)
               ? result.body.msg || result.body.error_description
-              : "Le mot de passe n'a pas pu être modifié."
+              : "Le mot de passe n’a pas pu être modifié."
           );
         }
         show('done');
