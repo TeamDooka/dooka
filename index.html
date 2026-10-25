@@ -30,10 +30,10 @@
      Dooka — page d'accueil
      ------------------------------------------------------------------
      Une page produit sombre, au cordeau. La palette est celle du thème
-     sombre de l'app 3.12 (fond d'encre légèrement vert, surfaces #0F1311
+     sombre de l'app (3.21 : fond d'encre légèrement vert, surfaces #0F1311
      et #1A201D), pour que les écrans montrés et la page autour parlent la
      même langue. Une seule couleur d'action (le vert), l'or réservé au
-     premier rang, le rouge aux nets négatifs. Titres en Bricolage
+     jeton et au plus beau gain, le rouge aux nets négatifs. Titres en Bricolage
      Grotesque, la police des titres de l'app.
      ------------------------------------------------------------------ */
   @font-face {
@@ -270,15 +270,15 @@
 
   .hint {
     position: absolute; z-index: 5;
-    right: calc(50% + 206px); top: 766px;
+    left: calc(50% + 206px); top: 296px;
     margin: 0;
-    display: flex; align-items: center; gap: 10px;
+    display: flex; flex-direction: row-reverse; align-items: center; gap: 10px;
     font-size: 13px; color: var(--text-2);
     white-space: nowrap;
     opacity: 0; transition: opacity .5s var(--ease);
   }
   .hint.on { opacity: 1; }
-  .hint svg { width: 48px; height: 16px; overflow: visible; fill: none; stroke: var(--text-3); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+  .hint svg { width: 48px; height: 16px; overflow: visible; fill: none; stroke: var(--text-3); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; transform: scaleX(-1); }
 
   .stage-foot { display: flex; justify-content: space-between; align-items: center; gap: 4px 16px; margin-top: 10px; position: relative; z-index: 5; padding: 0 4px; font-size: 13px; color: var(--text-3); }
   .stage-foot button { font: inherit; color: var(--text-2); background: none; border: 0; cursor: pointer; padding: 10px 0; min-height: 44px; display: inline-flex; align-items: center; gap: 6px; }
@@ -337,7 +337,6 @@
   .row { display: flex; align-items: center; gap: 10px; min-height: 64px; padding: 12px; position: relative; background: var(--app-card); }
   .row + .row { border-top: 1px solid var(--app-border); }
   .rk { width: 24px; height: 24px; border-radius: 50%; background: var(--app-track); color: #F1F4F0; font-size: 12px; font-weight: 600; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: background-color .3s var(--ease), color .3s var(--ease); }
-  .rk.g { background: #F7C948; color: #07140B; }
   .ini { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: var(--display); font-weight: 700; font-size: 13px; flex-shrink: 0; }
   .nm { flex: 1; min-width: 0; }
   .nm b { display: block; font-size: 16px; font-weight: 600; }
@@ -351,7 +350,7 @@
   .tk span { color: #A6AEA8; }
   .tk b { font-weight: 600; font-variant-numeric: tabular-nums; color: #4CCB84; }
   .tk b.neg { color: #FF7377; }
-  .tk.fresh { animation: fresh 1.6s var(--ease); }
+  .tk.fresh, .play.fresh { animation: fresh 1.6s var(--ease); }
   @keyframes fresh { 0% { background: rgba(60,194,120,.22); } 100% { background: transparent; } }
   .tabs { position: absolute; left: 0; right: 0; bottom: 26px; height: 56px; background: var(--app-muted); border-top: 1px solid var(--app-border); display: flex; }
   .tabs span { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; font-size: 12px; color: #A6AEA8; }
@@ -482,31 +481,30 @@
   .scratch-foot b.neg { color: #FF7377; }
   .scratch-foot b.pos { color: #4CCB84; }
 
-  /* Panneau groupe */
-  /* Les cartes de l'app posées directement sur la page : pas de cadre
-     autour, sinon c'est une carte dans une carte. */
-  .p-group { display: grid; gap: 14px; font-family: var(--app); }
-  .grp-card { background: var(--app-card); border-radius: 16px; padding: 16px; }
-  .grp-card .top { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
-  .grp-card h4 { margin: 0; font-size: 21px; line-height: 26px; }
-  .grp-card .top span { font-size: 13px; color: #A6AEA8; }
-  .avs { display: flex; margin-top: 14px; }
-  .avs span { width: 34px; height: 34px; border-radius: 50%; border: 2px solid var(--app-card); display: flex; align-items: center; justify-content: center; font-family: var(--display); font-weight: 700; font-size: 13px; margin-left: -8px; }
-  .avs span:first-child { margin-left: 0; }
-  .avs .more { background: var(--app-muted); color: #A6AEA8; font-family: var(--app); font-size: 12px; }
-  .invite { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--app-border); display: flex; align-items: center; justify-content: space-between; gap: 12px; }
-  .invite b { font-size: 14px; font-weight: 600; display: block; }
-  .invite span { font-size: 13px; color: #A6AEA8; }
-  .invite em { font-style: normal; display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; color: #07140B; background: #3CC278; border-radius: 8px; padding: 9px 12px; white-space: nowrap; }
-  .invite em .i { width: 14px; height: 14px; }
-  .req { display: flex; align-items: center; gap: 12px; }
-  .req .nm b { font-size: 15px; }
-  .req .acts { display: flex; gap: 8px; margin-left: auto; }
-  .req .acts span { min-height: 36px; padding: 0 12px; border-radius: 8px; display: inline-flex; align-items: center; font-size: 13px; font-weight: 600; }
-  .req .ok { background: #3CC278; color: #07140B; }
-  .req .ko { background: var(--app-muted); color: #F1F4F0; }
-  .priv { display: flex; align-items: center; gap: 10px; font-size: 13px; color: #A6AEA8; padding: 0 4px; margin: 0; }
-  .priv .i { width: 16px; height: 16px; color: #A6AEA8; }
+  /* Panneau bande : l'écran d'une bande (GroupDetailScreen). Les rangées
+     sont des cartes de l'app posées sur le fond de l'écran. */
+  .p-band { padding: 16px; font-family: var(--app); line-height: 22px; }
+  .bh { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+  .bimg { flex: none; width: 56px; height: 56px; border-radius: 14px; background: #3CC278; color: #07140B; display: flex; align-items: center; justify-content: center; font-size: 25px; font-weight: 700; }
+  .bn { flex: 1; min-width: 0; }
+  .bn b { display: block; }
+  .bn span { display: block; margin-top: 2px; font-size: 14px; color: #A6AEA8; }
+  .bmenu { flex: none; width: 36px; height: 36px; border-radius: 50%; background: #1A201D; display: flex; align-items: center; justify-content: center; font-weight: 500; }
+  .bnew { display: flex; width: 100%; min-height: 48px; margin-bottom: 16px; }
+  .bsec { margin: 0 0 8px; color: #3CC278; }
+  .rcard { display: flex; align-items: center; gap: 10px; padding: 12px; margin-bottom: 8px; border-radius: 12px; background: #1A201D; border: 1px solid rgba(255,255,255,.08); }
+  .rcard.me { background: rgba(23,138,69,.10); border-color: #3CC278; }
+  .rg { flex: none; width: 20px; font-weight: 700; color: #A6AEA8; }
+  .rcard.me .rg { color: #3CC278; }
+  .rav { flex: none; width: 36px; height: 36px; border-radius: 50%; background: #3CC278; color: #07140B; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; }
+  .ri { flex: 1; min-width: 0; }
+  .ri b { display: block; font-weight: 500; }
+  .rcard.me .ri b { font-weight: 700; }
+  .ri span { display: block; font-size: 14px; line-height: 20px; color: #A6AEA8; }
+  .rn { flex: none; margin-right: 8px; font-weight: 700; font-variant-numeric: tabular-nums; color: #4CCB84; }
+  .rn.neg { color: #FF7377; }
+  .rb { flex: none; font-size: 12px; line-height: 16px; font-weight: 500; color: #A6AEA8; }
+  .p-band .invite-card { margin-top: 16px; }
 
   /* ---------- Engagements ---------- */
 
@@ -533,7 +531,6 @@
   .limits-card .lr .txt { flex: 1; min-width: 0; }
   .limits-card b { display: block; font-size: 17px; font-weight: 700; }
   .limits-card .txt span { font-size: 13px; color: #A6AEA8; }
-  .limits-card .red b { color: #FF7377; }
   .limits-card .chev { width: 18px; height: 18px; color: #7C847F; }
   .pledge-h { margin: 0 0 12px; font-size: 15px; font-weight: 600; color: var(--text-2); letter-spacing: 0; }
   .limits .pledge-h { margin-bottom: 14px; }
@@ -573,50 +570,111 @@
   .fine a { color: var(--text); text-decoration: underline; text-underline-offset: 3px; white-space: nowrap; }
 
 
-  /* ---------- La fiche de session 3.13 (ouverte en plein écran) ---------- */
-  .sd { padding: 0 20px; }
-  .sd-meta { display: flex; align-items: center; gap: 4px; min-height: 44px; font-size: 14px; color: #A6AEA8; }
-  .sd-meta .i { width: 14px; height: 14px; color: #3CC278; }
-  .sd-meta span { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .sd-meta .sd-menu { flex: none; overflow: visible; }
-  .sd-menu { width: 44px; height: 44px; margin-right: -12px; display: flex; align-items: center; justify-content: center; color: #F1F4F0; }
+  /* ---------- La fiche d'une session (3.21) : onglets Jeu et Stats ---------- */
+  /* Recréée d'après SessionDetailModal : le bar et la tablée en tête, la
+     bascule Jeu / Stats, puis la liste qui défile. Une carte, c'est un
+     filet, sans ombre ni couronne. */
+  .sd { position: absolute; top: 36px; left: 0; right: 0; bottom: 0; display: flex; flex-direction: column; }
+  .sd-top { flex: none; padding: 6px 20px 0; }
+  .sd-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+  .sd-id { flex: 1; min-width: 0; }
+  .sd-place { display: flex; align-items: center; gap: 6px; }
+  .sd-place > .i { width: 18px; height: 18px; color: #3CC278; }
+  .sd-place .app-title { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .sd-menu { flex: none; width: 44px; height: 44px; margin: -7px -12px -7px 0; display: flex; align-items: center; justify-content: center; }
   .sd-menu .i { width: 22px; height: 22px; color: #F1F4F0; }
-  .sd-hero { display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; margin-top: 20px; }
-  .sd-total { flex: 1; min-width: 0; }
-  .sd-lbl { display: block; font-size: 14px; font-weight: 600; color: #A6AEA8; }
-  .sd-num { display: block; font-size: 58px; line-height: 64px; font-weight: 800; letter-spacing: -2px; font-variant-numeric: tabular-nums; color: #4CCB84; white-space: nowrap; }
+  .sd-date { font-size: 14px; line-height: 20px; color: #A6AEA8; }
+  .sd-total { flex: none; padding-top: 4px; text-align: right; }
+  .sd-lbl { display: block; font-size: 12px; line-height: 16px; font-weight: 500; color: #A6AEA8; }
+  .sd-num { display: block; font-size: 16px; line-height: 22px; font-weight: 500; font-variant-numeric: tabular-nums; color: #4CCB84; white-space: nowrap; }
   .sd-num.neg { color: #FF7377; }
-  .sd-faces { display: flex; align-items: center; padding-bottom: 8px; }
-  .sd-faces .ini { border: 2px solid #0F1311; width: 36px; height: 36px; }
-  .sd-faces .ini + .ini { margin-left: -10px; }
-  .face-add { width: 36px; height: 36px; margin-left: 4px; border-radius: 50%; border: 1.5px dashed #2B3430; color: #A6AEA8; display: flex; align-items: center; justify-content: center; }
-  .face-add .i { width: 16px; height: 16px; stroke-width: 2.25; }
-  .sd-counters { margin-top: 4px; font-size: 14px; color: #A6AEA8; }
-  .sd-best { display: flex; align-items: center; gap: 8px; margin-top: 12px; padding: 10px 12px; border-radius: 12px; background: rgba(247,201,72,.14); font-size: 14px; }
+
+  /* La bascule : un rail, et l'onglet actif posé dedans. */
+  .onglets { display: flex; padding: 3px; margin-top: 12px; border-radius: 999px; background: #252D29; }
+  .onglet { flex: 1; min-height: 38px; border: 0; border-radius: 999px; background: none; color: #A6AEA8; font: 500 16px/22px var(--app); cursor: pointer; transition: background-color .2s var(--ease), color .2s var(--ease); }
+  .onglet[aria-selected="true"] { background: #0F1311; color: #F1F4F0; box-shadow: 0 1px 2px rgba(0,0,0,.3); }
+  .onglet:focus-visible { outline-offset: 0; border-radius: 999px; }
+  .sd-scroll { flex: 1; min-height: 0; overflow-y: auto; scrollbar-width: none; padding: 12px 20px 28px; }
+  .sd-scroll::-webkit-scrollbar { display: none; }
+  .sd .list { border-color: rgba(255,255,255,.08); }
+  .sd .row { gap: 12px; padding: 12px 16px; min-height: 56px; }
+  .sd .nm b { font-size: 16px; line-height: 22px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .sd .nm span { font-size: 14px; line-height: 20px; }
+  .sd .net { font-size: 16px; line-height: 22px; font-weight: 500; }
+  .sd .sub { margin: 16px 0 8px; }
+  .sd .sub-l { margin-top: 20px; }
+
+  /* Jeu : ce qu'on fait pendant la soirée. */
+  .th { flex: none; width: 32px; height: 32px; border-radius: 6px; background: #252D29; color: #A6AEA8; display: flex; align-items: center; justify-content: center; }
+  .th .i { width: 16px; height: 16px; }
+  .act { flex: none; display: flex; align-items: center; gap: 12px; }
+  .act .i { width: 18px; height: 18px; color: #A6AEA8; }
+  .act .i.del { color: #FF7377; }
+  .encours { display: flex; align-items: center; gap: 12px; padding: 12px 16px; margin-top: 4px; }
+  .live { flex: none; width: 14px; height: 14px; border-radius: 50%; background: #3CC278; border: 3px solid rgba(76,203,132,.16); }
+  .sd .add { margin: 8px 0 12px; }
+  .sec { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; margin: 16px 0 8px; }
+  .sec .meta, .tg { font-size: 14px; line-height: 20px; color: #A6AEA8; }
+  .tg { display: inline-flex; align-items: center; gap: 4px; padding: 8px 0; margin: -8px 0; background: none; border: 0; font-family: var(--app); cursor: pointer; }
+  .tg .i, .voir .i { transition: transform .3s var(--ease); }
+  .tg .i { width: 16px; height: 16px; }
+  .tg[aria-expanded="true"] .i, .voir[aria-expanded="true"] .i { transform: rotate(180deg); }
+  .tablee { display: flex; gap: 8px; margin: 0 -20px; padding: 2px 20px; overflow-x: auto; scrollbar-width: none; }
+  .tablee::-webkit-scrollbar { display: none; }
+  .conv { flex: none; width: 80px; padding: 12px 4px; display: flex; flex-direction: column; align-items: center; gap: 2px; background: #1A201D; border: 1px solid rgba(255,255,255,.08); border-radius: 16px; }
+  .conv .av { position: relative; display: block; }
+  .conv .ini { width: 40px; height: 40px; font-size: 15px; }
+  .conv .plus { position: absolute; right: -6px; bottom: -4px; width: 22px; height: 22px; border-radius: 50%; background: #3CC278; color: #07140B; border: 2px solid #1A201D; display: flex; align-items: center; justify-content: center; }
+  .conv .plus .i { width: 14px; height: 14px; stroke-width: 3; }
+  .conv .cn, .conv .cv { max-width: 100%; font-size: 12px; line-height: 16px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .conv .cn { margin-top: 4px; }
+  .conv .cv { color: #4CCB84; font-variant-numeric: tabular-nums; }
+  .conv .cv.neg { color: #FF7377; }
+  .nouveau { flex: none; width: 80px; padding: 12px 0; display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 12px; line-height: 16px; font-weight: 500; color: #A6AEA8; }
+  .nouveau .rond { width: 40px; height: 40px; border-radius: 50%; border: 1.5px dashed #A6AEA8; display: flex; align-items: center; justify-content: center; }
+  .nouveau .i { width: 20px; height: 20px; }
+  .voir { display: flex; align-items: center; justify-content: center; gap: 4px; width: 100%; min-height: 48px; border: 0; border-top: 1px solid #2B3430; background: none; color: #3CC278; font: 500 16px/22px var(--app); cursor: pointer; }
+  .voir:hover { background: #1E2521; }
+  .voir[hidden] { display: none; }
+  .voir .i { width: 18px; height: 18px; }
+  .terminer { margin: 20px 0 0; min-height: 48px; border: 1px solid #2B3430; border-radius: 8px; display: flex; align-items: center; justify-content: center; font: 500 16px/22px var(--app); color: #FF7377; }
+
+  /* Stats : ce que ça donne. Misé et gagné d'abord, le classement ensuite. */
+  .totaux { display: flex; flex-wrap: wrap; gap: 8px; }
+  .tot { flex: 1 1 40%; min-width: 0; padding: 12px 16px; display: flex; flex-direction: column; gap: 2px; }
+  .tot .l { font-size: 12px; line-height: 16px; font-weight: 500; color: #A6AEA8; }
+  .tot .v { font-family: var(--display); font-weight: 700; font-size: 24px; line-height: 30px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .tot .v.gain { color: #4CCB84; }
+  .tot .v small { font: 500 16px/22px var(--app); color: #A6AEA8; }
+  .barres { margin-top: 8px; padding: 16px; display: grid; gap: 8px; }
+  .barres .lg { display: flex; justify-content: space-between; font-size: 14px; line-height: 20px; color: #A6AEA8; font-variant-numeric: tabular-nums; }
+  .barres .piste { height: 8px; margin-top: 4px; border-radius: 999px; background: #2A332F; overflow: hidden; }
+  .barres .piste i { display: block; height: 100%; border-radius: 999px; transition: width .7s var(--ease); }
+  .barres .piste .m { background: #A6AEA8; }
+  .barres .piste .g { background: #3CC278; }
+  .sd .rk { background: #252D29; color: #A6AEA8; font-weight: 500; line-height: 16px; }
+  .visage { flex: none; display: flex; }
+  .rkt { flex: 1; min-width: 0; display: block; }
+  .rl { display: flex; align-items: center; gap: 8px; }
+  .rl b { flex: 1; min-width: 0; font-size: 16px; line-height: 22px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .np { display: flex; align-items: center; height: 10px; margin: 3px 0; }
+  .np[hidden] { display: none; }
+  .np .nl { flex: 1; display: flex; justify-content: flex-end; }
+  .np .nr { flex: 1; display: flex; }
+  .np .ax { flex: none; width: 1px; height: 10px; background: #2B3430; }
+  .np .nb { display: block; height: 8px; transition: width .7s var(--ease); }
+  .np .nb.g { background: #4CCB84; border-radius: 0 999px 999px 0; }
+  .np .nb.p { background: #FF7377; border-radius: 999px 0 0 999px; }
+  .dc { display: block; font-size: 14px; line-height: 20px; color: #A6AEA8; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .sd .chev { flex: none; width: 20px; height: 20px; color: #A6AEA8; transition: transform .3s var(--ease); }
+  .pl.deplie .chev { transform: rotate(90deg); }
+  .sd-hint { margin: 8px 0 0; text-align: center; font-size: 12px; line-height: 16px; font-weight: 500; color: #A6AEA8; }
+  .sd-best { display: flex; align-items: center; gap: 8px; margin-top: 12px; padding: 10px 12px; border-radius: 12px; background: rgba(247,201,72,.14); font-size: 14px; line-height: 20px; }
+  .sd-best[hidden] { display: none; }
   .sd-best .i { width: 16px; height: 16px; color: #F2C14E; }
   .sd-best .l { color: #F2C14E; font-weight: 500; }
   .sd-best .w { flex: 1; min-width: 0; color: #F1F4F0; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .sd-best .a { color: #F2C14E; font-weight: 700; font-variant-numeric: tabular-nums; }
-  .sd-section { margin: 20px 0 8px; }
-  .sd-head { display: flex; align-items: center; gap: 12px; padding: 0 16px 4px; font-size: 12px; font-weight: 600; color: #A6AEA8; }
-  .sd-head .lead { width: 38px; }
-  .sd-head .n { flex: 1; }
-  .sd-head .t { width: 64px; text-align: right; }
-  .sd-head .v { width: 72px; text-align: right; }
-  .sd .list { border-color: rgba(255,255,255,.08); }
-  .sd .row { gap: 12px; padding: 12px 16px; min-height: 60px; }
-  .ring { width: 38px; height: 38px; border-radius: 50%; border: 2px solid transparent; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: border-color .3s var(--ease); }
-  .ring.on { border-color: #F7C948; }
-  .sd .nm b { font-size: 16px; font-weight: 600; }
-  .ct { width: 64px; display: flex; flex-direction: column; align-items: flex-end; }
-  .ct b { font-size: 16px; font-weight: 600; font-variant-numeric: tabular-nums; }
-  .ct small { font-size: 12px; font-weight: 600; color: #A6AEA8; white-space: nowrap; }
-  .ct small.win { color: #F2C14E; }
-  .sd .net { width: 72px; text-align: right; font-size: 16px; font-weight: 600; }
-  .sd-hint { margin: 8px 0 0; text-align: center; font-size: 12px; font-weight: 600; color: #A6AEA8; }
-  .sd-end { margin: 20px 0 0; text-align: center; font-size: 15px; font-weight: 600; color: #FF7377; }
-  .sd-footer { position: absolute; left: 0; right: 0; bottom: 0; padding: 8px 20px 26px; background: #0F1311; }
-  .sd-footer .add { margin-top: 0; }
 
   /* La carte, en extrait fidèle de l'onglet Carte */
   .map-search { position: absolute; left: 8px; right: 8px; top: 8px; z-index: 2; height: 48px; border-radius: 8px; background: #1A201D; border: 1px solid #2B3430; color: #A6AEA8; font-size: 16px; display: flex; align-items: center; padding: 0 14px; }
@@ -655,9 +713,7 @@
   .sh-foot { margin-top: 8px; }
   .sh-hint { margin: 0 0 10px; text-align: center; font-size: 14px; color: #A6AEA8; }
 
-  /* Groupes : la carte d'invitation et les demandes d'ami */
-  .grp-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding: 0 4px; }
-  .grp-head span { font-size: 14px; color: #A6AEA8; }
+  /* La carte d'invitation d'une bande */
   .invite-card { margin-top: 14px; padding: 20px; border-radius: 12px; background: #1A201D; border: 1px dashed #2B3430; text-align: center; }
   .invite-card .lbl { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 600; color: #A6AEA8; }
   .invite-card .lbl .i { width: 16px; height: 16px; }
@@ -665,31 +721,21 @@
   .invite-card p { margin: 0 0 14px; font-size: 14px; color: #A6AEA8; }
   .btn-app { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 0 18px; border-radius: 8px; background: #3CC278; color: #07140B; font: 600 15px var(--app); }
   .btn-app .i { width: 16px; height: 16px; }
-  .btn-app.sm { min-height: 36px; padding: 0 14px; font-size: 14px; }
-  .req-card { margin-top: 14px; padding: 16px; border-radius: 16px; background: #1A201D; border: 1px solid rgba(255,255,255,.08); }
-  .req-card h5 { margin: 0 0 12px; font: 700 17px var(--app); color: #3CC278; }
-  .req-row { display: flex; align-items: center; gap: 12px; }
-  .req-row .ini { width: 40px; height: 40px; font-size: 15px; }
-  .req-row b { flex: 1; font-size: 16px; font-weight: 600; }
-  .req-row .refuse { font-size: 13px; color: #A6AEA8; }
 
   /* ---------- La fiche de session : de quoi refaire le calcul ---------- */
-  /* Chaque joueur se déplie sur ses tickets, mise et gain compris ; l'écran
-     défile alors entre la barre d'état et le bouton du bas, comme l'app. */
-  .sd { position: absolute; top: 36px; left: 0; right: 0; bottom: 82px; overflow-y: auto; scrollbar-width: none; padding-bottom: 20px; }
-  .sd::-webkit-scrollbar { display: none; }
+  /* Chaque joueur du classement se déplie sur ses tickets, mise et gain
+     compris : le net de la ligne en est la somme. */
   .pl + .pl { border-top: 1px solid var(--app-border); }
-  .sd .row { cursor: pointer; transition: background-color .2s var(--ease); }
-  .sd .row:hover { background: #1E2521; }
-  .sd .row:focus-visible { outline: 2px solid #3CC278; outline-offset: -2px; border-radius: 0; }
+  .pl .row { cursor: pointer; transition: background-color .2s var(--ease); }
+  .pl .row:hover { background: #1E2521; }
+  .pl .row:focus-visible { outline: 2px solid #3CC278; outline-offset: -2px; border-radius: 0; }
   .tks { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .5s var(--ease); }
   .pl.deplie .tks { grid-template-rows: 1fr; }
   .tks > div { min-height: 0; overflow: hidden; background: #151B18; }
   .pl.deplie .tks > div { border-top: 1px solid var(--app-border); }
-  .tks .tk { gap: 8px; padding: 9px 16px 9px 66px; font-size: 13px; }
+  .tks .tk { gap: 8px; padding: 9px 16px 9px 52px; font-size: 13px; }
   .tks .tk span { min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .tk em { font-style: normal; font-weight: 600; color: #F1F4F0; }
-  .tk b.zero { color: #A6AEA8; }
   .toast .amt { color: var(--text-2); }
   .toast .amt.pos { color: var(--pos); }
   .toast .amt.neg { color: var(--neg); }
@@ -778,8 +824,6 @@
   .bs-dot { width: 10px; height: 10px; border-radius: 5px; flex: none; }
   .bs-card b { display: block; font-size: 14px; font-weight: 600; color: #F1F4F0; }
   .bs-card span { display: block; font-size: 12.5px; color: #A6AEA8; }
-  .bs-heat.live { border-color: #F2541B; background: rgba(242, 84, 27, .12); }
-  .bs-heat.recent { border-color: #0E6B4F; background: rgba(247, 201, 72, .16); }
   .bs-notice { margin-top: 12px; padding: 10px 12px; border-radius: 12px; background: rgba(247, 201, 72, .14); color: #F2C14E; font-size: 13px; transition: background-color .4s var(--ease), color .4s var(--ease); }
   .bs-notice button { display: block; margin-top: 4px; padding: 6px 0; min-height: 32px; background: none; border: 0; color: inherit; font: 700 13px var(--app); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
   .bs-notice.ok { background: rgba(76, 203, 132, .16); color: #4CCB84; }
@@ -803,7 +847,8 @@
   .bs-rec { padding: 2px 12px; border-radius: 12px; background: #1A201D; }
   .bs-rec > div { display: flex; align-items: center; gap: 10px; padding: 8px 0; }
   .bs-rec > div + div { border-top: 1px solid #2B3430; }
-  .bs-rec .ic { font-size: 18px; width: 22px; text-align: center; }
+  .bs-rec > div > div { flex: 1; min-width: 0; }
+  .bs-rec .ok { flex: none; padding: 3px 9px; border-radius: 999px; background: rgba(76, 203, 132, .16); color: #4CCB84; font-size: 12.5px; line-height: 18px; font-weight: 500; }
   .bs-rec b { display: block; font-size: 16px; font-weight: 700; color: #E8B93C; }
   .bs-rec span { display: block; font-size: 12.5px; color: #A6AEA8; }
   .bs-friends { margin-top: 12px; padding: 10px 12px; border-radius: 12px; background: #1A201D; display: flex; align-items: center; gap: 10px; }
@@ -830,7 +875,7 @@
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
     .rv-wait { opacity: 1; transform: none; filter: none; }
-    .halo-pulse, .add.ping::after, .tk.fresh, .bump, .ripple, .flash, .p-map.in .pin-in { animation: none; }
+    .halo-pulse, .add.ping::after, .tk.fresh, .play.fresh, .bump, .ripple, .flash, .p-map.in .pin-in { animation: none; }
     .toast, .row, .manifest .w, .tks, #world, .bs, .mini-card { transition: none !important; }
   }
 
@@ -887,17 +932,13 @@
     .p-map.leg-on .legend { display: flex; }
     .p-map .legend-btn { display: inline-flex; }
     .p-scratch { padding: 14px; }
-    .req { flex-wrap: wrap; }
-    .req .acts { margin-left: 44px; }
     .final { margin-top: 100px; padding: 88px 0 96px; }
     .foot { grid-template-columns: 1fr; gap: 24px; }
   }
 
   @media (max-width: 420px) {
-    .invite { flex-direction: column; align-items: stretch; }
-    .invite em { justify-content: center; }
-    .sheet-top, .sc-head, .grp-card .top { flex-wrap: wrap; }
-    .sheet .app-title, .p-scratch .app-title, .grp-card .app-title { font-size: 21px; line-height: 26px; }
+    .sheet-top, .sc-head { flex-wrap: wrap; }
+    .sheet .app-title, .p-scratch .app-title, .p-band .app-title { font-size: 21px; line-height: 26px; }
     .sheet-btns { grid-template-columns: 1fr; }
   }
 
@@ -913,6 +954,9 @@
   <symbol id="i-download" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/></symbol>
   <symbol id="i-arrow-r" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></symbol>
   <symbol id="i-chev-r" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
+  <symbol id="i-chev-d" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+  <symbol id="i-trash" viewBox="0 0 24 24"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M10 11v6M14 11v6"/></symbol>
+  <symbol id="i-star" viewBox="0 0 24 24"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/></symbol>
   <symbol id="i-plus" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5v14"/></symbol>
   <symbol id="i-pin" viewBox="0 0 24 24"><path d="M20 10c0 5-5.5 10.2-7.4 11.8a1 1 0 0 1-1.2 0C9.5 20.2 4 15 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></symbol>
   <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
@@ -973,7 +1017,7 @@
         </div>
       </div>
 
-      <div class="stage rv" style="--d:.3s" id="scene" role="region" aria-label="Démo interactive du classement d'une session">
+      <div class="stage rv" style="--d:.3s" id="scene" role="region" aria-label="Démo interactive d’une session : touche «  Ajouter un ticket  », puis l’onglet Stats">
         <!-- Extrait de la carte : chaque point s'ouvre sur un résumé du bar,
              et Le Balto, où se joue la session d'à côté, compte les tickets
              qu'on y ajoute. -->
@@ -1007,28 +1051,63 @@
           <span class="switch"></span>
         </div>
         <div class="frag toast" id="toast" aria-hidden="true"><span class="dot"><svg class="i"><use href="#i-ticket"/></svg></span><div class="tx"><b id="toastT"></b><span id="toastS"></span></div><span class="amt" id="toastA"></span></div>
-        <p class="hint" id="hint" aria-hidden="true">Essaie : touche « Ajouter un ticket »<svg viewBox="0 0 48 16"><path d="M2 5c14 0 28 2 42 7"/><path d="M37 15l7-3-3-6"/></svg></p>
+        <p class="hint" id="hint" aria-hidden="true">Essaie : « Ajouter un ticket », puis « Stats »<svg viewBox="0 0 48 16"><path d="M2 5c14 0 28 2 42 7"/><path d="M37 15l7-3-3-6"/></svg></p>
 
         <div class="stage-phone">
           <div class="phone">
             <div class="screen">
               <div class="sb" aria-hidden="true">21:12<svg viewBox="0 0 60 12"><use href="#s-bars"/></svg></div>
               <div class="sd">
-                <div class="sd-meta" aria-hidden="true"><svg class="i"><use href="#i-pin"/></svg><span id="sdMeta">ce soir · depuis 1 h 12</span><span class="sd-menu"><svg class="i"><use href="#i-more-v"/></svg></span></div>
-                <div class="app-title">Le Balto</div>
-                <div class="sd-hero">
-                  <div class="sd-total"><span class="sd-lbl">Net de la table</span><span class="sd-num neg" id="tableNet">-1 €</span></div>
-                  <div class="sd-faces" aria-hidden="true"><span class="ini" style="background:#1F3B2C;color:#7FE0A8">L</span><span class="ini" style="background:#3B3420;color:#F2C14E">M</span><span class="ini" style="background:#22304A;color:#8DB4F5">S</span><span class="face-add"><svg class="i"><use href="#i-plus"/></svg></span></div>
+                <div class="sd-top">
+                  <div class="sd-head">
+                    <div class="sd-id">
+                      <div class="sd-place" aria-hidden="true"><svg class="i"><use href="#i-pin"/></svg><span class="app-title">Le Balto</span><span class="sd-menu"><svg class="i"><use href="#i-more-v"/></svg></span></div>
+                      <div class="sd-date" id="sdDate">25/10/2026</div>
+                    </div>
+                    <div class="sd-total"><span class="sd-lbl">Tablée</span><span class="sd-num neg" id="tableNet">-3,00 €</span></div>
+                  </div>
+                  <div class="onglets" id="onglets" role="tablist" aria-label="Afficher">
+                    <button class="onglet" id="tabJeu" type="button" role="tab" aria-selected="true" aria-controls="paneJeu">Jeu</button>
+                    <button class="onglet" id="tabStats" type="button" role="tab" aria-selected="false" aria-controls="paneStats" tabindex="-1">Stats</button>
+                  </div>
                 </div>
-                <div class="sd-counters" id="counters">9 tickets · 4 gagnants · 16 € misés</div>
-                <div class="sd-best"><svg class="i" aria-hidden="true"><use href="#i-sparkles"/></svg><span class="l">Plus beau gain</span><span class="w" id="bestWho">Léa · Astro</span><span class="a" id="bestAmt">6 €</span></div>
-                <p class="app-sub sd-section">Classement</p>
-                <div class="sd-head" aria-hidden="true"><span class="lead"></span><span class="n">Joueur</span><span class="t">Tickets</span><span class="v">Net</span></div>
-                <div class="list" id="ranking"></div>
-                <p class="sd-hint">Touche un joueur pour voir ses tickets</p>
-                <p class="sd-end">Terminer la session</p>
+                <div class="sd-scroll" id="sdScroll">
+                  <div id="paneJeu" role="tabpanel" aria-labelledby="tabJeu">
+                    <div class="list encours">
+                      <span class="live" aria-hidden="true"></span>
+                      <div class="nm"><b>En cours depuis 1&nbsp;h&nbsp;12</b><span id="dernierTicket">Dernier ticket à 21&nbsp;h&nbsp;08</span></div>
+                    </div>
+                    <button class="add" id="add" type="button"><svg class="i" aria-hidden="true"><use href="#i-plus"/></svg>Ajouter un ticket</button>
+                    <div class="sec"><span class="app-sub">La tablée</span><button class="tg" id="tableToggle" type="button" aria-expanded="false" aria-controls="tableList"><span id="nbJoueurs">3 joueurs</span><svg class="i" aria-hidden="true"><use href="#i-chev-d"/></svg></button></div>
+                    <div class="tablee" id="tablee"></div>
+                    <div class="list" id="tableList" hidden></div>
+                    <div class="sec"><span class="app-sub" id="ttDerniers">Derniers tickets</span><span class="meta" id="auTotal">9 au total</span></div>
+                    <div class="list">
+                      <div id="derniers"></div>
+                      <button class="voir" id="voir" type="button" aria-expanded="false"><span id="voirTxt">Voir les 9 tickets</span><svg class="i" aria-hidden="true"><use href="#i-chev-d"/></svg></button>
+                    </div>
+                    <p class="terminer" aria-hidden="true">Terminer la session</p>
+                  </div>
+                  <div id="paneStats" role="tabpanel" aria-labelledby="tabStats" hidden>
+                    <div class="totaux">
+                      <div class="list tot"><span class="l">Misé</span><span class="v" id="vMise">19 €</span></div>
+                      <div class="list tot"><span class="l">Gagné</span><span class="v gain" id="vGagne">15 €</span></div>
+                      <div class="list tot"><span class="l">Tickets grattés</span><span class="v" id="vTickets">9</span></div>
+                      <div class="list tot"><span class="l">Tickets gagnants</span><span class="v"><span id="vGagnants">4</span><small id="vSur"> / 9</small></span></div>
+                    </div>
+                    <div class="list barres" aria-hidden="true">
+                      <div><div class="lg"><span>Misé</span><span id="tMise">19 €</span></div><div class="piste"><i class="m" id="bMise"></i></div></div>
+                      <div><div class="lg"><span>Gagné</span><span id="tGagne">15 €</span></div><div class="piste"><i class="g" id="bGagne"></i></div></div>
+                    </div>
+                    <p class="app-sub sub">Classement</p>
+                    <div class="list" id="ranking"></div>
+                    <p class="sd-hint">Touche un joueur pour voir ses tickets</p>
+                    <div class="sd-best" id="best"><svg class="i" aria-hidden="true"><use href="#i-sparkles"/></svg><span class="l">Plus beau gain</span><span class="w" id="bestWho">Léa · Astro</span><span class="a" id="bestAmt">6 €</span></div>
+                    <p class="app-sub sub sub-l">Par ticket</p>
+                    <div class="list" id="parTicket"></div>
+                  </div>
+                </div>
               </div>
-              <div class="sd-footer"><button class="add" id="add" type="button"><svg class="i" aria-hidden="true"><use href="#i-plus"/></svg>Ajouter un ticket</button></div>
             </div>
           </div>
         </div>
@@ -1042,9 +1121,9 @@
   </section>
 
   <!-- ============ Manifeste ============ -->
-  <section class="manifest" aria-label="Ce qu'est Dooka">
+  <section class="manifest" aria-label="Ce qu’est Dooka">
     <div class="wrap">
-      <p id="manifeste">Dooka est un <span>carnet</span>, pas un casino. Elle note ce que ta bande a joué, et n'a rien à gagner à ce que tu rejoues.</p>
+      <p id="manifeste">Dooka est un <span>carnet</span>, pas un casino. Elle note ce que ta bande a joué, et n’a rien à gagner à ce que tu rejoues.</p>
     </div>
   </section>
 
@@ -1052,7 +1131,7 @@
   <section class="section" id="fonctions" aria-labelledby="fonctions-t">
     <div class="wrap">
       <div class="section-head rv">
-        <h2 id="fonctions-t">Tout ce qu'il faut pour une soirée au comptoir.</h2>
+        <h2 id="fonctions-t">Tout ce qu’il faut pour une soirée au comptoir.</h2>
       </div>
 
       <div class="feature">
@@ -1065,7 +1144,7 @@
                qu'en montre l'app (PmuPlaceSheet). Les fiches sont dans le
                script, à BARS ; les points restent écrits ici pour que la
                carte s'affiche même sans lui. -->
-          <div class="panel p-map" id="carte" role="group" aria-label="Démo de l'onglet Carte : touche un bar pour ouvrir sa fiche">
+          <div class="panel p-map" id="carte" role="group" aria-label="Démo de l’onglet Carte : touche un bar pour ouvrir sa fiche">
             <svg class="map" viewBox="0 0 700 460" preserveAspectRatio="xMidYMid slice">
               <rect class="map-bg" x="-400" y="-400" width="1500" height="1260" fill="#111614"/>
               <g id="world">
@@ -1118,7 +1197,7 @@
             <button class="map-locate" id="viseur" type="button" aria-label="Recentrer la carte"><svg class="i" aria-hidden="true"><use href="#i-locate"/></svg></button>
             <div class="bs" id="fiche" role="region" aria-label="Fiche du bar">
               <div class="bs-body" id="ficheCorps"></div>
-              <div class="bs-actions"><button class="p" type="button" id="ficheGratte">J'ai gratté ici</button><button class="s" type="button" id="ficheSession">Session à plusieurs</button></div>
+              <div class="bs-actions"><button class="p" type="button" id="ficheGratte">J’ai gratté ici</button><button class="s" type="button" id="ficheSession">Session à plusieurs</button></div>
             </div>
             <p class="sr" aria-live="polite" id="carteAnnonce"></p>
           </div>
@@ -1129,10 +1208,10 @@
       <div class="feature flip">
         <div class="f-copy rv">
           <h3>Note un ticket en quelques appuis.</h3>
-          <p>Le ticket, ce qu'il a rapporté, Enregistrer. Ton bilan, c'est ce que tu as gagné moins ce que tu as misé. Rien d'autre.</p>
+          <p>Le ticket, ce qu’il a rapporté, Enregistrer. Ton bilan, c’est ce que tu as gagné moins ce que tu as misé. Rien d’autre.</p>
         </div>
         <div class="rv" style="--d:.1s">
-          <div class="panel p-sheet" id="gratte" role="group" aria-label="Démo de la saisie d'un ticket après « J'ai gratté ici »">
+          <div class="panel p-sheet" id="gratte" role="group" aria-label="Démo de la saisie d’un ticket après « J’ai gratté ici »">
             <div class="grab" aria-hidden="true"></div>
             <div class="sh-head"><b class="app-title" id="shTitle">Quel ticket ?</b><button class="sh-cancel" id="shCancel" type="button">Annuler</button></div>
             <p class="sh-sub" id="shSub">Choisis le ticket gratté.</p>
@@ -1163,23 +1242,31 @@
       <div class="feature">
         <div class="f-copy rv">
           <h3>Joue avec ta bande.</h3>
-          <p>La tablée se classe par bilan net. On rejoint un groupe avec un code, et le détail d'une session reste entre ceux qui y jouent.</p>
+          <p>Chaque bande a son classement, établi sur les bilans nets. On la rejoint avec un code, et le détail d’une session reste entre ceux qui y jouent.</p>
         </div>
         <div class="rv" style="--d:.1s">
-          <div class="p-group" role="img" aria-label="Exemple de l'écran d'un groupe : la carte du code d'invitation avec le bouton Partager, et une demande d'ami reçue avec Refuser et Accepter.">
-            <div class="grp-head" aria-hidden="true"><b class="app-title">La bande du jeudi</b><span>5 membres</span></div>
+          <div class="panel p-band" role="img" aria-label="Exemple de l’écran d’une bande : son nom et ses quatre membres, le bouton Créer une session PMU, le classement par bilan net et la carte du code d’invitation avec le bouton Partager.">
+            <div class="bh" aria-hidden="true">
+              <span class="bimg">L</span>
+              <div class="bn"><b class="app-title">La bande du jeudi</b><span>4 membres</span></div>
+              <span class="bmenu">⋯</span>
+            </div>
+            <span class="btn-app bnew" aria-hidden="true"><svg class="i"><use href="#i-plus"/></svg>Créer une session PMU</span>
+            <p class="app-sub bsec" aria-hidden="true">Classement</p>
+            <div aria-hidden="true">
+              <div class="rcard"><span class="rg">1</span><span class="rav">L</span><div class="ri"><b>Léa</b><span>21 tickets joués</span></div><b class="rn">+8,00 €</b><span class="rb">Ami</span></div>
+              <div class="rcard"><span class="rg">2</span><span class="rav">M</span><div class="ri"><b>Momo</b><span>18 tickets joués</span></div><b class="rn">+3,00 €</b><span class="rb">Ami</span></div>
+              <div class="rcard me"><span class="rg">3</span><span class="rav">C</span><div class="ri"><b>Toi</b><span>24 tickets joués</span></div><b class="rn neg">-6,00 €</b></div>
+              <div class="rcard"><span class="rg">4</span><span class="rav">S</span><div class="ri"><b>Sam</b><span>19 tickets joués</span></div><b class="rn neg">-11,00 €</b><span class="rb">Ami</span></div>
+            </div>
             <div class="invite-card" aria-hidden="true">
-              <span class="lbl"><svg class="i"><use href="#i-hash"/></svg>Code d'invitation</span>
+              <span class="lbl"><svg class="i"><use href="#i-hash"/></svg>Code d’invitation</span>
               <span class="code">K4P9RX</span>
-              <p>Partage ce code pour inviter tes amis dans le groupe.</p>
+              <p>Partage ce code pour inviter tes amis dans la bande.</p>
               <span class="btn-app"><svg class="i"><use href="#i-share"/></svg>Partager</span>
             </div>
-            <div class="req-card" aria-hidden="true">
-              <h5>Demandes reçues (1)</h5>
-              <div class="req-row"><span class="ini" style="background:#33284A;color:#C9A8FF">N</span><b>Nadia</b><span class="refuse">Refuser</span><span class="btn-app sm">Accepter</span></div>
-            </div>
-            <p class="priv" aria-hidden="true"><svg class="i"><use href="#i-eye"/></svg>Ton nom et ta photo sont visibles des autres joueurs.</p>
           </div>
+          <p class="panel-note">Exemple : bande, noms et montants fictifs.</p>
         </div>
       </div>
     </div>
@@ -1190,25 +1277,25 @@
     <div class="wrap pledge">
       <div class="pledge-copy rv">
         <h2 id="engagements-t">Ce que Dooka fait, et ne fait pas.</h2>
-        <p>Dooka montre ce qui a été gagné, jamais ce qu'on pourrait gagner.</p>
+        <p>Dooka montre ce qui a été gagné, jamais ce qu’on pourrait gagner.</p>
         <a class="link-arrow" href="/jeu-responsable.html">Notre page jeu responsable<svg class="i" aria-hidden="true"><use href="#i-arrow-r"/></svg></a>
       </div>
       <div class="rv" style="--d:.1s">
         <h3 class="pledge-h">Elle ne te pousse pas à jouer</h3>
         <ul class="nots">
-          <li><span class="x" aria-hidden="true"><svg class="i"><use href="#i-x"/></svg></span><span><b>Aucun gain promis</b><span class="d">La vraie chance de gain, aucun lot en vedette.</span></span></li>
+          <li><span class="x" aria-hidden="true"><svg class="i"><use href="#i-x"/></svg></span><span><b>Aucun gain promis</b><span class="d">La part des tickets qui rapportent plus que la mise, aucun lot en vedette.</span></span></li>
           <li><span class="x" aria-hidden="true"><svg class="i"><use href="#i-x"/></svg></span><span><b>Rien pour te faire revenir</b><span class="d">Ni points, ni séries, ni compte à rebours.</span></span></li>
           <li><span class="x" aria-hidden="true"><svg class="i"><use href="#i-x"/></svg></span><span><b>Personne derrière</b><span class="d">Ni pub, ni opérateur de jeu.</span></span></li>
         </ul>
 
         <div class="limits">
           <h3 class="pledge-h">Et de quoi garder la main : « Mes limites »</h3>
-          <div class="panel limits-card" role="img" aria-label="Réglages Mes limites de l'app : budget hebdomadaire, rappel de durée activé toutes les 30 minutes, et suspension du suivi.">
+          <div class="panel limits-card" role="img" aria-label="Réglages Mes limites de l’app : budget hebdomadaire, rappel de durée activé toutes les 30 minutes, et pause du suivi.">
             <div class="lr" aria-hidden="true"><span class="txt"><b>Budget hebdomadaire</b><span>Aucun budget fixé</span></span><svg class="i chev"><use href="#i-chev-r"/></svg></div>
             <div class="lr" aria-hidden="true"><span class="txt"><b>Rappel de durée</b><span>Toutes les 30 minutes</span></span><span class="switch"></span></div>
-            <div class="lr red" aria-hidden="true"><span class="txt"><b>Suspendre mon suivi</b><span>Mettre le suivi en pause 7, 30 ou 90 jours</span></span><svg class="i chev"><use href="#i-chev-r"/></svg></div>
+            <div class="lr" aria-hidden="true"><span class="txt"><b>Faire une pause</b><span>Saisie et notifications coupées, de 7 à 90 jours</span></span><svg class="i chev"><use href="#i-chev-r"/></svg></div>
           </div>
-          <p class="limits-note">Le budget, c'est toi qui le fixes. L'app ne t'arrête pas, elle te montre où tu en es.</p>
+          <p class="limits-note">Le budget, c’est toi qui le fixes : l’app te montre où tu en es, sans t’arrêter. Une pause masque la saisie et coupe les notifications jusqu’à la reprise.</p>
         </div>
       </div>
     </div>
@@ -1217,7 +1304,7 @@
   <!-- ============ Appel final ============ -->
   <section class="final" id="rejoindre" aria-labelledby="rejoindre-t">
     <div class="wrap">
-      <h2 id="rejoindre-t" class="rv">Ta bande t'attend au comptoir.</h2>
+      <h2 id="rejoindre-t" class="rv">Ta bande t’attend au comptoir.</h2>
       <p class="rv" style="--d:.08s">Invité par un pote ? Installe Dooka, crée ton compte, puis rouvre son lien.</p>
       <div class="hero-cta rv" style="--d:.16s">
         <a class="btn btn-light btn-lg" href="https://github.com/TeamDooka/dooka/releases/latest/download/dooka.apk"><svg class="i" aria-hidden="true"><use href="#i-download"/></svg>Télécharger pour Android</a>
@@ -1240,7 +1327,7 @@
         <p class="tag">Le carnet de la bande.</p>
       </div>
       <div>
-        <h3>L'appli</h3>
+        <h3>L’appli</h3>
         <ul>
           <li><a href="https://github.com/TeamDooka/dooka/releases/latest/download/dooka.apk">Télécharger pour Android</a></li>
           <li><a href="https://play.google.com/apps/testing/fr.dooka.app">Google Play · test fermé</a></li>
@@ -1262,7 +1349,7 @@
       </div>
     </div>
     <div class="fine">
-      <p><strong>Dooka est une application indépendante, non affiliée au PMU ni à la Française des Jeux.</strong> Les marques citées appartiennent à leurs propriétaires respectifs et ne servent qu'à décrire les points de vente et jeux référencés. Dooka ne permet ni de jouer, ni de parier, ni de recevoir de l'argent.</p>
+      <p><strong>Dooka est une application indépendante, non affiliée au PMU ni à la Française des Jeux.</strong> Les marques citées appartiennent à leurs propriétaires respectifs et ne servent qu’à décrire les points de vente et jeux référencés. Dooka ne permet ni de jouer, ni de parier, ni de recevoir de l’argent.</p>
       <p>Jouer comporte des risques : endettement, isolement, dépendance. Interdit aux mineurs. Appelez le <a href="tel:0974751313">09 74 75 13 13</a> (Joueurs Info Service, appel non surtaxé).</p>
     </div>
   </div>
@@ -1359,57 +1446,100 @@
       }
     }
 
-    /* ---------- La démo : la fiche d'une session (3.13) ---------- */
+    /* ---------- La démo : la fiche d'une session (3.21) ---------- */
     // Les montants s'écrivent comme dans l'app : « +3 € », « -1 € » (trait
-    // d'union, pas de signe moins), « 6 € » pour un gain, espace insécable
-    // avant l'euro.
+    // d'union, pas de signe moins), « 16 € » sans centimes quand ils sont
+    // ronds, espace insécable avant l'euro.
     var NB = " ";
-    function fmtSS(v) {
-      var r = Math.round(v * 100) / 100;
-      var txt = Number.isInteger(r) ? String(Math.abs(r)) : Math.abs(r).toFixed(2).replace(".", ",");
-      return (r >= 0 ? "+" : "-") + txt + NB + "€";
-    }
+    function arrondi(v) { return Math.round(v * 100) / 100; }
+    function centimes(v) { return Math.abs(v).toFixed(2).replace(".", ","); }
+    // formatShortEuros : « 16 € », « 2,50 € ».
     function fmtS(v) {
-      var r = Math.round(v * 100) / 100;
-      return (Number.isInteger(r) ? String(r) : r.toFixed(2).replace(".", ",")) + NB + "€";
+      var r = arrondi(v);
+      return (Number.isInteger(r) ? String(r) : centimes(r)) + NB + "€";
     }
-    function pluriel(n, mot) { return n + " " + mot + (n > 1 ? "s" : ""); }
+    // signeCourt : « +3 € », « -1 € ».
+    function fmtSS(v) {
+      var r = arrondi(v);
+      return (r >= 0 ? "+" : "-") + (Number.isInteger(r) ? String(Math.abs(r)) : centimes(r)) + NB + "€";
+    }
+    // formatSignedEuros : « +3,00 € », « -1,00 € » — le net de la tablée et
+    // les lignes d'une liste, où les montants s'alignent en colonne.
+    function fmtSD(v) {
+      var r = arrondi(v);
+      return (r >= 0 ? "+" : "-") + centimes(r) + NB + "€";
+    }
+    // 0 et 1 au singulier, comme l'app.
+    function pluriel(n, un, plusieurs) { return n + " " + (n > 1 ? (plusieurs || un + "s") : un); }
 
-    // La date comme l'app l'écrit à la main : « mar. 20 oct. ».
-    var JOURS = ["dim.", "lun.", "mar.", "mer.", "jeu.", "ven.", "sam."];
-    var MOIS = ["janv.", "févr.", "mars", "avr.", "mai", "juin", "juil.", "août", "sept.", "oct.", "nov.", "déc."];
-    var auj = new Date();
-    var sdMeta = document.getElementById("sdMeta");
-    if (sdMeta) sdMeta.textContent = JOURS[auj.getDay()] + " " + auj.getDate() + " " + MOIS[auj.getMonth()] + " · depuis 1 h 12";
+    // Les visages : la teinte se déduit du nom, comme dans l'app (Avatar.tsx,
+    // palette sombre), de sorte qu'une même personne garde la même couleur
+    // d'un écran à l'autre.
+    var TEINTES = [["#173A27", "#8FE0B1"], ["#3F3414", "#F2C14E"], ["#1B2E4F", "#9FC0F7"], ["#45201F", "#FF9C9F"], ["#33264F", "#C6AEF0"]];
+    function avatar(nom) {
+      var h = 0;
+      for (var i = 0; i < nom.length; i++) h = (h * 31 + nom.charCodeAt(i)) | 0;
+      var t = TEINTES[Math.abs(h) % TEINTES.length];
+      var s = el("span", "ini", nom.charAt(0).toUpperCase());
+      s.style.background = t[0];
+      s.style.color = t[1];
+      return s;
+    }
 
-    // Une démo honnête : plus de tickets perdus que gagnés, la table finit
+    // La date comme l'app l'écrit : « 25/10/2026 ».
+    var sdDate = document.getElementById("sdDate");
+    if (sdDate) sdDate.textContent = new Date().toLocaleDateString("fr-FR");
+
+    // Une démo honnête : plus de tickets perdus que gagnés, la tablée finit
     // plus bas qu'elle n'a commencé, et chaque gain est un vrai lot du ticket
     // (Astro 2 € : 2, 4, 6 € ; Banco 1 € : 1, 2, 5, 10 € ; Cash 5 € : 5, 10 €).
-    var depart = {
-      lea: { nom: "Léa", ini: "L", bg: "#1F3B2C", fg: "#7FE0A8", plays: [["Banco", 1, 2], ["Astro", 2, 0], ["Astro", 2, 6]] },
-      momo: { nom: "Momo", ini: "M", bg: "#3B3420", fg: "#F2C14E", plays: [["Banco", 1, 5], ["Astro", 2, 0], ["Banco", 1, 0]] },
-      sam: { nom: "Sam", ini: "S", bg: "#22304A", fg: "#8DB4F5", plays: [["Banco", 1, 2], ["Banco", 1, 0], ["Cash", 5, 0]] }
-    };
-    var suite = [
-      ["lea", "Cash", 5, 0],
-      ["sam", "Banco", 1, 10],
-      ["sam", "Cash", 5, 0],
-      ["momo", "Cash", 5, 0],
-      ["lea", "Astro", 2, 6]
+    // Dans l'ordre d'arrivée, le plus ancien d'abord : [joueur, ticket, mise, gain].
+    var NOMS = { lea: "Léa", momo: "Momo", sam: "Sam" };
+    var ORDRE = ["lea", "momo", "sam"];
+    var depart = [
+      ["lea", "Banco", 1, 2], ["momo", "Banco", 1, 5], ["sam", "Banco", 1, 2],
+      ["lea", "Astro", 2, 0], ["momo", "Cash", 5, 0], ["sam", "Banco", 1, 0],
+      ["lea", "Astro", 2, 6], ["momo", "Banco", 1, 0], ["sam", "Cash", 5, 0]
     ];
-    var joueurs, pas;
+    // Chaque ajout change quelque chose à lire : Sam passe devant Momo, puis
+    // Momo repasse devant Sam, et le dernier ticket de Léa fait monter Momo en tête.
+    var suite = [
+      ["lea", "Banco", 1, 0],
+      ["sam", "Banco", 1, 5],
+      ["sam", "Cash", 5, 0],
+      ["momo", "Banco", 1, 2],
+      ["lea", "Cash", 5, 0]
+    ];
+    var plays, pas, heureDernier, ticketsDeplies;
     var ranking = document.getElementById("ranking");
+    var scroller = document.getElementById("sdScroll");
+    var paneJeu = document.getElementById("paneJeu");
+    var paneStats = document.getElementById("paneStats");
+    var tabJeu = document.getElementById("tabJeu");
+    var tabStats = document.getElementById("tabStats");
     var tableNet = document.getElementById("tableNet");
-    var counters = document.getElementById("counters");
-    var bestWho = document.getElementById("bestWho");
-    var bestAmt = document.getElementById("bestAmt");
+    var tableeEl = document.getElementById("tablee");
+    var tableList = document.getElementById("tableList");
+    var tableToggle = document.getElementById("tableToggle");
+    var derniersEl = document.getElementById("derniers");
+    var voirBtn = document.getElementById("voir");
     var addBtn = document.getElementById("add");
     var resetBtn = document.getElementById("reset");
     var hint = document.getElementById("hint");
     var annonce = document.getElementById("annonce");
+    var onglet = "jeu";
 
-    function net(j) { return j.plays.reduce(function (s, p) { return s + p[2] - p[1]; }, 0); }
-    function gagnants(j) { return j.plays.filter(function (p) { return p[2] > 0; }).length; }
+    function net(id) {
+      return plays.reduce(function (s, p) { return p.id === id ? s + p.w - p.c : s; }, 0);
+    }
+    function parties(id) { return plays.filter(function (p) { return p.id === id; }); }
+    function gagnantsDe(liste) { return liste.filter(function (p) { return p.w > 0; }).length; }
+    // Le décompte sous un nom : « 3 tickets · 2 gagnants », au constat.
+    function decompte(liste) {
+      var g = gagnantsDe(liste);
+      return pluriel(liste.length, "ticket") + " · " + (g === 0 ? "aucun gagnant" : pluriel(g, "gagnant"));
+    }
+    function signe(el, v) { el.classList.toggle("neg", v < 0); }
 
     function compter(el, de, a, fmt) {
       if (still || de === a) { el.textContent = fmt(a); return; }
@@ -1422,68 +1552,189 @@
       }
       requestAnimationFrame(f);
     }
+    // Un montant qui compte de sa valeur précédente à la nouvelle.
+    function compterVers(el, a, fmt, anime) {
+      var de = el.dataset.v === undefined || el.dataset.v === "" ? a : parseFloat(el.dataset.v);
+      el.dataset.v = a;
+      compter(el, anime ? de : a, a, fmt);
+    }
 
-    // Un joueur : sa ligne du classement, et ses tickets dessous, repliés.
+    // Les deux onglets de la fiche : Jeu pour ce qu'on fait pendant la
+    // soirée, Stats pour ce que ça donne.
+    function montrer(nom, focus) {
+      onglet = nom;
+      [["jeu", tabJeu, paneJeu], ["stats", tabStats, paneStats]].forEach(function (o) {
+        var actif = o[0] === nom;
+        o[1].setAttribute("aria-selected", actif ? "true" : "false");
+        o[1].tabIndex = actif ? 0 : -1;
+        o[2].hidden = !actif;
+      });
+      scroller.scrollTop = 0;
+      if (focus) (nom === "jeu" ? tabJeu : tabStats).focus();
+    }
+    tabJeu.addEventListener("click", function () { montrer("jeu"); });
+    tabStats.addEventListener("click", function () { montrer("stats"); });
+    document.getElementById("onglets").addEventListener("keydown", function (e) {
+      if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
+      e.preventDefault();
+      montrer(onglet === "jeu" ? "stats" : "jeu", true);
+    });
+
+    // La tablée : une case par joueur, dans l'ordre d'arrivée (jamais celui
+    // du classement, pour que rien ne glisse sous le doigt).
+    function majTablee() {
+      tableeEl.textContent = "";
+      ORDRE.forEach(function (id) {
+        var n = net(id);
+        var c = el("div", "conv");
+        var av = el("span", "av");
+        av.appendChild(avatar(NOMS[id]));
+        var plus = el("span", "plus");
+        plus.setAttribute("aria-hidden", "true");
+        plus.appendChild(ico("i-plus"));
+        av.appendChild(plus);
+        c.appendChild(av);
+        c.appendChild(el("span", "cn", NOMS[id]));
+        c.appendChild(el("span", "cv" + (n < 0 ? " neg" : ""), fmtSS(n)));
+        tableeEl.appendChild(c);
+      });
+      var nv = el("div", "nouveau");
+      nv.setAttribute("aria-hidden", "true");
+      var rond = el("span", "rond");
+      rond.appendChild(ico("i-plus"));
+      nv.appendChild(rond);
+      nv.appendChild(el("span", null, "Ajouter"));
+      tableeEl.appendChild(nv);
+      document.getElementById("nbJoueurs").textContent = pluriel(ORDRE.length, "joueur");
+    }
+    function majListeTable() {
+      tableList.textContent = "";
+      ORDRE.forEach(function (id) {
+        var r = el("div", "row");
+        r.appendChild(avatar(NOMS[id]));
+        var nm = el("div", "nm");
+        nm.appendChild(el("b", null, NOMS[id]));
+        r.appendChild(nm);
+        tableList.appendChild(r);
+      });
+    }
+    tableToggle.addEventListener("click", function () {
+      var ouvert = tableToggle.getAttribute("aria-expanded") !== "true";
+      tableToggle.setAttribute("aria-expanded", ouvert ? "true" : "false");
+      tableList.hidden = !ouvert;
+    });
+
+    // Les derniers tickets, le plus récent en haut : c'est presque toujours
+    // lui qu'on vient vérifier. Le reste se déplie dans la même carte.
+    function majDerniers(neuf) {
+      var tous = plays.slice().reverse();
+      var vus = ticketsDeplies ? tous : tous.slice(0, 3);
+      derniersEl.textContent = "";
+      vus.forEach(function (p, i) {
+        var n = p.w - p.c;
+        var r = el("div", "row play" + (neuf && i === 0 ? " fresh" : ""));
+        var th = el("span", "th");
+        th.setAttribute("aria-hidden", "true");
+        th.appendChild(ico("i-ticket"));
+        r.appendChild(th);
+        var nm = el("div", "nm");
+        nm.appendChild(el("b", null, p.t));
+        nm.appendChild(el("span", null, NOMS[p.id]));
+        r.appendChild(nm);
+        r.appendChild(el("span", "net" + (n < 0 ? " neg" : ""), fmtSD(n)));
+        var act = el("span", "act");
+        act.setAttribute("aria-hidden", "true");
+        act.appendChild(ico("i-pencil"));
+        var sup = ico("i-trash");
+        sup.classList.add("del");
+        act.appendChild(sup);
+        r.appendChild(act);
+        derniersEl.appendChild(r);
+      });
+      document.getElementById("ttDerniers").textContent = ticketsDeplies ? "Tous les tickets" : "Derniers tickets";
+      document.getElementById("auTotal").textContent = tous.length + " au total";
+      voirBtn.hidden = tous.length <= 3;
+      voirBtn.setAttribute("aria-expanded", ticketsDeplies ? "true" : "false");
+      document.getElementById("voirTxt").textContent = ticketsDeplies ? "Replier" : "Voir les " + tous.length + " tickets";
+      document.getElementById("dernierTicket").textContent = "Dernier ticket à " + heureDernier;
+    }
+    voirBtn.addEventListener("click", function () {
+      ticketsDeplies = !ticketsDeplies;
+      majDerniers(false);
+    });
+
+    // Un joueur du classement : sa ligne, et ses tickets dessous, repliés.
     // Déplié, on y lit chaque mise et chaque gain : le net de la ligne en
-    // est la somme, et le net de la table la somme des lignes.
+    // est la somme, et le net de la tablée la somme des lignes.
     function ligne(id) {
-      var j = joueurs[id];
-      var r = document.createElement("div");
-      r.className = "pl";
+      var r = el("div", "pl");
       r.dataset.id = id;
-      r.innerHTML = '<div class="row" role="button" tabindex="0" aria-expanded="false"><span class="ring"><span class="ini"></span></span><span class="nm"><b></b></span><span class="ct"><b></b><small></small></span><span class="net"></span></div><div class="tks"><div></div></div>';
-      var ini = r.querySelector(".ini");
-      ini.textContent = j.ini;
-      ini.style.background = j.bg;
-      ini.style.color = j.fg;
-      r.querySelector(".nm b").textContent = j.nom;
+      r.innerHTML = '<div class="row" role="button" tabindex="0" aria-expanded="false"><span class="rk"></span><span class="visage"></span><span class="rkt"><span class="rl"><b></b><span class="net"></span></span><span class="np"><span class="nl"><i class="nb p"></i></span><i class="ax"></i><span class="nr"><i class="nb g"></i></span></span><small class="dc"></small></span><svg class="i chev" aria-hidden="true"><use href="#i-chev-r"/></svg></div><div class="tks"><div></div></div>';
+      r.querySelector(".visage").appendChild(avatar(NOMS[id]));
+      r.querySelector(".rl b").textContent = NOMS[id];
       return r;
     }
 
-    function remplir(r, anime, de, neuf) {
-      var j = joueurs[r.dataset.id];
-      var n = net(j), g = gagnants(j);
-      r.querySelector(".ct b").textContent = j.plays.length;
-      var sm = r.querySelector(".ct small");
-      sm.textContent = g === 0 ? "aucun" : pluriel(g, "gagnant");
-      sm.classList.toggle("win", g > 0);
-      var el = r.querySelector(".net");
-      el.classList.toggle("neg", n < 0);
-      compter(el, anime ? de : n, n, fmtSS);
-      // Le plus récent en haut, comme « Derniers tickets » dans l'app.
+    // Les ex æquo partagent la même place (1, 1, 3), comme dans l'app.
+    function rangs() {
+      var nets = ORDRE.map(net);
+      var res = {};
+      ORDRE.forEach(function (id, i) {
+        res[id] = 1 + nets.filter(function (n) { return n > nets[i]; }).length;
+      });
+      return res;
+    }
+    // Racine carrée plutôt que proportion directe : un gros gain ne réduit
+    // pas toutes les autres barres à un trait.
+    function largeurNet(n, ecart) {
+      return ecart === 0 ? 0 : Math.max(4, Math.sqrt(Math.abs(n) / ecart) * 100);
+    }
+
+    function remplir(r, anime, neuf) {
+      var id = r.dataset.id;
+      var liste = parties(id);
+      var n = net(id);
+      var ecart = Math.max.apply(null, ORDRE.map(function (i) { return Math.abs(net(i)); }));
+      r.querySelector(".rk").textContent = rangs()[id];
+      var el2 = r.querySelector(".net");
+      signe(el2, n);
+      compterVers(el2, n, fmtSS, anime);
+      r.querySelector(".np").hidden = ecart === 0;
+      r.querySelector(".nl .nb").style.width = n < 0 ? largeurNet(n, ecart) + "%" : "0%";
+      r.querySelector(".nr .nb").style.width = n > 0 ? largeurNet(n, ecart) + "%" : "0%";
+      r.querySelector(".dc").textContent = decompte(liste);
       var box = r.querySelector(".tks > div");
       box.textContent = "";
-      j.plays.slice().reverse().forEach(function (p, i) {
+      liste.slice().reverse().forEach(function (p, i) {
         var d = document.createElement("div");
         d.className = "tk" + (neuf && i === 0 ? " fresh" : "");
         var s = document.createElement("span");
         var em = document.createElement("em");
-        em.textContent = p[0];
+        em.textContent = p.t;
         s.appendChild(em);
-        s.appendChild(document.createTextNode(" · mise " + fmtS(p[1]) + " · " + (p[2] === 0 ? "perdu" : "gagné " + fmtS(p[2]))));
+        s.appendChild(document.createTextNode(" · mise " + fmtS(p.c) + " · " + (p.w === 0 ? "perdu" : "gagné " + fmtS(p.w))));
         var b = document.createElement("b");
-        var v = p[2] - p[1];
+        var v = p.w - p.c;
         b.textContent = fmtSS(v);
-        if (v < 0) b.className = "neg"; else if (v === 0) b.className = "zero";
+        if (v < 0) b.className = "neg";
         d.appendChild(s);
         d.appendChild(b);
         box.appendChild(d);
       });
     }
 
-    var sdEl = document.querySelector(".sd");
     function deplier(r) {
       var ouvert = !r.classList.contains("deplie");
       r.classList.toggle("deplie", ouvert);
       r.querySelector(".row").setAttribute("aria-expanded", ouvert ? "true" : "false");
       if (!ouvert) return;
       // Une fois déplié, on fait défiler l'écran du téléphone juste assez
-      // pour que le dernier ticket ne reste pas sous le bouton du bas.
+      // pour que le dernier ticket ne reste pas sous le bord du bas.
       setTimeout(function () {
-        var a = r.getBoundingClientRect(), c = sdEl.getBoundingClientRect();
-        var k = c.height / sdEl.offsetHeight || 1;
+        var a = r.getBoundingClientRect(), c = scroller.getBoundingClientRect();
+        var k = c.height / scroller.offsetHeight || 1;
         var bas = (a.bottom - c.bottom) / k;
-        if (bas > 0) sdEl.scrollBy({ top: bas + 12, behavior: still ? "auto" : "smooth" });
+        if (bas > 0) scroller.scrollBy({ top: bas + 12, behavior: still ? "auto" : "smooth" });
       }, still ? 0 : 520);
     }
     ranking.addEventListener("click", function (e) {
@@ -1505,9 +1756,9 @@
     var toastS = document.getElementById("toastS");
     var toastA = document.getElementById("toastA");
     var toastMinuteur;
-    function signaler(j, e) {
+    function signaler(e) {
       var v = e[3] - e[2];
-      toastT.textContent = "Ticket noté pour " + j.nom;
+      toastT.textContent = "Ticket noté pour " + NOMS[e[0]];
       toastS.textContent = e[1] + " · mise " + fmtS(e[2]) + " · " + (e[3] === 0 ? "perdu" : "gagné " + fmtS(e[3]));
       toastA.textContent = fmtSS(v);
       toastA.className = "amt" + (v > 0 ? " pos" : v < 0 ? " neg" : "");
@@ -1516,37 +1767,78 @@
       toastMinuteur = setTimeout(function () { toast.classList.remove("on"); }, 3200);
     }
 
-    function table(anime) {
-      var plays = [];
-      Object.keys(joueurs).forEach(function (id) {
-        joueurs[id].plays.forEach(function (p) { plays.push({ id: id, t: p[0], c: p[1], w: p[2] }); });
-      });
-      var total = plays.reduce(function (s, p) { return s + p.w - p.c; }, 0);
-      var g = plays.filter(function (p) { return p.w > 0; }).length;
-      var mises = plays.reduce(function (s, p) { return s + p.c; }, 0);
-      var avant = parseFloat(tableNet.dataset.v || String(total));
-      tableNet.dataset.v = total;
-      tableNet.classList.toggle("neg", total < 0);
-      compter(tableNet, anime ? avant : total, total, fmtSS);
-      counters.textContent = [pluriel(plays.length, "ticket"), g === 0 ? "aucun gagnant" : pluriel(g, "gagnant"), fmtS(mises) + " misés"].join(" · ");
+    // Misé et gagné à la même échelle : la plus longue des deux barres
+    // occupe toute la largeur.
+    function majStats() {
+      var mise = 0, gagne = 0;
+      plays.forEach(function (p) { mise += p.c; gagne += p.w; });
+      var g = gagnantsDe(plays);
+      document.getElementById("vMise").textContent = fmtS(mise);
+      var vg = document.getElementById("vGagne");
+      vg.textContent = fmtS(gagne);
+      vg.classList.toggle("gain", gagne > 0);
+      document.getElementById("vTickets").textContent = plays.length;
+      document.getElementById("vGagnants").textContent = g;
+      document.getElementById("vSur").textContent = " / " + plays.length;
+      var gros = Math.max(mise, gagne);
+      document.getElementById("bMise").style.width = (gros ? mise / gros * 100 : 0) + "%";
+      document.getElementById("bGagne").style.width = (gros ? gagne / gros * 100 : 0) + "%";
+      document.getElementById("tMise").textContent = fmtS(mise);
+      document.getElementById("tGagne").textContent = fmtS(gagne);
+
+      // Le plus beau gain de la soirée : un fait, pas un titre.
       var best = null;
       plays.forEach(function (p) { if (p.w > 0 && (!best || p.w > best.w)) best = p; });
+      var bestEl = document.getElementById("best");
+      bestEl.hidden = !best;
       if (best) {
-        bestWho.textContent = joueurs[best.id].nom + " · " + best.t;
-        bestAmt.textContent = fmtS(best.w);
+        document.getElementById("bestWho").textContent = NOMS[best.id] + " · " + best.t;
+        document.getElementById("bestAmt").textContent = fmtS(best.w);
       }
+
+      // Chaque ticket de la soirée : combien de fois joué, combien ont gagné,
+      // et son net pour la tablée. Le plus joué d'abord.
+      var par = {};
+      plays.forEach(function (p) {
+        var l = par[p.t] || (par[p.t] = { t: p.t, joues: 0, gagnants: 0, net: 0 });
+        l.joues += 1;
+        l.gagnants += p.w > 0 ? 1 : 0;
+        l.net += p.w - p.c;
+      });
+      var lignes = Object.keys(par).map(function (k) { return par[k]; })
+        .sort(function (a, b) { return b.joues - a.joues || b.net - a.net; });
+      var box = document.getElementById("parTicket");
+      box.textContent = "";
+      lignes.forEach(function (l) {
+        var r = el("div", "row");
+        var th = el("span", "th");
+        th.setAttribute("aria-hidden", "true");
+        th.appendChild(ico("i-ticket"));
+        r.appendChild(th);
+        var nm = el("div", "nm");
+        nm.appendChild(el("b", null, l.t));
+        nm.appendChild(el("span", null, pluriel(l.joues, "joué") + " · " + (l.gagnants === 0 ? "aucun gagnant" : pluriel(l.gagnants, "gagnant"))));
+        r.appendChild(nm);
+        r.appendChild(el("span", "net" + (l.net < 0 ? " neg" : ""), fmtSS(l.net)));
+        box.appendChild(r);
+      });
     }
 
+    function majTable(anime) {
+      var total = plays.reduce(function (s, p) { return s + p.w - p.c; }, 0);
+      signe(tableNet, total);
+      compterVers(tableNet, total, fmtSD, anime);
+    }
+
+    // Le classement se réordonne en glissant, quand l'onglet Stats est à
+    // l'écran ; sinon il se pose d'un coup.
     function classer(anime) {
+      var visible = !paneStats.hidden;
       var avant = {};
       Array.prototype.forEach.call(ranking.children, function (r) { avant[r.dataset.id] = r.getBoundingClientRect().top; });
-      var ordre = Object.keys(joueurs).sort(function (a, b) { return net(joueurs[b]) - net(joueurs[a]); });
-      ordre.forEach(function (id, i) {
-        var r = ranking.querySelector('[data-id="' + id + '"]');
-        ranking.appendChild(r);
-        r.querySelector(".ring").classList.toggle("on", i === 0);
-      });
-      if (!anime || still) return ordre;
+      var ordre = ORDRE.slice().sort(function (a, b) { return net(b) - net(a); });
+      ordre.forEach(function (id) { ranking.appendChild(ranking.querySelector('[data-id="' + id + '"]')); });
+      if (!anime || still || !visible) return ordre;
       ordre.forEach(function (id) {
         var r = ranking.querySelector('[data-id="' + id + '"]');
         var s = r.getBoundingClientRect().height / r.offsetHeight || 1;
@@ -1566,38 +1858,44 @@
       return ordre;
     }
 
+    function majTout(anime, neuf) {
+      majTable(anime);
+      majTablee();
+      majListeTable();
+      majDerniers(neuf);
+      majStats();
+      Array.prototype.forEach.call(ranking.children, function (r) { remplir(r, anime, neuf); });
+      return classer(anime);
+    }
+
     function initialiser() {
-      joueurs = JSON.parse(JSON.stringify(depart));
+      plays = depart.map(function (p) { return { id: p[0], t: p[1], c: p[2], w: p[3] }; });
       pas = 0;
+      heureDernier = "21" + NB + "h" + NB + "08";
+      ticketsDeplies = false;
       ranking.textContent = "";
-      Object.keys(joueurs).forEach(function (id) {
-        var r = ligne(id);
-        ranking.appendChild(r);
-        remplir(r, false);
-      });
+      ORDRE.forEach(function (id) { ranking.appendChild(ligne(id)); });
       tableNet.dataset.v = "";
-      sdEl.scrollTop = 0;
-      classer(false);
-      table(false);
+      Array.prototype.forEach.call(ranking.children, function (r) { r.dataset.v = ""; });
+      tableToggle.setAttribute("aria-expanded", "false");
+      tableList.hidden = true;
+      montrer("jeu");
+      majTout(false, false);
     }
 
     function ajouter() {
       if (pas >= suite.length) return;
       var e = suite[pas++];
-      var j = joueurs[e[0]];
-      var de = net(j);
-      j.plays.push([e[1], e[2], e[3]]);
-      remplir(ranking.querySelector('[data-id="' + e[0] + '"]'), true, de, true);
-      var ordre = classer(true);
-      table(true);
-      signaler(j, e);
+      plays.push({ id: e[0], t: e[1], c: e[2], w: e[3] });
+      heureDernier = "21" + NB + "h" + NB + "12";
+      var ordre = majTout(true, true);
+      signaler(e);
       // Le ticket est gratté au Balto : sa bulle sur la carte le compte.
       baltoSession++;
       majBalto(true);
       addBtn.classList.remove("ping");
       hint.classList.remove("on");
-      var tete = joueurs[ordre[0]];
-      annonce.textContent = j.nom + " : " + e[1] + ", " + (e[3] === 0 ? "perdu" : "rapporté " + fmtS(e[3])) + ". En tête" + NNBSP + ": " + tete.nom + ", " + fmtSS(net(tete)) + ".";
+      annonce.textContent = NOMS[e[0]] + " : " + e[1] + ", " + (e[3] === 0 ? "perdu" : "rapporté " + fmtS(e[3])) + ". En tête" + NNBSP + ": " + NOMS[ordre[0]] + ", " + fmtSS(net(ordre[0])) + ".";
       if (pas >= suite.length) resetBtn.hidden = false;
     }
 
@@ -1636,38 +1934,39 @@
     // cohérents entre eux : la bulle d'un bar compte ses tickets sur 30
     // jours, donc il n'a pas plus de joueurs ni de parties sur 7 jours. Les
     // records sont de vrais lots des tickets nommés.
-    // chaleur : [niveau, titre, détail] ; surPlace : tickets à gratter,
+    // chaleur : [niveau, mention de la légende] — la fiche ne dit plus rien
+    // de l'activité en cours, seule la carte la montre (halo) ;
+    // record : [montant, joueur, ticket, photo de preuve] ; surPlace : tickets à gratter,
     // courses en direct, Amigo, terrasse (o oui, n non, ? inconnu) ;
     // freq : parties depuis toujours, joueurs sur 30 jours, parties sur 7.
     var BARS = {
       balto: { nom: "Le Balto", note: "4,3", avis: 212, type: "Bar PMU", dist: "350 m", adresse: "8 place du Marché",
-        statut: "pmu", chaleur: ["live", "3 personnes grattent ici en ce moment", "Léa, Momo et Sam, à la même table"],
+        statut: "pmu", chaleur: ["live", "ça gratte maintenant"],
         heures: ["open", "Ouvert · ferme à 23 h"], surPlace: "ooo?", freq: [86, 9, 7],
-        record: ["100 €", "Record du bar — Momo · Cash"], amis: ["Léa", "Momo", "Sam"] },
+        record: ["100 €", "Momo", "Cash", true], amis: ["Léa", "Momo", "Sam"] },
       narval: { nom: "Le Narval", note: "4,1", avis: 86, type: "Bar PMU", dist: "1,2 km", adresse: "21 rue Gambetta",
         statut: "pmu", heures: ["open", "Ouvert · ferme à 20 h"], surPlace: "on?o", freq: [23, 4, 2],
-        record: ["20 €", "Record du bar — Nadia · Astro"], amis: ["Nadia"] },
+        record: ["20 €", "Nadia", "Astro"], moi: "4 €", amis: ["Nadia"] },
       longchamp: { nom: "Le Longchamp", note: "4,4", avis: 51, type: "Bar PMU", dist: "800 m", adresse: "2 avenue de la Gare",
         statut: "pmu", heures: ["closed", "Fermé · ouvre demain à 7 h"], surPlace: "oonn", freq: [64, 2, 1],
-        record: ["50 €", "Record du bar — Karim · Cash"], amis: [] },
+        record: ["50 €", "Karim", "Cash"], amis: [] },
       boncoin: { nom: "Le Bon Coin", note: "3,9", avis: 34, type: "Bar PMU", dist: "1 km", adresse: "47 rue de la République",
         statut: "pmu", heures: ["open", "Ouvert · ferme à 21 h"], surPlace: "o???", freq: null, amis: [] },
       diplomate: { nom: "Le Diplomate", note: "4,0", avis: 128, type: "Point de vente PMU", dist: "1,5 km", adresse: "3 boulevard Carnot",
         statut: "pmu", heures: ["open", "Ouvert · ferme à 19 h 30"], surPlace: "ooon", freq: [12, 3, 1],
-        record: ["10 €", "Record du bar — Sam · Banco"], amis: ["Sam"] },
+        record: ["10 €", "Sam", "Banco"], amis: ["Sam"] },
       sporting: { nom: "Le Sporting", note: "4,5", avis: 97, type: "Bar PMU", dist: "1,4 km", adresse: "15 quai des Tanneurs",
-        statut: "joue", chaleur: ["recent", "2 parties grattées ici aujourd’hui", ""],
+        statut: "joue", chaleur: ["recent", "gratté aujourd’hui"],
         heures: ["open", "Ouvert · ferme à minuit"], surPlace: "oo?o", freq: [31, 3, 4],
-        record: ["20 €", "Record du bar — toi · Astro"], toi: true, moi: "20 €", amis: ["Sam"] },
+        record: ["20 €", "toi", "Astro"], amis: ["Sam"] },
       sports: { nom: "Bar des Sports", note: "4,2", avis: 18, type: "Bar PMU", dist: "600 m", adresse: "30 rue Victor-Hugo",
         statut: "verif", heures: ["unknown", "Horaires non communiqués"], surPlace: "????", freq: null, amis: [] },
       weekend: { nom: "Le Week-End", note: "3,8", avis: 41, type: "Bar PMU", dist: "900 m", adresse: "5 rue des Halles",
         statut: "verif", heures: ["open", "Ouvert · ferme à 2 h"], surPlace: "????", freq: null, amis: [] },
-      escale: { nom: "L'Escale", note: "4,6", avis: 23, type: "Bar PMU", dist: "1,3 km", adresse: "62 avenue Jean-Jaurès",
+      escale: { nom: "L’Escale", note: "4,6", avis: 23, type: "Bar PMU", dist: "1,3 km", adresse: "62 avenue Jean-Jaurès",
         statut: "verif", heures: ["closed", "Fermé · ouvre à 16 h"], surPlace: "????", freq: null, amis: [] }
     };
     var SUR_PLACE = ["Tickets à gratter", "Courses en direct", "Amigo", "Terrasse"];
-    var AMIS = { "Léa": ["L", "#1F3B2C", "#7FE0A8"], "Momo": ["M", "#3B3420", "#F2C14E"], "Sam": ["S", "#22304A", "#8DB4F5"], "Nadia": ["N", "#33284A", "#C9A8FF"] };
 
     // Le Balto compte, sur les deux cartes, les tickets de la session du
     // héros et ceux qui s'y ajoutent pendant qu'on regarde.
@@ -1767,18 +2066,6 @@
         f.appendChild(el("div", "bs-notice ok", "Merci, c’est noté : le lieu est confirmé, et son point passe au rouge des PMU."));
       }
 
-      if (b.chaleur) {
-        var h = el("div", "bs-card bs-heat " + b.chaleur[0]);
-        var dot = el("span", "bs-dot");
-        dot.style.background = b.chaleur[0] === "live" ? "#F2541B" : "#0E6B4F";
-        h.appendChild(dot);
-        var ht = el("div");
-        ht.appendChild(el("b", null, b.chaleur[1]));
-        if (b.chaleur[2]) ht.appendChild(el("span", null, b.chaleur[2]));
-        h.appendChild(ht);
-        f.appendChild(h);
-      }
-
       var hr = el("div", "bs-card");
       var hd = el("span", "bs-dot");
       hd.style.background = { open: "#4CCB84", closed: "#FF7377", unknown: "#A6AEA8" }[b.heures[0]];
@@ -1788,7 +2075,7 @@
 
       var q = el("div", "bs-quick");
       q.setAttribute("aria-hidden", "true");
-      [["i-arrow-r", "Itinéraire"], ["i-share", "Partager"], ["i-sparkles", "Favori"]].forEach(function (a) {
+      [["i-arrow-r", "Itinéraire"], ["i-share", "Partager"], ["i-star", "Favori"]].forEach(function (a) {
         var s = el("span");
         s.appendChild(ico(a[0]));
         s.appendChild(document.createTextNode(a[1]));
@@ -1812,11 +2099,11 @@
         f.appendChild(el("p", "bs-empty", "Aucune partie enregistrée ici pour l’instant."));
       } else {
         var st = el("div", "bs-stats");
-        [[fr[0], "Parties", "depuis toujours", ""], [fr[1], "Joueurs", "30 derniers jours", "gold"], [fr[2], "Parties", "7 derniers jours", ""]].forEach(function (t) {
+        [[fr[0], "Partie", "Parties", "depuis toujours", ""], [fr[1], "Joueur", "Joueurs", "30 derniers jours", "gold"], [fr[2], "Partie", "Parties", "7 derniers jours", ""]].forEach(function (t) {
           var c = el("div");
-          c.appendChild(el("b", t[3], String(t[0])));
-          c.appendChild(el("span", null, t[1]));
-          c.appendChild(el("small", null, t[2]));
+          c.appendChild(el("b", t[4], String(t[0])));
+          c.appendChild(el("span", null, t[0] > 1 ? t[2] : t[1]));
+          c.appendChild(el("small", null, t[3]));
           st.appendChild(c);
         });
         f.appendChild(st);
@@ -1826,18 +2113,18 @@
         f.appendChild(el("h5", "bs-h", "Les gains d’ici"));
         var rc = el("div", "bs-rec");
         var l1 = el("div");
-        l1.appendChild(el("span", "ic", b.toi ? "👑" : "🏆"));
         var t1 = el("div");
         t1.appendChild(el("b", null, b.record[0]));
-        t1.appendChild(el("span", null, b.record[1]));
+        t1.appendChild(el("span", null, "Plus beau gain du bar — " + b.record[1] + (b.record[2] ? " · " + b.record[2] : "")));
         l1.appendChild(t1);
+        // Un gain de 100 € ou plus ne figure ici qu'avec la photo du ticket.
+        if (b.record[3]) l1.appendChild(el("span", "ok", "vérifié"));
         rc.appendChild(l1);
         if (b.moi) {
           var l2 = el("div");
-          l2.appendChild(el("span", "ic", "👤"));
           var t2 = el("div");
           t2.appendChild(el("b", null, b.moi));
-          t2.appendChild(el("span", null, "Ton meilleur gain ici"));
+          t2.appendChild(el("span", null, "Ton plus beau gain ici"));
           l2.appendChild(t2);
           rc.appendChild(l2);
         }
@@ -1847,13 +2134,7 @@
       if (b.amis.length) {
         var am = el("div", "bs-friends");
         var avs = el("div", "avs2");
-        b.amis.slice(0, 3).forEach(function (n) {
-          var a = AMIS[n];
-          var s = el("span", "ini", a[0]);
-          s.style.background = a[1];
-          s.style.color = a[2];
-          avs.appendChild(s);
-        });
+        b.amis.slice(0, 3).forEach(function (n) { avs.appendChild(avatar(n)); });
         am.appendChild(avs);
         var at = el("div");
         at.appendChild(el("b", null, b.amis.length > 1 ? b.amis.length + " amis ont joué ici" : "1 ami a joué ici"));
@@ -2079,7 +2360,7 @@
       b.setAttribute("role", "radio");
       b.setAttribute("aria-checked", "false");
       b.textContent = label;
-      if (inactive) { b.setAttribute("aria-disabled", "true"); b.title = "Les autres lots et la saisie libre : dans l'app"; }
+      if (inactive) { b.setAttribute("aria-disabled", "true"); b.title = "Les autres lots et la saisie libre : dans l’app"; }
       else b.dataset.v = valeur;
       return b;
     }
@@ -2128,7 +2409,7 @@
       if (montant === null || !choix) return;
       var t = catalogue[choix];
       scNote.textContent = "Noté dans ta session du jour au Balto" + NNBSP + ": " + t.nom + ", " +
-        (montant === 0 ? "perdu" : "rapporté " + fmtS(montant)) + " (net " + fmtSS(montant - t.prix) + "). Démo, rien n'est enregistré.";
+        (montant === 0 ? "perdu" : "rapporté " + fmtS(montant)) + " (net " + fmtSS(montant - t.prix) + "). Démo, rien n’est enregistré.";
       etape1();
     });
     etape1();
