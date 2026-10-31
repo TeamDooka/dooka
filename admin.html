@@ -3,6 +3,13 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
+<!-- Politique de sécurité du contenu : cette page manie une session ou un
+     jeton, elle ne charge donc que ce qu’elle nomme. Le script en ligne est
+     autorisé par son empreinte SHA-256 : le modifier, même d’un espace,
+     impose de recalculer l’empreinte (la console du navigateur donne la
+     nouvelle valeur), sinon la page cesse de fonctionner. -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.7/ 'sha256-84pOe25DjW5Az+Iafv+oTA/7QFDXkg6NoEo6SVbha6U='; style-src 'unsafe-inline'; img-src 'self' data:; connect-src https://ybnacpzicldzsmmypupj.supabase.co wss://ybnacpzicldzsmmypupj.supabase.co https://api.github.com; base-uri 'none'; form-action 'none'; object-src 'none'" />
+<meta name="referrer" content="no-referrer" />
 <meta name="robots" content="noindex, nofollow" />
 <title>Dooka — tableau de bord</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%23178A45'/><text x='50' y='68' font-size='58' text-anchor='middle' font-family='sans-serif' font-weight='700' fill='%23F7F3E9'>D</text></svg>" />
