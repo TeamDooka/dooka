@@ -3,6 +3,13 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
+<!-- Politique de sécurité du contenu : cette page manie une session ou un
+     jeton, elle ne charge donc que ce qu’elle nomme. Le script en ligne est
+     autorisé par son empreinte SHA-256 : le modifier, même d’un espace,
+     impose de recalculer l’empreinte (la console du navigateur donne la
+     nouvelle valeur), sinon la page cesse de fonctionner. -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-CS6FSOpInemlQBuGh4K87UsEk+FAuOXQuNiLIEWG/nw='; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src https://ybnacpzicldzsmmypupj.supabase.co; base-uri 'none'; form-action 'none'; object-src 'none'" />
+<meta name="referrer" content="no-referrer" />
 <title>Dooka — Confirmation</title>
 <meta name="description" content="Confirmation d’adresse e-mail et réinitialisation de mot de passe Dooka." />
 <meta name="robots" content="noindex" />

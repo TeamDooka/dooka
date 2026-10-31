@@ -1,0 +1,4 @@
+{
+  "minimum": "0.0.0",
+  "note": "Lu par l'app Dooka (VersionMinimale.tsx) à partir de la 3.22 : toute version inférieure à « minimum » est bloquée sur un écran « Une mise à jour est nécessaire ». Format strict 3.22.0. Relever ce numéro et pousser suffit, sans build."
+}
