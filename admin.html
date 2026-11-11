@@ -4,385 +4,415 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="robots" content="noindex, nofollow" />
-<title>Dooka — tableau de bord</title>
+<title>Dooka — Tableau de bord</title>
+<meta name="theme-color" content="#070B09" />
+<meta name="color-scheme" content="dark" />
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%23178A45'/><text x='50' y='68' font-size='58' text-anchor='middle' font-family='sans-serif' font-weight='700' fill='%23F7F3E9'>D</text></svg>" />
+<link rel="preload" href="/fonts/bricolage-grotesque.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="preload" href="/fonts/geist.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="stylesheet" href="/assets/site.css" />
 
 <style>
-  /* Mêmes jetons que dooka.fr : c'est une page du même site, elle n'a
-     pas à inventer une seconde identité. Ce qui change ici relève de la
-     mise en forme de l'information, pas de la charte. */
+  /* Outil interne, même monde que l'accueil (DESIGN.md) : encre verte,
+     titres en Bricolage, texte et chiffres en Geist, filets plutôt que
+     bandes de fond, le vert pour seule couleur. Les cartes sont celles de
+     l'app en thème sombre : un filet, pas d'ombre. Page sombre uniquement. */
   :root {
-    --ground: #FAFAF7;
-    --surface: #FFFFFF;
-    --raised: #F3F2EC;
-    --ink: #17201A;
-    --muted: #64716A;
-    --turf: #178A45;
-    --gold: #B4841E;
-    --bad: #A33A2A;
-    --line: rgba(23, 32, 26, 0.10);
-    --hair: rgba(23, 32, 26, 0.055);
-    --shadow: 0 1px 2px rgba(23, 32, 26, 0.04), 0 8px 24px -12px rgba(23, 32, 26, 0.14);
-
-    --font: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    --font-mono: ui-monospace, "SF Mono", "JetBrains Mono", "Roboto Mono", Consolas, monospace;
-    --maxw: 1140px;
-    --r: 14px;
+    --muted-surface: #252D29;
+    --track: #2A332F;
+    --app-line: #2B3430;
+    --green-hover: #52CF89;
+    --pos: #4CCB84;
+    --glass: rgba(20, 26, 23, .92);
   }
 
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --ground: #0C1310; --surface: #131C16; --raised: #1A241E;
-      --ink: #F1EFE7; --muted: #8D9A92;
-      --turf: #3FBE72; --gold: #F0C15C; --bad: #E0705C;
-      --line: rgba(255, 255, 255, 0.09);
-      --hair: rgba(255, 255, 255, 0.05);
-      --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px -12px rgba(0, 0, 0, 0.6);
-    }
-  }
-  /* Le bouton de thème du site pose data-theme sur <html> : il doit
-     l'emporter sur la préférence système, dans les deux sens. */
-  :root[data-theme="dark"] {
-    --ground: #0C1310; --surface: #131C16; --raised: #1A241E;
-    --ink: #F1EFE7; --muted: #8D9A92;
-    --turf: #3FBE72; --gold: #F0C15C; --bad: #E0705C;
-    --line: rgba(255, 255, 255, 0.09);
-    --hair: rgba(255, 255, 255, 0.05);
-    --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px -12px rgba(0, 0, 0, 0.6);
-  }
-  :root[data-theme="light"] {
-    --ground: #FAFAF7; --surface: #FFFFFF; --raised: #F3F2EC;
-    --ink: #17201A; --muted: #64716A;
-    --turf: #178A45; --gold: #B4841E; --bad: #A33A2A;
-    --line: rgba(23, 32, 26, 0.10);
-    --hair: rgba(23, 32, 26, 0.055);
-    --shadow: 0 1px 2px rgba(23, 32, 26, 0.04), 0 8px 24px -12px rgba(23, 32, 26, 0.14);
-  }
+  body { font-size: 15px; line-height: 1.5; }
 
-  * { box-sizing: border-box; }
+  /* ---------- Barre ---------- */
+  .nav-title { color: var(--text-3); font-weight: 400; }
+  .stamp { font-size: 13px; color: var(--text-3); white-space: nowrap; }
+  .stamp b { font-family: var(--mono); font-size: 12px; font-weight: 500; color: var(--text-2); }
 
-  body {
-    margin: 0;
-    background: var(--ground);
-    color: var(--ink);
-    font-family: var(--font);
-    line-height: 1.5;
-    -webkit-font-smoothing: antialiased;
-    -webkit-text-size-adjust: 100%;
+  /* ---------- En-tête ---------- */
+  .top { position: relative; padding: clamp(40px, 6vw, 72px) 0 0; }
+  .top::before {
+    content: ""; position: absolute; left: 0; top: -80px; width: min(760px, 100%); height: 420px;
+    background: radial-gradient(closest-side, rgba(60, 194, 120, .10), transparent);
+    pointer-events: none; z-index: -1;
   }
+  .top-row { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
+  .top h1 { margin: 0; font-family: var(--display); font-weight: 600; font-size: clamp(36px, 4.6vw, 56px); line-height: 1.02; letter-spacing: -.026em; }
+  .top .lede { margin: 12px 0 0; color: var(--text-2); font-size: 16px; max-width: 60ch; text-wrap: pretty; }
+  .top .lede strong { color: var(--text); font-weight: 500; }
 
-  .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 20px; }
+  .toc { display: flex; flex-wrap: wrap; gap: 6px; margin: 28px 0 0; padding: 0; list-style: none; }
+  .toc a {
+    display: inline-flex; align-items: center; min-height: 32px; padding: 0 12px;
+    border-radius: 999px; border: 1px solid var(--line); background: rgba(255,255,255,.03);
+    color: var(--text-2); font-size: 13px; text-decoration: none;
+    transition: color .2s var(--ease), border-color .2s var(--ease), background-color .2s var(--ease);
+  }
+  .toc a:hover { color: var(--text); border-color: var(--line-2); background: rgba(255,255,255,.06); }
 
-  /* ---------- Barre supérieure ---------- */
-  .topbar {
-    position: sticky; top: 0; z-index: 40;
-    background: color-mix(in srgb, var(--ground) 88%, transparent);
-    backdrop-filter: blur(10px);
-    border-bottom: 1px solid var(--line);
+  /* Bascule de période : une pilule de pilules. */
+  .seg { display: inline-flex; gap: 2px; padding: 3px; border-radius: 999px; background: rgba(255,255,255,.04); border: 1px solid var(--line); }
+  .seg button {
+    appearance: none; border: 0; background: transparent; cursor: pointer;
+    min-height: 32px; padding: 0 14px; border-radius: 999px;
+    font: 500 13px/1 var(--font); color: var(--text-2);
+    transition: color .2s var(--ease), background-color .2s var(--ease);
   }
-  .topbar-inner {
-    display: flex; align-items: center; justify-content: space-between;
-    gap: 16px; height: 60px;
-  }
-  .brand { display: flex; align-items: center; gap: 11px; min-width: 0; }
-  .brand svg {
-    width: 28px; height: 28px; flex: none; border-radius: 50%;
-    box-shadow: 0 0 0 1px color-mix(in srgb, var(--gold) 45%, transparent);
-  }
-  .brand-txt { font-weight: 700; letter-spacing: -0.01em; white-space: nowrap; }
-  .brand-txt span { color: var(--muted); font-weight: 500; }
-  .topbar-actions { display: flex; align-items: center; gap: 8px; }
+  .seg button:hover { color: var(--text); }
+  .seg button[aria-pressed="true"] { background: var(--muted-surface); color: var(--text); }
 
-  .stamp {
-    font-family: var(--font-mono); font-size: 0.72rem; color: var(--muted);
-    font-variant-numeric: tabular-nums; white-space: nowrap;
-  }
-  @media (max-width: 620px) { .stamp { display: none; } }
+  /* ---------- Sections ---------- */
+  .blk { padding-top: 64px; scroll-margin-top: 72px; }
+  .blk-head { display: flex; align-items: baseline; justify-content: space-between; gap: 8px 16px; flex-wrap: wrap; padding-top: 24px; border-top: 1px solid var(--line); margin-bottom: 20px; }
+  .blk-head h2 { margin: 0; font-family: var(--display); font-weight: 600; font-size: 28px; line-height: 1.1; letter-spacing: -.018em; }
+  .blk-head p { margin: 0; color: var(--text-3); font-size: 13px; max-width: 70ch; }
 
-  button {
-    appearance: none; font: inherit; cursor: pointer;
-    border-radius: 9px; border: 1px solid transparent;
-    transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease, opacity 0.15s ease;
-  }
-  button:focus-visible { outline: 2px solid var(--turf); outline-offset: 2px; }
+  /* ---------- Tuiles ---------- */
+  .tiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 12px; }
+  .tile { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 16px 18px 15px; min-width: 0; }
+  .tile .k { font-size: 13px; color: var(--text-2); }
+  .tile .v { margin-top: 6px; font-weight: 600; font-size: 28px; line-height: 1.1; letter-spacing: -.025em; color: var(--text); font-variant-numeric: tabular-nums; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .tile .s { margin-top: 4px; font-size: 13px; color: var(--text-3); }
+  .tile .s b { color: var(--text-2); font-weight: 500; }
 
-  .btn-primary {
-    background: var(--turf); color: #fff; font-weight: 600;
-    padding: 11px 22px; font-size: 0.98rem;
-  }
-  .btn-primary:hover { background: color-mix(in srgb, var(--turf) 85%, black); }
+  .hero { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin-top: 40px; }
+  .hero .tile { padding: 20px 20px 14px; border-radius: 20px; }
+  .hero .v { font-size: clamp(34px, 3.6vw, 46px); letter-spacing: -.035em; margin-top: 8px; }
+  .hero .spark { height: 44px; margin-top: 14px; }
+  .hero .spark svg { display: block; width: 100%; height: 100%; overflow: visible; }
 
-  .btn-ghost {
-    background: transparent; color: var(--muted); border-color: var(--line);
-    font-size: 0.82rem; font-weight: 500; padding: 7px 13px;
-  }
-  .btn-ghost:hover { color: var(--ink); border-color: var(--turf); }
+  .pos { color: var(--pos) !important; }
+  .neg { color: var(--neg) !important; }
+  .zero { color: var(--text-2) !important; }
 
-  /* ---------- Rythme des sections ---------- */
-  main { padding: 30px 0 72px; }
-  .band { margin-top: 40px; }
-  .band:first-child { margin-top: 0; }
+  /* ---------- Panneaux ---------- */
+  .panel { background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 20px; min-width: 0; }
+  .panel + .panel, .tiles + .panel { margin-top: 12px; }
+  .cols { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+  .tiles + .cols { margin-top: 12px; }
+  .cols .panel + .panel { margin-top: 0; }
+  .panel-h { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 14px; }
+  .panel-h h3 { margin: 0; font-size: 15px; font-weight: 500; color: var(--text); }
+  .panel-h span { font-size: 13px; color: var(--text-3); text-align: right; }
 
-  .band-head {
-    display: flex; align-items: baseline; gap: 14px;
-    margin-bottom: 14px;
+  /* ---------- Graphique d'activité ---------- */
+  .metrics { display: flex; gap: 6px; overflow-x: auto; margin: 0 0 18px; padding-bottom: 2px; scrollbar-width: none; }
+  .metrics::-webkit-scrollbar { display: none; }
+  .metric {
+    appearance: none; cursor: pointer; text-align: left; flex: none;
+    padding: 10px 14px; border-radius: 12px; border: 1px solid var(--line); background: transparent;
+    color: var(--text-2); font: 400 13px/1.3 var(--font);
+    transition: border-color .2s var(--ease), background-color .2s var(--ease), color .2s var(--ease);
   }
-  .eyebrow {
-    font-family: var(--font-mono); font-size: 0.7rem; font-weight: 600;
-    letter-spacing: 0.14em; text-transform: uppercase; color: var(--turf);
-    white-space: nowrap;
-  }
-  .band-head .fill { flex: 1; height: 1px; background: var(--line); }
-  .band-note { font-size: 0.76rem; color: var(--muted); white-space: nowrap; }
+  .metric b { display: block; margin-top: 2px; font-size: 17px; font-weight: 600; color: var(--text); letter-spacing: -.01em; font-variant-numeric: tabular-nums; }
+  .metric:hover { border-color: var(--line-2); color: var(--text); }
+  .metric[aria-pressed="true"] { border-color: rgba(60, 194, 120, .45); background: rgba(60, 194, 120, .07); color: var(--text); }
+  .chart { height: 240px; position: relative; touch-action: pan-y; }
+  .chart svg { display: block; width: 100%; height: 100%; overflow: visible; }
+  .chart .bar { fill: var(--green); transition: fill .15s var(--ease); }
+  .chart .bar.on { fill: var(--green-hover); }
+  .chart .grid { stroke: rgba(255,255,255,.06); stroke-width: 1; }
+  .chart .base { stroke: rgba(255,255,255,.14); stroke-width: 1; }
+  .chart .ax { fill: var(--text-3); font: 400 11px var(--font); font-variant-numeric: tabular-nums; }
+  .chart .cross { stroke: rgba(255,255,255,.22); stroke-width: 1; }
+  .note { margin: 12px 0 0; font-size: 13px; color: var(--text-3); }
+  details.raw { margin-top: 12px; }
+  details.raw summary { cursor: pointer; font-size: 13px; color: var(--text-2); width: max-content; }
+  details.raw summary:hover { color: var(--text); }
+  details.raw .scroll { max-height: 320px; overflow: auto; margin-top: 10px; }
 
-  /* ---------- Bandeau d'ouverture ---------- */
-  .headline {
-    display: grid; grid-template-columns: repeat(3, 1fr);
-    background: var(--surface); border: 1px solid var(--line);
-    border-radius: var(--r); box-shadow: var(--shadow); overflow: hidden;
-  }
-  .headline > div { padding: 22px 24px; border-left: 1px solid var(--hair); }
-  .headline > div:first-child { border-left: 0; }
-  .headline .k {
-    font-family: var(--font-mono); font-size: 0.68rem; font-weight: 600;
-    letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted);
-  }
-  .headline .v {
-    font-size: clamp(2rem, 5vw, 2.9rem); font-weight: 700; letter-spacing: -0.035em;
-    font-variant-numeric: tabular-nums; line-height: 1.05; margin-top: 6px;
-  }
-  .headline .sub { font-size: 0.8rem; color: var(--muted); margin-top: 2px; }
-  @media (max-width: 720px) {
-    .headline { grid-template-columns: 1fr; }
-    .headline > div { border-left: 0; border-top: 1px solid var(--hair); }
-    .headline > div:first-child { border-top: 0; }
-  }
+  /* ---------- Rangées à jauge ---------- */
+  .mrow { display: grid; grid-template-columns: minmax(120px, 1.1fr) 2fr 64px 52px; align-items: center; gap: 14px; padding: 9px 0; border-top: 1px solid var(--app-line); }
+  .mrow:first-child { border-top: 0; }
+  .mrow .l { color: var(--text); font-size: 14px; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .mrow .l small { color: var(--text-3); font-size: 12px; margin-left: 6px; }
+  .track { display: block; height: 8px; border-radius: 999px; background: var(--track); overflow: hidden; }
+  .fill { display: block; height: 100%; border-radius: 999px; background: var(--green); min-width: 2px; }
+  .fill.dim { background: #6E7A73; }
+  .fill.none { min-width: 0; }
+  .mrow .n { text-align: right; font-weight: 600; font-size: 14px; color: var(--text); font-variant-numeric: tabular-nums; }
+  .mrow .p { text-align: right; font-size: 13px; color: var(--text-3); font-variant-numeric: tabular-nums; }
 
-  /* ---------- Adoption des versions ----------
-     L'indicateur qu'on vient regarder en premier après une mise en
-     ligne : il a donc le traitement le plus fort de la page. */
-  .adoption {
-    display: grid; grid-template-columns: minmax(190px, 250px) 1fr; gap: 0;
-    background: var(--surface); border: 1px solid var(--line);
-    border-radius: var(--r); box-shadow: var(--shadow); overflow: hidden;
-  }
-  .adoption-figure {
-    padding: 24px; background: var(--raised);
-    border-right: 1px solid var(--hair);
-    display: flex; flex-direction: column; justify-content: center;
-  }
-  .adoption-figure .pct {
-    font-size: clamp(2.6rem, 7vw, 3.5rem); font-weight: 700;
-    letter-spacing: -0.04em; line-height: 1; font-variant-numeric: tabular-nums;
-    color: var(--turf);
-  }
-  .adoption-figure .pct.low { color: var(--gold); }
-  .adoption-figure .cap { font-size: 0.84rem; color: var(--muted); margin-top: 8px; }
-  .adoption-figure .tag {
-    font-family: var(--font-mono); font-size: 0.78rem; color: var(--ink);
-    margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--line);
-  }
-  .adoption-body { padding: 20px 24px; min-width: 0; }
-
-  .segbar { display: flex; height: 12px; border-radius: 999px; overflow: hidden; gap: 2px; }
-  .segbar i { display: block; height: 100%; }
-  .segbar i:first-child { border-radius: 999px 0 0 999px; }
-  .segbar i:last-child { border-radius: 0 999px 999px 0; }
-
-  .vrows { margin-top: 18px; display: flex; flex-direction: column; gap: 1px; }
-  .vrow {
-    display: grid; grid-template-columns: 10px 1fr auto auto;
-    align-items: center; gap: 12px;
-    padding: 7px 0; border-top: 1px solid var(--hair);
-    font-variant-numeric: tabular-nums;
-  }
-  .vrow:first-child { border-top: 0; }
-  .vrow .dot { width: 8px; height: 8px; border-radius: 50%; }
-  .vrow .name { font-family: var(--font-mono); font-size: 0.84rem; }
-  .vrow .cnt { font-size: 0.84rem; color: var(--muted); }
-  .vrow .pc { font-size: 0.84rem; font-weight: 600; min-width: 3.2rem; text-align: right; }
-  @media (max-width: 640px) {
-    .adoption { grid-template-columns: 1fr; }
-    .adoption-figure { border-right: 0; border-bottom: 1px solid var(--hair); }
-  }
-
-  /* ---------- Courbes ---------- */
-  .charts { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-  @media (max-width: 720px) { .charts { grid-template-columns: 1fr; } }
-
-  .chart {
-    background: var(--surface); border: 1px solid var(--line);
-    border-radius: var(--r); box-shadow: var(--shadow); padding: 18px 20px 14px;
-  }
-  .chart-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
-  .chart-head .t { font-size: 0.92rem; font-weight: 600; }
-  .chart-head .n {
-    font-family: var(--font-mono); font-size: 0.78rem; color: var(--muted);
-    font-variant-numeric: tabular-nums;
-  }
-  .plot { height: 104px; margin-top: 10px; }
-  .plot svg { display: block; width: 100%; height: 100%; }
-  .chart-axis {
-    display: flex; justify-content: space-between;
-    font-family: var(--font-mono); font-size: 0.66rem; color: var(--muted);
-    margin-top: 6px; font-variant-numeric: tabular-nums;
-  }
-  .spark-line { fill: none; stroke-width: 1.6; }
-
-  /* ---------- Cartes de mesures ---------- */
-  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(168px, 1fr)); gap: 12px; }
-  .card {
-    background: var(--surface); border: 1px solid var(--line);
-    border-radius: 12px; padding: 15px 16px 14px;
-  }
-  .card .k { font-size: 0.78rem; color: var(--muted); }
-  .card .v {
-    font-size: 1.65rem; font-weight: 650; letter-spacing: -0.03em;
-    font-variant-numeric: tabular-nums; line-height: 1.15; margin-top: 4px;
-  }
-  .card .sub { font-size: 0.74rem; color: var(--muted); margin-top: 2px; }
-
-  /* ---------- Téléchargements ---------- */
-  .panel {
-    background: var(--surface); border: 1px solid var(--line);
-    border-radius: var(--r); box-shadow: var(--shadow); overflow: hidden;
-  }
+  /* ---------- Tableaux ---------- */
   .scroll { overflow-x: auto; }
-  table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
-  thead th {
-    font-family: var(--font-mono); font-size: 0.66rem; font-weight: 600;
-    letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted);
-    text-align: left; padding: 11px 18px; border-bottom: 1px solid var(--line);
-    white-space: nowrap;
+  table.t { width: 100%; border-collapse: collapse; font-size: 14px; }
+  table.t th { text-align: left; font-size: 12px; font-weight: 500; color: var(--text-3); padding: 0 12px 10px 0; border-bottom: 1px solid var(--line); white-space: nowrap; background: var(--surface); position: sticky; top: 0; }
+  table.t td { padding: 10px 12px 10px 0; border-bottom: 1px solid var(--app-line); color: var(--text-2); white-space: nowrap; }
+  table.t tr:last-child td { border-bottom: 0; }
+  table.t td:first-child { color: var(--text); font-weight: 500; }
+  table.t th:last-child, table.t td:last-child { padding-right: 0; }
+  table.t .n { text-align: right; font-variant-numeric: tabular-nums; }
+  table.t td.mtr { width: 28%; min-width: 80px; }
+  table.t .tag { font-family: var(--mono); font-size: 13px; font-weight: 500; }
+
+  /* ---------- Carte de chaleur ---------- */
+  .heat { display: grid; grid-template-columns: 36px repeat(24, minmax(14px, 1fr)); gap: 3px; min-width: 560px; }
+  .heat .d { font-size: 12px; color: var(--text-3); align-self: center; }
+  .heat .h { font-size: 11px; color: var(--text-3); text-align: center; font-variant-numeric: tabular-nums; }
+  .heat .c { aspect-ratio: 1.15; border-radius: 4px; background: var(--card); }
+  .heat .c:hover { outline: 1px solid rgba(255,255,255,.5); outline-offset: 1px; }
+  .heat-key { display: flex; align-items: center; gap: 6px; margin-top: 14px; font-size: 12px; color: var(--text-3); flex-wrap: wrap; }
+  .heat-key i { width: 16px; height: 12px; border-radius: 3px; display: block; }
+
+  /* ---------- Versions ---------- */
+  .adopt { display: grid; grid-template-columns: minmax(200px, 260px) 1fr; gap: 28px; align-items: center; }
+  .adopt .big { font-weight: 600; font-size: clamp(44px, 5vw, 60px); line-height: 1; letter-spacing: -.04em; color: var(--text); font-variant-numeric: tabular-nums; }
+  .adopt .cap { margin-top: 8px; color: var(--text-2); font-size: 14px; }
+  .adopt .cap .tag { font-family: var(--mono); font-size: 13px; color: var(--text); }
+  .segbar { display: flex; gap: 2px; height: 12px; border-radius: 999px; overflow: hidden; }
+  .segbar i { display: block; height: 100%; }
+  .vlist { margin-top: 14px; display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 0 24px; }
+  .vrow { display: grid; grid-template-columns: 10px 1fr auto; gap: 10px; align-items: center; padding: 7px 0; border-top: 1px solid var(--app-line); font-size: 13px; }
+  .vrow .dot { width: 8px; height: 8px; border-radius: 50%; }
+  .vrow .tag { font-family: var(--mono); color: var(--text); }
+  .vrow .c { color: var(--text-3); font-variant-numeric: tabular-nums; }
+
+  /* ---------- À brancher ---------- */
+  .todo { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+  .todo li { display: grid; grid-template-columns: 1fr auto; gap: 6px 20px; align-items: start; padding: 16px 0; border-bottom: 1px solid var(--line); }
+  .todo b { display: block; color: var(--text); font-weight: 500; font-size: 15px; }
+  .todo span { display: block; color: var(--text-2); font-size: 14px; margin-top: 2px; max-width: 72ch; }
+  .todo .pill { display: inline-flex; align-items: center; height: 26px; margin: 0; padding: 0 10px; border-radius: 999px; background: var(--muted-surface); color: var(--text-2); font-size: 12px; white-space: nowrap; }
+
+  /* ---------- Info-bulle ---------- */
+  .tip {
+    position: fixed; left: 0; top: 0; z-index: 80; pointer-events: none; opacity: 0;
+    padding: 8px 11px; border-radius: 10px; background: var(--glass); border: 1px solid var(--line-2);
+    -webkit-backdrop-filter: blur(12px) saturate(140%); backdrop-filter: blur(12px) saturate(140%);
+    box-shadow: 0 2px 4px rgba(0,0,0,.3), 0 18px 40px rgba(0,0,0,.5);
+    font-size: 13px; line-height: 1.4; color: var(--text-2); white-space: nowrap;
+    transition: opacity .15s var(--ease);
   }
-  tbody td {
-    padding: 11px 18px; border-top: 1px solid var(--hair); font-size: 0.88rem;
-    white-space: nowrap;
+  .tip.on { opacity: 1; }
+  .tip b { color: var(--text); font-weight: 600; font-variant-numeric: tabular-nums; }
+
+  /* ---------- Connexion ---------- */
+  .gate { max-width: 440px; margin: 0 auto; padding: clamp(72px, 16vh, 150px) var(--gut) 80px; text-align: center; position: relative; }
+  .gate::before {
+    content: ""; position: absolute; left: 50%; top: 20px; width: min(640px, 100vw); height: 420px; transform: translateX(-50%);
+    background: radial-gradient(closest-side, rgba(60, 194, 120, .12), transparent);
+    pointer-events: none; z-index: -1;
   }
-  tbody tr:first-child td { border-top: 0; }
-  td.tag { font-family: var(--font-mono); }
-  td.num, th.num { text-align: right; }
-  td.meter { width: 45%; min-width: 120px; }
-  .meter-track { height: 6px; background: var(--hair); border-radius: 999px; overflow: hidden; }
-  .meter-fill { display: block; height: 100%; background: var(--turf); border-radius: 999px; }
-  .muted { color: var(--muted); }
+  .gate .jeton { width: 56px; height: 56px; margin: 0 auto; display: block; }
+  .gate h1 { margin: 22px 0 10px; font-family: var(--display); font-weight: 600; font-size: 36px; line-height: 1.05; letter-spacing: -.024em; }
+  .gate p { margin: 0 0 28px; color: var(--text-2); font-size: 16px; }
+  .gate .err { color: var(--neg); }
+  .gate .again { margin-top: 14px; }
 
-  /* ---------- Écran de connexion ---------- */
-  .gate { max-width: 27rem; margin: clamp(60px, 14vh, 130px) auto; text-align: center; }
-  .gate svg { width: 52px; height: 52px; border-radius: 50%; }
-  .gate h1 { font-size: 1.5rem; letter-spacing: -0.02em; margin: 18px 0 8px; }
-  .gate p { color: var(--muted); margin: 0 0 26px; }
-  .gate .err { color: var(--bad); }
-  .gate .foot { margin-top: 18px; }
+  footer.foot-admin { margin-top: 88px; border-top: 1px solid var(--line); padding: 24px 0 48px; color: var(--text-3); font-size: 13px; }
 
-  .hidden { display: none !important; }
-  a { color: var(--turf); }
-
-  /* Une seule séquence d'apparition, au chargement. */
+  @media (max-width: 1000px) {
+    .hero { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (max-width: 760px) {
+    .cols { grid-template-columns: 1fr; }
+    .adopt { grid-template-columns: 1fr; gap: 18px; }
+    .mrow { grid-template-columns: minmax(96px, 1fr) 1fr 52px 44px; gap: 10px; }
+    .nav .stamp { display: none; }
+  }
+  @media (max-width: 480px) {
+    .hero { grid-template-columns: 1fr 1fr; gap: 8px; }
+    .hero .tile { padding: 16px 14px 12px; }
+    .hero .v { font-size: 30px; }
+    .tiles { grid-template-columns: 1fr 1fr; gap: 8px; }
+    .tile { padding: 14px 14px 13px; }
+    .tile .v { font-size: 22px; }
+    .panel { padding: 16px; }
+    .nav-title { display: none; }
+    .blk-head h2 { font-size: 24px; }
+    .mrow { grid-template-columns: minmax(0, 1.4fr) 1fr 40px; }
+    .mrow .l { white-space: normal; line-height: 1.3; }
+    .mrow .l small { display: block; margin: 2px 0 0; }
+    .mrow .p { display: none; }
+  }
   @media (prefers-reduced-motion: no-preference) {
-    .band { animation: rise 0.5s cubic-bezier(0.22, 1, 0.36, 1) backwards; }
-    .band:nth-child(2) { animation-delay: 0.05s; }
-    .band:nth-child(3) { animation-delay: 0.1s; }
-    .band:nth-child(4) { animation-delay: 0.15s; }
-    .band:nth-child(5) { animation-delay: 0.2s; }
-    .band:nth-child(6) { animation-delay: 0.25s; }
-    @keyframes rise { from { opacity: 0; transform: translateY(10px); } }
+    .rise { animation: rise .9s var(--ease) backwards; }
+    @keyframes rise { from { opacity: 0; transform: translateY(14px); filter: blur(4px); } }
   }
 </style>
 </head>
 <body>
 
-<!-- Écran de connexion -->
-<section id="gate" class="gate">
-  <svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="48" fill="#178A45"/><text x="50" y="68" font-size="58" text-anchor="middle" font-family="sans-serif" font-weight="700" fill="#F7F3E9">D</text></svg>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="jeton" viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="#178A45"/><circle cx="50" cy="50" r="38" fill="none" stroke="#F7C948" stroke-width="7" stroke-dasharray="13 12"/><text x="50" y="52" text-anchor="middle" dominant-baseline="central" font-family="Bricolage Grotesque, Geist, system-ui, sans-serif" font-weight="700" font-size="44" fill="#FCFCF8">D</text></symbol>
+  <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></symbol>
+  <symbol id="i-logout" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/></symbol>
+</svg>
+
+<!-- Connexion -->
+<main id="gate" class="gate">
+  <svg class="jeton" aria-hidden="true"><use href="#jeton"/></svg>
   <h1>Tableau de bord</h1>
-  <p id="gate-msg">Réservé aux administrateurs.</p>
-  <button class="btn-primary" id="login" type="button">Se connecter avec Google</button>
-  <p class="foot"><button class="btn-ghost hidden" id="logout-gate" type="button">Se déconnecter</button></p>
-</section>
+  <p id="gate-msg">Réservé aux administrateurs de Dooka.</p>
+  <button class="btn btn-light btn-lg" id="login" type="button">Se connecter avec Google</button>
+  <p class="again"><button class="btn btn-ghost" id="logout-gate" type="button" hidden>Changer de compte</button></p>
+</main>
 
 <!-- Tableau de bord -->
-<div id="board" class="hidden">
-
-  <div class="topbar">
-    <div class="wrap topbar-inner">
-      <div class="brand">
-        <svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="48" fill="#178A45"/><text x="50" y="68" font-size="58" text-anchor="middle" font-family="sans-serif" font-weight="700" fill="#F7F3E9">D</text></svg>
-        <span class="brand-txt">Dooka <span>· tableau de bord</span></span>
-      </div>
-      <div class="topbar-actions">
+<div id="board" hidden>
+  <header class="nav">
+    <div class="wrap nav-in">
+      <a class="brand" href="/" aria-label="Dooka, accueil du site"><svg class="jeton" aria-hidden="true"><use href="#jeton"/></svg>Dooka <span class="nav-title">· tableau de bord</span></a>
+      <div class="nav-cta">
         <span class="stamp" id="stamp"></span>
-        <button class="btn-ghost" id="refresh" type="button">Actualiser</button>
-        <button class="btn-ghost" id="theme" type="button" aria-label="Changer de thème">Thème</button>
-        <button class="btn-ghost" id="logout" type="button">Quitter</button>
+        <button class="btn btn-ghost" id="refresh" type="button"><svg class="i" aria-hidden="true"><use href="#i-refresh"/></svg>Actualiser</button>
+        <button class="btn btn-ghost" id="logout" type="button" aria-label="Se déconnecter" title="Se déconnecter"><svg class="i" aria-hidden="true"><use href="#i-logout"/></svg></button>
       </div>
     </div>
-  </div>
+  </header>
 
-  <main class="wrap">
-
-    <section class="band">
-      <div class="headline" id="headline"></div>
+  <main class="wrap" id="content">
+    <section class="top">
+      <div class="top-row">
+        <div>
+          <h1>La vie de Dooka</h1>
+          <p class="lede" id="lede"></p>
+        </div>
+        <div class="seg" id="period" role="group" aria-label="Période des courbes">
+          <button type="button" data-period="30" aria-pressed="true">30 jours</button>
+          <button type="button" data-period="90" aria-pressed="false">90 jours</button>
+        </div>
+      </div>
+      <ul class="toc">
+        <li><a href="#activite">Activité</a></li>
+        <li><a href="#joueurs">Joueurs</a></li>
+        <li><a href="#jeu">Jeu</a></li>
+        <li><a href="#sessions">Sessions</a></li>
+        <li><a href="#social">Social</a></li>
+        <li><a href="#lieux">Lieux</a></li>
+        <li><a href="#ecrans">Écrans</a></li>
+        <li><a href="#versions">Versions</a></li>
+        <li><a href="#reglages">Réglages</a></li>
+        <li><a href="#communaute">Communauté</a></li>
+        <li><a href="#a-brancher">À brancher</a></li>
+      </ul>
+      <div class="hero" id="hero"></div>
     </section>
 
-    <section class="band">
-      <div class="band-head">
-        <span class="eyebrow">Adoption des versions</span>
-        <span class="fill"></span>
-        <span class="band-note">Qui tourne sur quoi, en ce moment</span>
+    <section class="blk" id="activite">
+      <div class="blk-head"><h2>Activité</h2><p id="act-range"></p></div>
+      <div class="panel">
+        <div class="metrics" id="metrics" role="group" aria-label="Indicateur affiché"></div>
+        <div class="chart" id="chart" role="img"></div>
+        <p class="note" id="chart-note"></p>
+        <details class="raw"><summary>Voir les chiffres jour par jour</summary><div class="scroll" id="raw"></div></details>
       </div>
-      <div class="adoption">
-        <div class="adoption-figure" id="adoption-figure"></div>
-        <div class="adoption-body">
-          <div class="segbar" id="segbar"></div>
-          <div class="vrows" id="vrows"></div>
+    </section>
+
+    <section class="blk" id="joueurs">
+      <div class="blk-head"><h2>Joueurs</h2><p>« Actif » = a ouvert l'app. Un compte « jamais revu » n'a pas rouvert l'app après son premier jour.</p></div>
+      <div class="tiles" id="users-tiles"></div>
+      <div class="panel">
+        <div class="panel-h"><h3>Du compte créé au joueur installé</h3><span>part des comptes</span></div>
+        <div id="funnel"></div>
+      </div>
+    </section>
+
+    <section class="blk" id="jeu">
+      <div class="blk-head"><h2>Jeu</h2><p>Tous les tickets notés, en session et d'avant les sessions. Mise = mise saisie, sinon le prix du ticket, comme dans l'app.</p></div>
+      <div class="tiles" id="play-tiles"></div>
+      <div class="panel">
+        <div class="panel-h"><h3>Tickets les plus grattés</h3><span>12 premiers</span></div>
+        <div class="scroll" id="tickets"></div>
+      </div>
+      <div class="panel">
+        <div class="panel-h"><h3>Quand on gratte</h3><span>tickets notés, heure de Paris</span></div>
+        <div class="scroll"><div class="heat" id="heat"></div></div>
+        <div class="heat-key" id="heat-key"></div>
+      </div>
+    </section>
+
+    <section class="blk" id="sessions">
+      <div class="blk-head"><h2>Sessions</h2><p>Médianes sur les sessions où au moins un ticket a été noté. La durée exclut les sessions terminées automatiquement.</p></div>
+      <div class="tiles" id="sess-tiles"></div>
+      <div class="panel">
+        <div class="panel-h"><h3>Les bars où l'on joue le plus</h3><span>par nombre de sessions</span></div>
+        <div class="scroll" id="bars"></div>
+      </div>
+    </section>
+
+    <section class="blk" id="social">
+      <div class="blk-head"><h2>Social</h2><p>Amitiés acceptées, bandes, invitations, notifications de gros gains.</p></div>
+      <div class="tiles" id="social-tiles"></div>
+    </section>
+
+    <section class="blk" id="lieux">
+      <div class="blk-head"><h2>Lieux et carte</h2><p>Les lieux en cache évitent un appel Google à chaque ouverture de fiche.</p></div>
+      <div class="tiles" id="places-tiles"></div>
+      <div class="cols">
+        <div class="panel">
+          <div class="panel-h"><h3>Lieux connus</h3><span id="places-total"></span></div>
+          <div id="places-meters"></div>
+        </div>
+        <div class="panel">
+          <div class="panel-h"><h3>Appels limités, dernières 24 h</h3><span>quotas par compte</span></div>
+          <div id="quotas"></div>
         </div>
       </div>
     </section>
 
-    <section class="band hidden" id="band-charts">
-      <div class="band-head">
-        <span class="eyebrow">Trente derniers jours</span>
-        <span class="fill"></span>
-        <span class="band-note" id="charts-range"></span>
-      </div>
-      <div class="charts" id="charts"></div>
-    </section>
-
-    <section class="band">
-      <div class="band-head">
-        <span class="eyebrow">Activité de jeu</span>
-        <span class="fill"></span>
-      </div>
-      <div class="grid" id="plays"></div>
-    </section>
-
-    <section class="band">
-      <div class="band-head">
-        <span class="eyebrow">Social &amp; contenu</span>
-        <span class="fill"></span>
-      </div>
-      <div class="grid" id="social"></div>
-    </section>
-
-    <section class="band">
-      <div class="band-head">
-        <span class="eyebrow">Téléchargements</span>
-        <span class="fill"></span>
-        <span class="band-note">Fichiers .apk servis par GitHub</span>
-      </div>
-      <div class="panel scroll">
-        <table>
-          <thead>
-            <tr><th>Version</th><th class="num">Téléch.</th><th class="meter"></th><th>Publiée</th></tr>
-          </thead>
-          <tbody id="downloads"><tr><td colspan="4" class="muted">Chargement…</td></tr></tbody>
-        </table>
+    <section class="blk" id="ecrans">
+      <div class="blk-head"><h2>Écrans ouverts</h2><p>Un total par écran et par jour, sans compte ni appareil (depuis la 0099).</p></div>
+      <div class="panel">
+        <div class="panel-h"><h3>Sur 30 jours</h3><span id="screens-total"></span></div>
+        <div id="screens"></div>
       </div>
     </section>
 
+    <section class="blk" id="versions">
+      <div class="blk-head"><h2>Versions et téléchargements</h2><p>Version remontée par l'app à chaque ouverture. L'APK de GitHub servait avant Google Play ; les installations Play sont dans « Pas encore branché ».</p></div>
+      <div class="panel">
+        <div class="adopt">
+          <div id="adopt-figure"></div>
+          <div><div class="segbar" id="segbar"></div><div class="vlist" id="vlist"></div></div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-h"><h3>Téléchargements de l'APK</h3><span id="dl-total"></span></div>
+        <div class="scroll" id="downloads"><p class="note">Chargement…</p></div>
+      </div>
+    </section>
+
+    <section class="blk" id="reglages">
+      <div class="blk-head"><h2>Réglages</h2><p>Combien de comptes ont activé chaque réglage. Rien ne dit lesquels.</p></div>
+      <div class="cols">
+        <div class="panel">
+          <div class="panel-h"><h3>Jeu responsable</h3><span>part des comptes</span></div>
+          <div id="rg"></div>
+        </div>
+        <div class="panel">
+          <div class="panel-h"><h3>Notifications et partage</h3><span>part des comptes</span></div>
+          <div id="notifs"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="blk" id="communaute">
+      <div class="blk-head"><h2>Communauté et catalogue</h2><p>Suggestions des joueurs, signalements, tickets du catalogue.</p></div>
+      <div class="tiles" id="community-tiles"></div>
+    </section>
+
+    <section class="blk" id="a-brancher">
+      <div class="blk-head"><h2>Pas encore branché</h2><p>Ces chiffres vivent hors de la base. Ils arriveront par un relevé de nuit, sans clé dans cette page.</p></div>
+      <ul class="todo">
+        <li><div><b>Coût Google Cloud</b><span>Appels Maps et Vision au jour le jour (compteur dans les fonctions Edge), et le montant facturé.</span></div><span class="pill">à brancher</span></li>
+        <li><div><b>Coût Anthropic</b><span>Le tri des suggestions sur GitHub : coût de chaque passage, total du mois.</span></div><span class="pill">à brancher</span></li>
+        <li><div><b>Google Play</b><span>Installations, désinstallations, appareils actifs, notes (exports quotidiens de la Play Console).</span></div><span class="pill">à brancher</span></li>
+        <li><div><b>Visites de dooka.fr</b><span>Pages vues et provenance, sans cookie, à mentionner dans la politique de confidentialité.</span></div><span class="pill">à brancher</span></li>
+        <li><div><b>Comptes supprimés</b><span>Un compteur par jour dans la fonction de suppression, sans identité.</span></div><span class="pill">à brancher</span></li>
+        <li><div><b>Supabase</b><span>Taille de la base, stockage des photos, utilisateurs actifs facturés.</span></div><span class="pill">à brancher</span></li>
+      </ul>
+    </section>
   </main>
+
+  <footer class="foot-admin"><div class="wrap">Outil interne. Des totaux seulement : aucun nom, aucun e-mail, aucune position ne sort de la base.</div></footer>
 </div>
+
+<div class="tip" id="tip" role="tooltip"></div>
 
 <!-- Version exacte et empreinte d'intégrité : ce script tourne avec la
      session d'un administrateur. Avec « @2 », une version compromise du
@@ -395,259 +425,627 @@
   'use strict';
 
   // Même projet que l'app. La clé anon est publiable par conception :
-  // elle n'ouvre que ce que les politiques RLS autorisent, et la fonction
-  // admin_kpis vérifie elle-même le rôle administrateur côté serveur.
-  // Masquer cette page ne protégerait donc rien — c'est la base qui refuse.
+  // elle n'ouvre que ce que les politiques RLS autorisent, et admin_kpis
+  // vérifie elle-même le rôle administrateur côté serveur. Masquer cette
+  // page ne protégerait donc rien — c'est la base qui refuse.
   var SUPABASE_URL = 'https://ybnacpzicldzsmmypupj.supabase.co';
   var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlibmFjcHppY2xkenNtbXlwdXBqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQyODg4OTAsImV4cCI6MjA5OTg2NDg5MH0.zk6cs62vw1Xx2IfL5UX88XWmXFYMdxU75qCkp_f7DCs';
-  var GITHUB_RELEASES = 'https://api.github.com/repos/TeamDooka/dooka/releases';
+  var GITHUB_RELEASES = 'https://api.github.com/repos/TeamDooka/dooka/releases?per_page=100';
 
   var sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
   var $ = function (id) { return document.getElementById(id); };
   var nf = new Intl.NumberFormat('fr-FR');
-  var cf = new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 });
-  var df = new Intl.DateTimeFormat('fr-FR', { day: '2-digit', month: 'short' });
+  var nf1 = new Intl.NumberFormat('fr-FR', { maximumFractionDigits: 1 });
+  var nf2 = new Intl.NumberFormat('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  var dayFmt = new Intl.DateTimeFormat('fr-FR', { weekday: 'short', day: 'numeric', month: 'short' });
+  var shortFmt = new Intl.DateTimeFormat('fr-FR', { day: 'numeric', month: 'short' });
+  var longFmt = new Intl.DateTimeFormat('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+  var NBSP = ' ';
+  var MINUS = '−';
 
   function esc(s) {
     return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
       return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
     });
   }
+  function num(v) { return Number(v) || 0; }
+  function n(v) { return nf.format(num(v)); }
+  // Règle des montants exacts (DESIGN.md) : deux décimales, virgule,
+  // espace insécable avant €.
+  function eur(v) { return nf2.format(num(v)) + NBSP + '€'; }
+  function eurShort(v) { return nf.format(Math.round(num(v))) + NBSP + '€'; }
+  // Un net est signé : vert s'il est positif, rouge s'il est négatif.
+  function signed(v) {
+    v = num(v);
+    if (v > 0) return '<span class="pos">+' + eur(v) + '</span>';
+    if (v < 0) return '<span class="neg">' + MINUS + eur(-v) + '</span>';
+    return '<span class="zero">' + eur(0) + '</span>';
+  }
+  function pct(a, b) { return num(b) ? Math.round((100 * num(a)) / num(b)) + NBSP + '%' : '—'; }
+  function day(d) { return new Date(d + 'T12:00:00'); }
+  function plural(v, one, many) { return n(v) + NBSP + (num(v) > 1 ? many : one); }
+  function maxOf(list, key) { return Math.max.apply(null, list.map(function (x) { return num(x[key]); }).concat([1])); }
+  function sumOf(list, key) { return list.reduce(function (s, x) { return s + num(x[key]); }, 0); }
 
-  function card(label, value, sub) {
-    return '<div class="card"><div class="k">' + esc(label) + '</div>' +
-           '<div class="v">' + esc(value) + '</div>' +
-           (sub ? '<div class="sub">' + esc(sub) + '</div>' : '') + '</div>';
+  function tile(label, value, sub) {
+    return '<div class="tile"><div class="k">' + esc(label) + '</div>' +
+      '<div class="v">' + value + '</div>' +
+      (sub ? '<div class="s">' + sub + '</div>' : '') + '</div>';
   }
 
-  function css(name) {
-    return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+  function gauge(value, max, dim) {
+    var w = max ? Math.max(0, Math.min(100, (100 * num(value)) / max)) : 0;
+    return '<span class="track"><span class="fill' + (dim ? ' dim' : '') + (w ? '' : ' none') + '" style="width:' + w.toFixed(1) + '%"></span></span>';
   }
 
-  // ── Courbes ────────────────────────────────────────────────────────
-  // Tracé en SVG : les chemins sont calculés, pas écrits à la main, et
-  // le rendu reste net à n'importe quelle taille.
-  //
-  // Le viewBox est réglé sur la largeur réelle mesurée plutôt que fixé
-  // avec preserveAspectRatio="none" : cette dernière solution étire
-  // l'horizontale et l'écart entre les deux axes déforme tout ce qui
-  // n'est pas un trait — le point de fin deviendrait une ellipse.
-  function sparkline(values, labels, color, W, H) {
-    var PAD = 4;
-    var n = values.length;
-    var max = Math.max.apply(null, values.concat([1]));
-    var x = function (i) { return PAD + (i * (W - PAD * 2)) / (n - 1); };
-    var y = function (v) { return H - PAD - (v / max) * (H - PAD * 2 - 6); };
-    var uid = 'g' + Math.random().toString(36).slice(2, 8);
-
-    var line = 'M' + values.map(function (v, i) {
-      return x(i).toFixed(1) + ' ' + y(v).toFixed(1);
-    }).join(' L');
-    var area = line + ' L' + x(n - 1).toFixed(1) + ' ' + H + ' L' + x(0).toFixed(1) + ' ' + H + ' Z';
-
-    // Une zone de survol par jour, bien plus large que le point : c'est
-    // ce qui rend la courbe lisible au détail sans encombrer le tracé.
-    var slot = (W - PAD * 2) / (n - 1);
-    var hits = values.map(function (v, i) {
-      return '<rect x="' + (x(i) - slot / 2).toFixed(1) + '" y="0" width="' + slot.toFixed(1) +
-             '" height="' + H + '" fill="transparent"><title>' +
-             esc(labels[i]) + ' — ' + nf.format(v) + '</title></rect>';
-    }).join('');
-
-    return '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Évolution sur 30 jours">' +
-      '<defs><linearGradient id="' + uid + '" x1="0" y1="0" x2="0" y2="1">' +
-        '<stop offset="0" stop-color="' + color + '" stop-opacity="0.22"/>' +
-        '<stop offset="1" stop-color="' + color + '" stop-opacity="0"/>' +
-      '</linearGradient></defs>' +
-      '<line x1="0" y1="' + (H - PAD) + '" x2="' + W + '" y2="' + (H - PAD) +
-        '" stroke="currentColor" stroke-opacity="0.12" stroke-width="1"/>' +
-      '<path d="' + area + '" fill="url(#' + uid + ')"/>' +
-      '<path class="spark-line" d="' + line + '" stroke="' + color +
-        '" stroke-linejoin="round" stroke-linecap="round"/>' +
-      '<circle cx="' + x(n - 1).toFixed(1) + '" cy="' + y(values[n - 1]).toFixed(1) +
-        '" r="3" fill="' + color + '"/>' +
-      hits +
-      '</svg>';
+  // Une rangée : libellé, jauge, valeur, part. La jauge est relative à
+  // `max` (le total des comptes, ou la plus grande valeur de la liste) ;
+  // la part l'est à `of`, qui vaut `max` par défaut.
+  function meter(label, value, max, opts) {
+    opts = opts || {};
+    return '<div class="mrow"><span class="l" title="' + esc(label) + '">' + esc(label) +
+      (opts.note ? '<small>' + esc(opts.note) + '</small>' : '') + '</span>' +
+      gauge(value, max, opts.dim) +
+      '<span class="n">' + n(value) + '</span>' +
+      '<span class="p">' + (opts.share === false ? '' : pct(value, opts.of || max)) + '</span></div>';
   }
 
-  var plots = [];
-  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // ── Info-bulle ─────────────────────────────────────────────────────
+  var tip = $('tip');
+  function showTip(html, x, y) {
+    tip.innerHTML = html;
+    tip.classList.add('on');
+    var r = tip.getBoundingClientRect();
+    var left = Math.min(window.innerWidth - r.width - 8, Math.max(8, x - r.width / 2));
+    var top = y - r.height - 14;
+    if (top < 8) top = y + 18;
+    tip.style.transform = 'translate(' + Math.round(left) + 'px,' + Math.round(top) + 'px)';
+  }
+  function hideTip() { tip.classList.remove('on'); }
 
-  function drawPlots(animate) {
-    plots.forEach(function (p) {
-      var host = $(p.id);
-      if (!host) return;
-      var w = Math.max(160, Math.round(host.clientWidth));
-      host.innerHTML = sparkline(p.values, p.labels, css(p.token), w, host.clientHeight || 104);
+  // ── Graphiques ─────────────────────────────────────────────────────
+  // Une graduation « ronde » : 1, 2 ou 5 × 10^k au-dessus du maximum.
+  function niceMax(v) {
+    if (v <= 0) return 1;
+    var p = Math.pow(10, Math.floor(Math.log10(v)));
+    var m = v / p;
+    return (m <= 1 ? 1 : m <= 2 ? 2 : m <= 5 ? 5 : 10) * p;
+  }
 
-      if (!animate || reduceMotion) return;
-      var path = host.querySelector('.spark-line');
-      if (!path || !path.getTotalLength) return;
-      // La longueur exacte du tracé, mesurée : un tiret plus court
-      // laisserait la fin visible d'emblée, plus long ferait apparaître
-      // la courbe d'un coup à la toute fin de l'animation.
-      var len = path.getTotalLength();
-      path.style.strokeDasharray = len;
-      path.style.strokeDashoffset = len;
-      requestAnimationFrame(function () {
-        path.style.transition = 'stroke-dashoffset 0.9s cubic-bezier(0.33, 1, 0.68, 1)';
-        path.style.strokeDashoffset = '0';
+  // Barres arrondies en haut seulement, posées sur la ligne de base.
+  function barPath(x, y, w, h, r) {
+    r = Math.min(r, w / 2, h);
+    return 'M' + x + ' ' + (y + h) + 'V' + (y + r) + 'Q' + x + ' ' + y + ' ' + (x + r) + ' ' + y +
+      'H' + (x + w - r) + 'Q' + (x + w) + ' ' + y + ' ' + (x + w) + ' ' + (y + r) + 'V' + (y + h) + 'Z';
+  }
+
+  // Le viewBox est réglé sur la largeur réelle mesurée : étirer un SVG
+  // fixe déformerait les arrondis et les points.
+  function drawChart(host, series, opts) {
+    var W = Math.max(280, Math.round(host.clientWidth));
+    var H = host.clientHeight || 240;
+    var L = 48, R = 4, T = 10, B = 26;
+    var pw = W - L - R, ph = H - T - B;
+    var values = series.map(function (d) { return d.v; });
+    var max = niceMax(Math.max.apply(null, values.concat([0])));
+    var count = values.length;
+    var slot = pw / count;
+    var fmt = opts.unit === 'eur' ? eurShort : n;
+    var y = function (v) { return T + ph - (v / max) * ph; };
+    var cx = function (i) { return L + slot * (i + 0.5); };
+
+    var out = '';
+    [0, 0.5, 1].forEach(function (f) {
+      var gy = T + ph - f * ph;
+      out += '<line class="' + (f === 0 ? 'base' : 'grid') + '" x1="' + L + '" x2="' + (W - R) + '" y1="' + gy + '" y2="' + gy + '"/>';
+      out += '<text class="ax" x="' + (L - 8) + '" y="' + (gy + 4) + '" text-anchor="end">' + esc(fmt(max * f)) + '</text>';
+    });
+
+    // Trois dates : début, milieu, fin. Davantage se chevaucherait sur mobile.
+    [0, Math.floor((count - 1) / 2), count - 1].forEach(function (i, k) {
+      var anchor = k === 0 ? 'start' : k === 2 ? 'end' : 'middle';
+      var x = k === 0 ? L : k === 2 ? W - R : cx(i);
+      out += '<text class="ax" x="' + x + '" y="' + (H - 6) + '" text-anchor="' + anchor + '">' + esc(shortFmt.format(series[i].d)) + '</text>';
+    });
+
+    if (opts.kind === 'line') {
+      var pts = values.map(function (v, i) { return cx(i).toFixed(1) + ' ' + y(v).toFixed(1); });
+      var line = 'M' + pts.join(' L');
+      var area = line + ' L' + cx(count - 1).toFixed(1) + ' ' + (T + ph) + ' L' + cx(0).toFixed(1) + ' ' + (T + ph) + ' Z';
+      out += '<defs><linearGradient id="ga" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3CC278" stop-opacity=".22"/><stop offset="1" stop-color="#3CC278" stop-opacity="0"/></linearGradient></defs>';
+      out += '<path d="' + area + '" fill="url(#ga)"/>';
+      out += '<path d="' + line + '" fill="none" stroke="#3CC278" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>';
+      out += '<line class="cross" x1="0" x2="0" y1="' + T + '" y2="' + (T + ph) + '" visibility="hidden"/>';
+      out += '<circle class="dot" r="4.5" fill="#3CC278" stroke="#0F1311" stroke-width="2" visibility="hidden"/>';
+    } else {
+      // 2 px d'écart entre les barres, arrondi de 4 px quand elles sont
+      // assez larges pour le porter.
+      var bw = Math.max(1, slot - 2);
+      var rr = bw >= 8 ? 4 : bw >= 4 ? 2 : 0;
+      values.forEach(function (v, i) {
+        if (v <= 0) return;
+        var h = Math.max(2, (v / max) * ph);
+        out += '<path class="bar" data-i="' + i + '" d="' + barPath(L + slot * i + 1, T + ph - h, bw, h, rr) + '"/>';
       });
+    }
+    // Une seule zone de survol, l'indice est déduit de la position :
+    // bien plus large que la barre, et rien à recâbler au redessin.
+    out += '<rect x="' + L + '" y="0" width="' + pw + '" height="' + H + '" fill="transparent"/>';
+
+    host.innerHTML = '<svg viewBox="0 0 ' + W + ' ' + H + '">' + out + '</svg>';
+
+    var svg = host.firstChild;
+    var cross = svg.querySelector('.cross'), dot = svg.querySelector('.dot');
+    var lastOn = null;
+    svg.addEventListener('pointermove', function (e) {
+      var rect = svg.getBoundingClientRect();
+      var sx = ((e.clientX - rect.left) / rect.width) * W;
+      var i = Math.max(0, Math.min(count - 1, Math.floor((sx - L) / slot)));
+      var d = series[i];
+      if (cross) {
+        cross.setAttribute('x1', cx(i)); cross.setAttribute('x2', cx(i)); cross.setAttribute('visibility', 'visible');
+        dot.setAttribute('cx', cx(i)); dot.setAttribute('cy', y(d.v)); dot.setAttribute('visibility', 'visible');
+      } else {
+        if (lastOn) lastOn.classList.remove('on');
+        lastOn = svg.querySelector('.bar[data-i="' + i + '"]');
+        if (lastOn) lastOn.classList.add('on');
+      }
+      showTip(esc(dayFmt.format(d.d)) + ' · <b>' + esc(opts.unit === 'eur' ? eur(d.v) : n(d.v)) + '</b> ' + esc(opts.suffix || ''), e.clientX, e.clientY);
+    });
+    svg.addEventListener('pointerleave', function () {
+      hideTip();
+      if (lastOn) lastOn.classList.remove('on');
+      if (cross) { cross.setAttribute('visibility', 'hidden'); dot.setAttribute('visibility', 'hidden'); }
     });
   }
 
-  function renderCharts(daily) {
-    // Absent tant que la migration 0050 n'est pas passée : on masque la
-    // bande plutôt que d'afficher un cadre vide.
-    if (!daily || daily.length < 2) { $('band-charts').classList.add('hidden'); return; }
-
-    var labels = daily.map(function (d) { return df.format(new Date(d.day + 'T12:00:00')); });
-    plots = [
-      { id: 'plot-signups', token: '--turf', labels: labels,
-        values: daily.map(function (d) { return Number(d.signups); }) },
-      { id: 'plot-plays', token: '--gold', labels: labels,
-        values: daily.map(function (d) { return Number(d.plays); }) }
-    ];
-
-    $('charts').innerHTML = [
-      { id: 'plot-signups', title: 'Inscriptions' },
-      { id: 'plot-plays', title: 'Parties jouées' }
-    ].map(function (c, i) {
-      var total = plots[i].values.reduce(function (a, b) { return a + b; }, 0);
-      return '<div class="chart">' +
-        '<div class="chart-head"><span class="t">' + esc(c.title) + '</span>' +
-        '<span class="n">' + nf.format(total) + ' sur 30 j</span></div>' +
-        '<div class="plot" id="' + c.id + '"></div>' +
-        '<div class="chart-axis"><span>' + esc(labels[0]) + '</span>' +
-        '<span>' + esc(labels[labels.length - 1]) + '</span></div>' +
-        '</div>';
-    }).join('');
-
-    $('charts-range').textContent = labels[0] + ' → ' + labels[labels.length - 1];
-    $('band-charts').classList.remove('hidden');
-    drawPlots(true);
+  // Petite courbe des tuiles du haut : pas d'axe, juste la forme.
+  var sparkId = 0;
+  function spark(values) {
+    var W = 240, H = 44, P = 3, count = values.length;
+    if (count < 2) return '';
+    var max = Math.max.apply(null, values.concat([1]));
+    var min = Math.min.apply(null, values);
+    // Une courbe cumulée part de loin : on la cadre sur sa propre plage,
+    // sinon elle n'est qu'un trait plat en haut de la tuile.
+    var base = values[0] > 0 && min === values[0] ? min : 0;
+    var span = Math.max(1, max - base);
+    var x = function (i) { return (i * W) / (count - 1); };
+    var y = function (v) { return H - P - ((v - base) / span) * (H - P * 2); };
+    var line = 'M' + values.map(function (v, i) { return x(i).toFixed(1) + ' ' + y(v).toFixed(1); }).join(' L');
+    var area = line + ' L' + W + ' ' + H + ' L0 ' + H + ' Z';
+    var id = 'sp' + (sparkId++);
+    return '<svg viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="none" aria-hidden="true">' +
+      '<defs><linearGradient id="' + id + '" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3CC278" stop-opacity=".2"/><stop offset="1" stop-color="#3CC278" stop-opacity="0"/></linearGradient></defs>' +
+      '<path d="' + area + '" fill="url(#' + id + ')"/>' +
+      '<path d="' + line + '" fill="none" stroke="#3CC278" stroke-width="2" vector-effect="non-scaling-stroke" stroke-linejoin="round"/></svg>';
   }
 
-  // ── Adoption ───────────────────────────────────────────────────────
-  function renderAdoption(versions, current) {
-    var total = versions.reduce(function (n, v) { return n + Number(v.count); }, 0);
-    if (!total) {
-      $('adoption-figure').innerHTML = '<div class="cap">Aucune donnée : personne n\'a encore ouvert une version qui remonte l\'information.</div>';
-      return;
+  // ── État ───────────────────────────────────────────────────────────
+  var state = { k: null, releases: [], period: 30, metric: 'plays' };
+  try {
+    var saved = JSON.parse(localStorage.getItem('dooka-admin') || '{}');
+    if (saved.period === 90) state.period = 90;
+    if (typeof saved.metric === 'string') state.metric = saved.metric;
+  } catch (e) { /* stockage indisponible : on garde les défauts */ }
+  function remember() {
+    try { localStorage.setItem('dooka-admin', JSON.stringify({ period: state.period, metric: state.metric })); } catch (e) { /* rien */ }
+  }
+
+  // Les comptes cumulés se déduisent du total : on remonte le temps en
+  // retirant les inscriptions de chaque jour. Un compte supprimé n'est
+  // plus dans le total, la courbe est donc celle des comptes encore là.
+  function cumulative(daily, total) {
+    var acc = total;
+    return daily.slice().reverse().map(function (d) {
+      var v = acc;
+      acc -= num(d.signups);
+      return v;
+    }).reverse();
+  }
+
+  var METRICS = [
+    { key: 'plays', label: 'Tickets grattés', suffix: 'tickets' },
+    { key: 'staked', label: 'Misé', unit: 'eur' },
+    { key: 'won', label: 'Gagné', unit: 'eur' },
+    { key: 'players', label: 'Joueurs', suffix: 'comptes ont joué' },
+    { key: 'sessions', label: 'Sessions', suffix: 'sessions' },
+    { key: 'signups', label: 'Inscriptions', suffix: 'inscriptions' },
+    { key: 'screens', label: 'Écrans ouverts', suffix: 'ouvertures' },
+    { key: 'cumul', label: 'Comptes', kind: 'line', suffix: 'comptes' }
+  ];
+  var NOTES = {
+    plays: 'Tickets notés chaque jour, en session ou non.',
+    staked: 'Somme des mises du jour.',
+    won: 'Somme des gains déclarés du jour.',
+    players: 'Comptes distincts ayant noté au moins un ticket ce jour-là. Les invités sans compte ne sont pas comptés.',
+    sessions: 'Sessions ouvertes ce jour-là.',
+    signups: 'Comptes créés ce jour-là et toujours existants.',
+    screens: 'Ouvertures d\'écran comptées par l\'app (0099). Les versions plus anciennes ne comptent rien.',
+    cumul: 'Comptes encore existants, reconstitués à partir des dates d\'inscription.'
+  };
+
+  function periodDays() { return (state.k.daily || []).slice(-state.period); }
+
+  function renderActivity() {
+    var k = state.k;
+    var all = k.daily || [];
+    var days = periodDays();
+    if (!days.length) return;
+    var cumul = cumulative(all, num(k.users.total)).slice(-days.length);
+    $('act-range').textContent = 'Du ' + longFmt.format(day(days[0].day)) + ' au ' + longFmt.format(day(days[days.length - 1].day));
+
+    var playedDays = days.filter(function (d) { return num(d.plays) > 0; }).length;
+    $('metrics').innerHTML = METRICS.map(function (m) {
+      var t;
+      if (m.key === 'cumul') t = n(cumul[cumul.length - 1]);
+      else if (m.key === 'players') t = nf1.format(playedDays ? sumOf(days, 'players') / playedDays : 0) + ' / jour joué';
+      else if (m.unit === 'eur') t = eurShort(sumOf(days, m.key));
+      else t = n(sumOf(days, m.key));
+      return '<button type="button" class="metric" data-m="' + m.key + '" aria-pressed="' + (m.key === state.metric) + '">' +
+        esc(m.label) + '<b>' + esc(t) + '</b></button>';
+    }).join('');
+
+    var m = METRICS.filter(function (x) { return x.key === state.metric; })[0] || METRICS[0];
+    var series = days.map(function (d, i) {
+      return { d: day(d.day), v: m.key === 'cumul' ? cumul[i] : num(d[m.key]) };
+    });
+    var host = $('chart');
+    host.setAttribute('aria-label', m.label + ' par jour sur les ' + state.period + ' derniers jours. Le détail est dans le tableau sous le graphique.');
+    drawChart(host, series, { unit: m.unit, kind: m.kind, suffix: m.suffix });
+    $('chart-note').textContent = NOTES[m.key] || '';
+
+    // La vue en tableau : le graphique ne doit pas être la seule façon
+    // de lire le chiffre d'un jour.
+    $('raw').innerHTML = '<table class="t"><thead><tr><th>Jour</th><th class="n">Tickets</th><th class="n">Misé</th><th class="n">Gagné</th><th class="n">Joueurs</th><th class="n">Sessions</th><th class="n">Inscriptions</th><th class="n">Écrans</th></tr></thead><tbody>' +
+      days.slice().reverse().map(function (d) {
+        return '<tr><td>' + esc(dayFmt.format(day(d.day))) + '</td><td class="n">' + n(d.plays) + '</td><td class="n">' + eur(d.staked) +
+          '</td><td class="n">' + eur(d.won) + '</td><td class="n">' + n(d.players) + '</td><td class="n">' + n(d.sessions) +
+          '</td><td class="n">' + n(d.signups) + '</td><td class="n">' + n(d.screens) + '</td></tr>';
+      }).join('') + '</tbody></table>';
+  }
+
+  function renderHero() {
+    var k = state.k, u = k.users, p = k.plays, s = k.sessions;
+    var days = periodDays();
+    var cumul = cumulative(k.daily || [], num(u.total)).slice(-days.length);
+    var col = function (key) { return days.map(function (d) { return num(d[key]); }); };
+    var per = 'sur ' + state.period + NBSP + 'j';
+
+    $('hero').innerHTML = [
+      { k: 'Comptes', v: n(u.total), s: '<b>+' + n(sumOf(days, 'signups')) + '</b> ' + per, sp: cumul },
+      { k: 'Actifs sur 7 jours', v: n(u.active_7d), s: '<b>' + pct(u.active_7d, u.total) + '</b> des comptes · ' + n(u.seen_1d) + ' en 24 h', sp: col('players') },
+      { k: 'Tickets grattés', v: n(p.total), s: '<b>+' + n(sumOf(days, 'plays')) + '</b> ' + per, sp: col('plays') },
+      { k: 'Sessions', v: n(s.total), s: '<b>+' + n(sumOf(days, 'sessions')) + '</b> ' + per + ' · ' + n(s.open) + ' en cours', sp: col('sessions') }
+    ].map(function (t) {
+      return '<div class="tile"><div class="k">' + esc(t.k) + '</div><div class="v">' + t.v + '</div>' +
+        '<div class="s">' + t.s + '</div><div class="spark">' + spark(t.sp) + '</div></div>';
+    }).join('');
+  }
+
+  function renderUsers() {
+    var u = state.k.users;
+    var t = num(u.total);
+    $('users-tiles').innerHTML =
+      tile('Vus en 24 h', n(u.seen_1d), pct(u.seen_1d, t) + ' des comptes') +
+      tile('Actifs sur 30 jours', n(u.active_30d), pct(u.active_30d, t) + ' des comptes') +
+      tile('Nouveaux sur 30 jours', n(u.new_30d), n(u.new_7d) + ' sur 7 jours') +
+      tile('Ont joué sur 30 jours', n(u.played_30d), 'ont noté au moins un ticket') +
+      tile('Jamais revus', n(u.never_back), pct(u.never_back, t) + ' des comptes') +
+      tile('Administrateurs', n(u.admins));
+
+    $('funnel').innerHTML =
+      meter('Comptes créés', t, t) +
+      meter('Revenus après le premier jour', t - num(u.never_back), t) +
+      meter('Ont gratté au moins un ticket', u.played, t) +
+      meter('Ont au moins un ami', u.with_friend, t) +
+      meter('Sont dans une bande', u.in_group, t) +
+      meter('Reçoivent les notifications', u.with_push, t);
+  }
+
+  function renderPlay() {
+    var p = state.k.plays;
+    var big = p.biggest;
+    $('play-tiles').innerHTML =
+      tile('Tickets grattés', n(p.total), n(p.last_30d) + ' sur 30 j · ' + n(p.last_7d) + ' sur 7 j') +
+      tile('Misé', eur(p.staked), eur(p.staked_30d) + ' sur 30 j') +
+      tile('Gagné', eur(p.won), eur(p.won_30d) + ' sur 30 j') +
+      tile('Net de la communauté', signed(num(p.won) - num(p.staked)), 'gagné moins misé, depuis le début') +
+      tile('Taux de retour', pct(p.won, p.staked), 'gagné pour 100' + NBSP + '€ misés') +
+      tile('Tickets gagnants', pct(p.winners, p.total), n(p.winners) + ' sur ' + n(p.total)) +
+      tile('Plus gros gain', big ? eur(big.amount) : '—', big ? esc(big.ticket || 'Ticket inconnu') + ' · ' + esc(shortFmt.format(day(big.day))) : 'aucun gain noté') +
+      tile('Mise moyenne', num(p.total) ? eur(num(p.staked) / num(p.total)) : '—', 'par ticket') +
+      tile('Joués par des invités', pct(p.by_guests, p.total), n(p.by_guests) + ' tickets sans compte') +
+      tile('Au classement public', pct(p.public, p.total), n(p.public) + ' tickets') +
+      tile('Avec photo de preuve', n(p.photo), pct(p.photo, p.total) + ' des tickets') +
+      tile('Tirages Amigo', n(p.amigo));
+
+    var list = state.k.tickets || [];
+    var max = maxOf(list, 'plays');
+    $('tickets').innerHTML = list.length ? '<table class="t"><thead><tr><th>Ticket</th><th class="n">Prix</th><th class="n">Grattés</th><th></th><th class="n">Misé</th><th class="n">Gagné</th><th class="n">Net</th><th class="n">Gagnants</th></tr></thead><tbody>' +
+      list.map(function (t) {
+        return '<tr><td>' + esc(t.name) + '</td><td class="n">' + eur(t.price) + '</td><td class="n">' + n(t.plays) + '</td>' +
+          '<td class="mtr">' + gauge(t.plays, max) + '</td>' +
+          '<td class="n">' + eur(t.staked) + '</td><td class="n">' + eur(t.won) + '</td><td class="n">' + signed(num(t.won) - num(t.staked)) + '</td>' +
+          '<td class="n">' + pct(t.winners, t.plays) + '</td></tr>';
+      }).join('') + '</tbody></table>' : '<p class="note">Aucun ticket noté.</p>';
+
+    renderHeat();
+  }
+
+  // Séquentiel, une seule teinte : de la carte d'app vide au vert plein.
+  var HEAT = ['rgba(60,194,120,.18)', 'rgba(60,194,120,.36)', 'rgba(60,194,120,.56)', 'rgba(60,194,120,.78)', '#3CC278'];
+  var JOURS = ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'];
+  var JOURS_LONGS = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
+  function renderHeat() {
+    var cells = {};
+    var max = 0;
+    (state.k.heatmap || []).forEach(function (c) {
+      cells[c.dow + '-' + c.hour] = num(c.n);
+      max = Math.max(max, num(c.n));
+    });
+    var html = '<span></span>';
+    for (var h = 0; h < 24; h++) html += '<span class="h">' + (h % 3 === 0 ? h : '') + '</span>';
+    for (var d = 1; d <= 7; d++) {
+      html += '<span class="d">' + JOURS[d - 1] + '</span>';
+      for (var hh = 0; hh < 24; hh++) {
+        var v = cells[d + '-' + hh] || 0;
+        var step = v ? Math.min(HEAT.length - 1, Math.ceil((v / max) * HEAT.length) - 1) : -1;
+        html += '<span class="c" data-l="' + JOURS_LONGS[d - 1] + ', ' + hh + ' h" data-v="' + v + '"' +
+          (step >= 0 ? ' style="background:' + HEAT[step] + '"' : '') + '></span>';
+      }
     }
+    var heat = $('heat');
+    heat.innerHTML = html;
+    heat.onpointermove = function (e) {
+      var c = e.target.closest && e.target.closest('.c');
+      if (!c) { hideTip(); return; }
+      var v = Number(c.getAttribute('data-v'));
+      showTip(esc(c.getAttribute('data-l')) + ' · <b>' + plural(v, 'ticket', 'tickets') + '</b>', e.clientX, e.clientY);
+    };
+    heat.onpointerleave = hideTip;
+    $('heat-key').innerHTML = 'Moins ' + HEAT.map(function (c) { return '<i style="background:' + c + '"></i>'; }).join('') + ' Plus <span style="margin-left:8px">· case sombre : aucun ticket · ' + plural(max, 'ticket', 'tickets') + ' au plus fort</span>';
+  }
 
-    // À défaut de release GitHub lisible, on retient le plus grand
-    // numéro remonté : sans repère, tout serait signalé « en retard »
-    // et l'indicateur dirait n'importe quoi.
-    if (!current) {
-      current = versions.map(function (v) { return v.version; })
-        .filter(function (v) { return /^\d/.test(v); })
-        .sort(function (a, b) {
-          var A = a.split('.').map(Number), B = b.split('.').map(Number);
-          for (var i = 0; i < 3; i++) { if ((A[i] || 0) !== (B[i] || 0)) return (B[i] || 0) - (A[i] || 0); }
-          return 0;
-        })[0] || '';
-    }
+  function renderSessions() {
+    var s = state.k.sessions;
+    var empty = num(s.total) - num(s.with_play);
+    $('sess-tiles').innerHTML =
+      tile('Sessions', n(s.total), n(s.last_30d) + ' sur 30 j · ' + n(s.last_7d) + ' sur 7 j') +
+      tile('En cours', n(s.open), n(s.closed) + ' terminées · ' + n(s.archived) + ' archivées') +
+      tile('Durée médiane', s.median_minutes == null ? '—' : n(s.median_minutes) + NBSP + 'min', 'sessions terminées à la main') +
+      tile('Joueurs par session', s.median_players == null ? '—' : nf1.format(s.median_players), 'médiane · record ' + n(s.max_players)) +
+      tile('Tickets par session', s.median_tickets == null ? '—' : nf1.format(s.median_tickets), 'médiane · record ' + n(s.max_tickets)) +
+      tile('Mise par session', s.median_staked == null ? '—' : eur(s.median_staked), 'médiane') +
+      tile('Terminées automatiquement', pct(s.auto_closed, s.total), n(s.auto_closed) + ' oubliées ouvertes') +
+      tile('Sans aucun ticket', n(empty), pct(empty, s.total) + ' des sessions') +
+      tile('Lieux différents', n(s.places), 'où une session a été ouverte') +
+      tile('Places à table', n(num(s.guests) + num(s.accounts)), n(s.accounts) + ' comptes · ' + n(s.guests) + ' invités');
 
-    var upToDate = versions.reduce(function (n, v) {
-      return v.version === current ? n + Number(v.count) : n;
-    }, 0);
-    var pct = Math.round((upToDate / total) * 100);
+    var bars = state.k.bars || [];
+    var max = maxOf(bars, 'sessions');
+    $('bars').innerHTML = bars.length ? '<table class="t"><thead><tr><th>Bar</th><th class="n">Sessions</th><th></th><th class="n">Tickets</th></tr></thead><tbody>' +
+      bars.map(function (b) {
+        return '<tr><td>' + esc(b.name) + '</td><td class="n">' + n(b.sessions) + '</td>' +
+          '<td class="mtr">' + gauge(b.sessions, max) + '</td><td class="n">' + n(b.tickets) + '</td></tr>';
+      }).join('') + '</tbody></table>' : '<p class="note">Aucune session.</p>';
+  }
 
-    var turf = css('--turf'), gold = css('--gold'), muted = css('--muted');
-    var staleRank = 0;
+  function renderSocial() {
+    var so = state.k.social, u = state.k.users;
+    $('social-tiles').innerHTML =
+      tile('Amitiés', n(so.friendships), plural(so.pending, 'demande en attente', 'demandes en attente')) +
+      tile('Amis par compte', num(u.total) ? nf1.format((2 * num(so.friendships)) / num(u.total)) : '—', 'en moyenne') +
+      tile('Bandes', n(so.groups), num(so.groups) ? nf1.format(num(so.members) / num(so.groups)) + ' membres en moyenne' : '') +
+      tile('Membres de bande', n(so.members), n(u.in_group) + ' comptes différents') +
+      tile('Invitations en bande', n(so.group_invitations), 'en attente de réponse') +
+      tile('Gros gains notifiés', n(so.win_notifications), plural(so.win_recipients, 'destinataire', 'destinataires')) +
+      tile('Événements', n(so.events)) +
+      tile('Réactions', n(so.reactions), 'sur les gains') +
+      tile('Bars en favoris', n(so.favorites)) +
+      tile('Blocages', n(so.blocks));
+  }
+
+  var QUOTAS = {
+    google_maps: 'Appels Google Maps', search_people: 'Recherches de personnes',
+    invite_group: 'Invitations en bande', demande_ami: 'Demandes d\'ami', request_friend: 'Demandes d\'ami (ancien nom)'
+  };
+  function renderPlaces() {
+    var pl = state.k.places;
+    var c = num(pl.cached);
+    $('places-tiles').innerHTML =
+      tile('Lieux en cache', n(c), n(pl.with_hours) + ' avec horaires') +
+      tile('Confirmés PMU', pct(pl.confirmed, c), n(pl.confirmed) + ' sur ' + n(c)) +
+      tile('Modération', n(num(pl.moderated_ok) + num(pl.moderated_ko)), n(pl.moderated_ok) + ' validés · ' + n(pl.moderated_ko) + ' refusés') +
+      tile('Zones explorées', n(pl.zones), n(pl.zones_30d) + ' sur 30 j · ' + n(pl.zones_empty) + ' vides') +
+      tile('Bars ajoutés à la main', n(pl.community));
+    $('places-total').textContent = plural(c, 'lieu', 'lieux');
+    $('places-meters').innerHTML =
+      meter('Confirmés PMU', pl.confirmed, c) +
+      meter('À vérifier', pl.uncertain, c, { dim: true }) +
+      meter('Bars', pl.bars, c) +
+      meter('Points de vente', pl.shops, c, { dim: true }) +
+      meter('Avec horaires', pl.with_hours, c, { dim: true });
+
+    var q = state.k.quotas || [];
+    var qmax = maxOf(q, 'n');
+    $('quotas').innerHTML = q.length ? q.map(function (x) {
+      return meter(QUOTAS[x.kind] || x.kind, x.n, qmax, { share: false });
+    }).join('') : '<p class="note">Aucun appel ces dernières 24 heures.</p>';
+  }
+
+  var ECRANS = {
+    carte: 'Carte', sessions: 'Sessions', groupes: 'Bandes', tickets: 'Tickets', profil: 'Profil',
+    bilan_du_mois: 'Bilan du mois', collection: 'Collection', fiche_bar: 'Fiche d\'un bar',
+    fiche_ticket: 'Fiche d\'un ticket', fiche_session: 'Fiche d\'une session',
+    suggestions: 'Suggestions', nouveautes: 'Quoi de neuf ?'
+  };
+  function renderScreens() {
+    var list = state.k.screens || [];
+    var total = sumOf(list, 'd30');
+    var max = maxOf(list, 'd30');
+    $('screens-total').textContent = plural(total, 'ouverture', 'ouvertures');
+    $('screens').innerHTML = list.length ? list.map(function (s) {
+      return meter(ECRANS[s.name] || s.name, s.d30, max, { of: total, note: n(s.total) + ' au total' });
+    }).join('') : '<p class="note">Aucune ouverture comptée.</p>';
+  }
+
+  // Trie du plus récent au plus ancien.
+  function cmpVersion(a, b) {
+    var A = a.split('.').map(Number), B = b.split('.').map(Number);
+    for (var i = 0; i < 3; i++) { if ((A[i] || 0) !== (B[i] || 0)) return (B[i] || 0) - (A[i] || 0); }
+    return 0;
+  }
+  function renderVersions() {
+    var versions = (state.k.versions || []).map(function (v) { return { version: String(v.version), count: num(v.count) }; });
+    var total = sumOf(versions, 'count');
+    var isNum = function (v) { return /^\d/.test(v); };
+    // La référence est la version la plus récente installée par au moins
+    // deux comptes. Pas la dernière APK de GitHub : la diffusion passe par
+    // Google Play depuis la 3.8.0, et la release GitHub ne bouge plus. Pas
+    // non plus le plus grand numéro remonté : un build de dev, installé
+    // par une seule personne, rendrait tout le monde « en retard ».
+    var known = versions.filter(function (v) { return isNum(v.version); }).sort(function (a, b) { return cmpVersion(a.version, b.version); });
+    var shared = known.filter(function (v) { return v.count >= 2; })[0] || known[0];
+    var latest = shared ? shared.version : '';
+    // Un compte sur plus récent que la référence (testeurs, build de dev)
+    // est à jour lui aussi.
+    var fresh = function (v) { return isNum(v) && latest && cmpVersion(v, latest) <= 0; };
+    var upToDate = versions.filter(function (v) { return fresh(v.version); }).reduce(function (s, v) { return s + v.count; }, 0);
+
+    versions.sort(function (a, b) {
+      if (!isNum(a.version)) return 1;
+      if (!isNum(b.version)) return -1;
+      return cmpVersion(a.version, b.version);
+    });
+    var stale = 0;
     var colored = versions.map(function (v) {
-      var color;
-      if (v.version === current) color = turf;
-      else if (v.version === 'inconnue') color = muted;
-      // Plusieurs versions en retard : on les dégrade progressivement,
-      // pour que la plus ancienne se distingue de l'avant-dernière.
-      else color = 'color-mix(in srgb, ' + gold + ' ' + Math.max(35, 100 - staleRank++ * 22) + '%, transparent)';
-      return { version: v.version, count: Number(v.count), color: color };
+      var c;
+      if (!isNum(v.version)) c = '#38403B';
+      else if (fresh(v.version)) c = '#3CC278';
+      // Les versions en retard s'éteignent à mesure qu'elles vieillissent.
+      else c = 'rgba(166,174,168,' + Math.max(0.22, 0.85 - stale++ * 0.1).toFixed(2) + ')';
+      return { version: v.version, count: v.count, color: c };
     });
 
-    $('adoption-figure').innerHTML =
-      '<div class="pct' + (pct < 80 ? ' low' : '') + '">' + pct + ' %</div>' +
-      '<div class="cap">des comptes sont à jour</div>' +
-      (current ? '<div class="tag">v' + esc(current) + '</div>' : '');
-
+    $('adopt-figure').innerHTML = total ?
+      '<div class="big">' + pct(upToDate, total) + '</div><div class="cap">des comptes sur ' +
+      (latest ? '<span class="tag">v' + esc(latest) + '</span> ou plus récent' : 'la dernière version') +
+      ', soit ' + plural(upToDate, 'compte', 'comptes') + ' sur ' + n(total) + '.</div>' +
+      '<p class="note">Référence : la version la plus récente installée par au moins deux comptes.</p>' :
+      '<div class="cap">Aucune version remontée.</div>';
     $('segbar').innerHTML = colored.map(function (v) {
-      return '<i style="width:' + ((v.count / total) * 100).toFixed(2) + '%;background:' + v.color +
-             '" title="' + esc(v.version) + ' — ' + nf.format(v.count) + '"></i>';
+      return '<i style="width:' + ((100 * v.count) / total).toFixed(2) + '%;background:' + v.color + '" title="' + esc(v.version) + ' — ' + v.count + '"></i>';
     }).join('');
-
-    $('vrows').innerHTML = colored.map(function (v) {
-      return '<div class="vrow">' +
-        '<span class="dot" style="background:' + v.color + '"></span>' +
-        '<span class="name">' + (v.version === 'inconnue' ? 'inconnue' : 'v' + esc(v.version)) + '</span>' +
-        '<span class="cnt">' + nf.format(v.count) + (v.count > 1 ? ' comptes' : ' compte') + '</span>' +
-        '<span class="pc">' + Math.round((v.count / total) * 100) + ' %</span>' +
-        '</div>';
+    $('vlist').innerHTML = colored.map(function (v) {
+      return '<div class="vrow"><span class="dot" style="background:' + v.color + '"></span><span class="tag">' +
+        (isNum(v.version) ? 'v' + esc(v.version) : esc(v.version)) + '</span><span class="c">' + n(v.count) + ' · ' + pct(v.count, total) + '</span></div>';
     }).join('');
   }
 
-  // ── Rendu général ──────────────────────────────────────────────────
-  function renderBoard(k, releases) {
-    $('stamp').textContent = 'à ' + new Date(k.generated_at)
-      .toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
-
-    var totalDl = releases.reduce(function (n, rel) {
-      return n + (rel.assets || []).reduce(function (m, a) {
-        return m + (/\.apk$/.test(a.name) ? a.download_count : 0);
-      }, 0);
-    }, 0);
-    var latestTag = releases.length ? releases[0].tag_name : null;
-
-    var activeShare = k.users.total ? Math.round((k.users.active_7d / k.users.total) * 100) : 0;
-    $('headline').innerHTML =
-      '<div><div class="k">Comptes</div><div class="v">' + nf.format(k.users.total) + '</div>' +
-      '<div class="sub">+' + nf.format(k.users.new_7d) + ' sur 7 jours</div></div>' +
-      '<div><div class="k">Actifs 7 jours</div><div class="v">' + nf.format(k.users.active_7d) + '</div>' +
-      '<div class="sub">' + activeShare + ' % des comptes · ' + nf.format(k.users.active_30d) + ' sur 30 j</div></div>' +
-      '<div><div class="k">Téléchargements</div><div class="v">' + nf.format(totalDl) + '</div>' +
-      '<div class="sub">' + (latestTag ? 'dernière : ' + esc(latestTag) : 'toutes versions') + '</div></div>';
-
-    renderAdoption(k.versions || [], (latestTag || '').replace(/^v/, ''));
-    renderCharts(k.daily);
-
-    $('plays').innerHTML =
-      card('Parties', nf.format(k.plays.total), nf.format(k.plays.last_7d) + ' sur 7 jours') +
-      card('Vérifiées', k.plays.verified_share + ' %', 'avec photo, comptent au classement') +
-      card('Scannées', nf.format(k.plays.scanned), 'code-barres enregistré') +
-      card('Gains déclarés', cf.format(k.plays.total_won));
-
-    $('social').innerHTML =
-      card('Groupes', nf.format(k.social.groups)) +
-      card('Sessions', nf.format(k.social.sessions), nf.format(k.social.sessions_open) + ' en cours') +
-      card('Amitiés', nf.format(k.social.friendships)) +
-      card('Événements', nf.format(k.social.events)) +
-      card('Tickets', nf.format(k.content.tickets)) +
-      card('Bars communautaires', nf.format(k.content.bars_user)) +
-      card('Bars en cache', nf.format(k.content.bars_cached), 'évitent un appel Google') +
-      card('Suggestions ouvertes', nf.format(k.content.suggestions_open));
-
-    renderDownloads(releases);
-  }
-
-  function renderDownloads(releases) {
-    if (!releases.length) {
-      $('downloads').innerHTML = '<tr><td colspan="4" class="muted">Aucune release publiée.</td></tr>';
-      return;
-    }
-    var counts = releases.map(function (rel) {
-      var apk = (rel.assets || []).filter(function (a) { return /\.apk$/.test(a.name); })[0];
-      return apk ? apk.download_count : 0;
+  function renderDownloads() {
+    var rel = state.releases;
+    if (!rel.length) { $('downloads').innerHTML = '<p class="note">Aucune release lisible sur GitHub.</p>'; $('dl-total').textContent = ''; return; }
+    var counts = rel.map(function (r) {
+      return (r.assets || []).reduce(function (s, a) { return s + (/\.apk$/.test(a.name) ? num(a.download_count) : 0); }, 0);
     });
+    var total = counts.reduce(function (a, b) { return a + b; }, 0);
     var max = Math.max.apply(null, counts.concat([1]));
+    $('dl-total').textContent = n(total) + ' au total · ' + plural(rel.length, 'version', 'versions');
+    $('downloads').innerHTML = '<table class="t"><thead><tr><th>Version</th><th class="n">Téléch.</th><th></th><th>Publiée le</th></tr></thead><tbody>' +
+      rel.map(function (r, i) {
+        return '<tr><td class="tag">' + esc(r.tag_name) + '</td><td class="n">' + n(counts[i]) + '</td>' +
+          '<td class="mtr">' + gauge(counts[i], max) + '</td>' +
+          '<td>' + esc(longFmt.format(new Date(r.published_at))) + '</td></tr>';
+      }).join('') + '</tbody></table>';
+  }
 
-    $('downloads').innerHTML = releases.map(function (rel, i) {
-      return '<tr><td class="tag">' + esc(rel.tag_name) + '</td>' +
-        '<td class="num">' + nf.format(counts[i]) + '</td>' +
-        '<td class="meter"><span class="meter-track"><span class="meter-fill" style="width:' +
-          ((counts[i] / max) * 100).toFixed(1) + '%"></span></span></td>' +
-        '<td class="muted">' + new Date(rel.published_at).toLocaleDateString('fr-FR') + '</td></tr>';
-    }).join('');
+  function renderSettings() {
+    var st = state.k.settings, t = num(state.k.users.total);
+    $('rg').innerHTML =
+      meter('Limite de mise par semaine', st.stake_limit, t) +
+      meter('Rappel de durée', st.reminder, t) +
+      meter('En pause en ce moment', st.paused, t);
+    $('notifs').innerHTML =
+      meter('Gros gains des amis', st.notify_friend_wins, t) +
+      meter('Records du bar', st.notify_bar_records, t) +
+      meter('Demandes d\'ami', st.notify_friend_requests, t) +
+      meter('Partagent leur plus beau gain', st.share_biggest_win, t);
+  }
+
+  function renderCommunity() {
+    var c = state.k.community, cat = state.k.catalogue;
+    $('community-tiles').innerHTML =
+      tile('Suggestions', n(c.suggestions), n(c.ideas) + ' idées · ' + n(c.bugs) + ' bugs') +
+      tile('Ouvertes', n(c.open), 'à trancher') +
+      tile('Prévues', n(c.planned)) +
+      tile('Livrées', n(c.done), pct(c.done, c.suggestions) + ' des suggestions') +
+      tile('Votes', n(c.votes)) +
+      tile('Signalements', n(c.reports), n(c.reports_open) + ' à traiter') +
+      tile('Tickets au catalogue', n(cat.tickets), n(cat.on_sale) + ' en vente') +
+      tile('Déjà joués', n(cat.played), pct(cat.played, cat.tickets) + ' du catalogue') +
+      tile('Paliers de lots', n(cat.prizes), 'servent au calcul des chances');
+  }
+
+  function renderAll(animate) {
+    var k = state.k;
+    $('stamp').innerHTML = 'Relevé à <b>' + esc(new Date(k.generated_at).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })) + '</b>';
+    $('lede').innerHTML = '<strong>' + plural(k.users.total, 'compte', 'comptes') + ', ' + plural(k.plays.total, 'ticket gratté', 'tickets grattés') +
+      ', ' + plural(k.sessions.total, 'session', 'sessions') + '.</strong> Lu en direct dans la base à chaque actualisation.';
+    document.querySelectorAll('[data-period]').forEach(function (b) {
+      b.setAttribute('aria-pressed', String(Number(b.getAttribute('data-period')) === state.period));
+    });
+    renderHero();
+    renderActivity();
+    renderUsers();
+    renderPlay();
+    renderSessions();
+    renderSocial();
+    renderPlaces();
+    renderScreens();
+    renderVersions();
+    renderDownloads();
+    renderSettings();
+    renderCommunity();
+    if (animate) {
+      // Arrivées décalées, une seule fois, à la courbe du site.
+      document.querySelectorAll('#content > section').forEach(function (s, i) {
+        s.style.animationDelay = (Math.min(i, 4) * 0.08) + 's';
+        s.classList.add('rise');
+      });
+    }
+  }
+
+  // ── Interactions ───────────────────────────────────────────────────
+  $('metrics').addEventListener('click', function (e) {
+    var b = e.target.closest('[data-m]');
+    if (!b) return;
+    state.metric = b.getAttribute('data-m');
+    remember();
+    renderActivity();
+  });
+  $('period').addEventListener('click', function (e) {
+    var b = e.target.closest('[data-period]');
+    if (!b || !state.k) return;
+    state.period = Number(b.getAttribute('data-period'));
+    remember();
+    document.querySelectorAll('[data-period]').forEach(function (x) { x.setAttribute('aria-pressed', String(x === b)); });
+    renderHero();
+    renderActivity();
+  });
+  var resizeTimer;
+  window.addEventListener('resize', function () {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(function () { if (state.k) renderActivity(); }, 150);
+  });
+
+  // ── Accès ──────────────────────────────────────────────────────────
+  function showGate(message, canLogout) {
+    $('gate-msg').innerHTML = message;
+    $('gate').hidden = false;
+    $('board').hidden = true;
+    $('logout-gate').hidden = !canLogout;
   }
 
   // Les compteurs de téléchargement viennent de l'API GitHub, publique
@@ -658,79 +1056,52 @@
       .catch(function () { return []; });
   }
 
-  // ── Accès ──────────────────────────────────────────────────────────
-  function showGate(message, canLogout) {
-    $('gate-msg').innerHTML = message;
-    $('gate').classList.remove('hidden');
-    $('board').classList.add('hidden');
-    $('logout-gate').classList.toggle('hidden', !canLogout);
-  }
-
-  // Conservé pour pouvoir redessiner sans rappeler la base : au
-  // changement de thème, les couleurs des courbes et des pastilles sont
-  // lues dans les variables CSS au moment du tracé — sans nouveau rendu
-  // elles resteraient celles du thème précédent.
-  var last = null;
-
-  function load() {
+  var loading = null;
+  function load(animate) {
+    if (loading) return loading;
     // Le refus vient de la base, pas d'ici : admin_kpis lève une
-    // exception si l'appelant n'est pas administrateur. Se connecter
-    // avec un compte ordinaire ne donne donc rien à voir.
-    return Promise.all([sb.rpc('admin_kpis'), loadReleases()]).then(function (r) {
+    // exception si l'appelant n'est pas administrateur.
+    loading = Promise.all([sb.rpc('admin_kpis'), loadReleases()]).then(function (r) {
       var out = r[0];
       if (out.error) {
         showGate('<span class="err">Ce compte n\'est pas administrateur.</span>', true);
         return;
       }
-      $('gate').classList.add('hidden');
-      $('board').classList.remove('hidden');
-      last = { kpis: out.data, releases: r[1] };
-      renderBoard(last.kpis, last.releases);
-    });
+      state.k = out.data;
+      state.releases = Array.isArray(r[1]) ? r[1] : [];
+      $('gate').hidden = true;
+      $('board').hidden = false;
+      renderAll(animate);
+    }).finally(function () { loading = null; });
+    return loading;
   }
 
-  function start() {
-    return sb.auth.getSession().then(function (res) {
-      if (!res.data.session) { showGate('Réservé aux administrateurs.', false); return; }
-      return load();
-    });
-  }
+  sb.auth.getSession().then(function (res) {
+    if (!res.data.session) { showGate('Réservé aux administrateurs de Dooka.', false); return; }
+    return load(true);
+  });
+  // Au retour de Google, la session peut s'installer après le premier
+  // getSession : on charge dès qu'elle arrive.
+  sb.auth.onAuthStateChange(function (event) {
+    if (event === 'SIGNED_IN' && !state.k) load(true);
+  });
 
   $('login').addEventListener('click', function () {
+    // L'adresse doit être exactement l'une des Redirect URLs déclarées
+    // dans Supabase : ni requête ni ancre.
     sb.auth.signInWithOAuth({
       provider: 'google',
-      options: { redirectTo: window.location.href.split('#')[0] }
+      options: { redirectTo: window.location.origin + window.location.pathname }
     });
   });
-
   $('refresh').addEventListener('click', function () {
-    $('refresh').disabled = true;
-    load().then(function () { $('refresh').disabled = false; });
+    var b = $('refresh');
+    b.disabled = true;
+    load(false).then(function () { b.disabled = false; });
   });
-
-  $('theme').addEventListener('click', function () {
-    var root = document.documentElement;
-    var current = root.getAttribute('data-theme');
-    if (!current) {
-      current = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-    }
-    root.setAttribute('data-theme', current === 'dark' ? 'light' : 'dark');
-    if (last) renderBoard(last.kpis, last.releases);
-  });
-
-  // Le viewBox est calé sur la largeur mesurée : il faut le recalculer
-  // quand elle change, sinon le tracé garde l'échelle d'origine.
-  var resizeTimer;
-  window.addEventListener('resize', function () {
-    clearTimeout(resizeTimer);
-    resizeTimer = setTimeout(function () { drawPlots(false); }, 150);
-  });
-
   function signOut() { sb.auth.signOut().then(function () { window.location.reload(); }); }
   $('logout').addEventListener('click', signOut);
   $('logout-gate').addEventListener('click', signOut);
-
-  start();
 })();
 </script>
 </body>
