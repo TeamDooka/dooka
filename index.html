@@ -381,6 +381,38 @@
   .section-head h2 { margin: 0; font-family: var(--display); font-size: clamp(34px, 4.4vw, 56px); line-height: 1.04; font-weight: 600; letter-spacing: -.024em; text-wrap: balance; }
   .section-head p { margin: 0; color: var(--text-2); font-size: 17px; max-width: 46ch; }
 
+  /* Calendrier de l'Avent 2026 : l'annonce du héros et sa section. Le
+     script (bas de page, « Avent ») adapte l'annonce au moment du
+     calendrier et retire les deux au 1er janvier. À ôter du site ensuite. */
+  .annonce { display: inline-flex; align-items: center; gap: 10px; max-width: 100%; margin-bottom: 28px; padding: 5px 12px 5px 5px; border-radius: 999px; background: var(--surface-2); border: 1px solid var(--line-2); color: var(--text-2); font-size: 14px; line-height: 1.3; text-decoration: none; transition: border-color .2s var(--ease), color .2s var(--ease); }
+  .annonce:hover, .annonce:focus-visible { border-color: rgba(60,194,120,.5); color: var(--text); }
+  .annonce b { flex-shrink: 0; height: 24px; padding: 0 9px; border-radius: 999px; background: rgba(60,194,120,.16); color: var(--green); font-size: 12px; font-weight: 600; display: inline-flex; align-items: center; }
+  .annonce .i { flex-shrink: 0; width: 14px; height: 14px; }
+  .avent .feature { border-top: 0; padding-top: 0; }
+  .avent .f-copy h2 { margin: 0 0 14px; font-family: var(--display); font-size: clamp(30px, 3.4vw, 44px); line-height: 1.06; font-weight: 600; letter-spacing: -.022em; text-wrap: balance; }
+  .avent .kicker { margin: 0 0 12px; color: var(--green); font-size: 14px; font-weight: 600; }
+  .avent .garde { margin: 16px 0 0; color: var(--text-3); font-size: 14.5px; max-width: 44ch; }
+  .av-col { position: relative; width: 100%; max-width: 440px; margin-inline: auto; padding-top: 34px; }
+  .av-notif { position: absolute; z-index: 4; top: 0; left: 50%; transform: translateX(-50%); width: min(340px, calc(100% - 24px)); display: flex; gap: 10px; align-items: flex-start; padding: 10px 12px; border-radius: 16px; background: rgba(37,45,41,.92); border: 1px solid var(--app-border); box-shadow: 0 12px 40px rgba(0,0,0,.5); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); font-family: var(--app); }
+  .av-notif svg.jeton { width: 30px; height: 30px; flex-shrink: 0; }
+  .av-notif .tx { min-width: 0; flex: 1; font-size: 13px; line-height: 1.35; color: #A6AEA8; }
+  .av-notif .tx b { display: block; color: #F1F4F0; font-weight: 600; }
+  .av-notif .h { display: flex; justify-content: space-between; font-size: 11px; color: #7C847F; margin-bottom: 1px; }
+  .p-avent { padding: 44px 20px 22px; color: #F1F4F0; }
+  .p-avent .av-t { margin: 0 0 4px; font-size: 22px; font-weight: 700; letter-spacing: -.01em; }
+  .p-avent .av-d { font-size: 13px; color: #A6AEA8; }
+  .av-card { margin-top: 10px; padding: 16px; border-radius: 16px; background: var(--app-card); border: 1px solid var(--app-border); }
+  .av-ticket { display: flex; gap: 14px; align-items: center; }
+  .av-photo { width: 56px; height: 78px; flex-shrink: 0; border-radius: 10px; background: linear-gradient(155deg, #3E7BD6 0%, #20457F 60%, #142C52 100%); box-shadow: inset 0 0 0 1px rgba(255,255,255,.12); display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,.85); font-size: 22px; font-weight: 700; }
+  .av-note { font-size: 12px; color: #A6AEA8; }
+  .av-nom { font-size: 20px; font-weight: 700; line-height: 1.2; }
+  .av-prix { font-size: 14px; color: #A6AEA8; font-variant-numeric: tabular-nums; }
+  .av-btn { margin-top: 14px; height: 42px; border-radius: 12px; background: var(--app-muted); display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 600; }
+  .av-label { margin: 18px 0 0; font-size: 13px; font-weight: 600; color: #A6AEA8; }
+  .av-chiffres { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+  .av-chiffres b { display: block; font-size: 20px; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .av-chiffres span { font-size: 12px; color: #A6AEA8; }
+
   .feature { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 56px; align-items: center; padding: 56px 0; border-top: 1px solid var(--line); }
   .feature.flip { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); }
   .feature.flip .f-copy { order: 2; }
@@ -1002,6 +1034,7 @@
   <!-- ============ Héros ============ -->
   <section class="hero" aria-labelledby="titre">
     <div class="wrap">
+      <a class="annonce rv" id="annonce" href="#avent"><b>Nouveau</b><span>Le calendrier de l’Avent, du 1er au 24 décembre</span><svg class="i" aria-hidden="true"><use href="#i-arrow-r"/></svg></a>
       <div class="hero-top">
         <h1 id="titre" class="rv">Dooka tient les comptes de la bande.</h1>
         <div class="hero-side">
@@ -1124,6 +1157,52 @@
   <section class="manifest" aria-label="Ce qu’est Dooka">
     <div class="wrap">
       <p id="manifeste">Dooka est un <span>carnet</span>, pas un casino. Elle note ce que ta bande a joué, et n’a rien à gagner à ce que tu rejoues.</p>
+    </div>
+  </section>
+
+  <!-- ============ Calendrier de l'Avent (décembre 2026) ============
+       Même contenu que l'onglet Avent de l'app (3.29) et sa notification
+       du matin (3.30). Ticket de la démo choisi HORS du programme réel,
+       pour ne rien dévoiler des jours à venir. Retiré par le script au
+       1er janvier ; à supprimer du fichier ensuite. -->
+  <section class="section avent" id="avent" aria-labelledby="avent-t">
+    <div class="wrap">
+      <div class="feature">
+        <div class="f-copy rv">
+          <p class="kicker">Du 1er au 24 décembre</p>
+          <h2 id="avent-t">Le calendrier de l’Avent de la communauté.</h2>
+          <p>Chaque jour, le même ticket pour tout le monde. Tu le grattes si tu en as envie, ou tu regardes simplement ce qu’il a donné aux autres. Le 25, le récap entre amis.</p>
+          <p class="garde">Rien d’obligatoire : une notification le matin seulement si tu la demandes, et tout se met en veille pendant une pause.</p>
+          <div class="hero-cta">
+            <a class="btn btn-light btn-lg" href="https://github.com/TeamDooka/dooka/releases/latest/download/dooka.apk"><svg class="i" aria-hidden="true"><use href="#i-download"/></svg>Télécharger pour Android</a>
+            <a class="btn btn-ghost btn-lg" href="https://play.google.com/apps/testing/fr.dooka.app">Google Play · test fermé<svg class="i" aria-hidden="true"><use href="#i-chev-r"/></svg></a>
+          </div>
+        </div>
+        <div class="av-col rv" style="--d:.1s">
+          <div class="av-notif" role="img" aria-label="Notification : Calendrier de l’Avent, case du 7 : Solitaire">
+            <svg class="jeton" aria-hidden="true"><use href="#jeton"/></svg>
+            <div class="tx"><span class="h"><span>Dooka</span><span>10:00</span></span><b>Calendrier de l’Avent</b>Case du 7 : Solitaire.</div>
+          </div>
+          <div class="panel p-avent" role="img" aria-label="Écran de l’onglet Avent : ticket du jour Solitaire à 2 €, 46 personnes l’ont gratté, 8 gagnants, plus beau gain 20 €">
+            <p class="av-t">Calendrier de l’Avent</p>
+            <div class="av-d">Lundi 7 décembre · jour 7 sur 24</div>
+            <div class="av-card">
+              <div class="av-ticket">
+                <div class="av-photo" aria-hidden="true">S</div>
+                <div><div class="av-note">Ticket du jour</div><div class="av-nom">Solitaire</div><div class="av-prix">2 €</div></div>
+              </div>
+              <div class="av-btn">J’ai gratté</div>
+            </div>
+            <p class="av-label">La communauté aujourd’hui</p>
+            <div class="av-card av-chiffres">
+              <div><b>46</b><span>l’ont gratté</span></div>
+              <div><b>8</b><span>gagnants</span></div>
+              <div><b>20 €</b><span>plus beau gain</span></div>
+            </div>
+          </div>
+          <p class="panel-note">Démo : chiffres fictifs. Le ticket de chaque jour se découvre le jour même.</p>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -1354,6 +1433,28 @@
     </div>
   </div>
 </footer>
+
+<script>
+  // Avent : l'annonce du héros suit le moment du calendrier (comme l'onglet
+  // de l'app), puis l'annonce et la section disparaissent au 1er janvier.
+  (function () {
+    "use strict";
+    var d = new Date(), annee = 2026;
+    var annonce = document.getElementById("annonce");
+    var section = document.getElementById("avent");
+    if (d.getFullYear() > annee) {
+      if (annonce) annonce.remove();
+      if (section) section.remove();
+      return;
+    }
+    if (!annonce || d.getFullYear() < annee || d.getMonth() < 11) return;
+    var ouvert = d.getDate() <= 24;
+    annonce.querySelector("b").textContent = ouvert ? "En ce moment" : "Le récap";
+    annonce.querySelector("span").textContent = ouvert
+      ? "Le calendrier de l’Avent est ouvert jusqu’au 24 décembre"
+      : "Le calendrier de l’Avent se termine par le récap entre amis";
+  })();
+</script>
 
 <script>
   (function () {
