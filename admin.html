@@ -130,6 +130,10 @@
   .mrow:first-child { border-top: 0; }
   .mrow .l { color: var(--text); font-size: 14px; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .mrow .l small { color: var(--text-3); font-size: 12px; margin-left: 6px; }
+  /* Rangée à deux lignes : la note (limite, tarif) passe sous le libellé. */
+  .mrow.tall { grid-template-columns: minmax(150px, 1.5fr) 1.4fr 64px 52px; }
+  .mrow.tall .l { white-space: normal; line-height: 1.3; }
+  .mrow.tall .l small { display: block; margin: 3px 0 0; }
   .track { display: block; height: 8px; border-radius: 999px; background: var(--track); overflow: hidden; }
   .fill { display: block; height: 100%; border-radius: 999px; background: var(--green); min-width: 2px; }
   .fill.dim { background: #6E7A73; }
@@ -211,7 +215,7 @@
   @media (max-width: 760px) {
     .cols { grid-template-columns: 1fr; }
     .adopt { grid-template-columns: 1fr; gap: 18px; }
-    .mrow { grid-template-columns: minmax(96px, 1fr) 1fr 52px 44px; gap: 10px; }
+    .mrow, .mrow.tall { grid-template-columns: minmax(96px, 1fr) 1fr 52px 44px; gap: 10px; }
     .nav .stamp { display: none; }
   }
   @media (max-width: 480px) {
@@ -224,7 +228,7 @@
     .panel { padding: 16px; }
     .nav-title { display: none; }
     .blk-head h2 { font-size: 24px; }
-    .mrow { grid-template-columns: minmax(0, 1.4fr) 1fr 40px; }
+    .mrow, .mrow.tall { grid-template-columns: minmax(0, 1.4fr) 1fr 52px; }
     .mrow .l { white-space: normal; line-height: 1.3; }
     .mrow .l small { display: block; margin: 2px 0 0; }
     .mrow .p { display: none; }
@@ -284,8 +288,10 @@
         <li><a href="#sessions">Sessions</a></li>
         <li><a href="#social">Social</a></li>
         <li><a href="#lieux">Lieux</a></li>
+        <li><a href="#couts">Coûts</a></li>
         <li><a href="#ecrans">Écrans</a></li>
         <li><a href="#versions">Versions</a></li>
+        <li><a href="#site">Site</a></li>
         <li><a href="#reglages">Réglages</a></li>
         <li><a href="#communaute">Communauté</a></li>
         <li><a href="#a-brancher">À brancher</a></li>
@@ -355,6 +361,23 @@
       </div>
     </section>
 
+    <section class="blk" id="couts">
+      <div class="blk-head"><h2>Coûts et capacité</h2><p id="costs-lede">Google facture chaque type d'appel au-delà d'une gratuité mensuelle. Supabase plafonne son offre gratuite.</p></div>
+      <div class="tiles" id="costs-tiles"></div>
+      <div class="cols">
+        <div class="panel">
+          <div class="panel-h"><h3>Gratuité Google du mois</h3><span>appels ce mois-ci</span></div>
+          <div id="google-meters"></div>
+          <p class="note">Tarifs publics de l'API Places « legacy », en dollars (novembre 2026). L'affichage de la carte (SDK Maps) est gratuit. La facture exacte reste dans la console Google Cloud.</p>
+        </div>
+        <div class="panel">
+          <div class="panel-h"><h3>Offre gratuite Supabase</h3><span>part utilisée</span></div>
+          <div id="supa-meters"></div>
+          <p class="note">Le trafic sortant (5 Go par mois) et les appels de fonctions (500 000 par mois) ne se lisent que dans le tableau de bord Supabase.</p>
+        </div>
+      </div>
+    </section>
+
     <section class="blk" id="ecrans">
       <div class="blk-head"><h2>Écrans ouverts</h2><p>Un total par écran et par jour, sans compte ni appareil (depuis la 0099).</p></div>
       <div class="panel">
@@ -374,6 +397,21 @@
       <div class="panel">
         <div class="panel-h"><h3>Téléchargements de l'APK</h3><span id="dl-total"></span></div>
         <div class="scroll" id="downloads"><p class="note">Chargement…</p></div>
+      </div>
+    </section>
+
+    <section class="blk" id="site">
+      <div class="blk-head"><h2>Site dooka.fr</h2><p id="site-lede">Pages vues, comptées sans cookie. Un navigateur qui demande à ne pas être suivi n'est pas compté.</p></div>
+      <div class="tiles" id="site-tiles"></div>
+      <div class="cols">
+        <div class="panel">
+          <div class="panel-h"><h3>Pages</h3><span id="site-pages-total"></span></div>
+          <div id="site-pages"></div>
+        </div>
+        <div class="panel">
+          <div class="panel-h"><h3>Provenance</h3><span>arrivées sur le site</span></div>
+          <div id="site-sources"></div>
+        </div>
       </div>
     </section>
 
@@ -397,14 +435,12 @@
     </section>
 
     <section class="blk" id="a-brancher">
-      <div class="blk-head"><h2>Pas encore branché</h2><p>Ces chiffres vivent hors de la base. Ils arriveront par un relevé de nuit, sans clé dans cette page.</p></div>
+      <div class="blk-head"><h2>Pas encore branché</h2><p>Ces chiffres vivent chez des tiers, qui seuls peuvent en ouvrir l'accès. Ils arriveront dans la base par un relevé, sans clé dans cette page.</p></div>
       <ul class="todo">
-        <li><div><b>Coût Google Cloud</b><span>Appels Maps et Vision au jour le jour (compteur dans les fonctions Edge), et le montant facturé.</span></div><span class="pill">à brancher</span></li>
-        <li><div><b>Coût Anthropic</b><span>Le tri des suggestions sur GitHub : coût de chaque passage, total du mois.</span></div><span class="pill">à brancher</span></li>
-        <li><div><b>Google Play</b><span>Installations, désinstallations, appareils actifs, notes (exports quotidiens de la Play Console).</span></div><span class="pill">à brancher</span></li>
-        <li><div><b>Visites de dooka.fr</b><span>Pages vues et provenance, sans cookie, à mentionner dans la politique de confidentialité.</span></div><span class="pill">à brancher</span></li>
-        <li><div><b>Comptes supprimés</b><span>Un compteur par jour dans la fonction de suppression, sans identité.</span></div><span class="pill">à brancher</span></li>
-        <li><div><b>Supabase</b><span>Taille de la base, stockage des photos, utilisateurs actifs facturés.</span></div><span class="pill">à brancher</span></li>
+        <li><div><b>Coût Anthropic</b><span>Le tri des suggestions sur GitHub : coût de chaque passage, total du mois. Il faut un secret de plus dans GitHub.</span></div><span class="pill">à brancher</span></li>
+        <li><div><b>Google Play</b><span>Installations, désinstallations, appareils actifs, notes (rapports quotidiens de la Play Console). Il faut un compte de service invité dans la Play Console.</span></div><span class="pill">à brancher</span></li>
+        <li><div><b>App Store</b><span>Mêmes chiffres côté iPhone, par l'API d'App Store Connect.</span></div><span class="pill">après la sortie</span></li>
+        <li><div><b>Facture Google exacte</b><span>Export de facturation de Google Cloud, si l'estimation de « Coûts et capacité » ne suffit plus.</span></div><span class="pill">si besoin</span></li>
       </ul>
     </section>
   </main>
@@ -482,12 +518,14 @@
   // Une rangée : libellé, jauge, valeur, part. La jauge est relative à
   // `max` (le total des comptes, ou la plus grande valeur de la liste) ;
   // la part l'est à `of`, qui vaut `max` par défaut.
+  // `text` remplace la valeur affichée (des mégaoctets, par exemple) ;
+  // `tall` passe la note sous le libellé.
   function meter(label, value, max, opts) {
     opts = opts || {};
-    return '<div class="mrow"><span class="l" title="' + esc(label) + '">' + esc(label) +
+    return '<div class="mrow' + (opts.tall ? ' tall' : '') + '"><span class="l" title="' + esc(label) + '">' + esc(label) +
       (opts.note ? '<small>' + esc(opts.note) + '</small>' : '') + '</span>' +
       gauge(value, max, opts.dim) +
-      '<span class="n">' + n(value) + '</span>' +
+      '<span class="n">' + (opts.text != null ? esc(opts.text) : n(value)) + '</span>' +
       '<span class="p">' + (opts.share === false ? '' : pct(value, opts.of || max)) + '</span></div>';
   }
 
@@ -653,6 +691,8 @@
     { key: 'sessions', label: 'Sessions', suffix: 'sessions' },
     { key: 'signups', label: 'Inscriptions', suffix: 'inscriptions' },
     { key: 'screens', label: 'Écrans ouverts', suffix: 'ouvertures' },
+    { key: 'google', label: 'Appels Google', suffix: 'appels', since: 'google' },
+    { key: 'visits', label: 'Pages vues du site', suffix: 'pages vues', since: 'site' },
     { key: 'cumul', label: 'Comptes', kind: 'line', suffix: 'comptes' }
   ];
   var NOTES = {
@@ -663,8 +703,75 @@
     sessions: 'Sessions ouvertes ce jour-là.',
     signups: 'Comptes créés ce jour-là et toujours existants.',
     screens: 'Ouvertures d\'écran comptées par l\'app (0099). Les versions plus anciennes ne comptent rien.',
+    google: 'Appels envoyés à Google par la carte (recherches, fiches de bar), hors fiches servies par le cache.',
+    visits: 'Pages vues sur dooka.fr, sans cookie.',
     cumul: 'Comptes encore existants, reconstitués à partir des dates d\'inscription.'
   };
+
+  // ── Compteurs (0137) ───────────────────────────────────────────────
+  // admin_compteurs renvoie des totaux par jour et par clé (google:nearby,
+  // site:/, compte_supprime…). Ils sont rangés dans les jours d'admin_kpis
+  // pour que le graphique d'activité les montre comme le reste.
+  function cnt(obj, key) { return num(obj && obj[key]); }
+  function prefixed(obj, prefix) {
+    var out = [];
+    for (var k in obj) if (Object.prototype.hasOwnProperty.call(obj, k) && k.indexOf(prefix) === 0) out.push({ key: k.slice(prefix.length), n: num(obj[k]) });
+    return out.sort(function (a, b) { return b.n - a.n; });
+  }
+  // Premier jour compté d'une famille, ou celui du premier compteur posé.
+  function since(family) {
+    var d = state.c && state.c.depuis || {};
+    if (d[family]) return d[family];
+    var all = Object.keys(d).map(function (k) { return d[k]; }).sort();
+    return all[0] || null;
+  }
+  function sinceText(family) {
+    var d = since(family);
+    return d ? 'Compté depuis le ' + longFmt.format(day(d)) + '.' : 'Compteur pas encore en place.';
+  }
+  function mergeCounters() {
+    var byDay = {};
+    ((state.c && state.c.jours) || []).forEach(function (r) {
+      var d = byDay[r.day] || (byDay[r.day] = { google: 0, visits: 0, deleted: 0 });
+      if (r.cle.indexOf('google:') === 0 && r.cle !== 'google:details_cache') d.google += num(r.n);
+      else if (r.cle.indexOf('site:') === 0) d.visits += num(r.n);
+      else if (r.cle === 'compte_supprime') d.deleted += num(r.n);
+    });
+    (state.k.daily || []).forEach(function (d) {
+      var x = byDay[d.day] || {};
+      d.google = num(x.google); d.visits = num(x.visits); d.deleted = num(x.deleted);
+    });
+  }
+  // Somme d'une clé sur les jours de la période choisie.
+  function periodCount(match) {
+    var from = (periodDays()[0] || {}).day || '';
+    return ((state.c && state.c.jours) || []).reduce(function (s, r) {
+      return r.day >= from && match(r.cle) ? s + num(r.n) : s;
+    }, 0);
+  }
+  function usd(v) { return nf2.format(num(v)) + NBSP + '$'; }
+  function mo(bytes) {
+    var v = num(bytes) / 1048576;
+    return (v < 10 ? nf1 : nf).format(v) + NBSP + 'Mo';
+  }
+
+  // Tarifs publics de l'API Places « legacy » (celle qu'appelle
+  // google-maps-proxy), novembre 2026 : une gratuité par type d'appel et par
+  // mois, puis un prix pour 1 000 appels. À revoir si Google les change.
+  var GOOGLE = [
+    { label: 'Recherches autour de soi', api: 'Nearby Search', keys: ['google:nearby', 'google:nearby_page'], free: 5000, price: 32 },
+    { label: 'Recherches par nom', api: 'Text Search', keys: ['google:text'], free: 5000, price: 32 },
+    { label: 'Fiches de bar', api: 'Place Details', keys: ['google:details'], free: 5000, price: 17 },
+    { label: 'Itinéraires', api: 'Directions', keys: ['google:directions'], free: 10000, price: 5, note: 'versions 3.8 et avant' }
+  ];
+  function skuUse(obj, sku) { return sku.keys.reduce(function (s, k) { return s + cnt(obj, k); }, 0); }
+  function skuCost(used, sku) { return (Math.max(0, used - sku.free) * sku.price) / 1000; }
+
+  // Offre gratuite de Supabase (novembre 2026).
+  var SUPA_DB_MB = 500, SUPA_STORAGE_MB = 1024, SUPA_MAU = 50000;
+  var BUCKETS = { avatars: 'photos de profil', 'play-proofs': 'preuves de gain', 'group-images': 'images de bande' };
+  var PAGES = { '/': 'Accueil', '/confidentialite': 'Confidentialité', '/jeu-responsable': 'Jeu responsable', '/suppression-compte': 'Supprimer mon compte', autre: 'Autres pages' };
+  var SOURCES = { direct: 'Accès direct', moteur: 'Moteur de recherche', reseaux: 'Réseau social', store: 'Magasin d\'applications', autre: 'Autre site' };
 
   function periodDays() { return (state.k.daily || []).slice(-state.period); }
 
@@ -694,15 +801,16 @@
     var host = $('chart');
     host.setAttribute('aria-label', m.label + ' par jour sur les ' + state.period + ' derniers jours. Le détail est dans le tableau sous le graphique.');
     drawChart(host, series, { unit: m.unit, kind: m.kind, suffix: m.suffix });
-    $('chart-note').textContent = NOTES[m.key] || '';
+    $('chart-note').textContent = (NOTES[m.key] || '') + (m.since ? ' ' + sinceText(m.since) : '');
 
     // La vue en tableau : le graphique ne doit pas être la seule façon
     // de lire le chiffre d'un jour.
-    $('raw').innerHTML = '<table class="t"><thead><tr><th>Jour</th><th class="n">Tickets</th><th class="n">Misé</th><th class="n">Gagné</th><th class="n">Joueurs</th><th class="n">Sessions</th><th class="n">Inscriptions</th><th class="n">Écrans</th></tr></thead><tbody>' +
+    $('raw').innerHTML = '<table class="t"><thead><tr><th>Jour</th><th class="n">Tickets</th><th class="n">Misé</th><th class="n">Gagné</th><th class="n">Joueurs</th><th class="n">Sessions</th><th class="n">Inscriptions</th><th class="n">Écrans</th><th class="n">Google</th><th class="n">Site</th></tr></thead><tbody>' +
       days.slice().reverse().map(function (d) {
         return '<tr><td>' + esc(dayFmt.format(day(d.day))) + '</td><td class="n">' + n(d.plays) + '</td><td class="n">' + eur(d.staked) +
           '</td><td class="n">' + eur(d.won) + '</td><td class="n">' + n(d.players) + '</td><td class="n">' + n(d.sessions) +
-          '</td><td class="n">' + n(d.signups) + '</td><td class="n">' + n(d.screens) + '</td></tr>';
+          '</td><td class="n">' + n(d.signups) + '</td><td class="n">' + n(d.screens) +
+          '</td><td class="n">' + n(d.google) + '</td><td class="n">' + n(d.visits) + '</td></tr>';
       }).join('') + '</tbody></table>';
   }
 
@@ -733,6 +841,7 @@
       tile('Nouveaux sur 30 jours', n(u.new_30d), n(u.new_7d) + ' sur 7 jours') +
       tile('Ont joué sur 30 jours', n(u.played_30d), 'ont noté au moins un ticket') +
       tile('Jamais revus', n(u.never_back), pct(u.never_back, t) + ' des comptes') +
+      deletedTile() +
       tile('Administrateurs', n(u.admins));
 
     $('funnel').innerHTML =
@@ -742,6 +851,19 @@
       meter('Ont au moins un ami', u.with_friend, t) +
       meter('Sont dans une bande', u.in_group, t) +
       meter('Reçoivent les notifications', u.with_push, t);
+  }
+
+  // Comptés par un déclencheur à la disparition du profil (0137), avec
+  // l'ancienneté du compte en quatre tranches.
+  function deletedTile() {
+    if (!state.c) return tile('Comptes supprimés', '—', 'compteur indisponible');
+    var tot = state.c.total || {};
+    var all = cnt(tot, 'compte_supprime');
+    var d30 = sumOf((state.k.daily || []).slice(-30), 'deleted');
+    var start = since('compte_supprime');
+    return tile('Comptes supprimés', n(all), all
+      ? n(d30) + ' sur 30 j · ' + n(cnt(tot, 'compte_supprime:moins_1j')) + ' le premier jour'
+      : (start ? 'aucun depuis le ' + esc(shortFmt.format(day(start))) : 'compteur pas encore en place'));
   }
 
   function renderPlay() {
@@ -875,6 +997,100 @@
     }).join('') : '<p class="note">Aucun appel ces dernières 24 heures.</p>';
   }
 
+  function renderCosts() {
+    var c = state.c;
+    if (!c) {
+      $('costs-tiles').innerHTML = '<p class="note">Compteurs indisponibles : la migration 0137 n\'est pas encore appliquée.</p>';
+      $('google-meters').innerHTML = '';
+      $('supa-meters').innerHTML = '';
+      return;
+    }
+    var mois = c.mois || {};
+    // Projection : le rythme du mois en cours, prolongé jusqu'à sa fin.
+    var now = new Date();
+    var dim = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
+    var start = since('google');
+    var startDay = start && start.slice(0, 7) === now.toISOString().slice(0, 7) ? Number(start.slice(8, 10)) : 1;
+    var elapsed = Math.max(1, now.getDate() - startDay + 1);
+    var remaining = dim - now.getDate();
+    var cost = 0, proj = 0, calls = 0;
+    GOOGLE.forEach(function (s) {
+      var u = skuUse(mois, s);
+      calls += u;
+      cost += skuCost(u, s);
+      proj += skuCost(u + Math.round((u / elapsed) * remaining), s);
+    });
+    var cache = cnt(mois, 'google:details_cache'), det = cnt(mois, 'google:details');
+
+    $('costs-lede').textContent = 'Google facture chaque type d\'appel au-delà d\'une gratuité mensuelle. Supabase plafonne son offre gratuite. ' +
+      (start ? 'Appels Google comptés depuis le ' + longFmt.format(day(start)) + '.' : 'Le compteur des appels Google n\'est pas encore en place.');
+    $('costs-tiles').innerHTML =
+      tile('Google ce mois-ci', usd(cost), cost ? 'au-delà de la gratuité, tarif public' : 'tout tient dans la gratuité') +
+      tile('Projection fin de mois', usd(proj), 'au rythme de ' + plural(elapsed, 'jour compté', 'jours comptés')) +
+      tile('Appels Google ce mois-ci', n(calls), start ? 'depuis le ' + esc(shortFmt.format(day(start))) : 'compteur pas encore en place') +
+      tile('Cache des horaires', (cache + det) ? pct(cache, cache + det) : '—', plural(cache, 'fiche ouverte', 'fiches ouvertes') + ' sans appeler Google');
+
+    $('google-meters').innerHTML = GOOGLE.map(function (s) {
+      var u = skuUse(mois, s);
+      return meter(s.label, u, s.free, {
+        tall: true,
+        note: s.api + ' · ' + n(s.free) + ' gratuits, puis ' + nf.format(s.price) + NBSP + '$ les 1' + NBSP + '000' + (s.note ? ' · ' + s.note : '')
+      });
+    }).join('');
+
+    var inf = c.infra || {};
+    var st = inf.storage || [];
+    var stBytes = sumOf(st, 'bytes');
+    $('supa-meters').innerHTML =
+      meter('Base de données', num(inf.db_bytes) / 1048576, SUPA_DB_MB, { tall: true, text: mo(inf.db_bytes), note: 'sur ' + n(SUPA_DB_MB) + NBSP + 'Mo' }) +
+      meter('Photos', stBytes / 1048576, SUPA_STORAGE_MB, {
+        tall: true, text: mo(stBytes),
+        note: 'sur 1' + NBSP + 'Go · ' + (st.length ? st.map(function (b) { return (BUCKETS[b.bucket] || b.bucket) + ' ' + mo(b.bytes); }).join(' · ') : 'aucun fichier')
+      }) +
+      meter('Comptes actifs du mois', inf.mau, SUPA_MAU, { tall: true, note: 'sur ' + n(SUPA_MAU) + ' · ' + plural(inf.auth_users, 'compte', 'comptes') + ' au total' });
+  }
+
+  function renderSite() {
+    var c = state.c;
+    if (!c) {
+      $('site-tiles').innerHTML = '<p class="note">Compteurs indisponibles : la migration 0137 n\'est pas encore appliquée.</p>';
+      $('site-pages').innerHTML = '';
+      $('site-sources').innerHTML = '';
+      $('site-pages-total').textContent = '';
+      return;
+    }
+    var per = 'sur ' + state.period + NBSP + 'j';
+    var views = periodCount(function (k) { return k.indexOf('site:') === 0; });
+    var entries = periodCount(function (k) { return k.indexOf('site_entree:') === 0; });
+    var today = (state.k.daily || []).slice(-1)[0] || {};
+    $('site-lede').textContent = 'Pages vues, comptées sans cookie. Un navigateur qui demande à ne pas être suivi n\'est pas compté. ' + sinceText('site');
+
+    var from = (periodDays()[0] || {}).day || '';
+    var pages = {}, sources = {};
+    (c.jours || []).forEach(function (r) {
+      if (r.day < from) return;
+      if (r.cle.indexOf('site:') === 0) pages[r.cle] = num(pages[r.cle]) + num(r.n);
+      else if (r.cle.indexOf('site_entree:') === 0) sources[r.cle] = num(sources[r.cle]) + num(r.n);
+    });
+    var pageList = prefixed(pages, 'site:');
+    var sourceList = prefixed(sources, 'site_entree:');
+    var top = pageList[0];
+
+    $('site-tiles').innerHTML =
+      tile('Pages vues', n(views), per) +
+      tile('Visites', n(entries), 'arrivées de l\'extérieur, ' + per) +
+      tile('Aujourd\'hui', n(today.visits), 'pages vues') +
+      tile('Page la plus vue', top ? esc(PAGES[top.key] || top.key) : '—', top ? plural(top.n, 'vue', 'vues') + ' · ' + pct(top.n, views) : 'rien de compté');
+    $('site-pages-total').textContent = plural(views, 'page vue', 'pages vues') + ' ' + per;
+    var pmax = Math.max(1, (pageList[0] || {}).n || 0), smax = Math.max(1, (sourceList[0] || {}).n || 0);
+    $('site-pages').innerHTML = pageList.length ? pageList.map(function (p) {
+      return meter(PAGES[p.key] || p.key, p.n, pmax, { of: views, tall: true });
+    }).join('') : '<p class="note">Aucune page vue sur la période.</p>';
+    $('site-sources').innerHTML = sourceList.length ? sourceList.map(function (s) {
+      return meter(SOURCES[s.key] || s.key, s.n, smax, { of: entries, tall: true });
+    }).join('') : '<p class="note">Aucune arrivée sur la période.</p>';
+  }
+
   var ECRANS = {
     carte: 'Carte', sessions: 'Sessions', groupes: 'Bandes', tickets: 'Tickets', profil: 'Profil',
     bilan_du_mois: 'Bilan du mois', collection: 'Collection', fiche_bar: 'Fiche d\'un bar',
@@ -1003,9 +1219,11 @@
     renderSessions();
     renderSocial();
     renderPlaces();
+    renderCosts();
     renderScreens();
     renderVersions();
     renderDownloads();
+    renderSite();
     renderSettings();
     renderCommunity();
     if (animate) {
@@ -1033,6 +1251,7 @@
     document.querySelectorAll('[data-period]').forEach(function (x) { x.setAttribute('aria-pressed', String(x === b)); });
     renderHero();
     renderActivity();
+    renderSite();
   });
   var resizeTimer;
   window.addEventListener('resize', function () {
@@ -1061,7 +1280,10 @@
     if (loading) return loading;
     // Le refus vient de la base, pas d'ici : admin_kpis lève une
     // exception si l'appelant n'est pas administrateur.
-    loading = Promise.all([sb.rpc('admin_kpis'), loadReleases()]).then(function (r) {
+    // admin_compteurs (0137) à part : s'il manque ou échoue, le reste du
+    // tableau s'affiche quand même, sans les compteurs.
+    var counters = sb.rpc('admin_compteurs').then(function (res) { return res.error ? null : res.data; }, function () { return null; });
+    loading = Promise.all([sb.rpc('admin_kpis'), loadReleases(), counters]).then(function (r) {
       var out = r[0];
       if (out.error) {
         showGate('<span class="err">Ce compte n\'est pas administrateur.</span>', true);
@@ -1069,6 +1291,8 @@
       }
       state.k = out.data;
       state.releases = Array.isArray(r[1]) ? r[1] : [];
+      state.c = r[2];
+      mergeCounters();
       $('gate').hidden = true;
       $('board').hidden = false;
       renderAll(animate);
