@@ -1,0 +1,729 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Quali — Tableau de bord</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%230A0A0B'/><text x='50' y='70' font-size='62' text-anchor='middle' font-family='sans-serif' font-weight='700' fill='%23E8452C'>Q</text></svg>" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Semi+Condensed:wght@600;700&display=swap" />
+<style>
+  /* Outil interne. Mêmes couleurs que l'app (src/theme.ts de Quali) et que
+     les pages légales de /quali : fond crème ou noir, l'accent rouge pour
+     seule couleur de donnée. Clair ou sombre selon le système. */
+  :root {
+    --ground: #EFEAE4; --surface: #FBF9F6; --raised: #F4F0EA; --tint: #F9E4DB;
+    --ink: #1A1418; --ink-2: rgba(26,20,24,.72); --muted: #6B6167;
+    --accent: #C62D16; --accent-soft: rgba(198,45,22,.32); --pos: #2B7553;
+    --line: rgba(26,20,24,.12); --hair: rgba(26,20,24,.07); --track: rgba(26,20,24,.07);
+    --grid: rgba(26,20,24,.08);
+    --font: "Barlow", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --display: "Barlow Semi Condensed", "Barlow", system-ui, sans-serif;
+    --ease: cubic-bezier(.2,.7,.2,1);
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground: #0A0A0B; --surface: #0F0F10; --raised: #141415; --tint: #1A1416;
+      --ink: #F4F2F0; --ink-2: rgba(244,242,240,.74); --muted: #9A9298;
+      --accent: #FF6A52; --accent-soft: rgba(255,106,82,.30); --pos: #4FBF8B;
+      --line: rgba(255,255,255,.12); --hair: rgba(255,255,255,.06); --track: rgba(255,255,255,.07);
+      --grid: rgba(255,255,255,.07);
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --ground: #0A0A0B; --surface: #0F0F10; --raised: #141415; --tint: #1A1416;
+    --ink: #F4F2F0; --ink-2: rgba(244,242,240,.74); --muted: #9A9298;
+    --accent: #FF6A52; --accent-soft: rgba(255,106,82,.30); --pos: #4FBF8B;
+    --line: rgba(255,255,255,.12); --hair: rgba(255,255,255,.06); --track: rgba(255,255,255,.07);
+    --grid: rgba(255,255,255,.07);
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body { margin: 0; background: var(--ground); color: var(--ink); font: 400 15px/1.5 var(--font); }
+  [hidden] { display: none !important; }
+  button { font: inherit; color: inherit; }
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 16px; }
+  @media (min-width: 640px) { .wrap { padding: 0 24px; } }
+  .num { font-variant-numeric: tabular-nums; }
+
+  /* ---------- Barre ---------- */
+  .bar { position: sticky; top: 0; z-index: 10; background: color-mix(in srgb, var(--ground) 88%, transparent);
+    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+  .bar-in { height: 58px; display: flex; align-items: center; gap: 10px; }
+  .bar svg.logo { width: 28px; height: 28px; flex: none; }
+  .bar .name { font-weight: 600; letter-spacing: -.01em; }
+  .bar .sub { color: var(--muted); }
+  .bar .sp { flex: 1; }
+  .stamp { font-size: 13px; color: var(--muted); white-space: nowrap; }
+  .btn { appearance: none; border: 1px solid var(--line); background: var(--surface); border-radius: 999px;
+    min-height: 34px; padding: 0 14px; font-size: 14px; font-weight: 500; cursor: pointer;
+    transition: border-color .2s var(--ease), background-color .2s var(--ease); }
+  .btn:hover { border-color: color-mix(in srgb, var(--ink) 30%, transparent); }
+  .btn:disabled { opacity: .5; cursor: default; }
+  .btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+  @media (max-width: 560px) { .bar .sub, .stamp { display: none; } }
+
+  /* ---------- Accès ---------- */
+  .gate { max-width: 420px; margin: 12vh auto 0; padding: 0 16px; text-align: center; }
+  .gate h1 { font: 700 34px/1.05 var(--display); letter-spacing: -.01em; margin: 18px 0 8px; }
+  .gate p { color: var(--muted); margin: 0 0 24px; }
+  .gate .err { color: var(--accent); }
+  .gate .btn { width: 100%; min-height: 44px; }
+  .gate form { display: grid; gap: 8px; margin-top: 18px; padding-top: 18px; border-top: 1px solid var(--line); }
+  .gate input { min-height: 44px; border-radius: 12px; border: 1px solid var(--line); background: var(--surface);
+    color: var(--ink); padding: 0 14px; font: inherit; }
+  .gate .or { color: var(--muted); font-size: 13px; margin: 18px 0 0; }
+
+  /* ---------- En-tête ---------- */
+  .top { padding: 40px 0 0; }
+  .top-row { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+  h1.title { margin: 0; font: 700 clamp(36px, 5vw, 52px)/1 var(--display); letter-spacing: -.015em; }
+  .lede { margin: 10px 0 0; color: var(--ink-2); font-size: 16px; max-width: 70ch; }
+  .lede b { color: var(--ink); font-weight: 600; }
+
+  .seg { display: inline-flex; flex-wrap: wrap; gap: 2px; padding: 3px; border-radius: 999px; background: var(--track); }
+  .seg button { appearance: none; border: 0; background: transparent; cursor: pointer; min-height: 30px;
+    padding: 0 12px; border-radius: 999px; font-size: 13px; font-weight: 500; color: var(--muted);
+    transition: color .2s var(--ease), background-color .2s var(--ease); }
+  .seg button:hover { color: var(--ink); }
+  .seg button[aria-pressed="true"] { background: var(--surface); color: var(--ink); box-shadow: 0 0 0 1px var(--line); }
+
+  /* ---------- Sections ---------- */
+  section.blk { padding-top: 48px; }
+  .blk-h { display: flex; align-items: baseline; justify-content: space-between; gap: 6px 16px; flex-wrap: wrap;
+    border-top: 1px solid var(--line); padding-top: 18px; margin-bottom: 16px; }
+  .blk-h h2 { margin: 0; font: 700 26px/1.1 var(--display); letter-spacing: -.01em; }
+  .blk-h p { margin: 0; color: var(--muted); font-size: 13px; max-width: 72ch; }
+
+  .tiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 10px; }
+  .tile { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 14px 16px; min-width: 0; }
+  .tile .k { font-size: 13px; color: var(--ink-2); }
+  .tile .v { margin-top: 4px; font: 700 30px/1.05 var(--display); letter-spacing: -.01em; font-variant-numeric: tabular-nums; }
+  .tile .s { margin-top: 3px; font-size: 13px; color: var(--muted); }
+  .tile .s b { color: var(--ink-2); font-weight: 500; }
+  .pos { color: var(--pos); }
+
+  .hero { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin-top: 28px; }
+  .hero .tile { padding: 16px 18px 12px; border-radius: 20px; }
+  .hero .v { font-size: clamp(38px, 4.4vw, 52px); }
+  .hero .spark { height: 40px; margin-top: 10px; }
+  .hero .spark svg { display: block; width: 100%; height: 100%; overflow: visible; }
+  @media (max-width: 900px) { .hero { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+  .panel { background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 18px; min-width: 0; }
+  .panel + .panel, .tiles + .panel, .tiles + .cols, .panel + .cols { margin-top: 10px; }
+  .panel-h { display: flex; align-items: baseline; justify-content: space-between; gap: 8px 12px; flex-wrap: wrap; margin-bottom: 12px; }
+  .panel-h h3 { margin: 0; font-size: 15px; font-weight: 600; }
+  .panel-h span { font-size: 13px; color: var(--muted); }
+  .cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 10px; }
+  .note { margin: 10px 0 0; font-size: 13px; color: var(--muted); }
+
+  /* ---------- Graphiques ---------- */
+  .chart { position: relative; width: 100%; }
+  .chart svg { display: block; width: 100%; overflow: visible; }
+  .chart text { font-family: var(--font); font-size: 12px; fill: var(--muted); font-variant-numeric: tabular-nums; }
+  .ctrl { display: flex; gap: 8px; flex-wrap: wrap; justify-content: space-between; margin-bottom: 14px; }
+  .legend { display: flex; gap: 14px; flex-wrap: wrap; font-size: 13px; color: var(--ink-2); margin-top: 10px; }
+  .legend i { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
+
+  .tip { position: fixed; z-index: 50; pointer-events: none; background: var(--ink); color: var(--ground);
+    border-radius: 10px; padding: 8px 10px; font-size: 13px; line-height: 1.4; max-width: 240px;
+    box-shadow: 0 6px 24px rgba(0,0,0,.18); opacity: 0; transition: opacity .12s; }
+  .tip.on { opacity: 1; }
+  .tip b { font-weight: 600; }
+  .tip .d { opacity: .7; }
+
+  /* Jauges : libellé, barre, valeur. */
+  .meter { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 12px; padding: 8px 0; border-top: 1px solid var(--hair); }
+  .meter:first-child { border-top: 0; padding-top: 0; }
+  .meter .l { font-size: 14px; }
+  .meter .r { font-size: 13px; color: var(--muted); text-align: right; font-variant-numeric: tabular-nums; }
+  .meter .r b { color: var(--ink); font-weight: 600; }
+  .meter .t { grid-column: 1 / -1; height: 6px; border-radius: 3px; background: var(--track); overflow: hidden; }
+  .meter .t span { display: block; height: 100%; border-radius: 3px; background: var(--accent); }
+
+  /* Tableau des manches. */
+  .scroll { overflow-x: auto; margin: 0 -18px; padding: 0 18px; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; font-variant-numeric: tabular-nums; }
+  th, td { padding: 8px 10px; text-align: right; border-bottom: 1px solid var(--hair); white-space: nowrap; }
+  th:first-child, td:first-child, th:nth-child(2), td:nth-child(2) { text-align: left; }
+  th { font-size: 12px; font-weight: 500; color: var(--muted); }
+  tr.next td { background: var(--tint); }
+  td .pill { display: inline-block; font-size: 12px; padding: 1px 8px; border-radius: 999px; border: 1px solid var(--line); color: var(--muted); }
+  td .pill.on { border-color: var(--accent); color: var(--accent); }
+
+  /* Carte de chaleur. */
+  .heat { display: grid; grid-template-columns: 28px repeat(24, minmax(0, 1fr)); gap: 2px; font-size: 11px; color: var(--muted); }
+  .heat .c { aspect-ratio: 1; border-radius: 3px; background: var(--track); }
+  .heat .lab { display: flex; align-items: center; }
+  .heat .hr { text-align: center; }
+
+  footer { margin: 56px 0 40px; padding-top: 18px; border-top: 1px solid var(--line); font-size: 13px; color: var(--muted); }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .rise { animation: rise .5s var(--ease) both; }
+    @keyframes rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+  }
+</style>
+</head>
+<body>
+
+<header class="bar">
+  <div class="wrap bar-in">
+    <svg class="logo" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="48" fill="#0A0A0B"/><text x="50" y="70" font-size="62" text-anchor="middle" font-family="sans-serif" font-weight="700" fill="#E8452C">Q</text></svg>
+    <span class="name">Quali</span><span class="sub">· tableau de bord</span>
+    <span class="sp"></span>
+    <span class="stamp" id="stamp"></span>
+    <button class="btn" id="refresh" type="button" hidden>Actualiser</button>
+    <button class="btn" id="logout" type="button" hidden>Déconnexion</button>
+  </div>
+</header>
+
+<div class="gate" id="gate">
+  <h1>Tableau de bord</h1>
+  <p id="gate-msg">Chargement…</p>
+  <div id="gate-actions" hidden>
+    <button class="btn primary" id="login" type="button">Se connecter avec Google</button>
+    <p class="or">ou avec l'e-mail et le mot de passe du compte Quali</p>
+    <form id="mail">
+      <input type="email" id="mail-a" autocomplete="username" placeholder="Adresse e-mail" required />
+      <input type="password" id="mail-p" autocomplete="current-password" placeholder="Mot de passe" required />
+      <button class="btn" type="submit">Se connecter</button>
+    </form>
+  </div>
+  <button class="btn" id="logout-gate" type="button" hidden style="margin-top:12px">Changer de compte</button>
+</div>
+
+<main class="wrap" id="board" hidden>
+  <section class="top">
+    <div class="top-row">
+      <div>
+        <h1 class="title">Tableau de bord</h1>
+        <p class="lede" id="lede"></p>
+      </div>
+    </div>
+    <div class="hero" id="hero"></div>
+  </section>
+
+  <section class="blk" id="evolution">
+    <div class="blk-h"><h2>Évolution</h2><p id="evo-range"></p></div>
+    <div class="panel">
+      <div class="ctrl">
+        <div class="seg" id="metrics" role="group" aria-label="Mesure"></div>
+        <div class="seg" id="period" role="group" aria-label="Période">
+          <button type="button" data-period="30">30 j</button>
+          <button type="button" data-period="90">90 j</button>
+          <button type="button" data-period="0">Tout</button>
+        </div>
+      </div>
+      <div class="chart" id="evo"></div>
+      <p class="note" id="evo-note"></p>
+    </div>
+  </section>
+
+  <section class="blk" id="gp">
+    <div class="blk-h"><h2>Par Grand Prix</h2><p id="gp-lede">Grilles de course déposées pour chaque manche de la saison. Une grille = un joueur.</p></div>
+    <div class="panel">
+      <div class="chart" id="gp-chart"></div>
+      <div class="legend"><span><i style="background:var(--accent)"></i>Résultats publiés</span><span><i style="background:var(--accent-soft)"></i>À venir</span></div>
+    </div>
+    <div class="panel">
+      <div class="panel-h"><h3>Le détail</h3><span>points : course seule, joueurs classés</span></div>
+      <div class="scroll"><table id="gp-table"></table></div>
+    </div>
+  </section>
+
+  <section class="blk" id="joueurs">
+    <div class="blk-h"><h2>Joueurs</h2><p>« Actif » = a ouvert l'app. « Jamais revu » = n'a pas rouvert l'app après son premier jour.</p></div>
+    <div class="tiles" id="user-tiles"></div>
+    <div class="cols">
+      <div class="panel"><div class="panel-h"><h3>Connexion</h3><span>identités rattachées</span></div><div id="providers"></div></div>
+      <div class="panel"><div class="panel-h"><h3>Langue</h3><span>part des comptes</span></div><div id="locales"></div></div>
+      <div class="panel"><div class="panel-h"><h3>Version de l'app</h3><span>à la dernière ouverture</span></div><div id="versions"></div></div>
+    </div>
+  </section>
+
+  <section class="blk" id="ligues">
+    <div class="blk-h"><h2>Ligues</h2><p>Une ligue « seule » n'a que son créateur : l'invitation n'a pas été envoyée, ou personne n'est venu.</p></div>
+    <div class="tiles" id="league-tiles"></div>
+  </section>
+
+  <section class="blk" id="habitudes">
+    <div class="blk-h"><h2>Habitudes de jeu</h2><p>Toutes les grilles de la saison, heure de Paris.</p></div>
+    <div class="cols">
+      <div class="panel">
+        <div class="panel-h"><h3>Quand les grilles se déposent</h3><span id="heat-max"></span></div>
+        <div class="heat" id="heat"></div>
+      </div>
+      <div class="panel">
+        <div class="panel-h"><h3>Fenêtre de saisie</h3><span>grilles de course</span></div>
+        <div id="windows"></div>
+      </div>
+    </div>
+    <div class="tiles" id="grid-tiles" style="margin-top:10px"></div>
+  </section>
+
+  <section class="blk" id="reglages">
+    <div class="blk-h"><h2>Notifications et invités</h2><p>Combien de comptes ont activé chaque réglage. Rien ne dit lesquels.</p></div>
+    <div class="cols">
+      <div class="panel"><div class="panel-h"><h3>Rappels et push</h3><span>part des comptes</span></div><div id="notifs"></div></div>
+      <div class="panel"><div class="panel-h"><h3>Mode invité</h3><span id="guest-since"></span></div><div class="tiles" id="guest-tiles"></div></div>
+    </div>
+  </section>
+
+  <footer id="foot"></footer>
+</main>
+
+<div class="tip" id="tip" role="tooltip"></div>
+
+<!-- Version exacte et empreinte d'intégrité, comme /admin.html : ce script
+     tourne avec la session d'un administrateur. -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.7/dist/umd/supabase.min.js" integrity="sha384-BmlQlKlDvXvKoxkn5OQuUo/aJQCTXeB+Kls6EccBmG4Kf8AXvp89RtO9MtPxP/r5" crossorigin="anonymous"></script>
+<script>
+(function () {
+  'use strict';
+
+  // Projet Supabase de Quali (pas celui de Dooka). La clé publiable n'ouvre
+  // que ce que la base autorise : admin_kpis vérifie elle-même que
+  // l'appelant est administrateur (migration 0032 de Quali). Masquer cette
+  // page ne protégerait rien — c'est la base qui refuse.
+  var SUPABASE_URL = 'https://ifpgqrmnzshfcybabnak.supabase.co';
+  var SUPABASE_KEY = 'sb_publishable_CwzSZhpP9piLktAcHq_GXg_l8XRU_wD';
+
+  var $ = function (id) { return document.getElementById(id); };
+  var state = { k: null, metric: 'accounts', period: 90 };
+  try {
+    var saved = JSON.parse(localStorage.getItem('quali-admin') || '{}');
+    if (saved.metric) state.metric = saved.metric;
+    if (saved.period !== undefined) state.period = saved.period;
+  } catch (e) { /* stockage indisponible : réglages par défaut */ }
+  function remember() {
+    try { localStorage.setItem('quali-admin', JSON.stringify({ metric: state.metric, period: state.period })); } catch (e) {}
+  }
+
+  // ── Formats ────────────────────────────────────────────────────────
+  var nf = new Intl.NumberFormat('fr-FR');
+  function n(v) { return v === null || v === undefined ? '—' : nf.format(Number(v)); }
+  function pct(a, b) { a = Number(a); b = Number(b); return b > 0 ? Math.round(a / b * 100) + ' %' : '—'; }
+  function esc(s) { return String(s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+  function plural(v, one, many) { return n(v) + ' ' + (Number(v) > 1 ? many : one); }
+  var MONTHS = ['janv.', 'févr.', 'mars', 'avr.', 'mai', 'juin', 'juil.', 'août', 'sept.', 'oct.', 'nov.', 'déc.'];
+  function day(iso) { var p = String(iso).split('-'); return Number(p[2]) + ' ' + MONTHS[Number(p[1]) - 1]; }
+  var DOW = ['lun.', 'mar.', 'mer.', 'jeu.', 'ven.', 'sam.', 'dim.'];
+
+  // ── Briques ────────────────────────────────────────────────────────
+  function tile(k, v, s) {
+    return '<div class="tile"><div class="k">' + k + '</div><div class="v">' + v + '</div>' + (s ? '<div class="s">' + s + '</div>' : '') + '</div>';
+  }
+  function meter(label, v, total) {
+    var w = total > 0 ? Math.min(100, Number(v) / total * 100) : 0;
+    return '<div class="meter"><span class="l">' + esc(label) + '</span><span class="r"><b>' + n(v) + '</b> · ' + pct(v, total) +
+      '</span><span class="t"><span style="width:' + w.toFixed(1) + '%"></span></span></div>';
+  }
+
+  var tip = $('tip');
+  function showTip(html, x, y) {
+    tip.innerHTML = html;
+    tip.classList.add('on');
+    var r = tip.getBoundingClientRect();
+    var left = Math.min(window.innerWidth - r.width - 8, Math.max(8, x - r.width / 2));
+    var top = y - r.height - 12;
+    if (top < 8) top = y + 16;
+    tip.style.left = left + 'px';
+    tip.style.top = top + 'px';
+  }
+  function hideTip() { tip.classList.remove('on'); }
+
+  // Barre au bout arrondi (4 px), posée sur la ligne de base.
+  function barPath(x, y, w, h) {
+    if (h <= 0) return '';
+    var r = Math.min(4, w / 2, h);
+    return 'M' + x + ',' + (y + h) + 'V' + (y + r) + 'Q' + x + ',' + y + ' ' + (x + r) + ',' + y +
+      'H' + (x + w - r) + 'Q' + (x + w) + ',' + y + ' ' + (x + w) + ',' + (y + r) + 'V' + (y + h) + 'Z';
+  }
+  // Graduations entières et rondes (1, 2, 5 × 10ⁿ), quatre au plus.
+  var tickStep = 1;
+  function niceMax(v) {
+    var raw = Math.max(1, v / 4), p = Math.pow(10, Math.floor(Math.log10(raw))), m = raw / p;
+    tickStep = Math.max(1, (m <= 1 ? 1 : m <= 2 ? 2 : m <= 5 ? 5 : 10) * p);
+    return Math.max(tickStep, Math.ceil(v / tickStep) * tickStep);
+  }
+
+  function spark(values, kind) {
+    var W = 200, H = 40, max = Math.max.apply(null, values.concat([1]));
+    if (kind === 'bars') {
+      var bw = W / values.length;
+      return '<svg viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="none" aria-hidden="true">' + values.map(function (v, i) {
+        var h = v / max * H;
+        return h > 0 ? '<rect x="' + (i * bw + bw * .15).toFixed(2) + '" y="' + (H - h).toFixed(2) + '" width="' + (bw * .7).toFixed(2) + '" height="' + h.toFixed(2) + '" rx="1" fill="var(--accent)"/>' : '';
+      }).join('') + '</svg>';
+    }
+    var pts = values.map(function (v, i) { return (i / Math.max(1, values.length - 1) * W).toFixed(1) + ',' + (H - v / max * (H - 2) - 1).toFixed(1); });
+    return '<svg viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="none" aria-hidden="true">' +
+      '<polygon points="0,' + H + ' ' + pts.join(' ') + ' ' + W + ',' + H + '" fill="var(--accent)" opacity=".12"/>' +
+      '<polyline points="' + pts.join(' ') + '" fill="none" stroke="var(--accent)" stroke-width="2" vector-effect="non-scaling-stroke" stroke-linejoin="round"/></svg>';
+  }
+
+  // ── Mesures de la courbe d'évolution ───────────────────────────────
+  var METRICS = [
+    { id: 'accounts', label: 'Comptes', kind: 'line', unit: 'comptes au total', cumul: 'signups' },
+    { id: 'signups', label: 'Inscriptions', kind: 'bars', unit: 'inscriptions' },
+    { id: 'active', label: 'Actifs', kind: 'bars', unit: 'comptes ont ouvert l\'app' },
+    { id: 'grids', label: 'Grilles', kind: 'bars', unit: 'grilles déposées' },
+    { id: 'players', label: 'Joueurs', kind: 'bars', unit: 'joueurs ont déposé une grille' },
+    { id: 'joins', label: 'Entrées en ligue', kind: 'bars', unit: 'entrées en ligue' }
+  ];
+  $('metrics').innerHTML = METRICS.map(function (m) { return '<button type="button" data-m="' + m.id + '">' + m.label + '</button>'; }).join('');
+
+  function series(metric) {
+    var daily = state.k.daily, m = METRICS.filter(function (x) { return x.id === metric; })[0];
+    var out;
+    if (m.cumul) {
+      // Le cumul part du total d'aujourd'hui moins les inscriptions de la
+      // série : les comptes supprimés ne font pas remonter la courbe.
+      var sum = daily.reduce(function (a, d) { return a + Number(d[m.cumul]); }, 0);
+      var acc = Number(state.k.users.total) - sum;
+      out = daily.map(function (d) { acc += Number(d[m.cumul]); return { day: d.day, v: acc }; });
+    } else {
+      out = daily.map(function (d) { return { day: d.day, v: d[metric] === null ? null : Number(d[metric]) }; });
+    }
+    if (state.period > 0) out = out.slice(-state.period);
+    return { m: m, pts: out };
+  }
+
+  function renderEvolution() {
+    var s = series(state.metric), pts = s.pts, m = s.m;
+    document.querySelectorAll('#metrics [data-m]').forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-m') === state.metric)); });
+    document.querySelectorAll('#period [data-period]').forEach(function (b) { b.setAttribute('aria-pressed', String(Number(b.getAttribute('data-period')) === state.period)); });
+
+    var box = $('evo'), W = Math.max(280, box.clientWidth), H = W < 520 ? 200 : 240;
+    var padL = 34, padR = 4, padT = 8, padB = 24, iw = W - padL - padR, ih = H - padT - padB;
+    var vals = pts.map(function (p) { return p.v; }).filter(function (v) { return v !== null; });
+    var max = niceMax(Math.max.apply(null, vals.concat([1])));
+    var y = function (v) { return padT + ih - v / max * ih; };
+    var step = iw / pts.length;
+    var svg = '';
+    for (var gv = 0; gv <= max; gv += tickStep) {
+      var gy = y(gv).toFixed(1);
+      svg += '<line x1="' + padL + '" x2="' + (W - padR) + '" y1="' + gy + '" y2="' + gy + '" stroke="var(--grid)" stroke-width="1"/>' +
+        '<text x="' + (padL - 8) + '" y="' + gy + '" dy="4" text-anchor="end">' + n(Math.round(gv * 10) / 10) + '</text>';
+    }
+    var labelEvery = Math.ceil(pts.length / (W < 520 ? 4 : 7));
+    pts.forEach(function (p, i) {
+      if ((pts.length - 1 - i) % labelEvery === 0) {
+        svg += '<text x="' + (padL + step * i + step / 2).toFixed(1) + '" y="' + (H - 6) + '" text-anchor="middle">' + day(p.day) + '</text>';
+      }
+    });
+    if (m.kind === 'line') {
+      var line = pts.map(function (p, i) { return (padL + step * i + step / 2).toFixed(1) + ',' + y(p.v).toFixed(1); });
+      svg += '<polygon points="' + (padL + step / 2).toFixed(1) + ',' + y(0) + ' ' + line.join(' ') + ' ' + (padL + step * (pts.length - .5)).toFixed(1) + ',' + y(0) + '" fill="var(--accent)" opacity=".10"/>' +
+        '<polyline points="' + line.join(' ') + '" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linejoin="round"/>' +
+        '<circle id="evo-dot" r="4.5" fill="var(--accent)" stroke="var(--surface)" stroke-width="2" visibility="hidden"/>';
+    } else {
+      var gap = step > 6 ? 2 : step > 3 ? 1 : 0, bw = Math.max(1, step - gap);
+      pts.forEach(function (p, i) {
+        if (p.v) svg += '<path data-i="' + i + '" d="' + barPath(padL + step * i + gap / 2, y(p.v), bw, y(0) - y(p.v)) + '" fill="var(--accent)"/>';
+      });
+    }
+    svg += '<line id="evo-cross" y1="' + padT + '" y2="' + (padT + ih) + '" stroke="var(--muted)" stroke-width="1" stroke-dasharray="2 3" visibility="hidden"/>';
+    svg += '<rect id="evo-hit" x="' + padL + '" y="0" width="' + iw + '" height="' + H + '" fill="transparent"/>';
+    box.innerHTML = '<svg viewBox="0 0 ' + W + ' ' + H + '" height="' + H + '" role="img" aria-label="' + esc(m.label) + ' par jour">' + svg + '</svg>';
+
+    var hit = $('evo-hit'), cross = $('evo-cross'), dot = $('evo-dot');
+    function move(ev) {
+      var r = box.querySelector('svg').getBoundingClientRect();
+      var cx = (ev.touches ? ev.touches[0].clientX : ev.clientX);
+      var i = Math.max(0, Math.min(pts.length - 1, Math.floor(((cx - r.left) / r.width * W - padL) / step)));
+      var p = pts[i], px = padL + step * i + step / 2;
+      cross.setAttribute('x1', px); cross.setAttribute('x2', px); cross.setAttribute('visibility', 'visible');
+      if (dot) { dot.setAttribute('cx', px); dot.setAttribute('cy', y(p.v)); dot.setAttribute('visibility', 'visible'); }
+      box.querySelectorAll('path[data-i]').forEach(function (b) { b.setAttribute('opacity', Number(b.getAttribute('data-i')) === i ? '1' : '.45'); });
+      var extra = '';
+      if (state.metric === 'active') {
+        var d = state.k.daily.filter(function (x) { return x.day === p.day; })[0];
+        if (d && d.active_guests) extra = '<br><span class="d">+ ' + plural(d.active_guests, 'invité', 'invités') + '</span>';
+      }
+      showTip('<span class="d">' + day(p.day) + '</span><br><b>' + (p.v === null ? 'pas encore mesuré' : n(p.v) + '</b> ' + m.unit) + extra,
+        r.left + px / W * r.width, r.top + y(p.v || 0) / H * r.height);
+    }
+    function leave() {
+      cross.setAttribute('visibility', 'hidden');
+      if (dot) dot.setAttribute('visibility', 'hidden');
+      box.querySelectorAll('path[data-i]').forEach(function (b) { b.removeAttribute('opacity'); });
+      hideTip();
+    }
+    hit.addEventListener('mousemove', move);
+    hit.addEventListener('touchstart', move, { passive: true });
+    hit.addEventListener('touchmove', move, { passive: true });
+    hit.addEventListener('mouseleave', leave);
+    hit.addEventListener('touchend', leave);
+
+    var total = pts.reduce(function (a, p) { return a + (p.v || 0); }, 0);
+    $('evo-range').textContent = 'Du ' + day(pts[0].day) + ' au ' + day(pts[pts.length - 1].day) + (m.kind === 'bars' ? ' · ' + n(total) + ' ' + m.unit : '');
+    var since = state.k.tracking_since;
+    $('evo-note').textContent = state.metric === 'active'
+      ? 'Mesuré depuis le ' + (since ? day(since) : 'passage de la migration 0032') + ' : avant, la base ne gardait que la dernière ouverture de chaque compte. Invités non compris (au survol).'
+      : state.metric === 'accounts' ? 'Comptes avec e-mail, Google ou Apple, invités et jeu de démonstration exclus.'
+      : '';
+  }
+
+  // ── Héros ──────────────────────────────────────────────────────────
+  function renderHero() {
+    var k = state.k, u = k.users, d = k.daily, last30 = d.slice(-30);
+    var acc = Number(u.total) - d.reduce(function (a, x) { return a + Number(x.signups); }, 0);
+    var cumul = d.map(function (x) { acc += Number(x.signups); return acc; });
+    var actives = d.filter(function (x) { return x.active !== null; });
+    var nextR = nextRound();
+    $('hero').innerHTML =
+      '<div class="tile"><div class="k">Comptes</div><div class="v">' + n(u.total) + '</div><div class="s"><b class="pos">+' + n(u.new_7d) + '</b> sur 7 jours · +' + n(u.new_30d) + ' sur 30</div><div class="spark">' + spark(cumul, 'line') + '</div></div>' +
+      '<div class="tile"><div class="k">Actifs sur 7 jours</div><div class="v">' + n(u.active_7d) + '</div><div class="s"><b>' + pct(u.active_7d, u.total) + '</b> des comptes · ' + n(u.seen_1d) + ' sur 24 h</div><div class="spark">' +
+        (actives.length > 1 ? spark(actives.slice(-30).map(function (x) { return Number(x.active); }), 'bars') : '') + '</div></div>' +
+      '<div class="tile"><div class="k">Grilles ' + esc(k.season) + '</div><div class="v">' + n(k.grids.season) + '</div><div class="s"><b>' + n(k.grids.last_7d) + '</b> sur 7 jours · ' + plural(u.played_season, 'joueur', 'joueurs') + '</div><div class="spark">' + spark(last30.map(function (x) { return Number(x.grids); }), 'bars') + '</div></div>' +
+      '<div class="tile"><div class="k">' + (nextR ? 'Prochaine manche · ' + esc(nextR.name) : 'Joueurs en ligue') + '</div>' +
+        (nextR
+          ? '<div class="v">' + n(nextR.race_grids) + '</div><div class="s"><b>' + pct(nextR.race_grids, u.active_30d) + '</b> des actifs du mois ont leur grille · course le ' + day(nextR.race_day) + '</div><div class="spark">' + spark(k.rounds.map(function (r) { return Number(r.race_grids); }), 'bars') + '</div>'
+          : '<div class="v">' + n(u.in_league) + '</div><div class="s">' + pct(u.in_league, u.total) + ' des comptes</div>') +
+      '</div>';
+  }
+  function nextRound() {
+    var today = state.k.generated_at.slice(0, 10);
+    return state.k.rounds.filter(function (r) { return !r.settled && r.race_day >= today; })[0] || null;
+  }
+
+  // ── Par Grand Prix ─────────────────────────────────────────────────
+  function renderRounds() {
+    var rounds = state.k.rounds, box = $('gp-chart');
+    if (!rounds.length) { box.innerHTML = '<p class="note">Aucune manche pour la saison en cours.</p>'; $('gp-table').innerHTML = ''; return; }
+    var W = Math.max(280, box.clientWidth), H = 190, padL = 34, padR = 4, padT = 8, padB = 22, iw = W - padL - padR, ih = H - padT - padB;
+    var max = niceMax(Math.max.apply(null, rounds.map(function (r) { return Number(r.race_grids); }).concat([1])));
+    var y = function (v) { return padT + ih - v / max * ih; };
+    var step = iw / rounds.length, bw = Math.max(2, Math.min(28, step - 4));
+    var nxt = nextRound(), svg = '';
+    for (var gv = 0; gv <= max; gv += tickStep) {
+      var gy = y(gv).toFixed(1);
+      svg += '<line x1="' + padL + '" x2="' + (W - padR) + '" y1="' + gy + '" y2="' + gy + '" stroke="var(--grid)"/><text x="' + (padL - 8) + '" y="' + gy + '" dy="4" text-anchor="end">' + n(gv) + '</text>';
+    }
+    rounds.forEach(function (r, i) {
+      var x = padL + step * i + (step - bw) / 2, v = Number(r.race_grids);
+      svg += '<path d="' + barPath(x, y(v), bw, y(0) - y(v)) + '" fill="' + (r.settled ? 'var(--accent)' : 'var(--accent-soft)') + '"' +
+        (nxt && r.number === nxt.number ? ' stroke="var(--accent)" stroke-width="1.5"' : '') + '/>';
+      if (step >= 18 || i % 2 === 0) svg += '<text x="' + (x + bw / 2).toFixed(1) + '" y="' + (H - 6) + '" text-anchor="middle">' + r.number + '</text>';
+      svg += '<rect data-r="' + i + '" x="' + (padL + step * i) + '" y="0" width="' + step + '" height="' + H + '" fill="transparent"/>';
+    });
+    box.innerHTML = '<svg viewBox="0 0 ' + W + ' ' + H + '" height="' + H + '" role="img" aria-label="Grilles par manche">' + svg + '</svg>';
+    box.querySelectorAll('rect[data-r]').forEach(function (h) {
+      function on(ev) {
+        var r = rounds[Number(h.getAttribute('data-r'))], b = h.getBoundingClientRect();
+        showTip('<b>' + r.number + '. ' + esc(r.name) + '</b> <span class="d">· ' + day(r.race_day) + '</span><br>' + plural(r.race_grids, 'grille', 'grilles') +
+          (r.sprint ? ' · ' + n(r.sprint_grids) + ' sprint' : '') + (r.jokers ? '<br>' + plural(r.jokers, 'joker', 'jokers') : '') +
+          (r.avg_points !== null ? '<br><span class="d">moyenne ' + n(r.avg_points) + ' pts · meilleur ' + n(r.best_points) + '</span>' : ''),
+          b.left + b.width / 2, b.top + y(Number(r.race_grids)) / H * b.height);
+      }
+      h.addEventListener('mousemove', on);
+      h.addEventListener('touchstart', on, { passive: true });
+      h.addEventListener('mouseleave', hideTip);
+      h.addEventListener('touchend', hideTip);
+    });
+
+    $('gp-table').innerHTML = '<thead><tr><th>#</th><th>Manche</th><th>Course</th><th>Grilles</th><th>Sprint</th><th>Jokers</th><th>Avant EL1</th><th>Moyenne</th><th>Meilleur</th><th>Statut</th></tr></thead><tbody>' +
+      rounds.slice().reverse().map(function (r) {
+        var isNext = nxt && r.number === nxt.number;
+        return '<tr' + (isNext ? ' class="next"' : '') + '><td>' + r.number + '</td><td>' + esc(r.name) + '</td><td>' + day(r.race_day) + '</td><td>' + n(r.race_grids) + '</td><td>' +
+          (r.sprint ? n(r.sprint_grids) : '—') + '</td><td>' + n(r.jokers) + '</td><td>' + pct(r.w_early, r.race_grids) + '</td><td>' +
+          (r.avg_points !== null ? n(r.avg_points) : '—') + '</td><td>' + (r.best_points !== null ? n(r.best_points) : '—') + '</td><td>' +
+          (r.settled ? '<span class="pill">publiée</span>' : isNext ? '<span class="pill on">prochaine</span>' : '<span class="pill">à venir</span>') + '</td></tr>';
+      }).join('') + '</tbody>';
+  }
+
+  // ── Joueurs, ligues, habitudes, réglages ───────────────────────────
+  var PROVIDERS = { google: 'Google', email: 'E-mail', apple: 'Apple' };
+  var LOCALES = { fr: 'Français', en: 'Anglais', es: 'Espagnol' };
+  function renderUsers() {
+    var u = state.k.users, t = Number(u.total);
+    $('user-tiles').innerHTML =
+      tile('Nouveaux sur 30 jours', n(u.new_30d), '+' + n(u.new_1d) + ' sur 24 h') +
+      tile('Actifs sur 30 jours', n(u.active_30d), pct(u.active_30d, t) + ' des comptes') +
+      tile('Jamais revus', n(u.never_back), pct(u.never_back, t) + ' des comptes') +
+      tile('Ont joué cette saison', n(u.played_season), pct(u.played_season, t) + ' · ' + n(u.played_30d) + ' sur 30 j') +
+      tile('Dans une ligue', n(u.in_league), pct(u.in_league, t) + ' des comptes') +
+      tile('Push autorisées', n(u.with_push), pct(u.with_push, t) + ' des comptes');
+    var idTotal = state.k.providers.reduce(function (a, p) { return a + Number(p.count); }, 0);
+    $('providers').innerHTML = state.k.providers.map(function (p) { return meter(PROVIDERS[p.provider] || p.provider, p.count, idTotal); }).join('');
+    $('locales').innerHTML = state.k.locales.map(function (l) { return meter(LOCALES[l.locale] || l.locale, l.count, t); }).join('');
+    $('versions').innerHTML = state.k.versions.slice(0, 6).map(function (v) { return meter(v.version, v.count, t); }).join('');
+  }
+  function renderLeagues() {
+    var l = state.k.leagues;
+    $('league-tiles').innerHTML =
+      tile('Ligues', n(l.total), '+' + n(l.new_30d) + ' sur 30 jours') +
+      tile('Places occupées', n(l.members), 'un joueur peut être dans plusieurs') +
+      tile('Taille médiane', n(l.median_size), 'la plus grande : ' + n(l.max_size)) +
+      tile('Seules', n(l.solo), pct(l.solo, l.total) + ' des ligues') +
+      tile('Épinglées', n(l.pinned)) +
+      tile('Renommées', n(l.renamed));
+  }
+  function renderHabits() {
+    var cells = {}, max = 1;
+    state.k.heatmap.forEach(function (c) { cells[c.dow + '-' + c.hour] = Number(c.n); max = Math.max(max, Number(c.n)); });
+    var html = '<span></span>';
+    for (var h = 0; h < 24; h++) html += '<span class="hr">' + (h % 6 === 0 ? h + 'h' : '') + '</span>';
+    for (var d = 1; d <= 7; d++) {
+      html += '<span class="lab">' + DOW[d - 1] + '</span>';
+      for (var hh = 0; hh < 24; hh++) {
+        var v = cells[d + '-' + hh] || 0;
+        html += '<span class="c" data-t="' + DOW[d - 1] + ' ' + hh + 'h–' + (hh + 1) + 'h : ' + plural(v, 'grille', 'grilles') + '"' +
+          (v ? ' style="background:color-mix(in srgb, var(--accent) ' + Math.round(18 + v / max * 82) + '%, var(--track))"' : '') + '></span>';
+      }
+    }
+    $('heat').innerHTML = html;
+    $('heat-max').textContent = 'case la plus foncée : ' + plural(max, 'grille', 'grilles');
+    $('heat').querySelectorAll('.c').forEach(function (c) {
+      function on() { var b = c.getBoundingClientRect(); showTip(c.getAttribute('data-t'), b.left + b.width / 2, b.top); }
+      c.addEventListener('mouseenter', on);
+      c.addEventListener('touchstart', on, { passive: true });
+      c.addEventListener('mouseleave', hideTip);
+    });
+
+    var g = state.k.grids, race = Number(g.early) + Number(g.fp) + Number(g.late);
+    $('windows').innerHTML =
+      meter('Avant les EL1 (×1,20)', g.early, race) +
+      meter('Pendant les essais libres', g.fp, race) +
+      meter('Après (×1)', g.late, race);
+    $('grid-tiles').innerHTML =
+      tile('Grilles de course', n(g.race), n(g.total) + ' grilles en tout') +
+      tile('Grilles de sprint', n(g.sprint)) +
+      tile('Jokers posés', n(g.jokers), pct(g.jokers, g.race) + ' des grilles de course') +
+      tile('Grilles retouchées', n(g.edited), 'modifiées après le premier envoi') +
+      tile('Sur 30 jours', n(g.last_30d), n(g.last_7d) + ' sur 7 jours');
+  }
+  function renderSettings() {
+    var s = state.k.notifications, t = Number(s.accounts), gu = state.k.guests;
+    $('notifs').innerHTML =
+      meter('Notifications push autorisées', s.with_push, t) +
+      meter('Au moins un rappel de séance', s.any_reminder, t) +
+      meter('Rappel avant les EL1', s.fp1, t) +
+      meter('Rappel avant les qualifs', s.quali, t) +
+      meter('Rappel avant la course', s.race, t) +
+      meter('« Résultats tombés » coupé', s.results_off, t) +
+      meter('« Récap de saison » coupé', s.recap_off, t);
+    $('guest-since').textContent = state.k.tracking_since ? 'compté depuis le ' + day(state.k.tracking_since) : '';
+    $('guest-tiles').innerHTML =
+      tile('Invités en ce moment', n(gu.now), 'purgés après 30 jours sans ouvrir') +
+      tile('Venus en invité', n(gu.created), n(gu.created_30d) + ' sur 30 jours') +
+      tile('Ont créé leur compte', n(gu.converted), pct(gu.converted, gu.created) + ' des invités');
+  }
+
+  function renderAll(animate) {
+    var k = state.k;
+    $('stamp').textContent = 'Relevé à ' + new Date(k.generated_at).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+    $('lede').innerHTML = '<b>' + plural(k.users.total, 'compte', 'comptes') + ', ' + plural(k.grids.season, 'grille', 'grilles') + ' en ' + esc(k.season) + ', ' +
+      plural(k.leagues.total, 'ligue', 'ligues') + '.</b> Lu en direct dans la base de Quali à chaque actualisation.';
+    renderHero();
+    renderEvolution();
+    renderRounds();
+    renderUsers();
+    renderLeagues();
+    renderHabits();
+    renderSettings();
+    var dm = k.demo || {};
+    $('foot').textContent = 'Outil interne : des totaux seulement, aucun pseudo ni e-mail ne sort de la base. Écarté de tous les chiffres : le jeu de démonstration (' +
+      plural(dm.accounts, 'compte', 'comptes') + ', ' + plural(dm.grids, 'grille', 'grilles') + ', ' + plural(dm.leagues, 'ligue', 'ligues') + ').';
+    if (animate) document.querySelectorAll('#board > section').forEach(function (s, i) { s.style.animationDelay = Math.min(i, 4) * .07 + 's'; s.classList.add('rise'); });
+  }
+
+  // ── Interactions ───────────────────────────────────────────────────
+  $('metrics').addEventListener('click', function (e) {
+    var b = e.target.closest('[data-m]'); if (!b || !state.k) return;
+    state.metric = b.getAttribute('data-m'); remember(); renderEvolution();
+  });
+  $('period').addEventListener('click', function (e) {
+    var b = e.target.closest('[data-period]'); if (!b || !state.k) return;
+    state.period = Number(b.getAttribute('data-period')); remember(); renderEvolution();
+  });
+  var resizeTimer;
+  window.addEventListener('resize', function () {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(function () { if (state.k) { renderEvolution(); renderRounds(); } }, 150);
+  });
+
+  function show(k, animate) {
+    state.k = k;
+    $('gate').hidden = true;
+    $('board').hidden = false;
+    $('refresh').hidden = false;
+    $('logout').hidden = false;
+    renderAll(animate);
+  }
+
+  // Aperçu hors ligne : un relevé posé dans la page à la place de la base.
+  if (window.QUALI_APERCU) { show(window.QUALI_APERCU, true); return; }
+
+  // ── Accès ──────────────────────────────────────────────────────────
+  var sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+  function showGate(message, signedIn) {
+    $('gate-msg').innerHTML = message;
+    $('gate').hidden = false;
+    $('board').hidden = true;
+    $('refresh').hidden = true;
+    $('logout').hidden = true;
+    $('gate-actions').hidden = signedIn;
+    $('logout-gate').hidden = !signedIn;
+  }
+
+  var loading = null;
+  function load(animate) {
+    if (loading) return loading;
+    // Le refus vient de la base : admin_kpis lève une exception si
+    // l'appelant n'est pas administrateur de Quali.
+    loading = sb.rpc('admin_kpis').then(function (res) {
+      if (res.error) {
+        var missing = res.error.code === 'PGRST202';
+        showGate('<span class="err">' + (missing
+          ? 'La fonction admin_kpis n\'existe pas encore : la migration 0032 de Quali n\'est pas appliquée.'
+          : 'Ce compte n\'est pas administrateur de Quali.') + '</span>', true);
+        return;
+      }
+      show(res.data, animate);
+    }).finally(function () { loading = null; });
+    return loading;
+  }
+
+  sb.auth.getSession().then(function (res) {
+    if (!res.data.session) { showGate('Réservé aux administrateurs de Quali.', false); return; }
+    return load(true);
+  });
+  // Au retour de Google, la session peut s'installer après le premier
+  // getSession : on charge dès qu'elle arrive.
+  sb.auth.onAuthStateChange(function (event) {
+    if (event === 'SIGNED_IN' && !state.k) load(true);
+  });
+
+  $('login').addEventListener('click', function () {
+    // L'adresse doit figurer dans les Redirect URLs du projet Supabase de
+    // Quali (Authentication > URL Configuration), sans requête ni ancre.
+    sb.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: window.location.origin + window.location.pathname } });
+  });
+  $('mail').addEventListener('submit', function (e) {
+    e.preventDefault();
+    sb.auth.signInWithPassword({ email: $('mail-a').value.trim(), password: $('mail-p').value }).then(function (res) {
+      if (res.error) showGate('<span class="err">Adresse ou mot de passe incorrect.</span>', false);
+    });
+  });
+  $('refresh').addEventListener('click', function () {
+    var b = $('refresh'); b.disabled = true;
+    load(false).then(function () { b.disabled = false; });
+  });
+  function signOut() { sb.auth.signOut().then(function () { window.location.reload(); }); }
+  $('logout').addEventListener('click', signOut);
+  $('logout-gate').addEventListener('click', signOut);
+})();
+</script>
+</body>
+</html>
