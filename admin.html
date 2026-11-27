@@ -770,7 +770,14 @@
   // Offre gratuite de Supabase (novembre 2026).
   const SUPA_DB_MB = 500, SUPA_STORAGE_MB = 1024, SUPA_MAU = 50000;
   const BUCKETS = { avatars: 'photos de profil', 'play-proofs': 'preuves de gain', 'group-images': 'images de bande' };
-  const PAGES = { '/': 'Accueil', '/confidentialite': 'Confidentialité', '/jeu-responsable': 'Jeu responsable', '/suppression-compte': 'Supprimer mon compte', autre: 'Autres pages' };
+  // Mêmes chemins que compter_visite (migration 0146 de l'app).
+  const PAGES = {
+    '/': 'Accueil', '/jeu-responsable': 'Jeu responsable', '/confidentialite': 'Confidentialité',
+    '/cgu': 'CGU', '/mentions-legales': 'Mentions légales', '/suppression-compte': 'Supprimer mon compte',
+    '/en': 'Accueil (EN)', '/en/responsible-gaming': 'Jeu responsable (EN)', '/en/privacy': 'Confidentialité (EN)',
+    '/en/terms': 'CGU (EN)', '/en/legal-notice': 'Mentions légales (EN)', '/en/delete-account': 'Supprimer mon compte (EN)',
+    autre: 'Autres pages'
+  };
   const SOURCES = { direct: 'Accès direct', moteur: 'Moteur de recherche', reseaux: 'Réseau social', store: 'Magasin d\'applications', autre: 'Autre site' };
 
   function periodDays() { return (state.k.daily || []).slice(-state.period); }
