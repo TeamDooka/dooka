@@ -11,7 +11,7 @@
 (function () {
   'use strict';
   try {
-    var host = location.hostname;
+    const host = location.hostname;
     if (host !== 'dooka.fr' && host !== 'www.dooka.fr') return;
     if (navigator.globalPrivacyControl === true || navigator.doNotTrack === '1' || window.doNotTrack === '1') return;
     // Navigateurs pilotés (robots de test, captures d'écran).
@@ -19,9 +19,9 @@
 
     // Provenance : seulement le nom de domaine de la page précédente, ramené
     // à une famille. Une navigation interne au site n'est pas une entrée.
-    var ref = '';
+    let ref = '';
     try { ref = document.referrer ? new URL(document.referrer).hostname : ''; } catch (e) { ref = '?'; }
-    var source = null;
+    let source = null;
     if (ref.replace(/^www\./, '') !== host.replace(/^www\./, '')) {
       if (!ref) source = 'direct';
       else if (/(^|\.)(play\.google\.com|apps\.apple\.com|testflight\.apple\.com)$/.test(ref)) source = 'store';
@@ -32,8 +32,8 @@
 
     // Même projet et même clé publique que l'app et que la page admin : elle
     // n'ouvre que ce que la base autorise, ici une seule fonction.
-    var url = 'https://ybnacpzicldzsmmypupj.supabase.co/rest/v1/rpc/compter_visite';
-    var key = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlibmFjcHppY2xkenNtbXlwdXBqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQyODg4OTAsImV4cCI6MjA5OTg2NDg5MH0.zk6cs62vw1Xx2IfL5UX88XWmXFYMdxU75qCkp_f7DCs';
+    const url = 'https://ybnacpzicldzsmmypupj.supabase.co/rest/v1/rpc/compter_visite';
+    const key = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlibmFjcHppY2xkenNtbXlwdXBqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQyODg4OTAsImV4cCI6MjA5OTg2NDg5MH0.zk6cs62vw1Xx2IfL5UX88XWmXFYMdxU75qCkp_f7DCs';
     fetch(url, {
       method: 'POST',
       keepalive: true,

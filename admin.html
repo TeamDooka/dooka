@@ -464,21 +464,21 @@
   // elle n'ouvre que ce que les politiques RLS autorisent, et admin_kpis
   // vérifie elle-même le rôle administrateur côté serveur. Masquer cette
   // page ne protégerait donc rien — c'est la base qui refuse.
-  var SUPABASE_URL = 'https://ybnacpzicldzsmmypupj.supabase.co';
-  var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlibmFjcHppY2xkenNtbXlwdXBqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQyODg4OTAsImV4cCI6MjA5OTg2NDg5MH0.zk6cs62vw1Xx2IfL5UX88XWmXFYMdxU75qCkp_f7DCs';
-  var GITHUB_RELEASES = 'https://api.github.com/repos/TeamDooka/dooka/releases?per_page=100';
+  const SUPABASE_URL = 'https://ybnacpzicldzsmmypupj.supabase.co';
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlibmFjcHppY2xkenNtbXlwdXBqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQyODg4OTAsImV4cCI6MjA5OTg2NDg5MH0.zk6cs62vw1Xx2IfL5UX88XWmXFYMdxU75qCkp_f7DCs';
+  const GITHUB_RELEASES = 'https://api.github.com/repos/TeamDooka/dooka/releases?per_page=100';
 
-  var sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-  var $ = function (id) { return document.getElementById(id); };
-  var nf = new Intl.NumberFormat('fr-FR');
-  var nf1 = new Intl.NumberFormat('fr-FR', { maximumFractionDigits: 1 });
-  var nf2 = new Intl.NumberFormat('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-  var dayFmt = new Intl.DateTimeFormat('fr-FR', { weekday: 'short', day: 'numeric', month: 'short' });
-  var shortFmt = new Intl.DateTimeFormat('fr-FR', { day: 'numeric', month: 'short' });
-  var longFmt = new Intl.DateTimeFormat('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
-  var NBSP = ' ';
-  var MINUS = '−';
+  const $ = function (id) { return document.getElementById(id); };
+  const nf = new Intl.NumberFormat('fr-FR');
+  const nf1 = new Intl.NumberFormat('fr-FR', { maximumFractionDigits: 1 });
+  const nf2 = new Intl.NumberFormat('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  const dayFmt = new Intl.DateTimeFormat('fr-FR', { weekday: 'short', day: 'numeric', month: 'short' });
+  const shortFmt = new Intl.DateTimeFormat('fr-FR', { day: 'numeric', month: 'short' });
+  const longFmt = new Intl.DateTimeFormat('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+  const NBSP = ' ';
+  const MINUS = '−';
 
   function esc(s) {
     return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
@@ -511,7 +511,7 @@
   }
 
   function gauge(value, max, dim) {
-    var w = max ? Math.max(0, Math.min(100, (100 * num(value)) / max)) : 0;
+    const w = max ? Math.max(0, Math.min(100, (100 * num(value)) / max)) : 0;
     return '<span class="track"><span class="fill' + (dim ? ' dim' : '') + (w ? '' : ' none') + '" style="width:' + w.toFixed(1) + '%"></span></span>';
   }
 
@@ -530,13 +530,13 @@
   }
 
   // ── Info-bulle ─────────────────────────────────────────────────────
-  var tip = $('tip');
+  const tip = $('tip');
   function showTip(html, x, y) {
     tip.innerHTML = html;
     tip.classList.add('on');
-    var r = tip.getBoundingClientRect();
-    var left = Math.min(window.innerWidth - r.width - 8, Math.max(8, x - r.width / 2));
-    var top = y - r.height - 14;
+    const r = tip.getBoundingClientRect();
+    const left = Math.min(window.innerWidth - r.width - 8, Math.max(8, x - r.width / 2));
+    let top = y - r.height - 14;
     if (top < 8) top = y + 18;
     tip.style.transform = 'translate(' + Math.round(left) + 'px,' + Math.round(top) + 'px)';
   }
@@ -546,8 +546,8 @@
   // Une graduation « ronde » : 1, 2 ou 5 × 10^k au-dessus du maximum.
   function niceMax(v) {
     if (v <= 0) return 1;
-    var p = Math.pow(10, Math.floor(Math.log10(v)));
-    var m = v / p;
+    const p = Math.pow(10, Math.floor(Math.log10(v)));
+    const m = v / p;
     return (m <= 1 ? 1 : m <= 2 ? 2 : m <= 5 ? 5 : 10) * p;
   }
 
@@ -561,36 +561,36 @@
   // Le viewBox est réglé sur la largeur réelle mesurée : étirer un SVG
   // fixe déformerait les arrondis et les points.
   function drawChart(host, series, opts) {
-    var W = Math.max(280, Math.round(host.clientWidth));
-    var H = host.clientHeight || 240;
-    var L = 48, R = 4, T = 10, B = 26;
-    var pw = W - L - R, ph = H - T - B;
-    var values = series.map(function (d) { return d.v; });
-    var max = niceMax(Math.max.apply(null, values.concat([0])));
-    var count = values.length;
-    var slot = pw / count;
-    var fmt = opts.unit === 'eur' ? eurShort : n;
-    var y = function (v) { return T + ph - (v / max) * ph; };
-    var cx = function (i) { return L + slot * (i + 0.5); };
+    const W = Math.max(280, Math.round(host.clientWidth));
+    const H = host.clientHeight || 240;
+    const L = 48, R = 4, T = 10, B = 26;
+    const pw = W - L - R, ph = H - T - B;
+    const values = series.map(function (d) { return d.v; });
+    const max = niceMax(Math.max.apply(null, values.concat([0])));
+    const count = values.length;
+    const slot = pw / count;
+    const fmt = opts.unit === 'eur' ? eurShort : n;
+    const y = function (v) { return T + ph - (v / max) * ph; };
+    const cx = function (i) { return L + slot * (i + 0.5); };
 
-    var out = '';
+    let out = '';
     [0, 0.5, 1].forEach(function (f) {
-      var gy = T + ph - f * ph;
+      const gy = T + ph - f * ph;
       out += '<line class="' + (f === 0 ? 'base' : 'grid') + '" x1="' + L + '" x2="' + (W - R) + '" y1="' + gy + '" y2="' + gy + '"/>';
       out += '<text class="ax" x="' + (L - 8) + '" y="' + (gy + 4) + '" text-anchor="end">' + esc(fmt(max * f)) + '</text>';
     });
 
     // Trois dates : début, milieu, fin. Davantage se chevaucherait sur mobile.
     [0, Math.floor((count - 1) / 2), count - 1].forEach(function (i, k) {
-      var anchor = k === 0 ? 'start' : k === 2 ? 'end' : 'middle';
-      var x = k === 0 ? L : k === 2 ? W - R : cx(i);
+      const anchor = k === 0 ? 'start' : k === 2 ? 'end' : 'middle';
+      const x = k === 0 ? L : k === 2 ? W - R : cx(i);
       out += '<text class="ax" x="' + x + '" y="' + (H - 6) + '" text-anchor="' + anchor + '">' + esc(shortFmt.format(series[i].d)) + '</text>';
     });
 
     if (opts.kind === 'line') {
-      var pts = values.map(function (v, i) { return cx(i).toFixed(1) + ' ' + y(v).toFixed(1); });
-      var line = 'M' + pts.join(' L');
-      var area = line + ' L' + cx(count - 1).toFixed(1) + ' ' + (T + ph) + ' L' + cx(0).toFixed(1) + ' ' + (T + ph) + ' Z';
+      const pts = values.map(function (v, i) { return cx(i).toFixed(1) + ' ' + y(v).toFixed(1); });
+      const line = 'M' + pts.join(' L');
+      const area = line + ' L' + cx(count - 1).toFixed(1) + ' ' + (T + ph) + ' L' + cx(0).toFixed(1) + ' ' + (T + ph) + ' Z';
       out += '<defs><linearGradient id="ga" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3CC278" stop-opacity=".22"/><stop offset="1" stop-color="#3CC278" stop-opacity="0"/></linearGradient></defs>';
       out += '<path d="' + area + '" fill="url(#ga)"/>';
       out += '<path d="' + line + '" fill="none" stroke="#3CC278" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>';
@@ -599,11 +599,11 @@
     } else {
       // 2 px d'écart entre les barres, arrondi de 4 px quand elles sont
       // assez larges pour le porter.
-      var bw = Math.max(1, slot - 2);
-      var rr = bw >= 8 ? 4 : bw >= 4 ? 2 : 0;
+      const bw = Math.max(1, slot - 2);
+      const rr = bw >= 8 ? 4 : bw >= 4 ? 2 : 0;
       values.forEach(function (v, i) {
         if (v <= 0) return;
-        var h = Math.max(2, (v / max) * ph);
+        const h = Math.max(2, (v / max) * ph);
         out += '<path class="bar" data-i="' + i + '" d="' + barPath(L + slot * i + 1, T + ph - h, bw, h, rr) + '"/>';
       });
     }
@@ -613,14 +613,14 @@
 
     host.innerHTML = '<svg viewBox="0 0 ' + W + ' ' + H + '">' + out + '</svg>';
 
-    var svg = host.firstChild;
-    var cross = svg.querySelector('.cross'), dot = svg.querySelector('.dot');
-    var lastOn = null;
+    const svg = host.firstChild;
+    const cross = svg.querySelector('.cross'), dot = svg.querySelector('.dot');
+    let lastOn = null;
     svg.addEventListener('pointermove', function (e) {
-      var rect = svg.getBoundingClientRect();
-      var sx = ((e.clientX - rect.left) / rect.width) * W;
-      var i = Math.max(0, Math.min(count - 1, Math.floor((sx - L) / slot)));
-      var d = series[i];
+      const rect = svg.getBoundingClientRect();
+      const sx = ((e.clientX - rect.left) / rect.width) * W;
+      const i = Math.max(0, Math.min(count - 1, Math.floor((sx - L) / slot)));
+      const d = series[i];
       if (cross) {
         cross.setAttribute('x1', cx(i)); cross.setAttribute('x2', cx(i)); cross.setAttribute('visibility', 'visible');
         dot.setAttribute('cx', cx(i)); dot.setAttribute('cy', y(d.v)); dot.setAttribute('visibility', 'visible');
@@ -639,21 +639,21 @@
   }
 
   // Petite courbe des tuiles du haut : pas d'axe, juste la forme.
-  var sparkId = 0;
+  let sparkId = 0;
   function spark(values) {
-    var W = 240, H = 44, P = 3, count = values.length;
+    const W = 240, H = 44, P = 3, count = values.length;
     if (count < 2) return '';
-    var max = Math.max.apply(null, values.concat([1]));
-    var min = Math.min.apply(null, values);
+    const max = Math.max.apply(null, values.concat([1]));
+    const min = Math.min.apply(null, values);
     // Une courbe cumulée part de loin : on la cadre sur sa propre plage,
     // sinon elle n'est qu'un trait plat en haut de la tuile.
-    var base = values[0] > 0 && min === values[0] ? min : 0;
-    var span = Math.max(1, max - base);
-    var x = function (i) { return (i * W) / (count - 1); };
-    var y = function (v) { return H - P - ((v - base) / span) * (H - P * 2); };
-    var line = 'M' + values.map(function (v, i) { return x(i).toFixed(1) + ' ' + y(v).toFixed(1); }).join(' L');
-    var area = line + ' L' + W + ' ' + H + ' L0 ' + H + ' Z';
-    var id = 'sp' + (sparkId++);
+    const base = values[0] > 0 && min === values[0] ? min : 0;
+    const span = Math.max(1, max - base);
+    const x = function (i) { return (i * W) / (count - 1); };
+    const y = function (v) { return H - P - ((v - base) / span) * (H - P * 2); };
+    const line = 'M' + values.map(function (v, i) { return x(i).toFixed(1) + ' ' + y(v).toFixed(1); }).join(' L');
+    const area = line + ' L' + W + ' ' + H + ' L0 ' + H + ' Z';
+    const id = 'sp' + (sparkId++);
     return '<svg viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="none" aria-hidden="true">' +
       '<defs><linearGradient id="' + id + '" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3CC278" stop-opacity=".2"/><stop offset="1" stop-color="#3CC278" stop-opacity="0"/></linearGradient></defs>' +
       '<path d="' + area + '" fill="url(#' + id + ')"/>' +
@@ -661,9 +661,9 @@
   }
 
   // ── État ───────────────────────────────────────────────────────────
-  var state = { k: null, releases: [], period: 30, metric: 'plays' };
+  const state = { k: null, releases: [], period: 30, metric: 'plays' };
   try {
-    var saved = JSON.parse(localStorage.getItem('dooka-admin') || '{}');
+    const saved = JSON.parse(localStorage.getItem('dooka-admin') || '{}');
     if (saved.period === 90) state.period = 90;
     if (typeof saved.metric === 'string') state.metric = saved.metric;
   } catch (e) { /* stockage indisponible : on garde les défauts */ }
@@ -675,15 +675,15 @@
   // retirant les inscriptions de chaque jour. Un compte supprimé n'est
   // plus dans le total, la courbe est donc celle des comptes encore là.
   function cumulative(daily, total) {
-    var acc = total;
+    let acc = total;
     return daily.slice().reverse().map(function (d) {
-      var v = acc;
+      const v = acc;
       acc -= num(d.signups);
       return v;
     }).reverse();
   }
 
-  var METRICS = [
+  const METRICS = [
     { key: 'plays', label: 'Tickets grattés', suffix: 'tickets' },
     { key: 'staked', label: 'Misé', unit: 'eur' },
     { key: 'won', label: 'Gagné', unit: 'eur' },
@@ -695,7 +695,7 @@
     { key: 'visits', label: 'Pages vues du site', suffix: 'pages vues', since: 'site' },
     { key: 'cumul', label: 'Comptes', kind: 'line', suffix: 'comptes' }
   ];
-  var NOTES = {
+  const NOTES = {
     plays: 'Tickets notés chaque jour, en session ou non.',
     staked: 'Somme des mises du jour.',
     won: 'Somme des gains déclarés du jour.',
@@ -714,51 +714,51 @@
   // pour que le graphique d'activité les montre comme le reste.
   function cnt(obj, key) { return num(obj && obj[key]); }
   function prefixed(obj, prefix) {
-    var out = [];
-    for (var k in obj) if (Object.prototype.hasOwnProperty.call(obj, k) && k.indexOf(prefix) === 0) out.push({ key: k.slice(prefix.length), n: num(obj[k]) });
+    const out = [];
+    for (let k in obj) if (Object.prototype.hasOwnProperty.call(obj, k) && k.indexOf(prefix) === 0) out.push({ key: k.slice(prefix.length), n: num(obj[k]) });
     return out.sort(function (a, b) { return b.n - a.n; });
   }
   // Premier jour compté d'une famille, ou celui du premier compteur posé.
   function since(family) {
-    var d = state.c && state.c.depuis || {};
+    const d = state.c && state.c.depuis || {};
     if (d[family]) return d[family];
-    var all = Object.keys(d).map(function (k) { return d[k]; }).sort();
+    const all = Object.keys(d).map(function (k) { return d[k]; }).sort();
     return all[0] || null;
   }
   function sinceText(family) {
-    var d = since(family);
+    const d = since(family);
     return d ? 'Compté depuis le ' + longFmt.format(day(d)) + '.' : 'Compteur pas encore en place.';
   }
   function mergeCounters() {
-    var byDay = {};
+    const byDay = {};
     ((state.c && state.c.jours) || []).forEach(function (r) {
-      var d = byDay[r.day] || (byDay[r.day] = { google: 0, visits: 0, deleted: 0 });
+      const d = byDay[r.day] || (byDay[r.day] = { google: 0, visits: 0, deleted: 0 });
       if (r.cle.indexOf('google:') === 0 && r.cle !== 'google:details_cache') d.google += num(r.n);
       else if (r.cle.indexOf('site:') === 0) d.visits += num(r.n);
       else if (r.cle === 'compte_supprime') d.deleted += num(r.n);
     });
     (state.k.daily || []).forEach(function (d) {
-      var x = byDay[d.day] || {};
+      const x = byDay[d.day] || {};
       d.google = num(x.google); d.visits = num(x.visits); d.deleted = num(x.deleted);
     });
   }
   // Somme d'une clé sur les jours de la période choisie.
   function periodCount(match) {
-    var from = (periodDays()[0] || {}).day || '';
+    const from = (periodDays()[0] || {}).day || '';
     return ((state.c && state.c.jours) || []).reduce(function (s, r) {
       return r.day >= from && match(r.cle) ? s + num(r.n) : s;
     }, 0);
   }
   function usd(v) { return nf2.format(num(v)) + NBSP + '$'; }
   function mo(bytes) {
-    var v = num(bytes) / 1048576;
+    const v = num(bytes) / 1048576;
     return (v < 10 ? nf1 : nf).format(v) + NBSP + 'Mo';
   }
 
   // Tarifs publics de l'API Places « legacy » (celle qu'appelle
   // google-maps-proxy), novembre 2026 : une gratuité par type d'appel et par
   // mois, puis un prix pour 1 000 appels. À revoir si Google les change.
-  var GOOGLE = [
+  const GOOGLE = [
     { label: 'Recherches autour de soi', api: 'Nearby Search', keys: ['google:nearby', 'google:nearby_page'], free: 5000, price: 32 },
     { label: 'Recherches par nom', api: 'Text Search', keys: ['google:text'], free: 5000, price: 32 },
     { label: 'Fiches de bar', api: 'Place Details', keys: ['google:details'], free: 5000, price: 17 },
@@ -768,24 +768,24 @@
   function skuCost(used, sku) { return (Math.max(0, used - sku.free) * sku.price) / 1000; }
 
   // Offre gratuite de Supabase (novembre 2026).
-  var SUPA_DB_MB = 500, SUPA_STORAGE_MB = 1024, SUPA_MAU = 50000;
-  var BUCKETS = { avatars: 'photos de profil', 'play-proofs': 'preuves de gain', 'group-images': 'images de bande' };
-  var PAGES = { '/': 'Accueil', '/confidentialite': 'Confidentialité', '/jeu-responsable': 'Jeu responsable', '/suppression-compte': 'Supprimer mon compte', autre: 'Autres pages' };
-  var SOURCES = { direct: 'Accès direct', moteur: 'Moteur de recherche', reseaux: 'Réseau social', store: 'Magasin d\'applications', autre: 'Autre site' };
+  const SUPA_DB_MB = 500, SUPA_STORAGE_MB = 1024, SUPA_MAU = 50000;
+  const BUCKETS = { avatars: 'photos de profil', 'play-proofs': 'preuves de gain', 'group-images': 'images de bande' };
+  const PAGES = { '/': 'Accueil', '/confidentialite': 'Confidentialité', '/jeu-responsable': 'Jeu responsable', '/suppression-compte': 'Supprimer mon compte', autre: 'Autres pages' };
+  const SOURCES = { direct: 'Accès direct', moteur: 'Moteur de recherche', reseaux: 'Réseau social', store: 'Magasin d\'applications', autre: 'Autre site' };
 
   function periodDays() { return (state.k.daily || []).slice(-state.period); }
 
   function renderActivity() {
-    var k = state.k;
-    var all = k.daily || [];
-    var days = periodDays();
+    const k = state.k;
+    const all = k.daily || [];
+    const days = periodDays();
     if (!days.length) return;
-    var cumul = cumulative(all, num(k.users.total)).slice(-days.length);
+    const cumul = cumulative(all, num(k.users.total)).slice(-days.length);
     $('act-range').textContent = 'Du ' + longFmt.format(day(days[0].day)) + ' au ' + longFmt.format(day(days[days.length - 1].day));
 
-    var playedDays = days.filter(function (d) { return num(d.plays) > 0; }).length;
+    const playedDays = days.filter(function (d) { return num(d.plays) > 0; }).length;
     $('metrics').innerHTML = METRICS.map(function (m) {
-      var t;
+      let t;
       if (m.key === 'cumul') t = n(cumul[cumul.length - 1]);
       else if (m.key === 'players') t = nf1.format(playedDays ? sumOf(days, 'players') / playedDays : 0) + ' / jour joué';
       else if (m.unit === 'eur') t = eurShort(sumOf(days, m.key));
@@ -794,11 +794,11 @@
         esc(m.label) + '<b>' + esc(t) + '</b></button>';
     }).join('');
 
-    var m = METRICS.filter(function (x) { return x.key === state.metric; })[0] || METRICS[0];
-    var series = days.map(function (d, i) {
+    const m = METRICS.filter(function (x) { return x.key === state.metric; })[0] || METRICS[0];
+    const series = days.map(function (d, i) {
       return { d: day(d.day), v: m.key === 'cumul' ? cumul[i] : num(d[m.key]) };
     });
-    var host = $('chart');
+    const host = $('chart');
     host.setAttribute('aria-label', m.label + ' par jour sur les ' + state.period + ' derniers jours. Le détail est dans le tableau sous le graphique.');
     drawChart(host, series, { unit: m.unit, kind: m.kind, suffix: m.suffix });
     $('chart-note').textContent = (NOTES[m.key] || '') + (m.since ? ' ' + sinceText(m.since) : '');
@@ -815,11 +815,11 @@
   }
 
   function renderHero() {
-    var k = state.k, u = k.users, p = k.plays, s = k.sessions;
-    var days = periodDays();
-    var cumul = cumulative(k.daily || [], num(u.total)).slice(-days.length);
-    var col = function (key) { return days.map(function (d) { return num(d[key]); }); };
-    var per = 'sur ' + state.period + NBSP + 'j';
+    const k = state.k, u = k.users, p = k.plays, s = k.sessions;
+    const days = periodDays();
+    const cumul = cumulative(k.daily || [], num(u.total)).slice(-days.length);
+    const col = function (key) { return days.map(function (d) { return num(d[key]); }); };
+    const per = 'sur ' + state.period + NBSP + 'j';
 
     $('hero').innerHTML = [
       { k: 'Comptes', v: n(u.total), s: '<b>+' + n(sumOf(days, 'signups')) + '</b> ' + per, sp: cumul },
@@ -833,8 +833,8 @@
   }
 
   function renderUsers() {
-    var u = state.k.users;
-    var t = num(u.total);
+    const u = state.k.users;
+    const t = num(u.total);
     $('users-tiles').innerHTML =
       tile('Vus en 24 h', n(u.seen_1d), pct(u.seen_1d, t) + ' des comptes') +
       tile('Actifs sur 30 jours', n(u.active_30d), pct(u.active_30d, t) + ' des comptes') +
@@ -857,18 +857,18 @@
   // l'ancienneté du compte en quatre tranches.
   function deletedTile() {
     if (!state.c) return tile('Comptes supprimés', '—', 'compteur indisponible');
-    var tot = state.c.total || {};
-    var all = cnt(tot, 'compte_supprime');
-    var d30 = sumOf((state.k.daily || []).slice(-30), 'deleted');
-    var start = since('compte_supprime');
+    const tot = state.c.total || {};
+    const all = cnt(tot, 'compte_supprime');
+    const d30 = sumOf((state.k.daily || []).slice(-30), 'deleted');
+    const start = since('compte_supprime');
     return tile('Comptes supprimés', n(all), all
       ? n(d30) + ' sur 30 j · ' + n(cnt(tot, 'compte_supprime:moins_1j')) + ' le premier jour'
       : (start ? 'aucun depuis le ' + esc(shortFmt.format(day(start))) : 'compteur pas encore en place'));
   }
 
   function renderPlay() {
-    var p = state.k.plays;
-    var big = p.biggest;
+    const p = state.k.plays;
+    const big = p.biggest;
     $('play-tiles').innerHTML =
       tile('Tickets grattés', n(p.total), n(p.last_30d) + ' sur 30 j · ' + n(p.last_7d) + ' sur 7 j') +
       tile('Misé', eur(p.staked), eur(p.staked_30d) + ' sur 30 j') +
@@ -883,8 +883,8 @@
       tile('Avec photo de preuve', n(p.photo), pct(p.photo, p.total) + ' des tickets') +
       tile('Tirages Amigo', n(p.amigo));
 
-    var list = state.k.tickets || [];
-    var max = maxOf(list, 'plays');
+    const list = state.k.tickets || [];
+    const max = maxOf(list, 'plays');
     $('tickets').innerHTML = list.length ? '<table class="t"><thead><tr><th>Ticket</th><th class="n">Prix</th><th class="n">Grattés</th><th></th><th class="n">Misé</th><th class="n">Gagné</th><th class="n">Net</th><th class="n">Gagnants</th></tr></thead><tbody>' +
       list.map(function (t) {
         return '<tr><td>' + esc(t.name) + '</td><td class="n">' + eur(t.price) + '</td><td class="n">' + n(t.plays) + '</td>' +
@@ -897,33 +897,33 @@
   }
 
   // Séquentiel, une seule teinte : de la carte d'app vide au vert plein.
-  var HEAT = ['rgba(60,194,120,.18)', 'rgba(60,194,120,.36)', 'rgba(60,194,120,.56)', 'rgba(60,194,120,.78)', '#3CC278'];
-  var JOURS = ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'];
-  var JOURS_LONGS = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
+  const HEAT = ['rgba(60,194,120,.18)', 'rgba(60,194,120,.36)', 'rgba(60,194,120,.56)', 'rgba(60,194,120,.78)', '#3CC278'];
+  const JOURS = ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'];
+  const JOURS_LONGS = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
   function renderHeat() {
-    var cells = {};
-    var max = 0;
+    const cells = {};
+    let max = 0;
     (state.k.heatmap || []).forEach(function (c) {
       cells[c.dow + '-' + c.hour] = num(c.n);
       max = Math.max(max, num(c.n));
     });
-    var html = '<span></span>';
-    for (var h = 0; h < 24; h++) html += '<span class="h">' + (h % 3 === 0 ? h : '') + '</span>';
-    for (var d = 1; d <= 7; d++) {
+    let html = '<span></span>';
+    for (let h = 0; h < 24; h++) html += '<span class="h">' + (h % 3 === 0 ? h : '') + '</span>';
+    for (let d = 1; d <= 7; d++) {
       html += '<span class="d">' + JOURS[d - 1] + '</span>';
-      for (var hh = 0; hh < 24; hh++) {
-        var v = cells[d + '-' + hh] || 0;
-        var step = v ? Math.min(HEAT.length - 1, Math.ceil((v / max) * HEAT.length) - 1) : -1;
+      for (let hh = 0; hh < 24; hh++) {
+        let v = cells[d + '-' + hh] || 0;
+        let step = v ? Math.min(HEAT.length - 1, Math.ceil((v / max) * HEAT.length) - 1) : -1;
         html += '<span class="c" data-l="' + JOURS_LONGS[d - 1] + ', ' + hh + ' h" data-v="' + v + '"' +
           (step >= 0 ? ' style="background:' + HEAT[step] + '"' : '') + '></span>';
       }
     }
-    var heat = $('heat');
+    const heat = $('heat');
     heat.innerHTML = html;
     heat.onpointermove = function (e) {
-      var c = e.target.closest && e.target.closest('.c');
+      const c = e.target.closest && e.target.closest('.c');
       if (!c) { hideTip(); return; }
-      var v = Number(c.getAttribute('data-v'));
+      const v = Number(c.getAttribute('data-v'));
       showTip(esc(c.getAttribute('data-l')) + ' · <b>' + plural(v, 'ticket', 'tickets') + '</b>', e.clientX, e.clientY);
     };
     heat.onpointerleave = hideTip;
@@ -931,8 +931,8 @@
   }
 
   function renderSessions() {
-    var s = state.k.sessions;
-    var empty = num(s.total) - num(s.with_play);
+    const s = state.k.sessions;
+    const empty = num(s.total) - num(s.with_play);
     $('sess-tiles').innerHTML =
       tile('Sessions', n(s.total), n(s.last_30d) + ' sur 30 j · ' + n(s.last_7d) + ' sur 7 j') +
       tile('En cours', n(s.open), n(s.closed) + ' terminées · ' + n(s.archived) + ' archivées') +
@@ -945,8 +945,8 @@
       tile('Lieux différents', n(s.places), 'où une session a été ouverte') +
       tile('Places à table', n(num(s.guests) + num(s.accounts)), n(s.accounts) + ' comptes · ' + n(s.guests) + ' invités');
 
-    var bars = state.k.bars || [];
-    var max = maxOf(bars, 'sessions');
+    const bars = state.k.bars || [];
+    const max = maxOf(bars, 'sessions');
     $('bars').innerHTML = bars.length ? '<table class="t"><thead><tr><th>Bar</th><th class="n">Sessions</th><th></th><th class="n">Tickets</th></tr></thead><tbody>' +
       bars.map(function (b) {
         return '<tr><td>' + esc(b.name) + '</td><td class="n">' + n(b.sessions) + '</td>' +
@@ -955,7 +955,7 @@
   }
 
   function renderSocial() {
-    var so = state.k.social, u = state.k.users;
+    const so = state.k.social, u = state.k.users;
     $('social-tiles').innerHTML =
       tile('Amitiés', n(so.friendships), plural(so.pending, 'demande en attente', 'demandes en attente')) +
       tile('Amis par compte', num(u.total) ? nf1.format((2 * num(so.friendships)) / num(u.total)) : '—', 'en moyenne') +
@@ -969,13 +969,13 @@
       tile('Blocages', n(so.blocks));
   }
 
-  var QUOTAS = {
+  const QUOTAS = {
     google_maps: 'Appels Google Maps', search_people: 'Recherches de personnes',
     invite_group: 'Invitations en bande', demande_ami: 'Demandes d\'ami', request_friend: 'Demandes d\'ami (ancien nom)'
   };
   function renderPlaces() {
-    var pl = state.k.places;
-    var c = num(pl.cached);
+    const pl = state.k.places;
+    const c = num(pl.cached);
     $('places-tiles').innerHTML =
       tile('Lieux en cache', n(c), n(pl.with_hours) + ' avec horaires') +
       tile('Confirmés PMU', pct(pl.confirmed, c), n(pl.confirmed) + ' sur ' + n(c)) +
@@ -990,37 +990,37 @@
       meter('Points de vente', pl.shops, c, { dim: true }) +
       meter('Avec horaires', pl.with_hours, c, { dim: true });
 
-    var q = state.k.quotas || [];
-    var qmax = maxOf(q, 'n');
+    const q = state.k.quotas || [];
+    const qmax = maxOf(q, 'n');
     $('quotas').innerHTML = q.length ? q.map(function (x) {
       return meter(QUOTAS[x.kind] || x.kind, x.n, qmax, { share: false });
     }).join('') : '<p class="note">Aucun appel ces dernières 24 heures.</p>';
   }
 
   function renderCosts() {
-    var c = state.c;
+    const c = state.c;
     if (!c) {
       $('costs-tiles').innerHTML = '<p class="note">Compteurs indisponibles : la migration 0137 n\'est pas encore appliquée.</p>';
       $('google-meters').innerHTML = '';
       $('supa-meters').innerHTML = '';
       return;
     }
-    var mois = c.mois || {};
+    const mois = c.mois || {};
     // Projection : le rythme du mois en cours, prolongé jusqu'à sa fin.
-    var now = new Date();
-    var dim = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
-    var start = since('google');
-    var startDay = start && start.slice(0, 7) === now.toISOString().slice(0, 7) ? Number(start.slice(8, 10)) : 1;
-    var elapsed = Math.max(1, now.getDate() - startDay + 1);
-    var remaining = dim - now.getDate();
-    var cost = 0, proj = 0, calls = 0;
+    const now = new Date();
+    const dim = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
+    const start = since('google');
+    const startDay = start && start.slice(0, 7) === now.toISOString().slice(0, 7) ? Number(start.slice(8, 10)) : 1;
+    const elapsed = Math.max(1, now.getDate() - startDay + 1);
+    const remaining = dim - now.getDate();
+    let cost = 0, proj = 0, calls = 0;
     GOOGLE.forEach(function (s) {
-      var u = skuUse(mois, s);
+      const u = skuUse(mois, s);
       calls += u;
       cost += skuCost(u, s);
       proj += skuCost(u + Math.round((u / elapsed) * remaining), s);
     });
-    var cache = cnt(mois, 'google:details_cache'), det = cnt(mois, 'google:details');
+    const cache = cnt(mois, 'google:details_cache'), det = cnt(mois, 'google:details');
 
     $('costs-lede').textContent = 'Google facture chaque type d\'appel au-delà d\'une gratuité mensuelle. Supabase plafonne son offre gratuite. ' +
       (start ? 'Appels Google comptés depuis le ' + longFmt.format(day(start)) + '.' : 'Le compteur des appels Google n\'est pas encore en place.');
@@ -1031,16 +1031,16 @@
       tile('Cache des horaires', (cache + det) ? pct(cache, cache + det) : '—', plural(cache, 'fiche ouverte', 'fiches ouvertes') + ' sans appeler Google');
 
     $('google-meters').innerHTML = GOOGLE.map(function (s) {
-      var u = skuUse(mois, s);
+      const u = skuUse(mois, s);
       return meter(s.label, u, s.free, {
         tall: true,
         note: s.api + ' · ' + n(s.free) + ' gratuits, puis ' + nf.format(s.price) + NBSP + '$ les 1' + NBSP + '000' + (s.note ? ' · ' + s.note : '')
       });
     }).join('');
 
-    var inf = c.infra || {};
-    var st = inf.storage || [];
-    var stBytes = sumOf(st, 'bytes');
+    const inf = c.infra || {};
+    const st = inf.storage || [];
+    const stBytes = sumOf(st, 'bytes');
     $('supa-meters').innerHTML =
       meter('Base de données', num(inf.db_bytes) / 1048576, SUPA_DB_MB, { tall: true, text: mo(inf.db_bytes), note: 'sur ' + n(SUPA_DB_MB) + NBSP + 'Mo' }) +
       meter('Photos', stBytes / 1048576, SUPA_STORAGE_MB, {
@@ -1051,7 +1051,7 @@
   }
 
   function renderSite() {
-    var c = state.c;
+    const c = state.c;
     if (!c) {
       $('site-tiles').innerHTML = '<p class="note">Compteurs indisponibles : la migration 0137 n\'est pas encore appliquée.</p>';
       $('site-pages').innerHTML = '';
@@ -1059,22 +1059,22 @@
       $('site-pages-total').textContent = '';
       return;
     }
-    var per = 'sur ' + state.period + NBSP + 'j';
-    var views = periodCount(function (k) { return k.indexOf('site:') === 0; });
-    var entries = periodCount(function (k) { return k.indexOf('site_entree:') === 0; });
-    var today = (state.k.daily || []).slice(-1)[0] || {};
+    const per = 'sur ' + state.period + NBSP + 'j';
+    const views = periodCount(function (k) { return k.indexOf('site:') === 0; });
+    const entries = periodCount(function (k) { return k.indexOf('site_entree:') === 0; });
+    const today = (state.k.daily || []).slice(-1)[0] || {};
     $('site-lede').textContent = 'Pages vues, comptées sans cookie. Un navigateur qui demande à ne pas être suivi n\'est pas compté. ' + sinceText('site');
 
-    var from = (periodDays()[0] || {}).day || '';
-    var pages = {}, sources = {};
+    const from = (periodDays()[0] || {}).day || '';
+    const pages = {}, sources = {};
     (c.jours || []).forEach(function (r) {
       if (r.day < from) return;
       if (r.cle.indexOf('site:') === 0) pages[r.cle] = num(pages[r.cle]) + num(r.n);
       else if (r.cle.indexOf('site_entree:') === 0) sources[r.cle] = num(sources[r.cle]) + num(r.n);
     });
-    var pageList = prefixed(pages, 'site:');
-    var sourceList = prefixed(sources, 'site_entree:');
-    var top = pageList[0];
+    const pageList = prefixed(pages, 'site:');
+    const sourceList = prefixed(sources, 'site_entree:');
+    const top = pageList[0];
 
     $('site-tiles').innerHTML =
       tile('Pages vues', n(views), per) +
@@ -1082,7 +1082,7 @@
       tile('Aujourd\'hui', n(today.visits), 'pages vues') +
       tile('Page la plus vue', top ? esc(PAGES[top.key] || top.key) : '—', top ? plural(top.n, 'vue', 'vues') + ' · ' + pct(top.n, views) : 'rien de compté');
     $('site-pages-total').textContent = plural(views, 'page vue', 'pages vues') + ' ' + per;
-    var pmax = Math.max(1, (pageList[0] || {}).n || 0), smax = Math.max(1, (sourceList[0] || {}).n || 0);
+    const pmax = Math.max(1, (pageList[0] || {}).n || 0), smax = Math.max(1, (sourceList[0] || {}).n || 0);
     $('site-pages').innerHTML = pageList.length ? pageList.map(function (p) {
       return meter(PAGES[p.key] || p.key, p.n, pmax, { of: views, tall: true });
     }).join('') : '<p class="note">Aucune page vue sur la période.</p>';
@@ -1091,16 +1091,16 @@
     }).join('') : '<p class="note">Aucune arrivée sur la période.</p>';
   }
 
-  var ECRANS = {
+  const ECRANS = {
     carte: 'Carte', sessions: 'Sessions', groupes: 'Bandes', tickets: 'Tickets', profil: 'Profil',
     bilan_du_mois: 'Bilan du mois', collection: 'Collection', fiche_bar: 'Fiche d\'un bar',
     fiche_ticket: 'Fiche d\'un ticket', fiche_session: 'Fiche d\'une session',
     suggestions: 'Suggestions', nouveautes: 'Quoi de neuf ?'
   };
   function renderScreens() {
-    var list = state.k.screens || [];
-    var total = sumOf(list, 'd30');
-    var max = maxOf(list, 'd30');
+    const list = state.k.screens || [];
+    const total = sumOf(list, 'd30');
+    const max = maxOf(list, 'd30');
     $('screens-total').textContent = plural(total, 'ouverture', 'ouvertures');
     $('screens').innerHTML = list.length ? list.map(function (s) {
       return meter(ECRANS[s.name] || s.name, s.d30, max, { of: total, note: n(s.total) + ' au total' });
@@ -1109,35 +1109,35 @@
 
   // Trie du plus récent au plus ancien.
   function cmpVersion(a, b) {
-    var A = a.split('.').map(Number), B = b.split('.').map(Number);
-    for (var i = 0; i < 3; i++) { if ((A[i] || 0) !== (B[i] || 0)) return (B[i] || 0) - (A[i] || 0); }
+    const A = a.split('.').map(Number), B = b.split('.').map(Number);
+    for (let i = 0; i < 3; i++) { if ((A[i] || 0) !== (B[i] || 0)) return (B[i] || 0) - (A[i] || 0); }
     return 0;
   }
   function renderVersions() {
-    var versions = (state.k.versions || []).map(function (v) { return { version: String(v.version), count: num(v.count) }; });
-    var total = sumOf(versions, 'count');
-    var isNum = function (v) { return /^\d/.test(v); };
+    const versions = (state.k.versions || []).map(function (v) { return { version: String(v.version), count: num(v.count) }; });
+    const total = sumOf(versions, 'count');
+    const isNum = function (v) { return /^\d/.test(v); };
     // La référence est la version la plus récente installée par au moins
     // deux comptes. Pas la dernière APK de GitHub : la diffusion passe par
     // Google Play depuis la 3.8.0, et la release GitHub ne bouge plus. Pas
     // non plus le plus grand numéro remonté : un build de dev, installé
     // par une seule personne, rendrait tout le monde « en retard ».
-    var known = versions.filter(function (v) { return isNum(v.version); }).sort(function (a, b) { return cmpVersion(a.version, b.version); });
-    var shared = known.filter(function (v) { return v.count >= 2; })[0] || known[0];
-    var latest = shared ? shared.version : '';
+    const known = versions.filter(function (v) { return isNum(v.version); }).sort(function (a, b) { return cmpVersion(a.version, b.version); });
+    const shared = known.filter(function (v) { return v.count >= 2; })[0] || known[0];
+    const latest = shared ? shared.version : '';
     // Un compte sur plus récent que la référence (testeurs, build de dev)
     // est à jour lui aussi.
-    var fresh = function (v) { return isNum(v) && latest && cmpVersion(v, latest) <= 0; };
-    var upToDate = versions.filter(function (v) { return fresh(v.version); }).reduce(function (s, v) { return s + v.count; }, 0);
+    const fresh = function (v) { return isNum(v) && latest && cmpVersion(v, latest) <= 0; };
+    const upToDate = versions.filter(function (v) { return fresh(v.version); }).reduce(function (s, v) { return s + v.count; }, 0);
 
     versions.sort(function (a, b) {
       if (!isNum(a.version)) return 1;
       if (!isNum(b.version)) return -1;
       return cmpVersion(a.version, b.version);
     });
-    var stale = 0;
-    var colored = versions.map(function (v) {
-      var c;
+    let stale = 0;
+    const colored = versions.map(function (v) {
+      let c;
       if (!isNum(v.version)) c = '#38403B';
       else if (fresh(v.version)) c = '#3CC278';
       // Les versions en retard s'éteignent à mesure qu'elles vieillissent.
@@ -1161,13 +1161,13 @@
   }
 
   function renderDownloads() {
-    var rel = state.releases;
+    const rel = state.releases;
     if (!rel.length) { $('downloads').innerHTML = '<p class="note">Aucune release lisible sur GitHub.</p>'; $('dl-total').textContent = ''; return; }
-    var counts = rel.map(function (r) {
+    const counts = rel.map(function (r) {
       return (r.assets || []).reduce(function (s, a) { return s + (/\.apk$/.test(a.name) ? num(a.download_count) : 0); }, 0);
     });
-    var total = counts.reduce(function (a, b) { return a + b; }, 0);
-    var max = Math.max.apply(null, counts.concat([1]));
+    const total = counts.reduce(function (a, b) { return a + b; }, 0);
+    const max = Math.max.apply(null, counts.concat([1]));
     $('dl-total').textContent = n(total) + ' au total · ' + plural(rel.length, 'version', 'versions');
     $('downloads').innerHTML = '<table class="t"><thead><tr><th>Version</th><th class="n">Téléch.</th><th></th><th>Publiée le</th></tr></thead><tbody>' +
       rel.map(function (r, i) {
@@ -1178,7 +1178,7 @@
   }
 
   function renderSettings() {
-    var st = state.k.settings, t = num(state.k.users.total);
+    const st = state.k.settings, t = num(state.k.users.total);
     $('rg').innerHTML =
       meter('Limite de mise par semaine', st.stake_limit, t) +
       meter('Rappel de durée', st.reminder, t) +
@@ -1191,7 +1191,7 @@
   }
 
   function renderCommunity() {
-    var c = state.k.community, cat = state.k.catalogue;
+    const c = state.k.community, cat = state.k.catalogue;
     $('community-tiles').innerHTML =
       tile('Suggestions', n(c.suggestions), n(c.ideas) + ' idées · ' + n(c.bugs) + ' bugs') +
       tile('Ouvertes', n(c.open), 'à trancher') +
@@ -1205,7 +1205,7 @@
   }
 
   function renderAll(animate) {
-    var k = state.k;
+    const k = state.k;
     $('stamp').innerHTML = 'Relevé à <b>' + esc(new Date(k.generated_at).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })) + '</b>';
     $('lede').innerHTML = '<strong>' + plural(k.users.total, 'compte', 'comptes') + ', ' + plural(k.plays.total, 'ticket gratté', 'tickets grattés') +
       ', ' + plural(k.sessions.total, 'session', 'sessions') + '.</strong> Lu en direct dans la base à chaque actualisation.';
@@ -1237,14 +1237,14 @@
 
   // ── Interactions ───────────────────────────────────────────────────
   $('metrics').addEventListener('click', function (e) {
-    var b = e.target.closest('[data-m]');
+    const b = e.target.closest('[data-m]');
     if (!b) return;
     state.metric = b.getAttribute('data-m');
     remember();
     renderActivity();
   });
   $('period').addEventListener('click', function (e) {
-    var b = e.target.closest('[data-period]');
+    const b = e.target.closest('[data-period]');
     if (!b || !state.k) return;
     state.period = Number(b.getAttribute('data-period'));
     remember();
@@ -1253,7 +1253,7 @@
     renderActivity();
     renderSite();
   });
-  var resizeTimer;
+  let resizeTimer;
   window.addEventListener('resize', function () {
     clearTimeout(resizeTimer);
     resizeTimer = setTimeout(function () { if (state.k) renderActivity(); }, 150);
@@ -1275,16 +1275,16 @@
       .catch(function () { return []; });
   }
 
-  var loading = null;
+  let loading = null;
   function load(animate) {
     if (loading) return loading;
     // Le refus vient de la base, pas d'ici : admin_kpis lève une
     // exception si l'appelant n'est pas administrateur.
     // admin_compteurs (0137) à part : s'il manque ou échoue, le reste du
     // tableau s'affiche quand même, sans les compteurs.
-    var counters = sb.rpc('admin_compteurs').then(function (res) { return res.error ? null : res.data; }, function () { return null; });
+    const counters = sb.rpc('admin_compteurs').then(function (res) { return res.error ? null : res.data; }, function () { return null; });
     loading = Promise.all([sb.rpc('admin_kpis'), loadReleases(), counters]).then(function (r) {
-      var out = r[0];
+      const out = r[0];
       if (out.error) {
         showGate('<span class="err">Ce compte n\'est pas administrateur.</span>', true);
         return;
@@ -1319,7 +1319,7 @@
     });
   });
   $('refresh').addEventListener('click', function () {
-    var b = $('refresh');
+    const b = $('refresh');
     b.disabled = true;
     load(false).then(function () { b.disabled = false; });
   });

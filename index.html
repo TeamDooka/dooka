@@ -1455,16 +1455,16 @@
   // de l'app), puis l'annonce et la section disparaissent au 1er janvier.
   (function () {
     "use strict";
-    var d = new Date(), annee = 2026;
-    var annonce = document.getElementById("annonce");
-    var section = document.getElementById("avent");
+    const d = new Date(), annee = 2026;
+    const annonce = document.getElementById("annonce");
+    const section = document.getElementById("avent");
     if (d.getFullYear() > annee) {
       if (annonce) annonce.remove();
       if (section) section.remove();
       return;
     }
     if (!annonce || d.getFullYear() < annee || d.getMonth() < 11) return;
-    var ouvert = d.getDate() <= 24;
+    const ouvert = d.getDate() <= 24;
     annonce.querySelector("b").textContent = ouvert ? "En ce moment" : "Le récap";
     annonce.querySelector("span").textContent = ouvert
       ? "Le calendrier de l’Avent est ouvert jusqu’au 24 décembre"
@@ -1476,13 +1476,13 @@
   (function () {
     "use strict";
 
-    var params = new URLSearchParams(location.search);
-    var still = params.has("still") ||
+    const params = new URLSearchParams(location.search);
+    const still = params.has("still") ||
       window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    var NNBSP = " ";
+    const NNBSP = " ";
 
     function euros(v) {
-      var s = v > 0 ? "+" : v < 0 ? "−" : "";
+      const s = v > 0 ? "+" : v < 0 ? "−" : "";
       return s + Math.abs(v).toFixed(2).replace(".", ",") + " €";
     }
     function teinte(el, v, pos) {
@@ -1492,22 +1492,22 @@
     }
 
     /* ---------- La barre de navigation se vitre au défilement ---------- */
-    var nav = document.getElementById("nav");
+    const nav = document.getElementById("nav");
     function onScroll() { nav.classList.toggle("scrolled", window.scrollY > 8); }
     window.addEventListener("scroll", onScroll, { passive: true });
     onScroll();
 
     /* ---------- La date de la session : ce soir ---------- */
-    var dateSess = document.getElementById("dateSession");
+    const dateSess = document.getElementById("dateSession");
     if (dateSess) {
       dateSess.textContent = new Date().toLocaleDateString("fr-FR", { day: "2-digit", month: "2-digit", year: "numeric" });
     }
 
     /* ---------- Arrivées au défilement ---------- */
-    var rvs = document.querySelectorAll(".rv");
+    const rvs = document.querySelectorAll(".rv");
     if (!still && "IntersectionObserver" in window) {
       rvs.forEach(function (el) { el.classList.add("rv-wait"); });
-      var io = new IntersectionObserver(function (entries) {
+      const io = new IntersectionObserver(function (entries) {
         entries.forEach(function (e) {
           if (!e.isIntersecting) return;
           e.target.classList.add("rv-in");
@@ -1521,18 +1521,18 @@
     /* ---------- Les bordures qui suivent le curseur ---------- */
     document.querySelectorAll(".panel").forEach(function (p) {
       p.addEventListener("pointermove", function (e) {
-        var r = p.getBoundingClientRect();
+        const r = p.getBoundingClientRect();
         p.style.setProperty("--mx", (e.clientX - r.left) + "px");
         p.style.setProperty("--my", (e.clientY - r.top) + "px");
       });
     });
 
     /* ---------- Le manifeste s'allume mot à mot ---------- */
-    var man = document.getElementById("manifeste");
+    const man = document.getElementById("manifeste");
     if (man) {
-      var morceaux = [];
+      const morceaux = [];
       man.childNodes.forEach(function (n) {
-        var em = n.nodeType === 1;
+        const em = n.nodeType === 1;
         n.textContent.split(/(\s+)/).forEach(function (part) {
           if (part) morceaux.push({ t: part, em: em });
         });
@@ -1540,18 +1540,18 @@
       man.textContent = "";
       morceaux.forEach(function (m) {
         if (/^\s+$/.test(m.t)) { man.appendChild(document.createTextNode(m.t)); return; }
-        var s = document.createElement("span");
+        const s = document.createElement("span");
         s.className = "w" + (m.em ? " em" : "");
         s.textContent = m.t;
         man.appendChild(s);
       });
-      var mots = man.querySelectorAll(".w");
-      var allumer = function () {
-        var r = man.getBoundingClientRect();
-        var h = window.innerHeight;
+      const mots = man.querySelectorAll(".w");
+      const allumer = function () {
+        const r = man.getBoundingClientRect();
+        const h = window.innerHeight;
         // De l'entrée du bloc à 85 % de l'écran jusqu'à son milieu : tout s'allume.
-        var p = Math.min(1, Math.max(0, (h * 0.85 - r.top) / (h * 0.5 + r.height * 0.5)));
-        var n = Math.round(p * mots.length);
+        const p = Math.min(1, Math.max(0, (h * 0.85 - r.top) / (h * 0.5 + r.height * 0.5)));
+        const n = Math.round(p * mots.length);
         mots.forEach(function (m, i) { m.classList.toggle("lit", i < n); });
       };
       if (still) {
@@ -1567,23 +1567,23 @@
     // Les montants s'écrivent comme dans l'app : « +3 € », « -1 € » (trait
     // d'union, pas de signe moins), « 16 € » sans centimes quand ils sont
     // ronds, espace insécable avant l'euro.
-    var NB = " ";
+    const NB = " ";
     function arrondi(v) { return Math.round(v * 100) / 100; }
     function centimes(v) { return Math.abs(v).toFixed(2).replace(".", ","); }
     // formatShortEuros : « 16 € », « 2,50 € ».
     function fmtS(v) {
-      var r = arrondi(v);
+      const r = arrondi(v);
       return (Number.isInteger(r) ? String(r) : centimes(r)) + NB + "€";
     }
     // signeCourt : « +3 € », « -1 € ».
     function fmtSS(v) {
-      var r = arrondi(v);
+      const r = arrondi(v);
       return (r >= 0 ? "+" : "-") + (Number.isInteger(r) ? String(Math.abs(r)) : centimes(r)) + NB + "€";
     }
     // formatSignedEuros : « +3,00 € », « -1,00 € » — le net de la tablée et
     // les lignes d'une liste, où les montants s'alignent en colonne.
     function fmtSD(v) {
-      var r = arrondi(v);
+      const r = arrondi(v);
       return (r >= 0 ? "+" : "-") + centimes(r) + NB + "€";
     }
     // 0 et 1 au singulier, comme l'app.
@@ -1592,59 +1592,59 @@
     // Les visages : la teinte se déduit du nom, comme dans l'app (Avatar.tsx,
     // palette sombre), de sorte qu'une même personne garde la même couleur
     // d'un écran à l'autre.
-    var TEINTES = [["#173A27", "#8FE0B1"], ["#3F3414", "#F2C14E"], ["#1B2E4F", "#9FC0F7"], ["#45201F", "#FF9C9F"], ["#33264F", "#C6AEF0"]];
+    const TEINTES = [["#173A27", "#8FE0B1"], ["#3F3414", "#F2C14E"], ["#1B2E4F", "#9FC0F7"], ["#45201F", "#FF9C9F"], ["#33264F", "#C6AEF0"]];
     function avatar(nom) {
-      var h = 0;
-      for (var i = 0; i < nom.length; i++) h = (h * 31 + nom.charCodeAt(i)) | 0;
-      var t = TEINTES[Math.abs(h) % TEINTES.length];
-      var s = el("span", "ini", nom.charAt(0).toUpperCase());
+      let h = 0;
+      for (let i = 0; i < nom.length; i++) h = (h * 31 + nom.charCodeAt(i)) | 0;
+      const t = TEINTES[Math.abs(h) % TEINTES.length];
+      const s = el("span", "ini", nom.charAt(0).toUpperCase());
       s.style.background = t[0];
       s.style.color = t[1];
       return s;
     }
 
     // La date comme l'app l'écrit : « 25/10/2026 ».
-    var sdDate = document.getElementById("sdDate");
+    const sdDate = document.getElementById("sdDate");
     if (sdDate) sdDate.textContent = new Date().toLocaleDateString("fr-FR");
 
     // Une démo honnête : plus de tickets perdus que gagnés, la tablée finit
     // plus bas qu'elle n'a commencé, et chaque gain est un vrai lot du ticket
     // (Astro 2 € : 2, 4, 6 € ; Banco 1 € : 1, 2, 5, 10 € ; Cash 5 € : 5, 10 €).
     // Dans l'ordre d'arrivée, le plus ancien d'abord : [joueur, ticket, mise, gain].
-    var NOMS = { lea: "Léa", momo: "Momo", sam: "Sam" };
-    var ORDRE = ["lea", "momo", "sam"];
-    var depart = [
+    const NOMS = { lea: "Léa", momo: "Momo", sam: "Sam" };
+    const ORDRE = ["lea", "momo", "sam"];
+    const depart = [
       ["lea", "Banco", 1, 2], ["momo", "Banco", 1, 5], ["sam", "Banco", 1, 2],
       ["lea", "Astro", 2, 0], ["momo", "Cash", 5, 0], ["sam", "Banco", 1, 0],
       ["lea", "Astro", 2, 6], ["momo", "Banco", 1, 0], ["sam", "Cash", 5, 0]
     ];
     // Chaque ajout change quelque chose à lire : Sam passe devant Momo, puis
     // Momo repasse devant Sam, et le dernier ticket de Léa fait monter Momo en tête.
-    var suite = [
+    const suite = [
       ["lea", "Banco", 1, 0],
       ["sam", "Banco", 1, 5],
       ["sam", "Cash", 5, 0],
       ["momo", "Banco", 1, 2],
       ["lea", "Cash", 5, 0]
     ];
-    var plays, pas, heureDernier, ticketsDeplies;
-    var ranking = document.getElementById("ranking");
-    var scroller = document.getElementById("sdScroll");
-    var paneJeu = document.getElementById("paneJeu");
-    var paneStats = document.getElementById("paneStats");
-    var tabJeu = document.getElementById("tabJeu");
-    var tabStats = document.getElementById("tabStats");
-    var tableNet = document.getElementById("tableNet");
-    var tableeEl = document.getElementById("tablee");
-    var tableList = document.getElementById("tableList");
-    var tableToggle = document.getElementById("tableToggle");
-    var derniersEl = document.getElementById("derniers");
-    var voirBtn = document.getElementById("voir");
-    var addBtn = document.getElementById("add");
-    var resetBtn = document.getElementById("reset");
-    var hint = document.getElementById("hint");
-    var annonce = document.getElementById("annonceDemo");
-    var onglet = "jeu";
+    let plays, pas, heureDernier, ticketsDeplies;
+    const ranking = document.getElementById("ranking");
+    const scroller = document.getElementById("sdScroll");
+    const paneJeu = document.getElementById("paneJeu");
+    const paneStats = document.getElementById("paneStats");
+    const tabJeu = document.getElementById("tabJeu");
+    const tabStats = document.getElementById("tabStats");
+    const tableNet = document.getElementById("tableNet");
+    const tableeEl = document.getElementById("tablee");
+    const tableList = document.getElementById("tableList");
+    const tableToggle = document.getElementById("tableToggle");
+    const derniersEl = document.getElementById("derniers");
+    const voirBtn = document.getElementById("voir");
+    const addBtn = document.getElementById("add");
+    const resetBtn = document.getElementById("reset");
+    const hint = document.getElementById("hint");
+    const annonce = document.getElementById("annonceDemo");
+    let onglet = "jeu";
 
     function net(id) {
       return plays.reduce(function (s, p) { return p.id === id ? s + p.w - p.c : s; }, 0);
@@ -1653,16 +1653,16 @@
     function gagnantsDe(liste) { return liste.filter(function (p) { return p.w > 0; }).length; }
     // Le décompte sous un nom : « 3 tickets · 2 gagnants », au constat.
     function decompte(liste) {
-      var g = gagnantsDe(liste);
+      const g = gagnantsDe(liste);
       return pluriel(liste.length, "ticket") + " · " + (g === 0 ? "aucun gagnant" : pluriel(g, "gagnant"));
     }
     function signe(el, v) { el.classList.toggle("neg", v < 0); }
 
     function compter(el, de, a, fmt) {
       if (still || de === a) { el.textContent = fmt(a); return; }
-      var t0 = performance.now(), d = 700;
+      const t0 = performance.now(), d = 700;
       function f(t) {
-        var k = Math.min(1, (t - t0) / d);
+        let k = Math.min(1, (t - t0) / d);
         k = 1 - Math.pow(1 - k, 4);
         el.textContent = fmt(Math.round(de + (a - de) * k));
         if (k < 1) requestAnimationFrame(f); else el.textContent = fmt(a);
@@ -1671,7 +1671,7 @@
     }
     // Un montant qui compte de sa valeur précédente à la nouvelle.
     function compterVers(el, a, fmt, anime) {
-      var de = el.dataset.v === undefined || el.dataset.v === "" ? a : parseFloat(el.dataset.v);
+      const de = el.dataset.v === undefined || el.dataset.v === "" ? a : parseFloat(el.dataset.v);
       el.dataset.v = a;
       compter(el, anime ? de : a, a, fmt);
     }
@@ -1681,7 +1681,7 @@
     function montrer(nom, focus) {
       onglet = nom;
       [["jeu", tabJeu, paneJeu], ["stats", tabStats, paneStats]].forEach(function (o) {
-        var actif = o[0] === nom;
+        const actif = o[0] === nom;
         o[1].setAttribute("aria-selected", actif ? "true" : "false");
         o[1].tabIndex = actif ? 0 : -1;
         o[2].hidden = !actif;
@@ -1702,11 +1702,11 @@
     function majTablee() {
       tableeEl.textContent = "";
       ORDRE.forEach(function (id) {
-        var n = net(id);
-        var c = el("div", "conv");
-        var av = el("span", "av");
+        const n = net(id);
+        const c = el("div", "conv");
+        const av = el("span", "av");
         av.appendChild(avatar(NOMS[id]));
-        var plus = el("span", "plus");
+        const plus = el("span", "plus");
         plus.setAttribute("aria-hidden", "true");
         plus.appendChild(ico("i-plus"));
         av.appendChild(plus);
@@ -1715,9 +1715,9 @@
         c.appendChild(el("span", "cv" + (n < 0 ? " neg" : ""), fmtSS(n)));
         tableeEl.appendChild(c);
       });
-      var nv = el("div", "nouveau");
+      const nv = el("div", "nouveau");
       nv.setAttribute("aria-hidden", "true");
-      var rond = el("span", "rond");
+      const rond = el("span", "rond");
       rond.appendChild(ico("i-plus"));
       nv.appendChild(rond);
       nv.appendChild(el("span", null, "Ajouter"));
@@ -1727,16 +1727,16 @@
     function majListeTable() {
       tableList.textContent = "";
       ORDRE.forEach(function (id) {
-        var r = el("div", "row");
+        const r = el("div", "row");
         r.appendChild(avatar(NOMS[id]));
-        var nm = el("div", "nm");
+        const nm = el("div", "nm");
         nm.appendChild(el("b", null, NOMS[id]));
         r.appendChild(nm);
         tableList.appendChild(r);
       });
     }
     tableToggle.addEventListener("click", function () {
-      var ouvert = tableToggle.getAttribute("aria-expanded") !== "true";
+      const ouvert = tableToggle.getAttribute("aria-expanded") !== "true";
       tableToggle.setAttribute("aria-expanded", ouvert ? "true" : "false");
       tableList.hidden = !ouvert;
     });
@@ -1744,25 +1744,25 @@
     // Les derniers tickets, le plus récent en haut : c'est presque toujours
     // lui qu'on vient vérifier. Le reste se déplie dans la même carte.
     function majDerniers(neuf) {
-      var tous = plays.slice().reverse();
-      var vus = ticketsDeplies ? tous : tous.slice(0, 3);
+      const tous = plays.slice().reverse();
+      const vus = ticketsDeplies ? tous : tous.slice(0, 3);
       derniersEl.textContent = "";
       vus.forEach(function (p, i) {
-        var n = p.w - p.c;
-        var r = el("div", "row play" + (neuf && i === 0 ? " fresh" : ""));
-        var th = el("span", "th");
+        const n = p.w - p.c;
+        const r = el("div", "row play" + (neuf && i === 0 ? " fresh" : ""));
+        const th = el("span", "th");
         th.setAttribute("aria-hidden", "true");
         th.appendChild(ico("i-ticket"));
         r.appendChild(th);
-        var nm = el("div", "nm");
+        const nm = el("div", "nm");
         nm.appendChild(el("b", null, p.t));
         nm.appendChild(el("span", null, NOMS[p.id]));
         r.appendChild(nm);
         r.appendChild(el("span", "net" + (n < 0 ? " neg" : ""), fmtSD(n)));
-        var act = el("span", "act");
+        const act = el("span", "act");
         act.setAttribute("aria-hidden", "true");
         act.appendChild(ico("i-pencil"));
-        var sup = ico("i-trash");
+        const sup = ico("i-trash");
         sup.classList.add("del");
         act.appendChild(sup);
         r.appendChild(act);
@@ -1784,7 +1784,7 @@
     // Déplié, on y lit chaque mise et chaque gain : le net de la ligne en
     // est la somme, et le net de la tablée la somme des lignes.
     function ligne(id) {
-      var r = el("div", "pl");
+      const r = el("div", "pl");
       r.dataset.id = id;
       r.innerHTML = '<div class="row" role="button" tabindex="0" aria-expanded="false"><span class="rk"></span><span class="visage"></span><span class="rkt"><span class="rl"><b></b><span class="net"></span></span><span class="np"><span class="nl"><i class="nb p"></i></span><i class="ax"></i><span class="nr"><i class="nb g"></i></span></span><small class="dc"></small></span><svg class="i chev" aria-hidden="true"><use href="#i-chev-r"/></svg></div><div class="tks"><div></div></div>';
       r.querySelector(".visage").appendChild(avatar(NOMS[id]));
@@ -1794,8 +1794,8 @@
 
     // Les ex æquo partagent la même place (1, 1, 3), comme dans l'app.
     function rangs() {
-      var nets = ORDRE.map(net);
-      var res = {};
+      const nets = ORDRE.map(net);
+      const res = {};
       ORDRE.forEach(function (id, i) {
         res[id] = 1 + nets.filter(function (n) { return n > nets[i]; }).length;
       });
@@ -1808,30 +1808,30 @@
     }
 
     function remplir(r, anime, neuf) {
-      var id = r.dataset.id;
-      var liste = parties(id);
-      var n = net(id);
-      var ecart = Math.max.apply(null, ORDRE.map(function (i) { return Math.abs(net(i)); }));
+      const id = r.dataset.id;
+      const liste = parties(id);
+      const n = net(id);
+      const ecart = Math.max.apply(null, ORDRE.map(function (i) { return Math.abs(net(i)); }));
       r.querySelector(".rk").textContent = rangs()[id];
-      var el2 = r.querySelector(".net");
+      const el2 = r.querySelector(".net");
       signe(el2, n);
       compterVers(el2, n, fmtSS, anime);
       r.querySelector(".np").hidden = ecart === 0;
       r.querySelector(".nl .nb").style.width = n < 0 ? largeurNet(n, ecart) + "%" : "0%";
       r.querySelector(".nr .nb").style.width = n > 0 ? largeurNet(n, ecart) + "%" : "0%";
       r.querySelector(".dc").textContent = decompte(liste);
-      var box = r.querySelector(".tks > div");
+      const box = r.querySelector(".tks > div");
       box.textContent = "";
       liste.slice().reverse().forEach(function (p, i) {
-        var d = document.createElement("div");
+        const d = document.createElement("div");
         d.className = "tk" + (neuf && i === 0 ? " fresh" : "");
-        var s = document.createElement("span");
-        var em = document.createElement("em");
+        const s = document.createElement("span");
+        const em = document.createElement("em");
         em.textContent = p.t;
         s.appendChild(em);
         s.appendChild(document.createTextNode(" · mise " + fmtS(p.c) + " · " + (p.w === 0 ? "perdu" : "gagné " + fmtS(p.w))));
-        var b = document.createElement("b");
-        var v = p.w - p.c;
+        const b = document.createElement("b");
+        const v = p.w - p.c;
         b.textContent = fmtSS(v);
         if (v < 0) b.className = "neg";
         d.appendChild(s);
@@ -1841,26 +1841,26 @@
     }
 
     function deplier(r) {
-      var ouvert = !r.classList.contains("deplie");
+      const ouvert = !r.classList.contains("deplie");
       r.classList.toggle("deplie", ouvert);
       r.querySelector(".row").setAttribute("aria-expanded", ouvert ? "true" : "false");
       if (!ouvert) return;
       // Une fois déplié, on fait défiler l'écran du téléphone juste assez
       // pour que le dernier ticket ne reste pas sous le bord du bas.
       setTimeout(function () {
-        var a = r.getBoundingClientRect(), c = scroller.getBoundingClientRect();
-        var k = c.height / scroller.offsetHeight || 1;
-        var bas = (a.bottom - c.bottom) / k;
+        const a = r.getBoundingClientRect(), c = scroller.getBoundingClientRect();
+        const k = c.height / scroller.offsetHeight || 1;
+        const bas = (a.bottom - c.bottom) / k;
         if (bas > 0) scroller.scrollBy({ top: bas + 12, behavior: still ? "auto" : "smooth" });
       }, still ? 0 : 520);
     }
     ranking.addEventListener("click", function (e) {
-      var row = e.target.closest(".row");
+      const row = e.target.closest(".row");
       if (row) deplier(row.parentNode);
     });
     ranking.addEventListener("keydown", function (e) {
       if (e.key !== "Enter" && e.key !== " ") return;
-      var row = e.target.closest(".row");
+      const row = e.target.closest(".row");
       if (!row) return;
       e.preventDefault();
       deplier(row.parentNode);
@@ -1868,13 +1868,13 @@
 
     // La bulle qui dit ce qui vient d'être noté : le total bouge, elle dit
     // de combien et pourquoi.
-    var toast = document.getElementById("toast");
-    var toastT = document.getElementById("toastT");
-    var toastS = document.getElementById("toastS");
-    var toastA = document.getElementById("toastA");
-    var toastMinuteur;
+    const toast = document.getElementById("toast");
+    const toastT = document.getElementById("toastT");
+    const toastS = document.getElementById("toastS");
+    const toastA = document.getElementById("toastA");
+    let toastMinuteur;
     function signaler(e) {
-      var v = e[3] - e[2];
+      const v = e[3] - e[2];
       toastT.textContent = "Ticket noté pour " + NOMS[e[0]];
       toastS.textContent = e[1] + " · mise " + fmtS(e[2]) + " · " + (e[3] === 0 ? "perdu" : "gagné " + fmtS(e[3]));
       toastA.textContent = fmtSS(v);
@@ -1887,26 +1887,26 @@
     // Misé et gagné à la même échelle : la plus longue des deux barres
     // occupe toute la largeur.
     function majStats() {
-      var mise = 0, gagne = 0;
+      let mise = 0, gagne = 0;
       plays.forEach(function (p) { mise += p.c; gagne += p.w; });
-      var g = gagnantsDe(plays);
+      const g = gagnantsDe(plays);
       document.getElementById("vMise").textContent = fmtS(mise);
-      var vg = document.getElementById("vGagne");
+      const vg = document.getElementById("vGagne");
       vg.textContent = fmtS(gagne);
       vg.classList.toggle("gain", gagne > 0);
       document.getElementById("vTickets").textContent = plays.length;
       document.getElementById("vGagnants").textContent = g;
       document.getElementById("vSur").textContent = " / " + plays.length;
-      var gros = Math.max(mise, gagne);
+      const gros = Math.max(mise, gagne);
       document.getElementById("bMise").style.width = (gros ? mise / gros * 100 : 0) + "%";
       document.getElementById("bGagne").style.width = (gros ? gagne / gros * 100 : 0) + "%";
       document.getElementById("tMise").textContent = fmtS(mise);
       document.getElementById("tGagne").textContent = fmtS(gagne);
 
       // Le plus beau gain de la soirée : un fait, pas un titre.
-      var best = null;
+      let best = null;
       plays.forEach(function (p) { if (p.w > 0 && (!best || p.w > best.w)) best = p; });
-      var bestEl = document.getElementById("best");
+      const bestEl = document.getElementById("best");
       bestEl.hidden = !best;
       if (best) {
         document.getElementById("bestWho").textContent = NOMS[best.id] + " · " + best.t;
@@ -1915,24 +1915,24 @@
 
       // Chaque ticket de la soirée : combien de fois joué, combien ont gagné,
       // et son net pour la tablée. Le plus joué d'abord.
-      var par = {};
+      const par = {};
       plays.forEach(function (p) {
-        var l = par[p.t] || (par[p.t] = { t: p.t, joues: 0, gagnants: 0, net: 0 });
+        const l = par[p.t] || (par[p.t] = { t: p.t, joues: 0, gagnants: 0, net: 0 });
         l.joues += 1;
         l.gagnants += p.w > 0 ? 1 : 0;
         l.net += p.w - p.c;
       });
-      var lignes = Object.keys(par).map(function (k) { return par[k]; })
+      const lignes = Object.keys(par).map(function (k) { return par[k]; })
         .sort(function (a, b) { return b.joues - a.joues || b.net - a.net; });
-      var box = document.getElementById("parTicket");
+      const box = document.getElementById("parTicket");
       box.textContent = "";
       lignes.forEach(function (l) {
-        var r = el("div", "row");
-        var th = el("span", "th");
+        const r = el("div", "row");
+        const th = el("span", "th");
         th.setAttribute("aria-hidden", "true");
         th.appendChild(ico("i-ticket"));
         r.appendChild(th);
-        var nm = el("div", "nm");
+        const nm = el("div", "nm");
         nm.appendChild(el("b", null, l.t));
         nm.appendChild(el("span", null, pluriel(l.joues, "joué") + " · " + (l.gagnants === 0 ? "aucun gagnant" : pluriel(l.gagnants, "gagnant"))));
         r.appendChild(nm);
@@ -1942,7 +1942,7 @@
     }
 
     function majTable(anime) {
-      var total = plays.reduce(function (s, p) { return s + p.w - p.c; }, 0);
+      const total = plays.reduce(function (s, p) { return s + p.w - p.c; }, 0);
       signe(tableNet, total);
       compterVers(tableNet, total, fmtSD, anime);
     }
@@ -1950,16 +1950,16 @@
     // Le classement se réordonne en glissant, quand l'onglet Stats est à
     // l'écran ; sinon il se pose d'un coup.
     function classer(anime) {
-      var visible = !paneStats.hidden;
-      var avant = {};
+      const visible = !paneStats.hidden;
+      const avant = {};
       Array.prototype.forEach.call(ranking.children, function (r) { avant[r.dataset.id] = r.getBoundingClientRect().top; });
-      var ordre = ORDRE.slice().sort(function (a, b) { return net(b) - net(a); });
+      const ordre = ORDRE.slice().sort(function (a, b) { return net(b) - net(a); });
       ordre.forEach(function (id) { ranking.appendChild(ranking.querySelector('[data-id="' + id + '"]')); });
       if (!anime || still || !visible) return ordre;
       ordre.forEach(function (id) {
-        var r = ranking.querySelector('[data-id="' + id + '"]');
-        var s = r.getBoundingClientRect().height / r.offsetHeight || 1;
-        var dy = (avant[id] - r.getBoundingClientRect().top) / s;
+        const r = ranking.querySelector('[data-id="' + id + '"]');
+        const s = r.getBoundingClientRect().height / r.offsetHeight || 1;
+        const dy = (avant[id] - r.getBoundingClientRect().top) / s;
         if (!dy) return;
         r.style.transition = "none";
         r.style.transform = "translateY(" + dy + "px)";
@@ -2002,10 +2002,10 @@
 
     function ajouter() {
       if (pas >= suite.length) return;
-      var e = suite[pas++];
+      const e = suite[pas++];
       plays.push({ id: e[0], t: e[1], c: e[2], w: e[3] });
       heureDernier = "21" + NB + "h" + NB + "12";
-      var ordre = majTout(true, true);
+      const ordre = majTout(true, true);
       signaler(e);
       // Le ticket est gratté au Balto : sa bulle sur la carte le compte.
       baltoSession++;
@@ -2029,11 +2029,11 @@
 
     // Une seule fois, quand la scène est bien visible : un ticket s'ajoute
     // tout seul pour montrer le geste, puis la main passe au visiteur.
-    var scene = document.getElementById("scene");
+    const scene = document.getElementById("scene");
     if (params.has("hint")) { hint.classList.add("on"); addBtn.classList.add("ping"); }
     if (!still && "IntersectionObserver" in window) {
-      var vu = false;
-      var io2 = new IntersectionObserver(function (e) {
+      let vu = false;
+      const io2 = new IntersectionObserver(function (e) {
         if (!e[0].isIntersecting || vu) return;
         vu = true;
         io2.disconnect();
@@ -2056,7 +2056,7 @@
     // record : [montant, joueur, ticket, photo de preuve] ; surPlace : tickets à gratter,
     // courses en direct, Amigo, terrasse (o oui, n non, ? inconnu) ;
     // freq : parties depuis toujours, joueurs sur 30 jours, parties sur 7.
-    var BARS = {
+    const BARS = {
       balto: { nom: "Le Balto", note: "4,3", avis: 212, type: "Bar PMU", dist: "350 m", adresse: "8 place du Marché",
         statut: "pmu", chaleur: ["live", "ça gratte maintenant"],
         heures: ["open", "Ouvert · ferme à 23 h"], surPlace: "ooo?", freq: [86, 9, 7],
@@ -2083,13 +2083,13 @@
       escale: { nom: "L’Escale", note: "4,6", avis: 23, type: "Bar PMU", dist: "1,3 km", adresse: "62 avenue Jean-Jaurès",
         statut: "verif", heures: ["closed", "Fermé · ouvre à 16 h"], surPlace: "????", freq: null, amis: [] }
     };
-    var SUR_PLACE = ["Tickets à gratter", "Courses en direct", "Amigo", "Terrasse"];
+    const SUR_PLACE = ["Tickets à gratter", "Courses en direct", "Amigo", "Terrasse"];
 
     // Le Balto compte, sur les deux cartes, les tickets de la session du
     // héros et ceux qui s'y ajoutent pendant qu'on regarde.
-    var baltoSession = 0, baltoDirect = 0;
+    let baltoSession = 0, baltoDirect = 0;
     function majBalto(anime) {
-      var n = 12 + baltoSession + baltoDirect;
+      const n = 12 + baltoSession + baltoDirect;
       document.querySelectorAll(".count-balto").forEach(function (t) {
         t.textContent = n;
         if (anime && !still) rejouer(t.parentNode, "bump");
@@ -2104,7 +2104,7 @@
       el.classList.add(cls);
     }
     function onde(dot, couleur) {
-      var c = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+      const c = document.createElementNS("http://www.w3.org/2000/svg", "circle");
       c.setAttribute("class", "ripple");
       c.setAttribute("cx", dot.getAttribute("cx"));
       c.setAttribute("cy", dot.getAttribute("cy"));
@@ -2115,48 +2115,48 @@
     }
 
     function el(tag, cls, txt) {
-      var e = document.createElement(tag);
+      const e = document.createElement(tag);
       if (cls) e.className = cls;
       if (txt != null) e.textContent = txt;
       return e;
     }
     function ico(id) {
-      var s = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+      const s = document.createElementNS("http://www.w3.org/2000/svg", "svg");
       s.setAttribute("class", "i");
       s.setAttribute("aria-hidden", "true");
-      var u = document.createElementNS("http://www.w3.org/2000/svg", "use");
+      const u = document.createElementNS("http://www.w3.org/2000/svg", "use");
       u.setAttribute("href", "#" + id);
       s.appendChild(u);
       return s;
     }
     function freqDe(id) {
-      var b = BARS[id];
+      const b = BARS[id];
       if (!b.freq) return null;
       if (id !== "balto") return b.freq;
       return [b.freq[0] + baltoSession + baltoDirect, b.freq[1], b.freq[2] + baltoSession + baltoDirect];
     }
     // La ligne qui résume un bar, pour les lecteurs d'écran et l'extrait.
     function resume(id) {
-      var b = BARS[id];
+      const b = BARS[id];
       if (b.statut === "verif") return "PMU à vérifier · " + b.heures[1];
       if (b.chaleur) return b.chaleur[1];
       return b.heures[1];
     }
 
-    var carte = document.getElementById("carte");
-    var world = document.getElementById("world");
-    var fiche = document.getElementById("fiche");
-    var ficheCorps = document.getElementById("ficheCorps");
-    var carteAnnonce = document.getElementById("carteAnnonce");
-    var ficheId = null;
+    const carte = document.getElementById("carte");
+    const world = document.getElementById("world");
+    const fiche = document.getElementById("fiche");
+    const ficheCorps = document.getElementById("ficheCorps");
+    const carteAnnonce = document.getElementById("carteAnnonce");
+    let ficheId = null;
 
     function remplirFiche(id) {
-      var b = BARS[id];
-      var f = document.createDocumentFragment();
+      const b = BARS[id];
+      const f = document.createDocumentFragment();
       f.appendChild(el("div", "grab"));
-      var head = el("div", "bs-head");
+      const head = el("div", "bs-head");
       head.appendChild(el("h4", "bs-name", b.nom));
-      var x = el("button", "bs-close");
+      const x = el("button", "bs-close");
       x.type = "button";
       x.setAttribute("aria-label", "Fermer la fiche");
       x.appendChild(ico("i-x"));
@@ -2164,7 +2164,7 @@
       head.appendChild(x);
       f.appendChild(head);
 
-      var meta = el("p", "bs-meta");
+      const meta = el("p", "bs-meta");
       meta.appendChild(el("span", "st", "★ "));
       meta.appendChild(el("span", "rt", b.note));
       meta.appendChild(document.createTextNode(" (" + b.avis + " avis Google) · " + b.type + " · à " + b.dist));
@@ -2172,9 +2172,9 @@
       f.appendChild(el("p", "bs-addr", b.adresse));
 
       if (b.statut === "verif") {
-        var no = el("div", "bs-notice");
+        const no = el("div", "bs-notice");
         no.appendChild(document.createTextNode("PMU non confirmé — ce lieu vient d’une recherche approximative, personne n’a encore vérifié qu’on y joue vraiment."));
-        var ok = el("button", null, "J’y suis allé, c’est bien un PMU");
+        const ok = el("button", null, "J’y suis allé, c’est bien un PMU");
         ok.type = "button";
         ok.addEventListener("click", function () { confirmer(id, no); });
         no.appendChild(ok);
@@ -2183,17 +2183,17 @@
         f.appendChild(el("div", "bs-notice ok", "Merci, c’est noté : le lieu est confirmé, et son point passe au rouge des PMU."));
       }
 
-      var hr = el("div", "bs-card");
-      var hd = el("span", "bs-dot");
+      const hr = el("div", "bs-card");
+      const hd = el("span", "bs-dot");
       hd.style.background = { open: "#4CCB84", closed: "#FF7377", unknown: "#A6AEA8" }[b.heures[0]];
       hr.appendChild(hd);
       hr.appendChild(el("b", null, b.heures[1]));
       f.appendChild(hr);
 
-      var q = el("div", "bs-quick");
+      const q = el("div", "bs-quick");
       q.setAttribute("aria-hidden", "true");
       [["i-arrow-r", "Itinéraire"], ["i-share", "Partager"], ["i-star", "Favori"]].forEach(function (a) {
-        var s = el("span");
+        const s = el("span");
         s.appendChild(ico(a[0]));
         s.appendChild(document.createTextNode(a[1]));
         q.appendChild(s);
@@ -2201,8 +2201,8 @@
       f.appendChild(q);
 
       f.appendChild(el("h5", "bs-h", "Sur place"));
-      var ch = el("div", "bs-chips");
-      var inconnus = 0;
+      const ch = el("div", "bs-chips");
+      let inconnus = 0;
       b.surPlace.split("").forEach(function (v, i) {
         if (v === "?") inconnus++;
         ch.appendChild(el("span", v === "o" ? "yes" : v === "n" ? "no" : "unk", (v === "o" ? "✓ " : v === "n" ? "✕ " : "? ") + SUR_PLACE[i]));
@@ -2211,13 +2211,13 @@
       if (inconnus) f.appendChild(el("p", "bs-more", inconnus > 1 ? inconnus + " infos manquent ici — complète la fiche" : "Une info manque ici — complète la fiche"));
 
       f.appendChild(el("h5", "bs-h", "Fréquentation"));
-      var fr = freqDe(id);
+      const fr = freqDe(id);
       if (!fr) {
         f.appendChild(el("p", "bs-empty", "Aucune partie enregistrée ici pour l’instant."));
       } else {
-        var st = el("div", "bs-stats");
+        const st = el("div", "bs-stats");
         [[fr[0], "Partie", "Parties", "depuis toujours", ""], [fr[1], "Joueur", "Joueurs", "30 derniers jours", "gold"], [fr[2], "Partie", "Parties", "7 derniers jours", ""]].forEach(function (t) {
-          var c = el("div");
+          const c = el("div");
           c.appendChild(el("b", t[4], String(t[0])));
           c.appendChild(el("span", null, t[0] > 1 ? t[2] : t[1]));
           c.appendChild(el("small", null, t[3]));
@@ -2228,9 +2228,9 @@
 
       if (b.record) {
         f.appendChild(el("h5", "bs-h", "Les gains d’ici"));
-        var rc = el("div", "bs-rec");
-        var l1 = el("div");
-        var t1 = el("div");
+        const rc = el("div", "bs-rec");
+        const l1 = el("div");
+        const t1 = el("div");
         t1.appendChild(el("b", null, b.record[0]));
         t1.appendChild(el("span", null, "Plus beau gain du bar — " + b.record[1] + (b.record[2] ? " · " + b.record[2] : "")));
         l1.appendChild(t1);
@@ -2238,8 +2238,8 @@
         if (b.record[3]) l1.appendChild(el("span", "ok", "vérifié"));
         rc.appendChild(l1);
         if (b.moi) {
-          var l2 = el("div");
-          var t2 = el("div");
+          const l2 = el("div");
+          const t2 = el("div");
           t2.appendChild(el("b", null, b.moi));
           t2.appendChild(el("span", null, "Ton plus beau gain ici"));
           l2.appendChild(t2);
@@ -2249,11 +2249,11 @@
       }
 
       if (b.amis.length) {
-        var am = el("div", "bs-friends");
-        var avs = el("div", "avs2");
+        const am = el("div", "bs-friends");
+        const avs = el("div", "avs2");
         b.amis.slice(0, 3).forEach(function (n) { avs.appendChild(avatar(n)); });
         am.appendChild(avs);
-        var at = el("div");
+        const at = el("div");
         at.appendChild(el("b", null, b.amis.length > 1 ? b.amis.length + " amis ont joué ici" : "1 ami a joué ici"));
         at.appendChild(el("span", "who", b.amis.length > 2 ? b.amis.slice(0, 2).join(", ") + " et " + pluriel(b.amis.length - 2, "autre") : b.amis.join(", ")));
         am.appendChild(at);
@@ -2267,7 +2267,7 @@
     // Le point bleu « à vérifier » devient un PMU : c'est ce que fait le
     // bouton dans l'app, et la seule écriture qu'on montre ici.
     function confirmer(id, notice) {
-      var b = BARS[id];
+      const b = BARS[id];
       b.statut = "pmu";
       b.confirme = true;
       document.querySelectorAll('.pin[data-bar="' + id + '"] .dot').forEach(function (d) {
@@ -2285,19 +2285,19 @@
     // son échelle et son décalage se recalculent sur la taille du panneau.
     function cadrer(id) {
       if (!id) { world.style.transform = ""; return; }
-      var dot = carte.querySelector('.pin[data-bar="' + id + '"] .dot');
-      var x = +dot.getAttribute("cx"), y = +dot.getAttribute("cy");
-      var w = carte.clientWidth, h = carte.clientHeight;
-      var s = Math.max(w / 700, h / 460);
-      var ox = (w - 700 * s) / 2, oy = (h - 460 * s) / 2;
-      var cible;
+      const dot = carte.querySelector('.pin[data-bar="' + id + '"] .dot');
+      const x = +dot.getAttribute("cx"), y = +dot.getAttribute("cy");
+      const w = carte.clientWidth, h = carte.clientHeight;
+      const s = Math.max(w / 700, h / 460);
+      const ox = (w - 700 * s) / 2, oy = (h - 460 * s) / 2;
+      let cible;
       if (carte.classList.contains("side")) {
         cible = [(w - fiche.offsetWidth - 16) / 2, 64 + (h - 64) / 2];
       } else {
-        var haut = 64, bas = h - fiche.offsetHeight - 8;
+        const haut = 64, bas = h - fiche.offsetHeight - 8;
         cible = [w / 2, haut + Math.max(36, (bas - haut) / 2)];
       }
-      var dx = (cible[0] - (ox + x * s)) / s, dy = (cible[1] - (oy + y * s)) / s;
+      let dx = (cible[0] - (ox + x * s)) / s, dy = (cible[1] - (oy + y * s)) / s;
       dx = Math.max(-260, Math.min(260, dx));
       dy = Math.max(-260, Math.min(260, dy));
       world.style.transformOrigin = x + "px " + y + "px";
@@ -2305,7 +2305,7 @@
     }
 
     function ouvrir(id) {
-      var deja = ficheId !== null;
+      const deja = ficheId !== null;
       ficheId = id;
       carte.classList.add("has-sel", "touched");
       carte.querySelectorAll(".pin").forEach(function (p) { p.classList.toggle("sel", p.dataset.bar === id); });
@@ -2322,21 +2322,21 @@
     }
     function fermer(rendreFocus) {
       if (ficheId === null) return;
-      var id = ficheId;
+      const id = ficheId;
       ficheId = null;
       fiche.classList.remove("on");
       carte.classList.remove("has-sel");
       carte.querySelectorAll(".pin.sel").forEach(function (p) { p.classList.remove("sel"); });
       cadrer(null);
       if (rendreFocus) {
-        var p = carte.querySelector('.pin[data-bar="' + id + '"]');
+        const p = carte.querySelector('.pin[data-bar="' + id + '"]');
         if (p) p.focus({ preventScroll: true });
       }
     }
 
     function etiqueter() {
       document.querySelectorAll(".pin[data-bar]").forEach(function (p) {
-        var b = BARS[p.dataset.bar];
+        const b = BARS[p.dataset.bar];
         p.setAttribute("aria-label", b.nom + ", " + resume(p.dataset.bar));
       });
     }
@@ -2344,19 +2344,19 @@
 
     // La légende repliée du téléphone : le bouton l'ouvre, tout autre appui
     // sur la carte la referme.
-    var legendeBtn = document.getElementById("legendeBtn");
+    const legendeBtn = document.getElementById("legendeBtn");
     legendeBtn.addEventListener("click", function () { carte.classList.toggle("leg-on"); });
     carte.addEventListener("click", function (e) {
       if (e.target.closest(".legend-btn")) return;
       carte.classList.remove("leg-on");
-      var p = e.target.closest(".pin");
+      const p = e.target.closest(".pin");
       if (p) { ouvrir(p.dataset.bar); return; }
       if (e.target.closest(".map-bg") || e.target.closest("#world")) fermer(false);
     });
     carte.addEventListener("keydown", function (e) {
       if (e.key === "Escape") { fermer(true); return; }
       if (e.key !== "Enter" && e.key !== " ") return;
-      var p = e.target.closest(".pin");
+      const p = e.target.closest(".pin");
       if (!p) return;
       e.preventDefault();
       ouvrir(p.dataset.bar);
@@ -2378,8 +2378,8 @@
     // à l'écran, quelques tickets s'ajoutent au Balto, où la session joue.
     if (!still && "IntersectionObserver" in window) {
       carte.classList.add("armed");
-      var direct = null, coups = 0;
-      var io3 = new IntersectionObserver(function (e) {
+      let direct = null, coups = 0;
+      const io3 = new IntersectionObserver(function (e) {
         if (e[0].isIntersecting) {
           if (carte.classList.contains("armed")) {
             carte.classList.remove("armed");
@@ -2402,11 +2402,11 @@
     }
 
     // L'extrait du héros : un résumé du bar, puis la vraie fiche plus bas.
-    var fragMap = document.getElementById("fragMap");
-    var miniCard = document.getElementById("miniCard");
-    var miniNom = document.getElementById("miniNom");
-    var miniLigne = document.getElementById("miniLigne");
-    var miniId = null;
+    const fragMap = document.getElementById("fragMap");
+    const miniCard = document.getElementById("miniCard");
+    const miniNom = document.getElementById("miniNom");
+    const miniLigne = document.getElementById("miniLigne");
+    let miniId = null;
     function majMini() {
       if (!miniId) return;
       miniNom.textContent = BARS[miniId].nom;
@@ -2420,19 +2420,19 @@
     }
     fragMap.addEventListener("click", function (e) {
       if (e.target.closest(".mini-card")) return;
-      var p = e.target.closest(".pin");
+      const p = e.target.closest(".pin");
       mini(p ? p.dataset.bar : null);
     });
     fragMap.addEventListener("keydown", function (e) {
       if (e.key === "Escape") { mini(null); return; }
       if (e.key !== "Enter" && e.key !== " ") return;
-      var p = e.target.closest(".pin");
+      const p = e.target.closest(".pin");
       if (!p) return;
       e.preventDefault();
       mini(p.dataset.bar);
     });
     document.getElementById("miniOuvrir").addEventListener("click", function () {
-      var id = miniId;
+      const id = miniId;
       carte.scrollIntoView({ behavior: still ? "auto" : "smooth", block: "center" });
       setTimeout(function () { ouvrir(id); }, still ? 0 : 650);
     });
@@ -2441,25 +2441,25 @@
     // QuickPlayEntryModal en mode solo : « Quel ticket ? », puis « Combien ? »
     // avec « Perdu », les deux lots les plus fréquents et « Autre… », puis
     // Enregistrer. Le résultat, c'est le visiteur qui le donne.
-    var catalogue = {
+    const catalogue = {
       astro: { nom: "Astro", prix: 2, lots: [2, 4] },
       banco: { nom: "Banco", prix: 1, lots: [1, 2] },
       cash: { nom: "Cash", prix: 5, lots: [5, 10] }
     };
-    var choix = null, montant = null;
-    var shTitle = document.getElementById("shTitle");
-    var shSub = document.getElementById("shSub");
-    var g2 = document.getElementById("g2");
-    var step1 = document.getElementById("step1");
-    var step2 = document.getElementById("step2");
-    var prix = document.getElementById("prix");
-    var tlist = document.getElementById("tlist");
-    var chips = document.getElementById("chips");
-    var pcard = document.getElementById("pcard");
-    var tpillName = document.getElementById("tpillName");
-    var shHint = document.getElementById("shHint");
-    var save = document.getElementById("save");
-    var scNote = document.getElementById("scNote");
+    let choix = null, montant = null;
+    const shTitle = document.getElementById("shTitle");
+    const shSub = document.getElementById("shSub");
+    const g2 = document.getElementById("g2");
+    const step1 = document.getElementById("step1");
+    const step2 = document.getElementById("step2");
+    const prix = document.getElementById("prix");
+    const tlist = document.getElementById("tlist");
+    const chips = document.getElementById("chips");
+    const pcard = document.getElementById("pcard");
+    const tpillName = document.getElementById("tpillName");
+    const shHint = document.getElementById("shHint");
+    const save = document.getElementById("save");
+    const scNote = document.getElementById("scNote");
 
     function etape1() {
       choix = null; montant = null;
@@ -2471,7 +2471,7 @@
     }
 
     function puce(label, valeur, inactive) {
-      var b = document.createElement("button");
+      const b = document.createElement("button");
       b.type = "button";
       b.className = "chip";
       b.setAttribute("role", "radio");
@@ -2484,7 +2484,7 @@
 
     function etape2(k) {
       choix = k; montant = null;
-      var t = catalogue[k];
+      const t = catalogue[k];
       shTitle.textContent = "Combien" + NNBSP + "?";
       shSub.textContent = "Combien ce ticket a rapporté" + NNBSP + "?";
       g2.classList.add("on");
@@ -2501,20 +2501,20 @@
     }
 
     prix.addEventListener("click", function (e) {
-      var b = e.target.closest(".chip");
+      const b = e.target.closest(".chip");
       if (!b) return;
-      var p = +b.dataset.p;
+      const p = +b.dataset.p;
       prix.querySelectorAll(".chip").forEach(function (c) { c.setAttribute("aria-checked", c === b ? "true" : "false"); });
       tlist.querySelectorAll(".trow").forEach(function (r) { r.hidden = p !== 0 && +r.dataset.p !== p; });
     });
     tlist.addEventListener("click", function (e) {
-      var r = e.target.closest(".trow");
+      const r = e.target.closest(".trow");
       if (r) etape2(r.dataset.k);
     });
     document.getElementById("tpill").addEventListener("click", etape1);
     document.getElementById("shCancel").addEventListener("click", etape1);
     chips.addEventListener("click", function (e) {
-      var b = e.target.closest(".chip");
+      const b = e.target.closest(".chip");
       if (!b || b.getAttribute("aria-disabled") === "true") return;
       montant = +b.dataset.v;
       chips.querySelectorAll(".chip").forEach(function (c) { c.setAttribute("aria-checked", c === b ? "true" : "false"); });
@@ -2524,7 +2524,7 @@
     });
     save.addEventListener("click", function () {
       if (montant === null || !choix) return;
-      var t = catalogue[choix];
+      const t = catalogue[choix];
       scNote.textContent = "Noté dans ta session du jour au Balto" + NNBSP + ": " + t.nom + ", " +
         (montant === 0 ? "perdu" : "rapporté " + fmtS(montant)) + " (net " + fmtSS(montant - t.prix) + "). Démo, rien n’est enregistré.";
       etape1();
