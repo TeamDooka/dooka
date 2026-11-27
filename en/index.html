@@ -1,0 +1,2538 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Dooka — your crew’s logbook at the PMU</title>
+<meta name="description" content="Dooka brings your scratch cards, your PMU sessions and your crew together in one Android app. What gets played gets logged, and you compare net results. Free, no ads." />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Dooka keeps score for your crew" />
+<meta property="og:description" content="Tickets logged, sessions tracked, net results compared between mates. Free Android app, no ads." />
+<meta property="og:url" content="https://dooka.fr/en/" />
+<!-- L'URL doit être absolue : les aperçus sont fabriqués par un serveur
+     tiers (WhatsApp, Messenger, Slack) qui n'a aucune notion de la page
+     d'où vient la balise. L'image se refait depuis .impeccable/og/. -->
+<meta property="og:image" content="https://dooka.fr/og.jpg" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="Dooka keeps score for your crew" />
+<meta property="og:locale" content="en_GB" />
+<meta property="og:locale:alternate" content="fr_FR" />
+<meta property="og:site_name" content="Dooka" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="https://dooka.fr/og.jpg" />
+<link rel="canonical" href="https://dooka.fr/en/" />
+<link rel="alternate" hreflang="fr" href="https://dooka.fr/" />
+<link rel="alternate" hreflang="en" href="https://dooka.fr/en/" />
+<link rel="alternate" hreflang="x-default" href="https://dooka.fr/" />
+<meta name="theme-color" content="#070B09" />
+<meta name="color-scheme" content="dark" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%23178A45'/><text x='50' y='68' font-size='58' text-anchor='middle' font-family='sans-serif' font-weight='700' fill='%23F7F3E9'>D</text></svg>" />
+<link rel="preload" href="/fonts/bricolage-grotesque.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="preload" href="/fonts/geist.woff2" as="font" type="font/woff2" crossorigin />
+<style>
+  /* ------------------------------------------------------------------
+     Dooka — page d'accueil
+     ------------------------------------------------------------------
+     Une page produit sombre, au cordeau. La palette est celle du thème
+     sombre de l'app (3.21 : fond d'encre légèrement vert, surfaces #0F1311
+     et #1A201D), pour que les écrans montrés et la page autour parlent la
+     même langue. Une seule couleur d'action (le vert), l'or réservé au
+     jeton et au plus beau gain, le rouge aux nets négatifs. Titres en Bricolage
+     Grotesque, la police des titres de l'app.
+     ------------------------------------------------------------------ */
+  @font-face {
+    font-family: "Bricolage Grotesque";
+    src: url("/fonts/bricolage-grotesque.woff2") format("woff2");
+    font-weight: 500 800;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: "Geist";
+    src: url("/fonts/geist.woff2") format("woff2");
+    font-weight: 300 800;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: "Geist Mono";
+    src: url("/fonts/geist-mono.woff2") format("woff2");
+    font-weight: 400 600;
+    font-display: swap;
+  }
+
+  :root {
+    --bg: #070B09;
+    --bg-raise: #0B110E;
+    --surface: #0F1311;
+    --surface-2: #141A17;
+    --line: rgba(255, 255, 255, .08);
+    --line-2: rgba(255, 255, 255, .13);
+    --text: #F1F4F0;
+    --text-2: #A6AEA8;
+    --text-3: #7C847F;
+
+    --green: #3CC278;
+    --green-ink: #07140B;
+    --gold: #F7C948;
+    --pos: #4CCB84;
+    --neg: #FF7377;
+
+    /* les surfaces de l'app, pour les écrans recréés */
+    --app-bg: #0F1311;
+    --app-card: #1A201D;
+    --app-muted: #252D29;
+    --app-track: #2A332F;
+    --app-border: #2B3430;
+
+    --display: "Bricolage Grotesque", "Geist", system-ui, sans-serif;
+    --font: "Geist", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --mono: "Geist Mono", ui-monospace, "SF Mono", Consolas, monospace;
+    --app: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --maxw: 1200px;
+    --gut: clamp(20px, 4vw, 40px);
+    --ease: cubic-bezier(.16, 1, .3, 1);
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; scroll-padding-top: 80px; scrollbar-color: #2B3430 var(--bg); color-scheme: dark; }
+  img, svg { max-width: 100%; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  a { color: inherit; text-decoration: none; }
+  ::selection { background: rgba(60, 194, 120, .35); color: #fff; }
+  :focus-visible { outline: 2px solid var(--green); outline-offset: 3px; border-radius: 6px; }
+
+  .sr { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  /* Lien d'évitement : caché jusqu'à ce que le clavier l'atteigne, puis
+     posé en haut à gauche, par-dessus l'en-tête. */
+  .evitement { position: fixed; top: 12px; left: 12px; z-index: 60; padding: 10px 16px; border-radius: 10px; background: var(--text); color: #0B0D0C; font-weight: 600; }
+  .evitement:where(:not(:focus-within, :active)) { width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  .langue { display: inline-flex; align-items: center; min-height: 36px; padding: 0 10px; border-radius: 999px; font-size: 13px; font-weight: 600; letter-spacing: .04em; color: var(--text-3); }
+  .langue:hover { color: var(--text); }
+  main:focus { outline: none; }
+  .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 var(--gut); }
+
+  /* Les icônes viennent toutes du même jeu (Lucide), trait de 2. */
+  .i { width: 18px; height: 18px; flex-shrink: 0; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+  /* ---------- Boutons ---------- */
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 44px;
+    padding: 0 18px;
+    border-radius: 999px;
+    border: 1px solid transparent;
+    font: 500 15px/1 var(--font);
+    letter-spacing: -.1px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background-color .2s var(--ease), border-color .2s var(--ease), color .2s var(--ease), transform .2s var(--ease);
+  }
+  .btn:active { transform: scale(.98); }
+  .btn-light { background: var(--text); color: #0B0D0C; box-shadow: 0 1px 0 rgba(255,255,255,.4) inset, 0 8px 24px rgba(0,0,0,.35); }
+  .btn-light:hover { background: #fff; }
+  .btn-ghost { background: rgba(255,255,255,.04); color: var(--text); border-color: var(--line-2); }
+  .btn-ghost:hover { background: rgba(255,255,255,.08); border-color: rgba(255,255,255,.22); }
+  .btn .i { width: 16px; height: 16px; }
+  .btn-lg { min-height: 50px; padding: 0 22px; font-size: 16px; }
+
+  /* ---------- Navigation ---------- */
+
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    border-bottom: 1px solid transparent;
+    transition: background-color .3s var(--ease), border-color .3s var(--ease);
+  }
+  .nav.scrolled {
+    background: rgba(7, 11, 9, .72);
+    border-bottom-color: var(--line);
+    -webkit-backdrop-filter: saturate(160%) blur(14px);
+    backdrop-filter: saturate(160%) blur(14px);
+  }
+  .nav-in { display: flex; align-items: center; gap: 32px; height: 64px; }
+  .brand { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; font-weight: 600; font-size: 16px; letter-spacing: -.2px; }
+  .jeton { width: 26px; height: 26px; display: block; }
+  .nav-links { display: flex; gap: 4px; }
+  .nav-links a { padding: 8px 12px; border-radius: 8px; font-size: 14px; color: var(--text-2); transition: color .2s var(--ease), background-color .2s var(--ease); }
+  .nav-links a:hover { color: var(--text); background: rgba(255,255,255,.04); }
+  .nav-cta { margin-left: auto; display: flex; gap: 8px; align-items: center; }
+  .nav .btn { min-height: 38px; padding: 0 14px; font-size: 14px; }
+
+  /* ---------- Héros ---------- */
+
+  .hero { position: relative; padding-top: clamp(48px, 7vw, 96px); }
+  .hero::before {
+    content: "";
+    position: absolute;
+    inset: -64px 0 auto;
+    height: 760px;
+    background:
+      radial-gradient(600px 340px at 18% 12%, rgba(60, 194, 120, .10), transparent 70%),
+      radial-gradient(900px 500px at 70% 60%, rgba(60, 194, 120, .07), transparent 70%);
+    pointer-events: none;
+    z-index: -1;
+  }
+  .hero-top { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 28px 56px; align-items: end; }
+  .hero h1 {
+    margin: 0;
+    max-width: 12ch;
+    font-family: var(--display);
+    font-size: clamp(44px, 6.4vw, 84px);
+    line-height: 1;
+    font-weight: 600;
+    letter-spacing: -.028em;
+    text-wrap: balance;
+  }
+  .hero-sub {
+    margin: 0;
+    max-width: 50ch;
+    font-size: clamp(17px, 1.6vw, 20px);
+    line-height: 1.5;
+    color: var(--text-2);
+    text-wrap: pretty;
+  }
+  .hero-sub strong { color: var(--text); font-weight: 500; }
+  .hero-cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; align-items: center; }
+  .hero-meta { margin: 18px 0 0; font-size: 13px; color: var(--text-3); display: flex; gap: 6px 16px; flex-wrap: wrap; }
+  .hero-meta span { display: inline-flex; align-items: center; gap: 6px; }
+  .hero-meta .i { width: 14px; height: 14px; color: var(--green); }
+
+  /* ---------- La scène ---------- */
+  /* Le téléphone en émerge à taille réelle ; deux fragments d'interface
+     se posent contre ses bords, devant lui, et la notification passe
+     par-dessus le tout. */
+  .stage {
+    position: relative;
+    margin-top: 56px;
+    height: 860px;
+    border-radius: 24px 24px 0 0;
+    border: 1px solid var(--line);
+    border-bottom: 0;
+    background:
+      radial-gradient(520px 340px at 50% 22%, rgba(60, 194, 120, .15), transparent 70%),
+      linear-gradient(180deg, var(--bg-raise), var(--bg) 85%);
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(180deg, #000 90%, transparent);
+    mask-image: linear-gradient(180deg, #000 90%, transparent);
+  }
+  /* Le filet lumineux du bord haut. */
+  .stage::before {
+    content: "";
+    position: absolute;
+    left: 10%; right: 10%; top: -1px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(60, 194, 120, .7), rgba(255,255,255,.55), rgba(60, 194, 120, .7), transparent);
+  }
+  .stage-phone { position: absolute; left: 50%; top: 32px; transform: translateX(-50%); z-index: 3; }
+
+  .frag {
+    position: absolute;
+    z-index: 4;
+    border-radius: 16px;
+    background: rgba(20, 26, 23, .72);
+    border: 1px solid var(--line-2);
+    box-shadow: 0 2px 4px rgba(0,0,0,.3), 0 24px 60px rgba(0, 0, 0, .55);
+    -webkit-backdrop-filter: blur(12px) saturate(140%);
+    backdrop-filter: blur(12px) saturate(140%);
+    font-family: var(--app);
+  }
+  .frag-map { right: calc(50% + 172px); top: 300px; width: 280px; overflow: hidden; }
+  .frag-map .head { display: flex; justify-content: space-between; align-items: center; padding: 12px 14px; font-size: 13px; color: var(--text-2); border-bottom: 1px solid var(--line); }
+  .frag-map .head b { color: var(--text); font-weight: 600; }
+  .frag-map svg { display: block; width: 100%; height: 160px; }
+  .frag-remind { left: calc(50% + 172px); top: 470px; width: 270px; padding: 14px 16px; display: flex; align-items: center; gap: 14px; }
+  .frag-remind .txt { flex: 1; min-width: 0; }
+  .frag-remind b { display: block; font-size: 15px; font-weight: 600; }
+  .frag-remind span { font-size: 13px; color: var(--text-2); }
+  .switch { width: 44px; height: 26px; border-radius: 999px; background: var(--green); position: relative; flex-shrink: 0; }
+  .switch::after { content: ""; position: absolute; right: 3px; top: 3px; width: 20px; height: 20px; border-radius: 50%; background: #fff; box-shadow: 0 1px 2px rgba(0,0,0,.3); }
+
+  .toast {
+    z-index: 6;
+    left: calc(50% + 172px); top: 132px; width: 300px;
+    padding: 12px 14px;
+    display: flex; gap: 12px; align-items: center;
+    opacity: 0; transform: translateY(8px) scale(.98);
+    transition: opacity .35s var(--ease), transform .45s var(--ease);
+  }
+  .toast.on { opacity: 1; transform: none; }
+  .toast .dot { width: 34px; height: 34px; border-radius: 10px; background: rgba(60,194,120,.16); color: var(--green); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .toast .dot .i { width: 18px; height: 18px; }
+  .toast .tx { min-width: 0; }
+  .toast b { display: block; font-size: 14px; font-weight: 600; }
+  .toast .tx span { font-size: 13px; color: var(--text-2); }
+  .toast .amt { margin-left: auto; font: 600 14px var(--mono); white-space: nowrap; }
+
+  .hint {
+    position: absolute; z-index: 5;
+    left: calc(50% + 206px); top: 296px;
+    margin: 0;
+    display: flex; flex-direction: row-reverse; align-items: center; gap: 10px;
+    font-size: 13px; color: var(--text-2);
+    white-space: nowrap;
+    opacity: 0; transition: opacity .5s var(--ease);
+  }
+  .hint.on { opacity: 1; }
+  .hint svg { width: 48px; height: 16px; overflow: visible; fill: none; stroke: var(--text-3); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; transform: scaleX(-1); }
+
+  .stage-foot { display: flex; justify-content: space-between; align-items: center; gap: 4px 16px; margin-top: 10px; position: relative; z-index: 5; padding: 0 4px; font-size: 13px; color: var(--text-3); }
+  .stage-foot button { font: inherit; color: var(--text-2); background: none; border: 0; cursor: pointer; padding: 10px 0; min-height: 44px; display: inline-flex; align-items: center; gap: 6px; }
+  .stage-foot button:hover { color: var(--text); }
+  .stage-foot button[hidden] { display: none; }
+  .stage-foot .i { width: 14px; height: 14px; }
+
+  /* ---------- Le téléphone (thème sombre de l'app 3.12) ---------- */
+
+  .phone {
+    --s: 1;
+    width: calc(376px * var(--s));
+    height: calc(790px * var(--s));
+    border-radius: calc(48px * var(--s));
+    padding: calc(8px * var(--s));
+    background: linear-gradient(160deg, #2A302D, #121614 40%, #1B201D);
+    box-shadow: 0 0 0 1px rgba(255,255,255,.1) inset, 0 2px 4px rgba(0,0,0,.4), 0 40px 90px rgba(0,0,0,.65);
+  }
+  .screen {
+    width: 360px; height: 774px;
+    transform: scale(var(--s)); transform-origin: 0 0;
+    border-radius: 40px; overflow: hidden; position: relative;
+    background: var(--app-bg); color: #F1F4F0;
+    font-family: var(--app); font-size: 15px; line-height: 1.3;
+  }
+  .screen * { line-height: inherit; }
+  .sb { height: 36px; display: flex; align-items: center; justify-content: space-between; padding: 0 24px 0 28px; font-size: 13px; font-weight: 600; position: relative; }
+  .sb::after { content: ""; position: absolute; left: 50%; top: 10px; width: 12px; height: 12px; margin-left: -6px; border-radius: 50%; background: #000; }
+  .sb svg { height: 12px; width: auto; fill: #F1F4F0; }
+  .sess { padding: 10px 16px 0; }
+  .sess-top { display: flex; justify-content: space-between; align-items: flex-start; }
+  /* Titres de l'app : Bricolage, comme textStyles.title et .subtitle. */
+  .app-title { font-family: var(--display); font-weight: 700; font-size: 24px; line-height: 30px; letter-spacing: -.25px; }
+  .app-sub { font-family: var(--display); font-weight: 600; font-size: 19px; line-height: 24px; }
+  .sess-bar { display: flex; align-items: center; gap: 6px; }
+  .sess-bar .i { width: 18px; height: 18px; color: #3CC278; }
+  .sess-bar em { font-family: var(--app); font-style: normal; font-size: 14px; font-weight: 600; color: #3CC278; margin-left: 4px; letter-spacing: 0; }
+  .sess-date { font-size: 14px; color: #A6AEA8; margin-top: 2px; }
+  .sess-grp { text-align: right; font-size: 12px; color: #A6AEA8; }
+  .sess-grp b { display: block; font-size: 15px; font-weight: 600; color: #4CCB84; font-variant-numeric: tabular-nums; }
+  .sess-grp b.neg { color: #FF7377; }
+  .sess-grp b.zero { color: #A6AEA8; }
+  .add {
+    width: 100%; margin-top: 16px; min-height: 48px; border-radius: 8px; border: 0;
+    background: #3CC278; color: #07140B; font: 600 16px var(--app);
+    display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer;
+    position: relative; transition: transform .15s var(--ease), background-color .2s var(--ease);
+  }
+  .add:hover { background: #52CF89; }
+  .add:active { transform: scale(.98); }
+  .add .i { width: 20px; height: 20px; stroke-width: 2.5; }
+  .add.ping::after { content: ""; position: absolute; inset: -4px; border-radius: 12px; border: 2px solid rgba(60,194,120,.6); animation: ping 1.6s var(--ease) infinite; }
+  @keyframes ping { 0% { opacity: .9; transform: scale(1); } 100% { opacity: 0; transform: scale(1.06); } }
+  .sub-h { margin: 20px 0 8px; }
+  .list { background: var(--app-card); border: 1px solid var(--app-border); border-radius: 16px; overflow: hidden; }
+  .row { display: flex; align-items: center; gap: 10px; min-height: 64px; padding: 12px; position: relative; background: var(--app-card); }
+  .row + .row { border-top: 1px solid var(--app-border); }
+  .rk { width: 24px; height: 24px; border-radius: 50%; background: var(--app-track); color: #F1F4F0; font-size: 12px; font-weight: 600; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: background-color .3s var(--ease), color .3s var(--ease); }
+  .ini { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: var(--display); font-weight: 700; font-size: 13px; flex-shrink: 0; }
+  .nm { flex: 1; min-width: 0; }
+  .nm b { display: block; font-size: 16px; font-weight: 600; }
+  .nm span { display: block; font-size: 13px; color: #A6AEA8; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .net { font-size: 17px; font-weight: 700; color: #4CCB84; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .net.neg { color: #FF7377; }
+  .net.zero { color: #A6AEA8; }
+  .row > .i { width: 18px; height: 18px; color: #7C847F; }
+  .tk { display: flex; align-items: center; justify-content: space-between; padding: 11px 14px; font-size: 14px; }
+  .tk + .tk { border-top: 1px solid var(--app-border); }
+  .tk span { color: #A6AEA8; }
+  .tk b { font-weight: 600; font-variant-numeric: tabular-nums; color: #4CCB84; }
+  .tk b.neg { color: #FF7377; }
+  .tk.fresh, .play.fresh { animation: fresh 1.6s var(--ease); }
+  @keyframes fresh { 0% { background: rgba(60,194,120,.22); } 100% { background: transparent; } }
+  .tabs { position: absolute; left: 0; right: 0; bottom: 26px; height: 56px; background: var(--app-muted); border-top: 1px solid var(--app-border); display: flex; }
+  .tabs span { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; font-size: 12px; color: #A6AEA8; }
+  .tabs span.on { color: #3CC278; font-weight: 600; }
+  .tabs svg { width: 24px; height: 24px; fill: currentColor; }
+  .legal { position: absolute; left: 0; right: 0; bottom: 0; height: 26px; background: var(--app-bg); border-top: 1px solid var(--app-muted); font-size: 8.5px; line-height: 10.5px; color: #A6AEA8; text-align: center; padding: 2px 10px; }
+
+  /* ---------- Manifeste ---------- */
+
+  .manifest { padding: 120px 0 40px; }
+  .manifest p {
+    margin: 0;
+    max-width: 30ch;
+    font-size: clamp(28px, 3.6vw, 46px);
+    line-height: 1.2;
+    font-weight: 500;
+    letter-spacing: -.03em;
+    text-wrap: balance;
+  }
+  .manifest .w { color: #38403B; transition: color .5s var(--ease); }
+  .manifest .w.lit { color: var(--text); }
+  .manifest .w.lit.em { color: var(--green); }
+
+  /* ---------- Fonctions ---------- */
+
+  .section { padding: 120px 0 0; }
+  .section-head { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 24px 64px; align-items: end; margin-bottom: 64px; }
+  .section-head h2 { margin: 0; font-family: var(--display); font-size: clamp(34px, 4.4vw, 56px); line-height: 1.04; font-weight: 600; letter-spacing: -.024em; text-wrap: balance; }
+  .section-head p { margin: 0; color: var(--text-2); font-size: 17px; max-width: 46ch; }
+
+  /* Calendrier de l'Avent 2026 : l'annonce du héros et sa section. Le
+     script (bas de page, « Avent ») adapte l'annonce au moment du
+     calendrier et retire les deux au 1er janvier. À ôter du site ensuite. */
+  .annonce { display: inline-flex; align-items: center; gap: 10px; max-width: 100%; margin-bottom: 28px; padding: 5px 12px 5px 5px; border-radius: 999px; background: var(--surface-2); border: 1px solid var(--line-2); color: var(--text-2); font-size: 14px; line-height: 1.3; text-decoration: none; transition: border-color .2s var(--ease), color .2s var(--ease); }
+  .annonce:hover, .annonce:focus-visible { border-color: rgba(60,194,120,.5); color: var(--text); }
+  .annonce b { flex-shrink: 0; height: 24px; padding: 0 9px; border-radius: 999px; background: rgba(60,194,120,.16); color: var(--green); font-size: 12px; font-weight: 600; display: inline-flex; align-items: center; }
+  .annonce .i { flex-shrink: 0; width: 14px; height: 14px; }
+  .avent .feature { border-top: 0; padding-top: 0; }
+  .avent .f-copy h2 { margin: 0 0 14px; font-family: var(--display); font-size: clamp(30px, 3.4vw, 44px); line-height: 1.06; font-weight: 600; letter-spacing: -.022em; text-wrap: balance; }
+  .avent .kicker { margin: 0 0 12px; color: var(--green); font-size: 14px; font-weight: 600; }
+  .avent .garde { margin: 16px 0 0; color: var(--text-3); font-size: 14.5px; max-width: 44ch; }
+  .av-col { position: relative; width: 100%; max-width: 440px; margin-inline: auto; padding-top: 34px; }
+  .av-notif { position: absolute; z-index: 4; top: 0; left: 50%; transform: translateX(-50%); width: min(340px, calc(100% - 24px)); display: flex; gap: 10px; align-items: flex-start; padding: 10px 12px; border-radius: 16px; background: rgba(37,45,41,.92); border: 1px solid var(--app-border); box-shadow: 0 12px 40px rgba(0,0,0,.5); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); font-family: var(--app); }
+  .av-notif svg.jeton { width: 30px; height: 30px; flex-shrink: 0; }
+  .av-notif .tx { min-width: 0; flex: 1; font-size: 13px; line-height: 1.35; color: #A6AEA8; }
+  .av-notif .tx b { display: block; color: #F1F4F0; font-weight: 600; }
+  .av-notif .h { display: flex; justify-content: space-between; font-size: 11px; color: #7C847F; margin-bottom: 1px; }
+  .p-avent { padding: 44px 20px 22px; color: #F1F4F0; }
+  .p-avent .av-t { margin: 0 0 4px; font-size: 22px; font-weight: 700; letter-spacing: -.01em; }
+  .p-avent .av-d { font-size: 13px; color: #A6AEA8; }
+  .av-card { margin-top: 10px; padding: 16px; border-radius: 16px; background: var(--app-card); border: 1px solid var(--app-border); }
+  .av-ticket { display: flex; gap: 14px; align-items: center; }
+  .av-photo { width: 56px; height: 78px; flex-shrink: 0; border-radius: 10px; background: linear-gradient(155deg, #3E7BD6 0%, #20457F 60%, #142C52 100%); box-shadow: inset 0 0 0 1px rgba(255,255,255,.12); display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,.85); font-size: 22px; font-weight: 700; }
+  .av-note { font-size: 12px; color: #A6AEA8; }
+  .av-nom { font-size: 20px; font-weight: 700; line-height: 1.2; }
+  .av-prix { font-size: 14px; color: #A6AEA8; font-variant-numeric: tabular-nums; }
+  .av-btn { margin-top: 14px; height: 42px; border-radius: 12px; background: var(--app-muted); display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 600; }
+  .av-label { margin: 18px 0 0; font-size: 13px; font-weight: 600; color: #A6AEA8; }
+  .av-chiffres { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+  .av-chiffres b { display: block; font-size: 20px; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .av-chiffres span { font-size: 12px; color: #A6AEA8; }
+
+  .feature { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 56px; align-items: center; padding: 56px 0; border-top: 1px solid var(--line); }
+  .feature.flip { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); }
+  .feature.flip .f-copy { order: 2; }
+  .f-copy h3 { margin: 0 0 14px; font-family: var(--display); font-size: clamp(26px, 2.6vw, 34px); line-height: 1.1; font-weight: 600; letter-spacing: -.018em; text-wrap: balance; }
+  .f-copy > p { margin: 0; color: var(--text-2); max-width: 44ch; font-size: 16.5px; }
+  .f-list { list-style: none; margin: 28px 0 0; padding: 0; border-top: 1px solid var(--line); }
+  .f-list li { display: grid; grid-template-columns: 22px 1fr; gap: 12px; padding: 14px 0; border-bottom: 1px solid var(--line); font-size: 15px; color: var(--text-2); }
+  .f-list li b { color: var(--text); font-weight: 500; }
+  .f-list .i { width: 18px; height: 18px; margin-top: 3px; color: var(--green); }
+
+  /* Les panneaux : des écrans de l'app, dont la bordure s'éclaire là où
+     passe le curseur. */
+  .panel {
+    position: relative;
+    border-radius: 20px;
+    background: var(--app-bg);
+    box-shadow: 0 2px 4px rgba(0,0,0,.3), 0 30px 80px rgba(0,0,0,.45);
+    overflow: hidden;
+    font-family: var(--app);
+    isolation: isolate;
+  }
+  .panel::before {
+    content: "";
+    position: absolute; inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background:
+      radial-gradient(360px circle at var(--mx, 50%) var(--my, 0%), rgba(255,255,255,.28), transparent 45%),
+      linear-gradient(180deg, rgba(255,255,255,.13), rgba(255,255,255,.05));
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+    pointer-events: none;
+    z-index: 3;
+  }
+  .panel-note { margin: 12px 4px 0; font-size: 13px; color: var(--text-3); }
+
+  /* Panneau carte */
+  .p-map { height: 460px; }
+  .p-map svg.map { position: absolute; inset: 0; width: 100%; height: 100%; max-width: none; }
+  .p-map .legend { position: absolute; left: 50%; top: 16px; transform: translateX(-50%); background: rgba(17, 24, 39, .62); color: #fff; border-radius: 16px; padding: 6px 12px; font-size: 11px; line-height: 16px; display: flex; gap: 12px; white-space: nowrap; z-index: 2; }
+  .p-map .legend i { display: inline-block; width: 8px; height: 8px; border-radius: 50%; border: 1px solid #fff; margin-right: 4px; vertical-align: -1px; }
+  .p-map .legend i.halo { width: 10px; height: 10px; border: 2px solid #F2541B; background: transparent; }
+  .halo-pulse { transform-origin: center; transform-box: fill-box; animation: halo 2.4s var(--ease) infinite; }
+  @keyframes halo { 0% { transform: scale(.6); opacity: .9; } 100% { transform: scale(2.2); opacity: 0; } }
+  .sheet {
+    position: absolute; left: 16px; right: 16px; bottom: 16px; z-index: 2;
+    background: var(--app-card); border: 1px solid var(--app-border); border-radius: 16px;
+    padding: 14px 16px 16px;
+    box-shadow: 0 -10px 40px rgba(0,0,0,.45);
+  }
+  .sheet-top { display: flex; justify-content: space-between; gap: 12px; align-items: flex-start; }
+  .sheet h4 { margin: 0; }
+  .sheet .meta { font-size: 13px; color: #A6AEA8; margin-top: 2px; }
+  .sheet .meta b { color: #F2C14E; font-weight: 600; }
+  .open { font-size: 12px; font-weight: 600; color: #4CCB84; background: rgba(76,203,132,.16); border-radius: 999px; padding: 4px 10px; white-space: nowrap; }
+  .pills { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+  .pills span { height: 26px; border-radius: 999px; padding: 0 10px; display: inline-flex; align-items: center; gap: 4px; font-size: 12px; font-weight: 600; }
+  .pills .yes { background: rgba(76,203,132,.16); color: #4CCB84; }
+  .pills .no { background: var(--app-muted); color: #A6AEA8; }
+  .pills .i { width: 12px; height: 12px; stroke-width: 2.6; }
+  .sheet-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
+  .sheet-btns span { min-height: 44px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 600; }
+  .sheet-btns .p { background: #3CC278; color: #07140B; }
+  .sheet-btns .s { background: var(--app-muted); color: #F1F4F0; border: 1px solid var(--app-border); }
+
+  /* Panneau « Combien ce ticket a rapporté ? » */
+  .p-scratch { padding: 22px; }
+  .sc-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+  .sc-head span { font-size: 13px; color: #A6AEA8; }
+  .sc-q { margin: 18px 0 10px; font-size: 14px; color: #A6AEA8; }
+  .seg, .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip {
+    min-height: 40px; padding: 0 14px; border-radius: 8px;
+    background: var(--app-muted); color: #F1F4F0; border: 1px solid transparent;
+    font: 600 14px var(--app); cursor: pointer;
+    transition: background-color .2s var(--ease), color .2s var(--ease), border-color .2s var(--ease);
+  }
+  .chip:hover { border-color: #3A4540; }
+  .chip[aria-checked="true"] { background: #3CC278; color: #07140B; }
+  .chip[aria-disabled="true"] { color: #7C847F; cursor: not-allowed; }
+  .chip[aria-disabled="true"]:hover { border-color: transparent; }
+  .save {
+    width: 100%; margin-top: 18px; min-height: 48px; border-radius: 8px; border: 0;
+    background: #3CC278; color: #07140B; font: 600 16px var(--app); cursor: pointer;
+    transition: background-color .2s var(--ease), opacity .2s var(--ease);
+  }
+  .save:hover { background: #52CF89; }
+  .save:disabled { opacity: .4; cursor: default; background: #3CC278; }
+  .sc-log { margin-top: 14px; border-top: 1px solid var(--app-border); }
+  .sc-log:empty { display: none; }
+  .sc-log div { display: flex; justify-content: space-between; gap: 12px; padding: 10px 2px; border-bottom: 1px solid var(--app-border); font-size: 14px; color: #A6AEA8; }
+  .sc-log b { font-weight: 600; color: #4CCB84; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .sc-log b.neg { color: #FF7377; }
+  .sc-log b.zero { color: #A6AEA8; }
+  .scratch-foot { margin-top: 14px; display: flex; justify-content: space-between; align-items: center; padding: 12px 14px; border-radius: 12px; background: var(--app-card); font-size: 14px; color: #A6AEA8; }
+  .scratch-foot b { font: 600 16px var(--mono); color: #F1F4F0; }
+  .scratch-foot b.neg { color: #FF7377; }
+  .scratch-foot b.pos { color: #4CCB84; }
+
+  /* Panneau bande : l'écran d'une bande (GroupDetailScreen). Les rangées
+     sont des cartes de l'app posées sur le fond de l'écran. */
+  .p-band { padding: 16px; font-family: var(--app); line-height: 22px; }
+  .bh { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+  .bimg { flex: none; width: 56px; height: 56px; border-radius: 14px; background: #3CC278; color: #07140B; display: flex; align-items: center; justify-content: center; font-size: 25px; font-weight: 700; }
+  .bn { flex: 1; min-width: 0; }
+  .bn b { display: block; }
+  .bn span { display: block; margin-top: 2px; font-size: 14px; color: #A6AEA8; }
+  .bmenu { flex: none; width: 36px; height: 36px; border-radius: 50%; background: #1A201D; display: flex; align-items: center; justify-content: center; font-weight: 500; }
+  .bnew { display: flex; width: 100%; min-height: 48px; margin-bottom: 16px; }
+  .bsec { margin: 0 0 8px; color: #3CC278; }
+  .rcard { display: flex; align-items: center; gap: 10px; padding: 12px; margin-bottom: 8px; border-radius: 12px; background: #1A201D; border: 1px solid rgba(255,255,255,.08); }
+  .rcard.me { background: rgba(23,138,69,.10); border-color: #3CC278; }
+  .rg { flex: none; width: 20px; font-weight: 700; color: #A6AEA8; }
+  .rcard.me .rg { color: #3CC278; }
+  .rav { flex: none; width: 36px; height: 36px; border-radius: 50%; background: #3CC278; color: #07140B; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; }
+  .ri { flex: 1; min-width: 0; }
+  .ri b { display: block; font-weight: 500; }
+  .rcard.me .ri b { font-weight: 700; }
+  .ri span { display: block; font-size: 14px; line-height: 20px; color: #A6AEA8; }
+  .rn { flex: none; margin-right: 8px; font-weight: 700; font-variant-numeric: tabular-nums; color: #4CCB84; }
+  .rn.neg { color: #FF7377; }
+  .rb { flex: none; font-size: 12px; line-height: 16px; font-weight: 500; color: #A6AEA8; }
+  .p-band .invite-card { margin-top: 16px; }
+
+  /* ---------- Engagements ---------- */
+
+  .pledge { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 64px; align-items: start; }
+  .pledge h2 { margin: 0 0 18px; font-family: var(--display); font-size: clamp(34px, 4.4vw, 56px); line-height: 1.04; font-weight: 600; letter-spacing: -.024em; text-wrap: balance; }
+  .pledge-copy > p { margin: 0; color: var(--text-2); font-size: 17px; max-width: 42ch; }
+  .link-arrow { display: inline-flex; align-items: center; gap: 6px; margin-top: 22px; min-height: 44px; color: var(--text); font-weight: 500; font-size: 15px; border-bottom: 1px solid var(--line-2); transition: border-color .2s var(--ease), gap .2s var(--ease); }
+  .link-arrow:hover { border-color: var(--text); gap: 10px; }
+  .link-arrow .i { width: 16px; height: 16px; }
+  .nots { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+  .nots li { display: grid; grid-template-columns: 32px 1fr; gap: 16px; align-items: center; padding: 16px 0; border-bottom: 1px solid var(--line); }
+  .nots .x { width: 32px; height: 32px; border-radius: 50%; background: rgba(255,115,119,.10); color: var(--neg); display: flex; align-items: center; justify-content: center; }
+  .nots .x .i { width: 15px; height: 15px; stroke-width: 2.4; }
+  .nots .x.info { background: rgba(255,255,255,.06); color: var(--text-2); }
+  .nots .x.info .i { stroke-width: 2; }
+  .pledge-h.pledge-h2 { margin-top: 40px; }
+  .nots b { font-weight: 500; font-size: 16px; display: block; }
+  .nots .d { color: var(--text-2); font-size: 15px; }
+
+  .limits { margin-top: 40px; }
+  .limits-card { border-radius: 16px; }
+  .limits-card .lr { display: flex; align-items: center; gap: 14px; min-height: 64px; padding: 12px 18px; background: var(--app-card); }
+  .limits-card .lr + .lr { border-top: 1px solid var(--app-border); }
+  .limits-card .lr .txt { flex: 1; min-width: 0; }
+  .limits-card b { display: block; font-size: 17px; font-weight: 700; }
+  .limits-card .txt span { font-size: 13px; color: #A6AEA8; }
+  .limits-card .chev { width: 18px; height: 18px; color: #7C847F; }
+  .pledge-h { margin: 0 0 12px; font-size: 15px; font-weight: 600; color: var(--text-2); letter-spacing: 0; }
+  .limits .pledge-h { margin-bottom: 14px; }
+  .limits-note { margin: 16px 0 0; font-size: 14px; color: var(--text-2); max-width: 64ch; }
+
+  /* ---------- Appel final ---------- */
+
+  .final { position: relative; margin-top: 140px; padding: 120px 0 128px; text-align: center; border-top: 1px solid var(--line); overflow: hidden; }
+  .final::before {
+    content: "";
+    position: absolute; left: 50%; top: -240px; width: 900px; height: 520px; margin-left: -450px;
+    background: radial-gradient(closest-side, rgba(60, 194, 120, .20), transparent);
+    pointer-events: none;
+  }
+  .final::after {
+    content: "";
+    position: absolute; left: 25%; right: 25%; top: -1px; height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(60, 194, 120, .8), transparent);
+  }
+  .final h2 { position: relative; margin: 0 auto; max-width: 16ch; font-family: var(--display); font-size: clamp(38px, 5.6vw, 72px); line-height: 1.02; font-weight: 600; letter-spacing: -.028em; text-wrap: balance; }
+  .final p { position: relative; margin: 22px auto 0; max-width: 52ch; color: var(--text-2); font-size: 17px; }
+  .final .hero-cta { justify-content: center; position: relative; }
+  .final .hero-meta { justify-content: center; position: relative; }
+
+  /* ---------- Pied ---------- */
+
+  footer { border-top: 1px solid var(--line); }
+  .foot { display: grid; grid-template-columns: 1.4fr repeat(3, 1fr); gap: 32px; padding: 56px 0 40px; }
+  .foot h3 { margin: 0 0 10px; font-size: 13px; font-weight: 500; color: var(--text); }
+  .foot ul { list-style: none; margin: 0; padding: 0; }
+  .foot li a { display: inline-flex; align-items: center; min-height: 40px; font-size: 14px; color: var(--text-2); transition: color .2s var(--ease); }
+  .foot li a:hover { color: var(--text); }
+  .foot .tag { margin: 8px 0 0; font-size: 14px; color: var(--text-3); }
+  .fine { padding: 24px 0 48px; border-top: 1px solid var(--line); display: grid; gap: 10px; font-size: 13px; line-height: 1.55; color: var(--text-3); }
+  .fine p { margin: 0; max-width: 100ch; }
+  .fine strong { color: var(--text-2); font-weight: 500; }
+  .fine a { color: var(--text); text-decoration: underline; text-underline-offset: 3px; white-space: nowrap; }
+
+
+  /* ---------- La fiche d'une session (3.21) : onglets Jeu et Stats ---------- */
+  /* Recréée d'après SessionDetailModal : le bar et la tablée en tête, la
+     bascule Jeu / Stats, puis la liste qui défile. Une carte, c'est un
+     filet, sans ombre ni couronne. */
+  .sd { position: absolute; top: 36px; left: 0; right: 0; bottom: 0; display: flex; flex-direction: column; }
+  .sd-top { flex: none; padding: 6px 20px 0; }
+  .sd-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+  .sd-id { flex: 1; min-width: 0; }
+  .sd-place { display: flex; align-items: center; gap: 6px; }
+  .sd-place > .i { width: 18px; height: 18px; color: #3CC278; }
+  .sd-place .app-title { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .sd-menu { flex: none; width: 44px; height: 44px; margin: -7px -12px -7px 0; display: flex; align-items: center; justify-content: center; }
+  .sd-menu .i { width: 22px; height: 22px; color: #F1F4F0; }
+  .sd-date { font-size: 14px; line-height: 20px; color: #A6AEA8; }
+  .sd-total { flex: none; padding-top: 4px; text-align: right; }
+  .sd-lbl { display: block; font-size: 12px; line-height: 16px; font-weight: 500; color: #A6AEA8; }
+  .sd-num { display: block; font-size: 16px; line-height: 22px; font-weight: 500; font-variant-numeric: tabular-nums; color: #4CCB84; white-space: nowrap; }
+  .sd-num.neg { color: #FF7377; }
+
+  /* La bascule : un rail, et l'onglet actif posé dedans. */
+  .onglets { display: flex; padding: 3px; margin-top: 12px; border-radius: 999px; background: #252D29; }
+  .onglet { flex: 1; min-height: 38px; border: 0; border-radius: 999px; background: none; color: #A6AEA8; font: 500 16px/22px var(--app); cursor: pointer; transition: background-color .2s var(--ease), color .2s var(--ease); }
+  .onglet[aria-selected="true"] { background: #0F1311; color: #F1F4F0; box-shadow: 0 1px 2px rgba(0,0,0,.3); }
+  .onglet:focus-visible { outline-offset: 0; border-radius: 999px; }
+  .sd-scroll { flex: 1; min-height: 0; overflow-y: auto; scrollbar-width: none; padding: 12px 20px 28px; }
+  .sd-scroll::-webkit-scrollbar { display: none; }
+  .sd .list { border-color: rgba(255,255,255,.08); }
+  .sd .row { gap: 12px; padding: 12px 16px; min-height: 56px; }
+  .sd .nm b { font-size: 16px; line-height: 22px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .sd .nm span { font-size: 14px; line-height: 20px; }
+  .sd .net { font-size: 16px; line-height: 22px; font-weight: 500; }
+  .sd .sub { margin: 16px 0 8px; }
+  .sd .sub-l { margin-top: 20px; }
+
+  /* Jeu : ce qu'on fait pendant la soirée. */
+  .th { flex: none; width: 32px; height: 32px; border-radius: 6px; background: #252D29; color: #A6AEA8; display: flex; align-items: center; justify-content: center; }
+  .th .i { width: 16px; height: 16px; }
+  .act { flex: none; display: flex; align-items: center; gap: 12px; }
+  .act .i { width: 18px; height: 18px; color: #A6AEA8; }
+  .act .i.del { color: #FF7377; }
+  .encours { display: flex; align-items: center; gap: 12px; padding: 12px 16px; margin-top: 4px; }
+  .live { flex: none; width: 14px; height: 14px; border-radius: 50%; background: #3CC278; border: 3px solid rgba(76,203,132,.16); }
+  .sd .add { margin: 8px 0 12px; }
+  .sec { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; margin: 16px 0 8px; }
+  .sec .meta, .tg { font-size: 14px; line-height: 20px; color: #A6AEA8; }
+  .tg { display: inline-flex; align-items: center; gap: 4px; padding: 8px 0; margin: -8px 0; background: none; border: 0; font-family: var(--app); cursor: pointer; }
+  .tg .i, .voir .i { transition: transform .3s var(--ease); }
+  .tg .i { width: 16px; height: 16px; }
+  .tg[aria-expanded="true"] .i, .voir[aria-expanded="true"] .i { transform: rotate(180deg); }
+  .tablee { display: flex; gap: 8px; margin: 0 -20px; padding: 2px 20px; overflow-x: auto; scrollbar-width: none; }
+  .tablee::-webkit-scrollbar { display: none; }
+  .conv { flex: none; width: 80px; padding: 12px 4px; display: flex; flex-direction: column; align-items: center; gap: 2px; background: #1A201D; border: 1px solid rgba(255,255,255,.08); border-radius: 16px; }
+  .conv .av { position: relative; display: block; }
+  .conv .ini { width: 40px; height: 40px; font-size: 15px; }
+  .conv .plus { position: absolute; right: -6px; bottom: -4px; width: 22px; height: 22px; border-radius: 50%; background: #3CC278; color: #07140B; border: 2px solid #1A201D; display: flex; align-items: center; justify-content: center; }
+  .conv .plus .i { width: 14px; height: 14px; stroke-width: 3; }
+  .conv .cn, .conv .cv { max-width: 100%; font-size: 12px; line-height: 16px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .conv .cn { margin-top: 4px; }
+  .conv .cv { color: #4CCB84; font-variant-numeric: tabular-nums; }
+  .conv .cv.neg { color: #FF7377; }
+  .nouveau { flex: none; width: 80px; padding: 12px 0; display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 12px; line-height: 16px; font-weight: 500; color: #A6AEA8; }
+  .nouveau .rond { width: 40px; height: 40px; border-radius: 50%; border: 1.5px dashed #A6AEA8; display: flex; align-items: center; justify-content: center; }
+  .nouveau .i { width: 20px; height: 20px; }
+  .voir { display: flex; align-items: center; justify-content: center; gap: 4px; width: 100%; min-height: 48px; border: 0; border-top: 1px solid #2B3430; background: none; color: #3CC278; font: 500 16px/22px var(--app); cursor: pointer; }
+  .voir:hover { background: #1E2521; }
+  .voir[hidden] { display: none; }
+  .voir .i { width: 18px; height: 18px; }
+  .terminer { margin: 20px 0 0; min-height: 48px; border: 1px solid #2B3430; border-radius: 8px; display: flex; align-items: center; justify-content: center; font: 500 16px/22px var(--app); color: #FF7377; }
+
+  /* Stats : ce que ça donne. Misé et gagné d'abord, le classement ensuite. */
+  .totaux { display: flex; flex-wrap: wrap; gap: 8px; }
+  .tot { flex: 1 1 40%; min-width: 0; padding: 12px 16px; display: flex; flex-direction: column; gap: 2px; }
+  .tot .l { font-size: 12px; line-height: 16px; font-weight: 500; color: #A6AEA8; }
+  .tot .v { font-family: var(--display); font-weight: 700; font-size: 24px; line-height: 30px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .tot .v.gain { color: #4CCB84; }
+  .tot .v small { font: 500 16px/22px var(--app); color: #A6AEA8; }
+  .barres { margin-top: 8px; padding: 16px; display: grid; gap: 8px; }
+  .barres .lg { display: flex; justify-content: space-between; font-size: 14px; line-height: 20px; color: #A6AEA8; font-variant-numeric: tabular-nums; }
+  .barres .piste { height: 8px; margin-top: 4px; border-radius: 999px; background: #2A332F; overflow: hidden; }
+  .barres .piste i { display: block; height: 100%; border-radius: 999px; transition: width .7s var(--ease); }
+  .barres .piste .m { background: #A6AEA8; }
+  .barres .piste .g { background: #3CC278; }
+  .sd .rk { background: #252D29; color: #A6AEA8; font-weight: 500; line-height: 16px; }
+  .visage { flex: none; display: flex; }
+  .rkt { flex: 1; min-width: 0; display: block; }
+  .rl { display: flex; align-items: center; gap: 8px; }
+  .rl b { flex: 1; min-width: 0; font-size: 16px; line-height: 22px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .np { display: flex; align-items: center; height: 10px; margin: 3px 0; }
+  .np[hidden] { display: none; }
+  .np .nl { flex: 1; display: flex; justify-content: flex-end; }
+  .np .nr { flex: 1; display: flex; }
+  .np .ax { flex: none; width: 1px; height: 10px; background: #2B3430; }
+  .np .nb { display: block; height: 8px; transition: width .7s var(--ease); }
+  .np .nb.g { background: #4CCB84; border-radius: 0 999px 999px 0; }
+  .np .nb.p { background: #FF7377; border-radius: 999px 0 0 999px; }
+  .dc { display: block; font-size: 14px; line-height: 20px; color: #A6AEA8; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .sd .chev { flex: none; width: 20px; height: 20px; color: #A6AEA8; transition: transform .3s var(--ease); }
+  .pl.deplie .chev { transform: rotate(90deg); }
+  .sd-hint { margin: 8px 0 0; text-align: center; font-size: 12px; line-height: 16px; font-weight: 500; color: #A6AEA8; }
+  .sd-best { display: flex; align-items: center; gap: 8px; margin-top: 12px; padding: 10px 12px; border-radius: 12px; background: rgba(247,201,72,.14); font-size: 14px; line-height: 20px; }
+  .sd-best[hidden] { display: none; }
+  .sd-best .i { width: 16px; height: 16px; color: #F2C14E; }
+  .sd-best .l { color: #F2C14E; font-weight: 500; }
+  .sd-best .w { flex: 1; min-width: 0; color: #F1F4F0; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .sd-best .a { color: #F2C14E; font-weight: 700; font-variant-numeric: tabular-nums; }
+
+  /* La carte, en extrait fidèle de l'onglet Carte */
+  .map-search { position: absolute; left: 8px; right: 8px; top: 8px; z-index: 2; height: 48px; border-radius: 8px; background: #1A201D; border: 1px solid #2B3430; color: #A6AEA8; font-size: 16px; display: flex; align-items: center; padding: 0 14px; }
+  .p-map .legend { top: 66px; flex-direction: column; align-items: center; gap: 2px; padding: 6px 12px; white-space: normal; text-align: center; }
+  .p-map .legend > div { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+  .p-map .legend i.ring2 { width: 10px; height: 10px; border: 2px solid; background: transparent; }
+  .p-map .map-locate { position: absolute; right: 16px; bottom: 16px; z-index: 2; width: 44px; height: 44px; border-radius: 50%; background: #1A201D; color: #3CC278; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 6px rgba(0,0,0,.3); }
+  .p-map .map-locate .i { width: 22px; height: 22px; }
+  .mini-legend { position: absolute; left: 50%; top: 10px; transform: translateX(-50%); z-index: 2; background: rgba(17,24,39,.62); color: #fff; border-radius: 16px; padding: 5px 10px; font-size: 10.5px; line-height: 15px; display: flex; gap: 10px; white-space: nowrap; }
+  .mini-legend i, .p-map .legend i { display: inline-block; width: 8px; height: 8px; border-radius: 50%; border: 1px solid #fff; margin-right: 4px; vertical-align: -1px; }
+  .frag-map svg { height: 190px; }
+
+  /* La feuille « J'ai gratté ici » : QuickPlayEntryModal, mode solo */
+  .p-sheet { padding: 10px 20px 20px; border-radius: 20px; }
+  .grab { width: 48px; height: 5px; border-radius: 3px; background: #2B3430; margin: 0 auto 14px; }
+  .sh-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+  .sh-cancel { font-size: 16px; font-weight: 600; color: #A6AEA8; background: none; border: 0; padding: 8px 0 8px 12px; min-height: 44px; cursor: pointer; font-family: var(--app); }
+  .sh-sub { margin: 2px 0 0; font-size: 14px; color: #A6AEA8; }
+  .gauge { display: flex; gap: 4px; margin: 12px 0 16px; }
+  .gauge i { flex: 1; height: 3px; border-radius: 2px; background: #2A332F; transition: background-color .3s var(--ease); }
+  .gauge i.on { background: #3CC278; }
+  .p-sheet .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+  .tlist { padding: 0; }
+  .trow { display: flex; align-items: center; gap: 12px; width: 100%; min-height: 64px; padding: 10px 16px; background: none; border: 0; color: #F1F4F0; font: inherit; text-align: left; cursor: pointer; transition: background-color .2s var(--ease); }
+  .trow + .trow { border-top: 1px solid #2B3430; }
+  .trow:hover { background: rgba(255,255,255,.04); }
+  .trow .th { width: 44px; height: 44px; border-radius: 8px; background: #252D29; color: #A6AEA8; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .trow .th .i { width: 20px; height: 20px; }
+  .trow b { flex: 1; font-size: 16px; font-weight: 600; }
+  .pill { height: 26px; padding: 0 10px; border-radius: 999px; background: #252D29; color: #F1F4F0; font-size: 13px; font-weight: 600; display: inline-flex; align-items: center; gap: 4px; white-space: nowrap; }
+  .pcard { display: flex; align-items: center; gap: 12px; padding: 14px 16px; border-radius: 16px; background: #1A201D; border: 1px solid rgba(255,255,255,.08); margin-bottom: 12px; transition: border-color .2s var(--ease); }
+  .pcard.set { border-color: #3CC278; }
+  .pcard b { flex: 1; font-size: 16px; font-weight: 600; }
+  .tpill { height: 28px; padding: 0 10px; border-radius: 999px; background: rgba(76,203,132,.16); color: #4CCB84; border: 0; font: 600 13px var(--app); display: inline-flex; align-items: center; gap: 4px; cursor: pointer; }
+  .tpill .i { width: 13px; height: 13px; stroke-width: 2.5; }
+  .sh-foot { margin-top: 8px; }
+  .sh-hint { margin: 0 0 10px; text-align: center; font-size: 14px; color: #A6AEA8; }
+
+  /* La carte d'invitation d'une bande */
+  .invite-card { margin-top: 14px; padding: 20px; border-radius: 12px; background: #1A201D; border: 1px dashed #2B3430; text-align: center; }
+  .invite-card .lbl { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 600; color: #A6AEA8; }
+  .invite-card .lbl .i { width: 16px; height: 16px; }
+  .invite-card .code { display: block; margin: 6px 0 4px; font-size: 26px; font-weight: 800; letter-spacing: 2px; color: #F1F4F0; font-variant-numeric: tabular-nums; }
+  .invite-card p { margin: 0 0 14px; font-size: 14px; color: #A6AEA8; }
+  .btn-app { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 0 18px; border-radius: 8px; background: #3CC278; color: #07140B; font: 600 15px var(--app); }
+  .btn-app .i { width: 16px; height: 16px; }
+
+  /* ---------- La fiche de session : de quoi refaire le calcul ---------- */
+  /* Chaque joueur du classement se déplie sur ses tickets, mise et gain
+     compris : le net de la ligne en est la somme. */
+  .pl + .pl { border-top: 1px solid var(--app-border); }
+  .pl .row { cursor: pointer; transition: background-color .2s var(--ease); }
+  .pl .row:hover { background: #1E2521; }
+  .pl .row:focus-visible { outline: 2px solid #3CC278; outline-offset: -2px; border-radius: 0; }
+  .tks { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .5s var(--ease); }
+  .pl.deplie .tks { grid-template-rows: 1fr; }
+  .tks > div { min-height: 0; overflow: hidden; background: #151B18; }
+  .pl.deplie .tks > div { border-top: 1px solid var(--app-border); }
+  .tks .tk { gap: 8px; padding: 9px 16px 9px 52px; font-size: 13px; }
+  .tks .tk span { min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .tk em { font-style: normal; font-weight: 600; color: #F1F4F0; }
+  .toast .amt { color: var(--text-2); }
+  .toast .amt.pos { color: var(--pos); }
+  .toast .amt.neg { color: var(--neg); }
+
+  /* ---------- Les cartes se touchent ---------- */
+  .pin { cursor: pointer; outline: none; }
+  .pin .hit { fill: transparent; }
+  .pin .dot { transform-box: fill-box; transform-origin: center; transition: transform .35s var(--ease), fill .6s var(--ease), stroke .2s var(--ease); }
+  .pin:hover .dot { transform: scale(1.3); }
+  .pin.sel .dot { transform: scale(1.5); }
+  .pin:focus-visible .dot { stroke: #3CC278; stroke-width: 3; }
+  .bubble-in { transform-box: fill-box; transform-origin: 50% 100%; }
+  .bump { animation: bump .7s var(--ease); }
+  @keyframes bump { 0% { transform: scale(1.5); } 100% { transform: none; } }
+  .ripple { fill: none; stroke-width: 2; transform-box: fill-box; transform-origin: center; animation: ripple 1.4s var(--ease) forwards; pointer-events: none; }
+  @keyframes ripple { 0% { transform: scale(.6); opacity: .9; } 100% { transform: scale(3.2); opacity: 0; } }
+
+  /* L'extrait du héros : un résumé, et le lien vers la vraie fiche plus bas. */
+  .frag-map .pin.sel .dot { transform: scale(1.4); }
+  .mini-card {
+    position: absolute; left: 8px; right: 8px; bottom: 8px; z-index: 3;
+    display: flex; align-items: center; gap: 10px; padding: 10px 10px 10px 12px;
+    border-radius: 12px; background: rgba(15, 19, 17, .95); border: 1px solid var(--app-border);
+    transform: translateY(calc(100% + 12px)); visibility: hidden;
+    transition: transform .5s var(--ease), visibility 0s linear .5s;
+  }
+  .mini-card.on { transform: none; visibility: visible; transition: transform .5s var(--ease), visibility 0s; }
+  .mini-card .tx { flex: 1; min-width: 0; }
+  .mini-card b { display: block; font-size: 14px; font-weight: 600; }
+  .mini-card span { display: block; font-size: 12px; color: #A6AEA8; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .mini-card button { flex: none; min-height: 34px; padding: 0 12px; border-radius: 8px; border: 0; background: #3CC278; color: #07140B; font: 600 13px var(--app); cursor: pointer; }
+  .mini-card button:hover { background: #52CF89; }
+
+  /* La grande carte : la fiche monte du bas, la carte glisse pour garder
+     le bar choisi en vue au-dessus d'elle. */
+  #world { transition: transform 1s var(--ease); }
+  .p-map .pin { transition: opacity .4s var(--ease); }
+  .p-map.has-sel .pin:not(.sel) { opacity: .5; }
+  .p-map .sel-ring { fill: none; stroke: #F1F4F0; stroke-width: 2; opacity: 0; transform-box: fill-box; transform-origin: center; transform: scale(.5); transition: opacity .3s var(--ease), transform .5s var(--ease); }
+  .p-map .pin.sel .sel-ring { opacity: 1; transform: none; }
+  .pin-in { transform-box: fill-box; transform-origin: 50% 100%; }
+  .p-map.armed .pin-in { opacity: 0; }
+  .p-map.in .pin-in { animation: pin-in .8s var(--ease) backwards; animation-delay: var(--pd, 0s); }
+  @keyframes pin-in { 0% { opacity: 0; transform: translateY(-18px) scale(.4); } 100% { opacity: 1; transform: none; } }
+  .p-map .legend { transition: opacity .3s var(--ease); }
+  .p-map.has-sel .legend { opacity: 0; }
+  .map-hint { position: absolute; left: 12px; bottom: 20px; z-index: 2; margin: 0; display: inline-flex; align-items: center; gap: 8px; min-height: 36px; padding: 0 14px; border-radius: 999px; background: rgba(17, 24, 39, .72); color: #fff; font-size: 12.5px; pointer-events: none; transition: opacity .4s var(--ease); }
+  .map-hint .i { width: 14px; height: 14px; color: #3CC278; }
+  .p-map.touched .map-hint { opacity: 0; }
+  .legend-btn { display: none; position: absolute; left: 8px; top: 64px; z-index: 3; align-items: center; gap: 4px; min-height: 36px; padding: 0 12px; border-radius: 999px; border: 0; background: rgba(17, 24, 39, .72); color: #fff; font: 600 12.5px var(--app); cursor: pointer; transition: opacity .3s var(--ease); }
+  .legend-btn i { width: 8px; height: 8px; border-radius: 50%; border: 1px solid #fff; }
+  .legend-btn i:last-of-type { margin-right: 4px; }
+  .p-map.leg-on .legend-btn { background: rgba(17, 24, 39, .92); }
+  .p-map.has-sel .legend-btn { opacity: 0; pointer-events: none; }
+  .p-map .map-locate { border: 0; padding: 0; cursor: pointer; transition: background-color .2s var(--ease); }
+  .p-map .map-locate:hover { background: #252D29; }
+
+  .bs {
+    position: absolute; left: 8px; right: 8px; bottom: 8px; z-index: 4;
+    max-height: min(calc(100% - 72px), 340px);
+    display: flex; flex-direction: column;
+    background: var(--app-bg); border: 1px solid var(--app-border); border-radius: 20px;
+    box-shadow: 0 -12px 48px rgba(0, 0, 0, .55);
+    transform: translateY(calc(100% + 16px)); visibility: hidden;
+    transition: transform .6s var(--ease), visibility 0s linear .6s;
+  }
+  .bs.on { transform: none; visibility: visible; transition: transform .6s var(--ease), visibility 0s; }
+  /* Sur un panneau large, la fiche se range à droite et laisse la carte à
+     gauche, comme sur une tablette. */
+  .p-map.side .bs { left: auto; top: 64px; width: 300px; max-height: none; transform: translateX(calc(100% + 16px)); }
+  .p-map.side .bs.on { transform: none; }
+  .p-map.side.has-sel .map-locate { opacity: 0; pointer-events: none; }
+  .p-map.side .bs-actions button { font-size: 13px; white-space: nowrap; }
+  .bs-body { flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: 8px 16px 14px; scrollbar-width: thin; scrollbar-color: #2B3430 transparent; transition: opacity .18s var(--ease); }
+  .bs-body.swap { opacity: 0; }
+  .bs .grab { width: 40px; margin-bottom: 10px; }
+  .bs-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+  .bs-name { margin: 0; font-family: var(--display); font-weight: 700; font-size: 22px; line-height: 28px; letter-spacing: -.25px; color: #F1F4F0; }
+  .bs-close { flex: none; width: 36px; height: 36px; margin: -2px -6px 0 0; border-radius: 50%; border: 0; background: #252D29; color: #F1F4F0; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+  .bs-close:hover { background: #2E3833; }
+  .bs-close .i { width: 18px; height: 18px; }
+  .bs-meta, .bs-addr { margin: 2px 0 0; font-size: 13px; color: #A6AEA8; }
+  .bs-meta .st { color: #F7C948; }
+  .bs-meta .rt { color: #E8B93C; font-weight: 600; }
+  .bs-card { margin-top: 12px; padding: 10px 12px; border-radius: 12px; border: 1px solid #2B3430; display: flex; align-items: center; gap: 10px; }
+  .bs-dot { width: 10px; height: 10px; border-radius: 5px; flex: none; }
+  .bs-card b { display: block; font-size: 14px; font-weight: 600; color: #F1F4F0; }
+  .bs-card span { display: block; font-size: 12.5px; color: #A6AEA8; }
+  .bs-notice { margin-top: 12px; padding: 10px 12px; border-radius: 12px; background: rgba(247, 201, 72, .14); color: #F2C14E; font-size: 13px; transition: background-color .4s var(--ease), color .4s var(--ease); }
+  .bs-notice button { display: block; margin-top: 4px; padding: 6px 0; min-height: 32px; background: none; border: 0; color: inherit; font: 700 13px var(--app); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+  .bs-notice.ok { background: rgba(76, 203, 132, .16); color: #4CCB84; }
+  .bs-quick { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 12px; }
+  .bs-quick span { min-height: 54px; border-radius: 12px; border: 1px solid #2B3430; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; font-size: 12px; font-weight: 600; color: #F1F4F0; }
+  .bs-quick .i { width: 18px; height: 18px; color: #4CCB84; }
+  .bs-h { margin: 16px 0 8px; font-family: var(--display); font-size: 16px; font-weight: 600; color: #F1F4F0; }
+  .bs-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .bs-chips span { height: 28px; padding: 0 10px; border-radius: 999px; display: inline-flex; align-items: center; font-size: 12.5px; font-weight: 600; }
+  .bs-chips .yes { background: rgba(76, 203, 132, .16); color: #4CCB84; }
+  .bs-chips .no { background: #252D29; color: #A6AEA8; }
+  .bs-chips .unk { border: 1px solid #2B3430; color: #A6AEA8; }
+  .bs-more { margin: 8px 0 0; font-size: 13px; font-weight: 600; color: #4CCB84; }
+  .bs-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .bs-stats div { padding: 10px 6px; border-radius: 12px; background: #1A201D; text-align: center; }
+  .bs-stats b { display: block; font-size: 20px; line-height: 24px; font-weight: 700; font-variant-numeric: tabular-nums; color: #F1F4F0; }
+  .bs-stats b.gold { color: #F2C14E; }
+  .bs-stats span { display: block; font-size: 12px; color: #A6AEA8; }
+  .bs-stats small { display: block; font-size: 11px; color: #7C847F; }
+  .bs-empty { margin: 0; padding: 12px; border-radius: 12px; border: 1px solid #2B3430; font-size: 13px; color: #A6AEA8; }
+  .bs-rec { padding: 2px 12px; border-radius: 12px; background: #1A201D; }
+  .bs-rec > div { display: flex; align-items: center; gap: 10px; padding: 8px 0; }
+  .bs-rec > div + div { border-top: 1px solid #2B3430; }
+  .bs-rec > div > div { flex: 1; min-width: 0; }
+  .bs-rec .ok { flex: none; padding: 3px 9px; border-radius: 999px; background: rgba(76, 203, 132, .16); color: #4CCB84; font-size: 12.5px; line-height: 18px; font-weight: 500; }
+  .bs-rec b { display: block; font-size: 16px; font-weight: 700; color: #E8B93C; }
+  .bs-rec span { display: block; font-size: 12.5px; color: #A6AEA8; }
+  .bs-friends { margin-top: 12px; padding: 10px 12px; border-radius: 12px; background: #1A201D; display: flex; align-items: center; gap: 10px; }
+  .bs-friends .avs2 { display: flex; }
+  .bs-friends .ini { width: 28px; height: 28px; font-size: 12px; border: 2px solid #1A201D; }
+  .bs-friends .ini + .ini { margin-left: -8px; }
+  .bs-friends b { display: block; font-size: 14px; font-weight: 600; }
+  .bs-friends .who { display: block; font-size: 12.5px; color: #A6AEA8; }
+  .bs-actions { flex: none; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 10px 12px 12px; border-top: 1px solid #2B3430; }
+  .bs-actions button { min-height: 44px; border-radius: 8px; border: 1px solid transparent; font: 600 14px var(--app); cursor: pointer; transition: background-color .2s var(--ease); }
+  .bs-actions .p { background: #3CC278; color: #07140B; }
+  .bs-actions .p:hover { background: #52CF89; }
+  .bs-actions .s { background: #252D29; color: #F1F4F0; border-color: #2B3430; }
+  .bs-actions .s:hover { background: #2E3833; }
+  .flash { animation: flash 1.6s var(--ease); }
+  @keyframes flash { 0% { box-shadow: 0 0 0 3px rgba(60, 194, 120, .7), 0 30px 80px rgba(0,0,0,.45); } 100% { box-shadow: 0 0 0 3px rgba(60, 194, 120, 0), 0 30px 80px rgba(0,0,0,.45); } }
+
+  /* ---------- Arrivées au défilement ---------- */
+  /* Visible par défaut : le script ne cache un élément qu'au moment où il
+     va l'animer. */
+  .rv-wait { opacity: 0; transform: translateY(18px); filter: blur(6px); }
+  .rv-in { opacity: 1; transform: none; filter: none; transition: opacity .9s var(--ease), transform .9s var(--ease), filter .9s var(--ease); transition-delay: var(--d, 0s); }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .rv-wait { opacity: 1; transform: none; filter: none; }
+    .halo-pulse, .add.ping::after, .tk.fresh, .play.fresh, .bump, .ripple, .flash, .p-map.in .pin-in { animation: none; }
+    .toast, .row, .manifest .w, .tks, #world, .bs, .mini-card { transition: none !important; }
+  }
+
+  /* ---------- Écrans moyens ---------- */
+
+  @media (max-width: 1080px) {
+    .stage { height: 760px; }
+    .phone { --s: .86; }
+    .frag-map { right: calc(50% + 150px); top: 236px; width: 240px; }
+    .frag-map svg { height: 140px; }
+    .frag-remind { left: calc(50% + 150px); top: 372px; width: 240px; }
+    .toast { left: calc(50% + 150px); top: 118px; width: 300px; }
+    .hint { display: none; }
+  }
+
+  @media (max-width: 900px) {
+    .nav-links { display: none; }
+    .hero-top, .section-head, .feature, .feature.flip, .pledge { grid-template-columns: minmax(0, 1fr); }
+    .feature.flip .f-copy { order: 0; }
+    .feature { gap: 36px; }
+    .frag-map, .frag-remind { display: none; }
+    .toast { left: 50%; top: 12px; width: min(320px, calc(100% - 32px)); transform: translate(-50%, 8px) scale(.98); }
+    .toast.on { transform: translate(-50%, 0); }
+    .stage-phone { top: 32px; }
+    .foot { grid-template-columns: 1fr 1fr; }
+  }
+
+  @media (max-width: 560px) {
+    .nav-in { gap: 12px; }
+    .nav .btn-ghost { display: none; }
+    .hero-cta .btn { width: 100%; }
+    .stage { margin-top: 44px; height: 700px; border-radius: 20px 20px 0 0; }
+    .phone { --s: .8; }
+    .stage-foot { flex-direction: column; align-items: flex-start; gap: 0; }
+    .manifest { padding-top: 88px; }
+    .section { padding-top: 88px; }
+    .section-head { margin-bottom: 40px; }
+    .feature { padding: 44px 0; }
+    .p-map { height: 430px; }
+    .bs { max-height: 70%; }
+    .bs-quick span { min-height: 48px; font-size: 11.5px; }
+    /* Sur un téléphone, la légende complète couvrait le tiers de la carte
+       et le bar du milieu : elle se replie dans un bouton et s'ouvre en
+       petite carte, alignée à gauche, quand on la demande. */
+    .p-map .legend {
+      display: none; left: 8px; top: 108px; transform: none;
+      max-width: calc(100% - 16px); padding: 10px 12px; gap: 8px;
+      align-items: flex-start; text-align: left;
+      border-radius: 12px; background: rgba(15, 19, 17, .95); border: 1px solid var(--app-border);
+      font-size: 12px; line-height: 16px; color: #F1F4F0;
+    }
+    .p-map .legend > div { justify-content: flex-start; gap: 6px 12px; }
+    .p-map .legend > div:last-child { color: #A6AEA8; }
+    .p-map.leg-on .legend { display: flex; }
+    .p-map .legend-btn { display: inline-flex; }
+    .p-scratch { padding: 14px; }
+    .final { margin-top: 100px; padding: 88px 0 96px; }
+    .foot { grid-template-columns: 1fr; gap: 24px; }
+  }
+
+  @media (max-width: 420px) {
+    .sheet-top, .sc-head { flex-wrap: wrap; }
+    .sheet .app-title, .p-scratch .app-title, .p-band .app-title { font-size: 21px; line-height: 26px; }
+    .sheet-btns { grid-template-columns: 1fr; }
+  }
+
+  @media (max-width: 360px) {
+    .phone { --s: .72; }
+    .stage { height: 640px; }
+  }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-download" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/></symbol>
+  <symbol id="i-arrow-r" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></symbol>
+  <symbol id="i-chev-r" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
+  <symbol id="i-chev-d" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+  <symbol id="i-trash" viewBox="0 0 24 24"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M10 11v6M14 11v6"/></symbol>
+  <symbol id="i-star" viewBox="0 0 24 24"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5v14"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24"><path d="M20 10c0 5-5.5 10.2-7.4 11.8a1 1 0 0 1-1.2 0C9.5 20.2 4 15 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></symbol>
+  <symbol id="i-ticket" viewBox="0 0 24 24"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/><path d="M13 5v2M13 17v2M13 11v2"/></symbol>
+  <symbol id="i-locate" viewBox="0 0 24 24"><path d="M2 12h3M19 12h3M12 2v3M12 19v3"/><circle cx="12" cy="12" r="7"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol>
+  <symbol id="i-link" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></symbol>
+  <symbol id="i-calc" viewBox="0 0 24 24"><rect width="16" height="20" x="4" y="2" rx="2"/><path d="M8 6h8M16 14v4M16 10h.01M12 10h.01M8 10h.01M12 14h.01M8 14h.01M12 18h.01M8 18h.01"/></symbol>
+  <symbol id="i-pencil" viewBox="0 0 24 24"><path d="M21.17 6.81a1 1 0 0 0-3.99-3.99L3.84 16.17a2 2 0 0 0-.5.83l-1.32 4.35a.5.5 0 0 0 .62.62l4.35-1.32a2 2 0 0 0 .83-.5z"/></symbol>
+  <symbol id="i-store" viewBox="0 0 24 24"><path d="m2 7 4.41-4.41A2 2 0 0 1 7.83 2h8.34a2 2 0 0 1 1.42.59L22 7"/><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><path d="M15 22v-4a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v4"/><path d="M2 7h20"/><path d="M22 7v3a2 2 0 0 1-2 2 2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 16 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 12 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 8 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 4 12a2 2 0 0 1-2-2V7"/></symbol>
+  <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2.06 12.35a1 1 0 0 1 0-.7 10.75 10.75 0 0 1 19.88 0 1 1 0 0 1 0 .7 10.75 10.75 0 0 1-19.88 0"/><circle cx="12" cy="12" r="3"/></symbol>
+  <symbol id="i-more-v" viewBox="0 0 24 24"><circle cx="12" cy="5" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="12" cy="19" r="1.2"/></symbol>
+  <symbol id="i-sparkles" viewBox="0 0 24 24"><path d="M9.94 15.5A2 2 0 0 0 8.5 14.06l-6.13-1.58a.5.5 0 0 1 0-.96L8.5 9.94A2 2 0 0 0 9.94 8.5l1.58-6.13a.5.5 0 0 1 .96 0L14.06 8.5A2 2 0 0 0 15.5 9.94l6.13 1.58a.5.5 0 0 1 0 .96L15.5 14.06a2 2 0 0 0-1.44 1.44l-1.58 6.13a.5.5 0 0 1-.96 0z"/></symbol>
+  <symbol id="i-hash" viewBox="0 0 24 24"><path d="M4 9h16M4 15h16M10 3 8 21M16 3l-2 18"/></symbol>
+  <symbol id="i-share" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 13.5 6.8 4M15.4 6.5l-6.8 4"/></symbol>
+  <symbol id="i-rotate" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></symbol>
+  <symbol id="t-map" viewBox="0 0 24 24"><path d="M12 2a7.5 7.5 0 0 0-7.5 7.5c0 5.3 6.2 11.6 6.9 12.2a.9.9 0 0 0 1.2 0c.7-.6 6.9-6.9 6.9-12.2A7.5 7.5 0 0 0 12 2z"/><circle cx="12" cy="9.5" r="2.6" fill="#252D29"/></symbol>
+  <symbol id="t-sess" viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="4"/><circle cx="8" cy="12" r="1.6" fill="#252D29"/><circle cx="12" cy="12" r="1.6" fill="#252D29"/><circle cx="16" cy="12" r="1.6" fill="#252D29"/></symbol>
+  <symbol id="t-tick" viewBox="0 0 24 24"><path d="M3 6.5A1.5 1.5 0 0 1 4.5 5h15A1.5 1.5 0 0 1 21 6.5V10a2 2 0 0 0 0 4v3.5a1.5 1.5 0 0 1-1.5 1.5h-15A1.5 1.5 0 0 1 3 17.5V14a2 2 0 0 0 0-4z"/></symbol>
+  <symbol id="s-bars" viewBox="0 0 60 12"><rect x="0" y="7" width="3" height="5" rx="1"/><rect x="5" y="5" width="3" height="7" rx="1"/><rect x="10" y="2.5" width="3" height="9.5" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/><path d="M27 4.2a8 8 0 0 1 11 0l-1.5 1.6a5.8 5.8 0 0 0-8 0zM29.6 7a4.4 4.4 0 0 1 5.8 0L32.5 10z"/><rect x="42" y="1" width="16" height="10" rx="2.5" fill="none" stroke="#F1F4F0" stroke-width="1.3"/><rect x="44" y="3" width="10" height="6" rx="1"/></symbol>
+  <symbol id="jeton" viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="#178A45"/><circle cx="50" cy="50" r="38" fill="none" stroke="#F7C948" stroke-width="7" stroke-dasharray="13 12"/><text x="50" y="52" text-anchor="middle" dominant-baseline="central" font-family="Bricolage Grotesque, Geist, system-ui, sans-serif" font-weight="700" font-size="44" fill="#FCFCF8">D</text></symbol>
+</svg>
+
+<a class="evitement" href="#haut">Skip to content</a>
+
+<header class="nav" id="nav">
+  <div class="wrap nav-in">
+    <a class="brand" href="#haut" aria-label="Dooka, back to top"><svg class="jeton" aria-hidden="true"><use href="#jeton"/></svg>Dooka</a>
+    <nav class="nav-links" aria-label="On this page">
+      <a href="#fonctions">Features</a>
+      <a href="#engagements">Responsible gambling</a>
+      <a href="#rejoindre">Join a crew</a>
+    </nav>
+    <div class="nav-cta">
+      <a class="langue" href="/" hreflang="fr" lang="fr" aria-label="FR : version française">FR</a>
+      <a class="btn btn-ghost" href="https://play.google.com/apps/testing/fr.dooka.app">Google Play · closed test</a>
+      <a class="btn btn-light" href="https://github.com/TeamDooka/dooka/releases/latest/download/dooka.apk"><svg class="i" aria-hidden="true"><use href="#i-download"/></svg>Download</a>
+    </div>
+  </div>
+</header>
+
+<main id="haut" tabindex="-1">
+
+  <!-- ============ Héros ============ -->
+  <section class="hero" aria-labelledby="titre">
+    <div class="wrap">
+      <a class="annonce rv" id="annonce" href="#avent"><b>New</b><span>The Advent calendar, 1 to 24 December</span><svg class="i" aria-hidden="true"><use href="#i-arrow-r"/></svg></a>
+      <div class="hero-top">
+        <h1 id="titre" class="rv">Dooka keeps score for your crew.</h1>
+        <div class="hero-side">
+          <p class="hero-sub rv" style="--d:.08s"><strong>Tickets logged, sessions tracked, results compared.</strong> Your crew and your bar in the same app.</p>
+          <div class="hero-cta rv" style="--d:.16s">
+            <a class="btn btn-light btn-lg" href="https://github.com/TeamDooka/dooka/releases/latest/download/dooka.apk"><svg class="i" aria-hidden="true"><use href="#i-download"/></svg>Download for Android</a>
+            <a class="btn btn-ghost btn-lg" href="https://play.google.com/apps/testing/fr.dooka.app">Google Play · closed test<svg class="i" aria-hidden="true"><use href="#i-chev-r"/></svg></a>
+          </div>
+          <p class="hero-meta rv" style="--d:.22s">
+            <span><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Free</span>
+            <span><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>No ads</span>
+          </p>
+        </div>
+      </div>
+
+      <div class="stage rv" style="--d:.3s" id="scene" role="region" aria-label="Interactive demo of a session: tap “Add a ticket”, then the Stats tab">
+        <!-- Extrait de la carte : chaque point s'ouvre sur un résumé du bar,
+             et Le Balto, où se joue la session d'à côté, compte les tickets
+             qu'on y ajoute. -->
+        <div class="frag frag-map" id="fragMap" role="group" aria-label="Map excerpt: tap a bar">
+          <svg viewBox="0 0 300 190" preserveAspectRatio="xMidYMid slice">
+            <rect class="map-bg" width="300" height="190" fill="#111614"/>
+            <g aria-hidden="true">
+              <path d="M-10 136C60 116 120 146 180 126S260 86 310 100" fill="none" stroke="#0E2A38" stroke-width="12"/>
+              <g stroke="#1F2723" fill="none"><path d="M-10 56 310 44M70-10l14 210M210-10l18 210M-10 168l320-10" stroke-width="7"/><path d="M-10 106 310 112M140-10l-6 210" stroke-width="4"/></g>
+              <path d="M-10 82 310 66" stroke="#2C3530" stroke-width="9" fill="none"/>
+              <circle class="halo-pulse" cx="150" cy="96" r="12" fill="rgba(242,84,27,.30)"/>
+              <circle cx="150" cy="96" r="18" fill="rgba(242,84,27,.30)" stroke="rgba(242,84,27,.85)" stroke-width="1.5"/>
+              <circle cx="96" cy="150" r="14" fill="rgba(14,107,79,.22)" stroke="rgba(14,107,79,.62)" stroke-width="1.5"/>
+            </g>
+            <g class="pin" data-bar="narval" role="button" tabindex="0"><circle class="hit" cx="60" cy="58" r="16"/><circle class="dot" cx="60" cy="58" r="6" fill="#FF7377" stroke="#fff" stroke-width="2"/></g>
+            <g class="pin" data-bar="longchamp" role="button" tabindex="0"><circle class="hit" cx="236" cy="140" r="16"/><circle class="dot" cx="236" cy="140" r="6" fill="#FF7377" stroke="#fff" stroke-width="2"/></g>
+            <g class="pin" data-bar="sporting" role="button" tabindex="0"><circle class="hit" cx="96" cy="150" r="16"/><circle class="dot" cx="96" cy="150" r="6" fill="#3CC278" stroke="#fff" stroke-width="2"/></g>
+            <g class="pin" data-bar="sports" role="button" tabindex="0"><circle class="hit" cx="204" cy="60" r="16"/><circle class="dot" cx="204" cy="60" r="6" fill="#2E7CF6" stroke="#fff" stroke-width="2"/></g>
+            <g class="pin" data-bar="weekend" role="button" tabindex="0"><circle class="hit" cx="268" cy="92" r="16"/><circle class="dot" cx="268" cy="92" r="6" fill="#2E7CF6" stroke="#fff" stroke-width="2"/></g>
+            <g class="pin" data-bar="balto" role="button" tabindex="0">
+              <circle class="hit" cx="150" cy="90" r="20"/>
+              <circle class="dot" cx="150" cy="96" r="6" fill="#FF7377" stroke="#fff" stroke-width="2"/>
+              <g transform="translate(150 74)"><g class="bubble-in"><rect x="-11" y="-14" width="22" height="16" rx="7" fill="#FF7377" stroke="#0F1311"/><path d="M-5 2 0 7 5 2z" fill="#FF7377"/><text class="count-balto" y="-2" text-anchor="middle" font-size="10" font-weight="700" fill="#07140B" font-family="system-ui, sans-serif">12</text></g></g>
+            </g>
+          </svg>
+          <div class="mini-legend" aria-hidden="true"><span><i style="background:#FF7377"></i>PMU</span><span><i style="background:#2E7CF6"></i>unverified</span><span><i style="background:#3CC278"></i>played here</span></div>
+          <div class="mini-card" id="miniCard"><div class="tx"><b id="miniNom"></b><span id="miniLigne"></span></div><button type="button" id="miniOuvrir">See the page</button></div>
+        </div>
+        <div class="frag frag-remind" aria-hidden="true">
+          <div class="txt"><b>Time reminder</b><span>Every 30 minutes</span></div>
+          <span class="switch"></span>
+        </div>
+        <div class="frag toast" id="toast" aria-hidden="true"><span class="dot"><svg class="i"><use href="#i-ticket"/></svg></span><div class="tx"><b id="toastT"></b><span id="toastS"></span></div><span class="amt" id="toastA"></span></div>
+        <p class="hint" id="hint" aria-hidden="true">Try “Add a ticket”, then “Stats”<svg viewBox="0 0 48 16"><path d="M2 5c14 0 28 2 42 7"/><path d="M37 15l7-3-3-6"/></svg></p>
+
+        <div class="stage-phone">
+          <div class="phone">
+            <div class="screen">
+              <div class="sb" aria-hidden="true">21:12<svg viewBox="0 0 60 12"><use href="#s-bars"/></svg></div>
+              <div class="sd">
+                <div class="sd-top">
+                  <div class="sd-head">
+                    <div class="sd-id">
+                      <div class="sd-place" aria-hidden="true"><svg class="i"><use href="#i-pin"/></svg><span class="app-title">Le Balto</span><span class="sd-menu"><svg class="i"><use href="#i-more-v"/></svg></span></div>
+                      <div class="sd-date" id="sdDate">25/10/2026</div>
+                    </div>
+                    <div class="sd-total"><span class="sd-lbl">Table</span><span class="sd-num neg" id="tableNet">-€3.00</span></div>
+                  </div>
+                  <div class="onglets" id="onglets" role="tablist" aria-label="Show">
+                    <button class="onglet" id="tabJeu" type="button" role="tab" aria-selected="true" aria-controls="paneJeu">Play</button>
+                    <button class="onglet" id="tabStats" type="button" role="tab" aria-selected="false" aria-controls="paneStats" tabindex="-1">Stats</button>
+                  </div>
+                </div>
+                <div class="sd-scroll" id="sdScroll">
+                  <div id="paneJeu" role="tabpanel" aria-labelledby="tabJeu">
+                    <div class="list encours">
+                      <span class="live" aria-hidden="true"></span>
+                      <div class="nm"><b>Going for 1h 12m</b><span id="dernierTicket">Last ticket at 21:08</span></div>
+                    </div>
+                    <button class="add" id="add" type="button"><svg class="i" aria-hidden="true"><use href="#i-plus"/></svg>Add a ticket</button>
+                    <div class="sec"><span class="app-sub">The table</span><button class="tg" id="tableToggle" type="button" aria-expanded="false" aria-controls="tableList"><span id="nbJoueurs">3 players</span><svg class="i" aria-hidden="true"><use href="#i-chev-d"/></svg></button></div>
+                    <div class="tablee" id="tablee"></div>
+                    <div class="list" id="tableList" hidden></div>
+                    <div class="sec"><span class="app-sub" id="ttDerniers">Latest tickets</span><span class="meta" id="auTotal">9 in total</span></div>
+                    <div class="list">
+                      <div id="derniers"></div>
+                      <button class="voir" id="voir" type="button" aria-expanded="false"><span id="voirTxt">See all 9 tickets</span><svg class="i" aria-hidden="true"><use href="#i-chev-d"/></svg></button>
+                    </div>
+                    <p class="terminer" aria-hidden="true">End session</p>
+                  </div>
+                  <div id="paneStats" role="tabpanel" aria-labelledby="tabStats" hidden>
+                    <div class="totaux">
+                      <div class="list tot"><span class="l">Staked</span><span class="v" id="vMise">€19</span></div>
+                      <div class="list tot"><span class="l">Won</span><span class="v gain" id="vGagne">€15</span></div>
+                      <div class="list tot"><span class="l">Tickets scratched</span><span class="v" id="vTickets">9</span></div>
+                      <div class="list tot"><span class="l">Winning tickets</span><span class="v"><span id="vGagnants">4</span><small id="vSur"> / 9</small></span></div>
+                    </div>
+                    <div class="list barres" aria-hidden="true">
+                      <div><div class="lg"><span>Staked</span><span id="tMise">€19</span></div><div class="piste"><i class="m" id="bMise"></i></div></div>
+                      <div><div class="lg"><span>Won</span><span id="tGagne">€15</span></div><div class="piste"><i class="g" id="bGagne"></i></div></div>
+                    </div>
+                    <p class="app-sub sub">Ranking</p>
+                    <div class="list" id="ranking"></div>
+                    <p class="sd-hint">Tap a player to see their tickets</p>
+                    <div class="sd-best" id="best"><svg class="i" aria-hidden="true"><use href="#i-sparkles"/></svg><span class="l">Biggest win</span><span class="w" id="bestWho">Léa · Astro</span><span class="a" id="bestAmt">€6</span></div>
+                    <p class="app-sub sub sub-l">By ticket</p>
+                    <div class="list" id="parTicket"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="stage-foot">
+        <span>Demo, made-up names and amounts.</span>
+        <button type="button" id="reset" hidden><svg class="i" aria-hidden="true"><use href="#i-rotate"/></svg>Replay the demo</button>
+      </div>
+      <p class="sr" aria-live="polite" id="annonceDemo"></p>
+    </div>
+  </section>
+
+  <!-- ============ Manifeste ============ -->
+  <section class="manifest" aria-label="What Dooka is">
+    <div class="wrap">
+      <p id="manifeste">Dooka is a <span>logbook</span>, not a casino. It notes what your crew played, and has nothing to gain from you playing again.</p>
+    </div>
+  </section>
+
+  <!-- ============ Calendrier de l'Avent (décembre 2026) ============
+       Même contenu que l'onglet Avent de l'app (3.29) et sa notification
+       du matin (3.30). Ticket de la démo choisi HORS du programme réel,
+       pour ne rien dévoiler des jours à venir. Retiré par le script au
+       1er janvier ; à supprimer du fichier ensuite. -->
+  <section class="section avent" id="avent" aria-labelledby="avent-t">
+    <div class="wrap">
+      <div class="feature">
+        <div class="f-copy rv">
+          <p class="kicker">1 to 24 December</p>
+          <h2 id="avent-t">The community’s Advent calendar.</h2>
+          <p>Every day, the same ticket for everyone. Scratch it if you feel like it, or just see what it gave everyone else. On the 25th, the recap with your friends.</p>
+          <p class="garde">Nothing’s required: a morning notification only if you ask for it, and everything goes quiet during a break.</p>
+          <div class="hero-cta">
+            <a class="btn btn-light btn-lg" href="https://github.com/TeamDooka/dooka/releases/latest/download/dooka.apk"><svg class="i" aria-hidden="true"><use href="#i-download"/></svg>Download for Android</a>
+            <a class="btn btn-ghost btn-lg" href="https://play.google.com/apps/testing/fr.dooka.app">Google Play · closed test<svg class="i" aria-hidden="true"><use href="#i-chev-r"/></svg></a>
+          </div>
+        </div>
+        <div class="av-col rv" style="--d:.1s">
+          <div class="av-notif" role="img" aria-label="Notification: Advent calendar, door 7: Solitaire">
+            <svg class="jeton" aria-hidden="true"><use href="#jeton"/></svg>
+            <div class="tx"><span class="h"><span>Dooka</span><span>10:00</span></span><b>Advent calendar</b>Door 7: Solitaire.</div>
+          </div>
+          <div class="panel p-avent" role="img" aria-label="Advent tab screen: ticket of the day Solitaire at €2, 46 people scratched it, 8 winners, biggest win €20">
+            <p class="av-t">Advent calendar</p>
+            <div class="av-d">Monday 7 December · day 7 of 24</div>
+            <div class="av-card">
+              <div class="av-ticket">
+                <div class="av-photo" aria-hidden="true">S</div>
+                <div><div class="av-note">Ticket of the day</div><div class="av-nom">Solitaire</div><div class="av-prix">€2</div></div>
+              </div>
+              <div class="av-btn">I scratched</div>
+            </div>
+            <p class="av-label">The community today</p>
+            <div class="av-card av-chiffres">
+              <div><b>46</b><span>scratched it</span></div>
+              <div><b>8</b><span>winners</span></div>
+              <div><b>€20</b><span>biggest win</span></div>
+            </div>
+          </div>
+          <p class="panel-note">Demo: made-up figures. Each day’s ticket is revealed on the day.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Fonctions ============ -->
+  <section class="section" id="fonctions" aria-labelledby="fonctions-t">
+    <div class="wrap">
+      <div class="section-head rv">
+        <h2 id="fonctions-t">Everything you need for a night at the bar.</h2>
+      </div>
+
+      <div class="feature">
+        <div class="f-copy rv">
+          <h3>Find the bar where it’s happening.</h3>
+          <p>The PMU bars around you, and the ones where people are playing tonight.</p>
+        </div>
+        <div class="rv" style="--d:.1s">
+          <!-- La carte se touche : chaque point ouvre la fiche du bar, avec ce
+               qu'en montre l'app (PmuPlaceSheet). Les fiches sont dans le
+               script, à BARS ; les points restent écrits ici pour que la
+               carte s'affiche même sans lui. -->
+          <div class="panel p-map" id="carte" role="group" aria-label="Demo of the Map tab: tap a bar to open its page">
+            <svg class="map" viewBox="0 0 700 460" preserveAspectRatio="xMidYMid slice">
+              <rect class="map-bg" x="-400" y="-400" width="1500" height="1260" fill="#111614"/>
+              <g id="world">
+                <g aria-hidden="true">
+                  <path d="M420 30h170v110H420zM40 70h120v80H40zM-200 400h150v120h-150zM760 290h150v110H760z" fill="#12241A"/>
+                  <path d="M-320 345C-200 330-110 318-20 300C120 260 230 330 360 286S560 200 720 230S900 280 1020 262" fill="none" stroke="#0E2A38" stroke-width="26"/>
+                  <g stroke="#1C2420" fill="none" stroke-linecap="round">
+                    <path d="M-310 47L1010 17M194-310L216 770M504-310L562 770M52-310L80 770M-310 352L1010 341M398-310L370 770" stroke-width="5"/>
+                    <path d="M-310 420L1010 376M105-310L159 770M435-310L489 770M611-310L679 770M-310 225L1010 247" stroke-width="10"/>
+                  </g>
+                  <g stroke="#2A332F" fill="none" stroke-width="13"><path d="M-310 188L1010 108M220-310L280-10c30 150 76 260 100 480l16 300"/></g>
+                  <g font-family="system-ui, sans-serif">
+                    <text x="300" y="262" font-size="15" font-weight="700" fill="#8C958F">Town centre</text>
+                    <text x="440" y="150" font-size="11" fill="#5C8A6A">Park</text>
+                  </g>
+                  <circle class="halo-pulse" cx="352" cy="214" r="14" fill="rgba(242,84,27,.30)"/>
+                  <circle cx="352" cy="214" r="18" fill="rgba(242,84,27,.30)" stroke="rgba(242,84,27,.85)" stroke-width="2"/>
+                  <circle cx="104" cy="306" r="15" fill="rgba(14,107,79,.22)" stroke="rgba(14,107,79,.62)" stroke-width="2"/>
+                </g>
+                <g class="pin" data-bar="narval" role="button" tabindex="0"><g class="pin-in" style="--pd:.12s"><circle class="hit" cx="160" cy="160" r="20"/><circle class="sel-ring" cx="160" cy="160" r="15"/><circle class="dot" cx="160" cy="160" r="7" fill="#FF7377" stroke="#fff" stroke-width="2"/></g></g>
+                <g class="pin" data-bar="boncoin" role="button" tabindex="0"><g class="pin-in" style="--pd:.3s"><circle class="hit" cx="250" cy="370" r="20"/><circle class="sel-ring" cx="250" cy="370" r="15"/><circle class="dot" cx="250" cy="370" r="7" fill="#FF7377" stroke="#fff" stroke-width="2"/></g></g>
+                <g class="pin" data-bar="diplomate" role="button" tabindex="0"><g class="pin-in" style="--pd:.36s"><circle class="hit" cx="640" cy="180" r="20"/><circle class="sel-ring" cx="640" cy="180" r="15"/><circle class="dot" cx="640" cy="180" r="7" fill="#FF7377" stroke="#fff" stroke-width="2"/></g></g>
+                <g class="pin" data-bar="sports" role="button" tabindex="0"><g class="pin-in" style="--pd:.18s"><circle class="hit" cx="210" cy="250" r="20"/><circle class="sel-ring" cx="210" cy="250" r="15"/><circle class="dot" cx="210" cy="250" r="7" fill="#2E7CF6" stroke="#fff" stroke-width="2"/></g></g>
+                <g class="pin" data-bar="weekend" role="button" tabindex="0"><g class="pin-in" style="--pd:.24s"><circle class="hit" cx="560" cy="250" r="20"/><circle class="sel-ring" cx="560" cy="250" r="15"/><circle class="dot" cx="560" cy="250" r="7" fill="#2E7CF6" stroke="#fff" stroke-width="2"/></g></g>
+                <g class="pin" data-bar="escale" role="button" tabindex="0"><g class="pin-in" style="--pd:.42s"><circle class="hit" cx="600" cy="380" r="20"/><circle class="sel-ring" cx="600" cy="380" r="15"/><circle class="dot" cx="600" cy="380" r="7" fill="#2E7CF6" stroke="#fff" stroke-width="2"/></g></g>
+                <g class="pin" data-bar="sporting" role="button" tabindex="0"><g class="pin-in" style="--pd:.08s">
+                  <circle class="hit" cx="104" cy="300" r="22"/><circle class="sel-ring" cx="104" cy="306" r="15"/><circle class="dot" cx="104" cy="306" r="7" fill="#3CC278" stroke="#fff" stroke-width="2"/>
+                  <g transform="translate(104 282)"><g class="bubble-in"><rect x="-10" y="-16" width="20" height="18" rx="8" fill="#3CC278" stroke="#0F1311"/><path d="M-5 2 0 9 5 2z" fill="#3CC278"/><text y="-3" text-anchor="middle" font-size="11" font-weight="700" fill="#07140B" font-family="system-ui, sans-serif">4</text></g></g>
+                </g></g>
+                <g class="pin" data-bar="longchamp" role="button" tabindex="0"><g class="pin-in" style="--pd:.2s">
+                  <circle class="hit" cx="470" cy="324" r="22"/><circle class="sel-ring" cx="470" cy="330" r="15"/><circle class="dot" cx="470" cy="330" r="7" fill="#FF7377" stroke="#fff" stroke-width="2"/>
+                  <g transform="translate(470 306)"><g class="bubble-in"><rect x="-10" y="-16" width="20" height="18" rx="8" fill="#FF7377" stroke="#0F1311"/><path d="M-5 2 0 9 5 2z" fill="#FF7377"/><text y="-3" text-anchor="middle" font-size="11" font-weight="700" fill="#07140B" font-family="system-ui, sans-serif">3</text></g></g>
+                </g></g>
+                <g class="pin" data-bar="balto" role="button" tabindex="0"><g class="pin-in" style="--pd:0s">
+                  <circle class="hit" cx="352" cy="206" r="24"/><circle class="sel-ring" cx="352" cy="214" r="15"/><circle class="dot" cx="352" cy="214" r="7" fill="#FF7377" stroke="#fff" stroke-width="2"/>
+                  <g transform="translate(352 189)"><g class="bubble-in"><rect x="-13" y="-16" width="26" height="18" rx="8" fill="#FF7377" stroke="#0F1311"/><path d="M-5 2 0 9 5 2z" fill="#FF7377"/><text class="count-balto" y="-3" text-anchor="middle" font-size="11" font-weight="700" fill="#07140B" font-family="system-ui, sans-serif">12</text></g></g>
+                </g></g>
+              </g>
+            </svg>
+            <div class="map-search" aria-hidden="true">Search for a town, a bar…</div>
+            <!-- Visuel seulement : chaque point dit déjà son état dans son
+                 libellé, d'où aria-hidden et tabindex -1. -->
+            <button class="legend-btn" id="legendeBtn" type="button" aria-hidden="true" tabindex="-1"><i style="background:#FF7377"></i><i style="background:#2E7CF6"></i><i style="background:#3CC278"></i>Key</button>
+            <div class="legend" aria-hidden="true">
+              <div><span><i style="background:#FF7377"></i>PMU</span><span><i style="background:#2E7CF6"></i>unverified</span><span><i style="background:#3CC278"></i>played here</span></div>
+              <div><span><i class="ring2" style="border-color:#F2541B"></i>scratching now</span><span><i class="ring2" style="border-color:#0E6B4F"></i>scratched today</span></div>
+              <div>The number: tickets scratched here in the last 30 days</div>
+            </div>
+            <p class="map-hint" aria-hidden="true"><svg class="i"><use href="#i-pin"/></svg>Tap a bar</p>
+            <button class="map-locate" id="viseur" type="button" aria-label="Recentre the map"><svg class="i" aria-hidden="true"><use href="#i-locate"/></svg></button>
+            <div class="bs" id="fiche" role="region" aria-label="Bar page">
+              <div class="bs-body" id="ficheCorps"></div>
+              <div class="bs-actions"><button class="p" type="button" id="ficheGratte">I scratched here</button><button class="s" type="button" id="ficheSession">Group session</button></div>
+            </div>
+            <p class="sr" aria-live="polite" id="carteAnnonce"></p>
+          </div>
+          <p class="panel-note">Demo: made-up bars and figures.</p>
+        </div>
+      </div>
+
+      <div class="feature flip">
+        <div class="f-copy rv">
+          <h3>Log a ticket in a few taps.</h3>
+          <p>The ticket, what it won, Save. Your net result is what you won minus what you staked. Nothing else.</p>
+        </div>
+        <div class="rv" style="--d:.1s">
+          <div class="panel p-sheet" id="gratte" role="group" aria-label="Demo of logging a ticket after “I scratched here”">
+            <div class="grab" aria-hidden="true"></div>
+            <div class="sh-head"><b class="app-title" id="shTitle">Which ticket?</b><button class="sh-cancel" id="shCancel" type="button">Cancel</button></div>
+            <p class="sh-sub" id="shSub">Pick the ticket you scratched.</p>
+            <div class="gauge" aria-hidden="true"><i class="on"></i><i id="g2"></i></div>
+            <div id="step1">
+              <div class="chips" role="radiogroup" aria-label="Price" id="prix">
+                <button class="chip" type="button" role="radio" aria-checked="true" data-p="0">All</button>
+                <button class="chip" type="button" role="radio" aria-checked="false" data-p="1">€1</button>
+                <button class="chip" type="button" role="radio" aria-checked="false" data-p="2">€2</button>
+                <button class="chip" type="button" role="radio" aria-checked="false" data-p="5">€5</button>
+              </div>
+              <div class="list tlist" id="tlist">
+                <button class="trow" type="button" data-k="astro" data-p="2"><span class="th" aria-hidden="true"><svg class="i"><use href="#i-ticket"/></svg></span><b>Astro</b><span class="pill">€2</span></button>
+                <button class="trow" type="button" data-k="banco" data-p="1"><span class="th" aria-hidden="true"><svg class="i"><use href="#i-ticket"/></svg></span><b>Banco</b><span class="pill">€1</span></button>
+                <button class="trow" type="button" data-k="cash" data-p="5"><span class="th" aria-hidden="true"><svg class="i"><use href="#i-ticket"/></svg></span><b>Cash</b><span class="pill">€5</span></button>
+              </div>
+            </div>
+            <div id="step2" hidden>
+              <div class="pcard" id="pcard"><span class="ini" style="background:#22304A;color:#8DB4F5">S</span><b>Sam</b><button class="tpill" id="tpill" type="button"><span id="tpillName">Astro</span><svg class="i" aria-hidden="true"><use href="#i-pencil"/></svg></button></div>
+              <div class="chips" role="radiogroup" aria-label="Amount won" id="chips"></div>
+              <div class="sh-foot"><p class="sh-hint" id="shHint">One player left to fill in.</p><button class="save" id="save" type="button" disabled>Save</button></div>
+            </div>
+          </div>
+          <p class="panel-note" id="scNote" aria-live="polite"></p>
+        </div>
+      </div>
+
+      <div class="feature">
+        <div class="f-copy rv">
+          <h3>Play with your crew.</h3>
+          <p>Each crew has its own leaderboard, based on net results. You join with a code, and a session’s details stay between the people who play in it.</p>
+        </div>
+        <div class="rv" style="--d:.1s">
+          <div class="panel p-band" role="img" aria-label="Example of a crew screen: its name and four members, the Create a PMU session button, the leaderboard by net result and the invite code card with the Share button.">
+            <div class="bh" aria-hidden="true">
+              <span class="bimg">L</span>
+              <div class="bn"><b class="app-title">The Thursday crew</b><span>4 members</span></div>
+              <span class="bmenu">⋯</span>
+            </div>
+            <span class="btn-app bnew" aria-hidden="true"><svg class="i"><use href="#i-plus"/></svg>Create a PMU session</span>
+            <p class="app-sub bsec" aria-hidden="true">Leaderboard</p>
+            <div aria-hidden="true">
+              <div class="rcard"><span class="rg">1</span><span class="rav">L</span><div class="ri"><b>Léa</b><span>21 tickets played</span></div><b class="rn">+€8.00</b><span class="rb">Friend</span></div>
+              <div class="rcard"><span class="rg">2</span><span class="rav">M</span><div class="ri"><b>Momo</b><span>18 tickets played</span></div><b class="rn">+€3.00</b><span class="rb">Friend</span></div>
+              <div class="rcard me"><span class="rg">3</span><span class="rav">C</span><div class="ri"><b>You</b><span>24 tickets played</span></div><b class="rn neg">-€6.00</b></div>
+              <div class="rcard"><span class="rg">4</span><span class="rav">S</span><div class="ri"><b>Sam</b><span>19 tickets played</span></div><b class="rn neg">-€11.00</b><span class="rb">Friend</span></div>
+            </div>
+            <div class="invite-card" aria-hidden="true">
+              <span class="lbl"><svg class="i"><use href="#i-hash"/></svg>Invite code</span>
+              <span class="code">K4P9RX</span>
+              <p>Share this code to invite your friends to the crew.</p>
+              <span class="btn-app"><svg class="i"><use href="#i-share"/></svg>Share</span>
+            </div>
+          </div>
+          <p class="panel-note">Example: made-up crew, names and amounts.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Engagements ============ -->
+  <section class="section" id="engagements" aria-labelledby="engagements-t">
+    <div class="wrap pledge">
+      <div class="pledge-copy rv">
+        <h2 id="engagements-t">What Dooka does, and doesn’t do.</h2>
+        <p>Dooka shows what has been won, never what you could win.</p>
+        <a class="link-arrow" href="/en/responsible-gaming.html">Our responsible gambling page<svg class="i" aria-hidden="true"><use href="#i-arrow-r"/></svg></a>
+      </div>
+      <div class="rv" style="--d:.1s">
+        <h3 class="pledge-h">It doesn’t push you to play</h3>
+        <ul class="nots">
+          <li><span class="x" aria-hidden="true"><svg class="i"><use href="#i-x"/></svg></span><span><b>No promised wins</b><span class="d">The share of tickets that pay out more than the stake, no prize in the spotlight.</span></span></li>
+          <li><span class="x" aria-hidden="true"><svg class="i"><use href="#i-x"/></svg></span><span><b>Nothing to bring you back</b><span class="d">No points, no streaks, no countdowns.</span></span></li>
+          <li><span class="x" aria-hidden="true"><svg class="i"><use href="#i-x"/></svg></span><span><b>No one behind it</b><span class="d">No ads, no gambling operator.</span></span></li>
+        </ul>
+
+        <div class="limits">
+          <h3 class="pledge-h">And ways to stay in control: “My limits”</h3>
+          <div class="panel limits-card" role="img" aria-label="The app’s My limits settings: weekly budget, time reminder on, every 30 minutes, and a break from tracking.">
+            <div class="lr" aria-hidden="true"><span class="txt"><b>Weekly budget</b><span>No budget set</span></span><svg class="i chev"><use href="#i-chev-r"/></svg></div>
+            <div class="lr" aria-hidden="true"><span class="txt"><b>Time reminder</b><span>Every 30 minutes</span></span><span class="switch"></span></div>
+            <div class="lr" aria-hidden="true"><span class="txt"><b>Take a break</b><span>Logging and notifications off, for 7 to 90 days</span></span><svg class="i chev"><use href="#i-chev-r"/></svg></div>
+          </div>
+          <p class="limits-note">You set the budget: the app shows you where you stand, without stopping you. A break hides logging and turns off notifications until you resume.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Appel final ============ -->
+  <section class="final" id="rejoindre" aria-labelledby="rejoindre-t">
+    <div class="wrap">
+      <h2 id="rejoindre-t" class="rv">Your crew’s waiting at the bar.</h2>
+      <p class="rv" style="--d:.08s">Invited by a mate? Install Dooka, create your account, then open their link again.</p>
+      <div class="hero-cta rv" style="--d:.16s">
+        <a class="btn btn-light btn-lg" href="https://github.com/TeamDooka/dooka/releases/latest/download/dooka.apk"><svg class="i" aria-hidden="true"><use href="#i-download"/></svg>Download for Android</a>
+        <a class="btn btn-ghost btn-lg" href="https://play.google.com/apps/testing/fr.dooka.app">Google Play · closed test<svg class="i" aria-hidden="true"><use href="#i-chev-r"/></svg></a>
+      </div>
+      <p class="hero-meta rv" style="--d:.22s">
+        <span><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Free</span>
+        <span><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>No ads</span>
+        <span><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>iPhone by invitation</span>
+      </p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot">
+      <div>
+        <a class="brand" href="#haut"><svg class="jeton" aria-hidden="true"><use href="#jeton"/></svg>Dooka</a>
+        <p class="tag">Your crew’s logbook.</p>
+      </div>
+      <div>
+        <h3>The app</h3>
+        <ul>
+          <li><a href="https://github.com/TeamDooka/dooka/releases/latest/download/dooka.apk">Download for Android</a></li>
+          <li><a href="https://play.google.com/apps/testing/fr.dooka.app">Google Play · closed test</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Legal</h3>
+        <ul>
+          <li><a href="/en/terms.html">Terms of use</a></li>
+          <li><a href="/en/privacy.html">Privacy</a></li>
+          <li><a href="/en/responsible-gaming.html">Responsible gambling</a></li>
+          <li><a href="/en/delete-account.html">Delete my account</a></li>
+          <li><a href="/en/legal-notice.html">Legal notice</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Contact</h3>
+        <ul>
+          <li><a href="mailto:contact@dooka.fr">contact@dooka.fr</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="fine">
+      <p><strong>Dooka is an independent app, not affiliated with PMU or the Française des Jeux.</strong> The brands mentioned belong to their respective owners and are only used to describe the outlets and games listed. Dooka doesn’t let you play, bet or receive money.</p>
+      <p>Gambling involves risks: debt, isolation, addiction. Under-18s not allowed. Call <a href="tel:0974751313">09 74 75 13 13</a> (Joueurs Info Service, the French gambling helpline, standard-rate call).</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Avent : l'annonce du héros suit le moment du calendrier (comme l'onglet
+  // de l'app), puis l'annonce et la section disparaissent au 1er janvier.
+  (function () {
+    "use strict";
+    var d = new Date(), annee = 2026;
+    var annonce = document.getElementById("annonce");
+    var section = document.getElementById("avent");
+    if (d.getFullYear() > annee) {
+      if (annonce) annonce.remove();
+      if (section) section.remove();
+      return;
+    }
+    if (!annonce || d.getFullYear() < annee || d.getMonth() < 11) return;
+    var ouvert = d.getDate() <= 24;
+    annonce.querySelector("b").textContent = ouvert ? "Right now" : "The recap";
+    annonce.querySelector("span").textContent = ouvert
+      ? "The Advent calendar is open until 24 December"
+      : "The Advent calendar ends with the recap among friends";
+  })();
+</script>
+
+<script>
+  (function () {
+    "use strict";
+
+    var params = new URLSearchParams(location.search);
+    var still = params.has("still") ||
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var NNBSP = " ";
+
+    function euros(v) {
+      var s = v > 0 ? "+" : v < 0 ? "−" : "";
+      return s + "€" + Math.abs(v).toFixed(2);
+    }
+    function teinte(el, v, pos) {
+      el.classList.toggle("neg", v < 0);
+      el.classList.toggle("zero", v === 0);
+      if (pos) el.classList.toggle("pos", v > 0);
+    }
+
+    /* ---------- La barre de navigation se vitre au défilement ---------- */
+    var nav = document.getElementById("nav");
+    function onScroll() { nav.classList.toggle("scrolled", window.scrollY > 8); }
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+
+    /* ---------- La date de la session : ce soir ---------- */
+    var dateSess = document.getElementById("dateSession");
+    if (dateSess) {
+      dateSess.textContent = new Date().toLocaleDateString("en-GB", { day: "2-digit", month: "2-digit", year: "numeric" });
+    }
+
+    /* ---------- Arrivées au défilement ---------- */
+    var rvs = document.querySelectorAll(".rv");
+    if (!still && "IntersectionObserver" in window) {
+      rvs.forEach(function (el) { el.classList.add("rv-wait"); });
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (!e.isIntersecting) return;
+          e.target.classList.add("rv-in");
+          e.target.classList.remove("rv-wait");
+          io.unobserve(e.target);
+        });
+      }, { threshold: 0.12, rootMargin: "0px 0px -6% 0px" });
+      rvs.forEach(function (el) { io.observe(el); });
+    }
+
+    /* ---------- Les bordures qui suivent le curseur ---------- */
+    document.querySelectorAll(".panel").forEach(function (p) {
+      p.addEventListener("pointermove", function (e) {
+        var r = p.getBoundingClientRect();
+        p.style.setProperty("--mx", (e.clientX - r.left) + "px");
+        p.style.setProperty("--my", (e.clientY - r.top) + "px");
+      });
+    });
+
+    /* ---------- Le manifeste s'allume mot à mot ---------- */
+    var man = document.getElementById("manifeste");
+    if (man) {
+      var morceaux = [];
+      man.childNodes.forEach(function (n) {
+        var em = n.nodeType === 1;
+        n.textContent.split(/(\s+)/).forEach(function (part) {
+          if (part) morceaux.push({ t: part, em: em });
+        });
+      });
+      man.textContent = "";
+      morceaux.forEach(function (m) {
+        if (/^\s+$/.test(m.t)) { man.appendChild(document.createTextNode(m.t)); return; }
+        var s = document.createElement("span");
+        s.className = "w" + (m.em ? " em" : "");
+        s.textContent = m.t;
+        man.appendChild(s);
+      });
+      var mots = man.querySelectorAll(".w");
+      var allumer = function () {
+        var r = man.getBoundingClientRect();
+        var h = window.innerHeight;
+        // De l'entrée du bloc à 85 % de l'écran jusqu'à son milieu : tout s'allume.
+        var p = Math.min(1, Math.max(0, (h * 0.85 - r.top) / (h * 0.5 + r.height * 0.5)));
+        var n = Math.round(p * mots.length);
+        mots.forEach(function (m, i) { m.classList.toggle("lit", i < n); });
+      };
+      if (still) {
+        mots.forEach(function (m) { m.classList.add("lit"); });
+      } else {
+        window.addEventListener("scroll", allumer, { passive: true });
+        window.addEventListener("resize", allumer);
+        allumer();
+      }
+    }
+
+    /* ---------- La démo : la fiche d'une session (3.21) ---------- */
+    // Les montants s'écrivent comme dans l'app : « +3 € », « -1 € » (trait
+    // d'union, pas de signe moins), « 16 € » sans centimes quand ils sont
+    // ronds, espace insécable avant l'euro.
+    var NB = " ";
+    function arrondi(v) { return Math.round(v * 100) / 100; }
+    function centimes(v) { return Math.abs(v).toFixed(2); }
+    // formatShortEuros : « 16 € », « 2,50 € ».
+    function fmtS(v) {
+      var r = arrondi(v);
+      return "€" + (Number.isInteger(r) ? String(r) : centimes(r));
+    }
+    // signeCourt : « +3 € », « -1 € ».
+    function fmtSS(v) {
+      var r = arrondi(v);
+      return (r >= 0 ? "+" : "-") + "€" + (Number.isInteger(r) ? String(Math.abs(r)) : centimes(r));
+    }
+    // formatSignedEuros : « +3,00 € », « -1,00 € » — le net de la tablée et
+    // les lignes d'une liste, où les montants s'alignent en colonne.
+    function fmtSD(v) {
+      var r = arrondi(v);
+      return (r >= 0 ? "+" : "-") + "€" + centimes(r);
+    }
+    // En anglais, seul 1 est au singulier (0 players, 1 player, 3 players).
+    function pluriel(n, un, plusieurs) { return n + " " + (n === 1 ? un : (plusieurs || un + "s")); }
+
+    // Les visages : la teinte se déduit du nom, comme dans l'app (Avatar.tsx,
+    // palette sombre), de sorte qu'une même personne garde la même couleur
+    // d'un écran à l'autre.
+    var TEINTES = [["#173A27", "#8FE0B1"], ["#3F3414", "#F2C14E"], ["#1B2E4F", "#9FC0F7"], ["#45201F", "#FF9C9F"], ["#33264F", "#C6AEF0"]];
+    function avatar(nom) {
+      var h = 0;
+      for (var i = 0; i < nom.length; i++) h = (h * 31 + nom.charCodeAt(i)) | 0;
+      var t = TEINTES[Math.abs(h) % TEINTES.length];
+      var s = el("span", "ini", nom.charAt(0).toUpperCase());
+      s.style.background = t[0];
+      s.style.color = t[1];
+      return s;
+    }
+
+    // La date comme l'app l'écrit : « 25/10/2026 ».
+    var sdDate = document.getElementById("sdDate");
+    if (sdDate) sdDate.textContent = new Date().toLocaleDateString("en-GB");
+
+    // Une démo honnête : plus de tickets perdus que gagnés, la tablée finit
+    // plus bas qu'elle n'a commencé, et chaque gain est un vrai lot du ticket
+    // (Astro 2 € : 2, 4, 6 € ; Banco 1 € : 1, 2, 5, 10 € ; Cash 5 € : 5, 10 €).
+    // Dans l'ordre d'arrivée, le plus ancien d'abord : [joueur, ticket, mise, gain].
+    var NOMS = { lea: "Léa", momo: "Momo", sam: "Sam" };
+    var ORDRE = ["lea", "momo", "sam"];
+    var depart = [
+      ["lea", "Banco", 1, 2], ["momo", "Banco", 1, 5], ["sam", "Banco", 1, 2],
+      ["lea", "Astro", 2, 0], ["momo", "Cash", 5, 0], ["sam", "Banco", 1, 0],
+      ["lea", "Astro", 2, 6], ["momo", "Banco", 1, 0], ["sam", "Cash", 5, 0]
+    ];
+    // Chaque ajout change quelque chose à lire : Sam passe devant Momo, puis
+    // Momo repasse devant Sam, et le dernier ticket de Léa fait monter Momo en tête.
+    var suite = [
+      ["lea", "Banco", 1, 0],
+      ["sam", "Banco", 1, 5],
+      ["sam", "Cash", 5, 0],
+      ["momo", "Banco", 1, 2],
+      ["lea", "Cash", 5, 0]
+    ];
+    var plays, pas, heureDernier, ticketsDeplies;
+    var ranking = document.getElementById("ranking");
+    var scroller = document.getElementById("sdScroll");
+    var paneJeu = document.getElementById("paneJeu");
+    var paneStats = document.getElementById("paneStats");
+    var tabJeu = document.getElementById("tabJeu");
+    var tabStats = document.getElementById("tabStats");
+    var tableNet = document.getElementById("tableNet");
+    var tableeEl = document.getElementById("tablee");
+    var tableList = document.getElementById("tableList");
+    var tableToggle = document.getElementById("tableToggle");
+    var derniersEl = document.getElementById("derniers");
+    var voirBtn = document.getElementById("voir");
+    var addBtn = document.getElementById("add");
+    var resetBtn = document.getElementById("reset");
+    var hint = document.getElementById("hint");
+    var annonce = document.getElementById("annonceDemo");
+    var onglet = "jeu";
+
+    function net(id) {
+      return plays.reduce(function (s, p) { return p.id === id ? s + p.w - p.c : s; }, 0);
+    }
+    function parties(id) { return plays.filter(function (p) { return p.id === id; }); }
+    function gagnantsDe(liste) { return liste.filter(function (p) { return p.w > 0; }).length; }
+    // Le décompte sous un nom : « 3 tickets · 2 gagnants », au constat.
+    function decompte(liste) {
+      var g = gagnantsDe(liste);
+      return pluriel(liste.length, "ticket") + " · " + (g === 0 ? "no winners" : pluriel(g, "winner"));
+    }
+    function signe(el, v) { el.classList.toggle("neg", v < 0); }
+
+    function compter(el, de, a, fmt) {
+      if (still || de === a) { el.textContent = fmt(a); return; }
+      var t0 = performance.now(), d = 700;
+      function f(t) {
+        var k = Math.min(1, (t - t0) / d);
+        k = 1 - Math.pow(1 - k, 4);
+        el.textContent = fmt(Math.round(de + (a - de) * k));
+        if (k < 1) requestAnimationFrame(f); else el.textContent = fmt(a);
+      }
+      requestAnimationFrame(f);
+    }
+    // Un montant qui compte de sa valeur précédente à la nouvelle.
+    function compterVers(el, a, fmt, anime) {
+      var de = el.dataset.v === undefined || el.dataset.v === "" ? a : parseFloat(el.dataset.v);
+      el.dataset.v = a;
+      compter(el, anime ? de : a, a, fmt);
+    }
+
+    // Les deux onglets de la fiche : Jeu pour ce qu'on fait pendant la
+    // soirée, Stats pour ce que ça donne.
+    function montrer(nom, focus) {
+      onglet = nom;
+      [["jeu", tabJeu, paneJeu], ["stats", tabStats, paneStats]].forEach(function (o) {
+        var actif = o[0] === nom;
+        o[1].setAttribute("aria-selected", actif ? "true" : "false");
+        o[1].tabIndex = actif ? 0 : -1;
+        o[2].hidden = !actif;
+      });
+      scroller.scrollTop = 0;
+      if (focus) (nom === "jeu" ? tabJeu : tabStats).focus();
+    }
+    tabJeu.addEventListener("click", function () { montrer("jeu"); });
+    tabStats.addEventListener("click", function () { montrer("stats"); });
+    document.getElementById("onglets").addEventListener("keydown", function (e) {
+      if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
+      e.preventDefault();
+      montrer(onglet === "jeu" ? "stats" : "jeu", true);
+    });
+
+    // La tablée : une case par joueur, dans l'ordre d'arrivée (jamais celui
+    // du classement, pour que rien ne glisse sous le doigt).
+    function majTablee() {
+      tableeEl.textContent = "";
+      ORDRE.forEach(function (id) {
+        var n = net(id);
+        var c = el("div", "conv");
+        var av = el("span", "av");
+        av.appendChild(avatar(NOMS[id]));
+        var plus = el("span", "plus");
+        plus.setAttribute("aria-hidden", "true");
+        plus.appendChild(ico("i-plus"));
+        av.appendChild(plus);
+        c.appendChild(av);
+        c.appendChild(el("span", "cn", NOMS[id]));
+        c.appendChild(el("span", "cv" + (n < 0 ? " neg" : ""), fmtSS(n)));
+        tableeEl.appendChild(c);
+      });
+      var nv = el("div", "nouveau");
+      nv.setAttribute("aria-hidden", "true");
+      var rond = el("span", "rond");
+      rond.appendChild(ico("i-plus"));
+      nv.appendChild(rond);
+      nv.appendChild(el("span", null, "Add"));
+      tableeEl.appendChild(nv);
+      document.getElementById("nbJoueurs").textContent = pluriel(ORDRE.length, "player");
+    }
+    function majListeTable() {
+      tableList.textContent = "";
+      ORDRE.forEach(function (id) {
+        var r = el("div", "row");
+        r.appendChild(avatar(NOMS[id]));
+        var nm = el("div", "nm");
+        nm.appendChild(el("b", null, NOMS[id]));
+        r.appendChild(nm);
+        tableList.appendChild(r);
+      });
+    }
+    tableToggle.addEventListener("click", function () {
+      var ouvert = tableToggle.getAttribute("aria-expanded") !== "true";
+      tableToggle.setAttribute("aria-expanded", ouvert ? "true" : "false");
+      tableList.hidden = !ouvert;
+    });
+
+    // Les derniers tickets, le plus récent en haut : c'est presque toujours
+    // lui qu'on vient vérifier. Le reste se déplie dans la même carte.
+    function majDerniers(neuf) {
+      var tous = plays.slice().reverse();
+      var vus = ticketsDeplies ? tous : tous.slice(0, 3);
+      derniersEl.textContent = "";
+      vus.forEach(function (p, i) {
+        var n = p.w - p.c;
+        var r = el("div", "row play" + (neuf && i === 0 ? " fresh" : ""));
+        var th = el("span", "th");
+        th.setAttribute("aria-hidden", "true");
+        th.appendChild(ico("i-ticket"));
+        r.appendChild(th);
+        var nm = el("div", "nm");
+        nm.appendChild(el("b", null, p.t));
+        nm.appendChild(el("span", null, NOMS[p.id]));
+        r.appendChild(nm);
+        r.appendChild(el("span", "net" + (n < 0 ? " neg" : ""), fmtSD(n)));
+        var act = el("span", "act");
+        act.setAttribute("aria-hidden", "true");
+        act.appendChild(ico("i-pencil"));
+        var sup = ico("i-trash");
+        sup.classList.add("del");
+        act.appendChild(sup);
+        r.appendChild(act);
+        derniersEl.appendChild(r);
+      });
+      document.getElementById("ttDerniers").textContent = ticketsDeplies ? "All tickets" : "Latest tickets";
+      document.getElementById("auTotal").textContent = tous.length + " in total";
+      voirBtn.hidden = tous.length <= 3;
+      voirBtn.setAttribute("aria-expanded", ticketsDeplies ? "true" : "false");
+      document.getElementById("voirTxt").textContent = ticketsDeplies ? "Show less" : "See all " + tous.length + " tickets";
+      document.getElementById("dernierTicket").textContent = "Last ticket at " + heureDernier;
+    }
+    voirBtn.addEventListener("click", function () {
+      ticketsDeplies = !ticketsDeplies;
+      majDerniers(false);
+    });
+
+    // Un joueur du classement : sa ligne, et ses tickets dessous, repliés.
+    // Déplié, on y lit chaque mise et chaque gain : le net de la ligne en
+    // est la somme, et le net de la tablée la somme des lignes.
+    function ligne(id) {
+      var r = el("div", "pl");
+      r.dataset.id = id;
+      r.innerHTML = '<div class="row" role="button" tabindex="0" aria-expanded="false"><span class="rk"></span><span class="visage"></span><span class="rkt"><span class="rl"><b></b><span class="net"></span></span><span class="np"><span class="nl"><i class="nb p"></i></span><i class="ax"></i><span class="nr"><i class="nb g"></i></span></span><small class="dc"></small></span><svg class="i chev" aria-hidden="true"><use href="#i-chev-r"/></svg></div><div class="tks"><div></div></div>';
+      r.querySelector(".visage").appendChild(avatar(NOMS[id]));
+      r.querySelector(".rl b").textContent = NOMS[id];
+      return r;
+    }
+
+    // Les ex æquo partagent la même place (1, 1, 3), comme dans l'app.
+    function rangs() {
+      var nets = ORDRE.map(net);
+      var res = {};
+      ORDRE.forEach(function (id, i) {
+        res[id] = 1 + nets.filter(function (n) { return n > nets[i]; }).length;
+      });
+      return res;
+    }
+    // Racine carrée plutôt que proportion directe : un gros gain ne réduit
+    // pas toutes les autres barres à un trait.
+    function largeurNet(n, ecart) {
+      return ecart === 0 ? 0 : Math.max(4, Math.sqrt(Math.abs(n) / ecart) * 100);
+    }
+
+    function remplir(r, anime, neuf) {
+      var id = r.dataset.id;
+      var liste = parties(id);
+      var n = net(id);
+      var ecart = Math.max.apply(null, ORDRE.map(function (i) { return Math.abs(net(i)); }));
+      r.querySelector(".rk").textContent = rangs()[id];
+      var el2 = r.querySelector(".net");
+      signe(el2, n);
+      compterVers(el2, n, fmtSS, anime);
+      r.querySelector(".np").hidden = ecart === 0;
+      r.querySelector(".nl .nb").style.width = n < 0 ? largeurNet(n, ecart) + "%" : "0%";
+      r.querySelector(".nr .nb").style.width = n > 0 ? largeurNet(n, ecart) + "%" : "0%";
+      r.querySelector(".dc").textContent = decompte(liste);
+      var box = r.querySelector(".tks > div");
+      box.textContent = "";
+      liste.slice().reverse().forEach(function (p, i) {
+        var d = document.createElement("div");
+        d.className = "tk" + (neuf && i === 0 ? " fresh" : "");
+        var s = document.createElement("span");
+        var em = document.createElement("em");
+        em.textContent = p.t;
+        s.appendChild(em);
+        s.appendChild(document.createTextNode(" · stake " + fmtS(p.c) + " · " + (p.w === 0 ? "lost" : "won " + fmtS(p.w))));
+        var b = document.createElement("b");
+        var v = p.w - p.c;
+        b.textContent = fmtSS(v);
+        if (v < 0) b.className = "neg";
+        d.appendChild(s);
+        d.appendChild(b);
+        box.appendChild(d);
+      });
+    }
+
+    function deplier(r) {
+      var ouvert = !r.classList.contains("deplie");
+      r.classList.toggle("deplie", ouvert);
+      r.querySelector(".row").setAttribute("aria-expanded", ouvert ? "true" : "false");
+      if (!ouvert) return;
+      // Une fois déplié, on fait défiler l'écran du téléphone juste assez
+      // pour que le dernier ticket ne reste pas sous le bord du bas.
+      setTimeout(function () {
+        var a = r.getBoundingClientRect(), c = scroller.getBoundingClientRect();
+        var k = c.height / scroller.offsetHeight || 1;
+        var bas = (a.bottom - c.bottom) / k;
+        if (bas > 0) scroller.scrollBy({ top: bas + 12, behavior: still ? "auto" : "smooth" });
+      }, still ? 0 : 520);
+    }
+    ranking.addEventListener("click", function (e) {
+      var row = e.target.closest(".row");
+      if (row) deplier(row.parentNode);
+    });
+    ranking.addEventListener("keydown", function (e) {
+      if (e.key !== "Enter" && e.key !== " ") return;
+      var row = e.target.closest(".row");
+      if (!row) return;
+      e.preventDefault();
+      deplier(row.parentNode);
+    });
+
+    // La bulle qui dit ce qui vient d'être noté : le total bouge, elle dit
+    // de combien et pourquoi.
+    var toast = document.getElementById("toast");
+    var toastT = document.getElementById("toastT");
+    var toastS = document.getElementById("toastS");
+    var toastA = document.getElementById("toastA");
+    var toastMinuteur;
+    function signaler(e) {
+      var v = e[3] - e[2];
+      toastT.textContent = "Ticket logged for " + NOMS[e[0]];
+      toastS.textContent = e[1] + " · stake " + fmtS(e[2]) + " · " + (e[3] === 0 ? "lost" : "won " + fmtS(e[3]));
+      toastA.textContent = fmtSS(v);
+      toastA.className = "amt" + (v > 0 ? " pos" : v < 0 ? " neg" : "");
+      toast.classList.add("on");
+      clearTimeout(toastMinuteur);
+      toastMinuteur = setTimeout(function () { toast.classList.remove("on"); }, 3200);
+    }
+
+    // Misé et gagné à la même échelle : la plus longue des deux barres
+    // occupe toute la largeur.
+    function majStats() {
+      var mise = 0, gagne = 0;
+      plays.forEach(function (p) { mise += p.c; gagne += p.w; });
+      var g = gagnantsDe(plays);
+      document.getElementById("vMise").textContent = fmtS(mise);
+      var vg = document.getElementById("vGagne");
+      vg.textContent = fmtS(gagne);
+      vg.classList.toggle("gain", gagne > 0);
+      document.getElementById("vTickets").textContent = plays.length;
+      document.getElementById("vGagnants").textContent = g;
+      document.getElementById("vSur").textContent = " / " + plays.length;
+      var gros = Math.max(mise, gagne);
+      document.getElementById("bMise").style.width = (gros ? mise / gros * 100 : 0) + "%";
+      document.getElementById("bGagne").style.width = (gros ? gagne / gros * 100 : 0) + "%";
+      document.getElementById("tMise").textContent = fmtS(mise);
+      document.getElementById("tGagne").textContent = fmtS(gagne);
+
+      // Le plus beau gain de la soirée : un fait, pas un titre.
+      var best = null;
+      plays.forEach(function (p) { if (p.w > 0 && (!best || p.w > best.w)) best = p; });
+      var bestEl = document.getElementById("best");
+      bestEl.hidden = !best;
+      if (best) {
+        document.getElementById("bestWho").textContent = NOMS[best.id] + " · " + best.t;
+        document.getElementById("bestAmt").textContent = fmtS(best.w);
+      }
+
+      // Chaque ticket de la soirée : combien de fois joué, combien ont gagné,
+      // et son net pour la tablée. Le plus joué d'abord.
+      var par = {};
+      plays.forEach(function (p) {
+        var l = par[p.t] || (par[p.t] = { t: p.t, joues: 0, gagnants: 0, net: 0 });
+        l.joues += 1;
+        l.gagnants += p.w > 0 ? 1 : 0;
+        l.net += p.w - p.c;
+      });
+      var lignes = Object.keys(par).map(function (k) { return par[k]; })
+        .sort(function (a, b) { return b.joues - a.joues || b.net - a.net; });
+      var box = document.getElementById("parTicket");
+      box.textContent = "";
+      lignes.forEach(function (l) {
+        var r = el("div", "row");
+        var th = el("span", "th");
+        th.setAttribute("aria-hidden", "true");
+        th.appendChild(ico("i-ticket"));
+        r.appendChild(th);
+        var nm = el("div", "nm");
+        nm.appendChild(el("b", null, l.t));
+        nm.appendChild(el("span", null, pluriel(l.joues, "played", "played") + " · " + (l.gagnants === 0 ? "no winners" : pluriel(l.gagnants, "winner"))));
+        r.appendChild(nm);
+        r.appendChild(el("span", "net" + (l.net < 0 ? " neg" : ""), fmtSS(l.net)));
+        box.appendChild(r);
+      });
+    }
+
+    function majTable(anime) {
+      var total = plays.reduce(function (s, p) { return s + p.w - p.c; }, 0);
+      signe(tableNet, total);
+      compterVers(tableNet, total, fmtSD, anime);
+    }
+
+    // Le classement se réordonne en glissant, quand l'onglet Stats est à
+    // l'écran ; sinon il se pose d'un coup.
+    function classer(anime) {
+      var visible = !paneStats.hidden;
+      var avant = {};
+      Array.prototype.forEach.call(ranking.children, function (r) { avant[r.dataset.id] = r.getBoundingClientRect().top; });
+      var ordre = ORDRE.slice().sort(function (a, b) { return net(b) - net(a); });
+      ordre.forEach(function (id) { ranking.appendChild(ranking.querySelector('[data-id="' + id + '"]')); });
+      if (!anime || still || !visible) return ordre;
+      ordre.forEach(function (id) {
+        var r = ranking.querySelector('[data-id="' + id + '"]');
+        var s = r.getBoundingClientRect().height / r.offsetHeight || 1;
+        var dy = (avant[id] - r.getBoundingClientRect().top) / s;
+        if (!dy) return;
+        r.style.transition = "none";
+        r.style.transform = "translateY(" + dy + "px)";
+        r.style.zIndex = dy > 0 ? 2 : 1;
+        requestAnimationFrame(function () {
+          requestAnimationFrame(function () {
+            r.style.transition = "transform .7s cubic-bezier(.16, 1, .3, 1)";
+            r.style.transform = "";
+          });
+        });
+        setTimeout(function () { r.style.zIndex = ""; }, 750);
+      });
+      return ordre;
+    }
+
+    function majTout(anime, neuf) {
+      majTable(anime);
+      majTablee();
+      majListeTable();
+      majDerniers(neuf);
+      majStats();
+      Array.prototype.forEach.call(ranking.children, function (r) { remplir(r, anime, neuf); });
+      return classer(anime);
+    }
+
+    function initialiser() {
+      plays = depart.map(function (p) { return { id: p[0], t: p[1], c: p[2], w: p[3] }; });
+      pas = 0;
+      heureDernier = "21:08";
+      ticketsDeplies = false;
+      ranking.textContent = "";
+      ORDRE.forEach(function (id) { ranking.appendChild(ligne(id)); });
+      tableNet.dataset.v = "";
+      Array.prototype.forEach.call(ranking.children, function (r) { r.dataset.v = ""; });
+      tableToggle.setAttribute("aria-expanded", "false");
+      tableList.hidden = true;
+      montrer("jeu");
+      majTout(false, false);
+    }
+
+    function ajouter() {
+      if (pas >= suite.length) return;
+      var e = suite[pas++];
+      plays.push({ id: e[0], t: e[1], c: e[2], w: e[3] });
+      heureDernier = "21:12";
+      var ordre = majTout(true, true);
+      signaler(e);
+      // Le ticket est gratté au Balto : sa bulle sur la carte le compte.
+      baltoSession++;
+      majBalto(true);
+      addBtn.classList.remove("ping");
+      hint.classList.remove("on");
+      annonce.textContent = NOMS[e[0]] + ": " + e[1] + ", " + (e[3] === 0 ? "lost" : "won " + fmtS(e[3])) + ". In the lead: " + NOMS[ordre[0]] + ", " + fmtSS(net(ordre[0])) + ".";
+      if (pas >= suite.length) resetBtn.hidden = false;
+    }
+
+    initialiser();
+    addBtn.addEventListener("click", ajouter);
+    resetBtn.addEventListener("click", function () {
+      initialiser();
+      baltoSession = 0;
+      majBalto(false);
+      toast.classList.remove("on");
+      resetBtn.hidden = true;
+      annonce.textContent = "Demo reset.";
+    });
+
+    // Une seule fois, quand la scène est bien visible : un ticket s'ajoute
+    // tout seul pour montrer le geste, puis la main passe au visiteur.
+    var scene = document.getElementById("scene");
+    if (params.has("hint")) { hint.classList.add("on"); addBtn.classList.add("ping"); }
+    if (!still && "IntersectionObserver" in window) {
+      var vu = false;
+      var io2 = new IntersectionObserver(function (e) {
+        if (!e[0].isIntersecting || vu) return;
+        vu = true;
+        io2.disconnect();
+        setTimeout(function () {
+          if (pas === 0) ajouter();
+          setTimeout(function () { if (pas > 0 && pas < suite.length) { addBtn.classList.add("ping"); hint.classList.add("on"); } }, 1400);
+        }, 1600);
+      }, { threshold: 0.35 });
+      io2.observe(scene);
+    }
+
+    /* ---------- Les cartes : chaque bar a sa fiche ---------- */
+    // Ce que montre la fiche d'un bar dans l'app (PmuPlaceSheet), réduit à
+    // une feuille qui monte du bas. Bars, notes et chiffres fictifs, mais
+    // cohérents entre eux : la bulle d'un bar compte ses tickets sur 30
+    // jours, donc il n'a pas plus de joueurs ni de parties sur 7 jours. Les
+    // records sont de vrais lots des tickets nommés.
+    // chaleur : [niveau, mention de la légende] — la fiche ne dit plus rien
+    // de l'activité en cours, seule la carte la montre (halo) ;
+    // record : [montant, joueur, ticket, photo de preuve] ; surPlace : tickets à gratter,
+    // courses en direct, Amigo, terrasse (o oui, n non, ? inconnu) ;
+    // freq : parties depuis toujours, joueurs sur 30 jours, parties sur 7.
+    var BARS = {
+      balto: { nom: "Le Balto", note: "4.3", avis: 212, type: "PMU bar", dist: "350 m", adresse: "8 place du Marché",
+        statut: "pmu", chaleur: ["live", "scratching now"],
+        heures: ["open", "Open · closes at 23:00"], surPlace: "ooo?", freq: [86, 9, 7],
+        record: ["€100", "Momo", "Cash", true], amis: ["Léa", "Momo", "Sam"] },
+      narval: { nom: "Le Narval", note: "4.1", avis: 86, type: "PMU bar", dist: "1.2 km", adresse: "21 rue Gambetta",
+        statut: "pmu", heures: ["open", "Open · closes at 20:00"], surPlace: "on?o", freq: [23, 4, 2],
+        record: ["€20", "Nadia", "Astro"], moi: "€4", amis: ["Nadia"] },
+      longchamp: { nom: "Le Longchamp", note: "4.4", avis: 51, type: "PMU bar", dist: "800 m", adresse: "2 avenue de la Gare",
+        statut: "pmu", heures: ["closed", "Closed · opens tomorrow at 07:00"], surPlace: "oonn", freq: [64, 2, 1],
+        record: ["€50", "Karim", "Cash"], amis: [] },
+      boncoin: { nom: "Le Bon Coin", note: "3.9", avis: 34, type: "PMU bar", dist: "1 km", adresse: "47 rue de la République",
+        statut: "pmu", heures: ["open", "Open · closes at 21:00"], surPlace: "o???", freq: null, amis: [] },
+      diplomate: { nom: "Le Diplomate", note: "4.0", avis: 128, type: "PMU outlet", dist: "1.5 km", adresse: "3 boulevard Carnot",
+        statut: "pmu", heures: ["open", "Open · closes at 19:30"], surPlace: "ooon", freq: [12, 3, 1],
+        record: ["€10", "Sam", "Banco"], amis: ["Sam"] },
+      sporting: { nom: "Le Sporting", note: "4.5", avis: 97, type: "PMU bar", dist: "1.4 km", adresse: "15 quai des Tanneurs",
+        statut: "joue", chaleur: ["recent", "scratched today"],
+        heures: ["open", "Open · closes at midnight"], surPlace: "oo?o", freq: [31, 3, 4],
+        record: ["€20", "you", "Astro"], amis: ["Sam"] },
+      sports: { nom: "Bar des Sports", note: "4.2", avis: 18, type: "PMU bar", dist: "600 m", adresse: "30 rue Victor-Hugo",
+        statut: "verif", heures: ["unknown", "Hours not listed"], surPlace: "????", freq: null, amis: [] },
+      weekend: { nom: "Le Week-End", note: "3.8", avis: 41, type: "PMU bar", dist: "900 m", adresse: "5 rue des Halles",
+        statut: "verif", heures: ["open", "Open · closes at 02:00"], surPlace: "????", freq: null, amis: [] },
+      escale: { nom: "L’Escale", note: "4.6", avis: 23, type: "PMU bar", dist: "1.3 km", adresse: "62 avenue Jean-Jaurès",
+        statut: "verif", heures: ["closed", "Closed · opens at 16:00"], surPlace: "????", freq: null, amis: [] }
+    };
+    var SUR_PLACE = ["Scratch cards", "Live horse racing", "Amigo", "Terrace"];
+
+    // Le Balto compte, sur les deux cartes, les tickets de la session du
+    // héros et ceux qui s'y ajoutent pendant qu'on regarde.
+    var baltoSession = 0, baltoDirect = 0;
+    function majBalto(anime) {
+      var n = 12 + baltoSession + baltoDirect;
+      document.querySelectorAll(".count-balto").forEach(function (t) {
+        t.textContent = n;
+        if (anime && !still) rejouer(t.parentNode, "bump");
+      });
+      if (anime && !still) document.querySelectorAll('.pin[data-bar="balto"] .dot').forEach(function (d) { onde(d, "#F2541B"); });
+      if (ficheId === "balto") remplirFiche("balto");
+      majMini();
+    }
+    function rejouer(el, cls) {
+      el.classList.remove(cls);
+      void el.getBoundingClientRect();
+      el.classList.add(cls);
+    }
+    function onde(dot, couleur) {
+      var c = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+      c.setAttribute("class", "ripple");
+      c.setAttribute("cx", dot.getAttribute("cx"));
+      c.setAttribute("cy", dot.getAttribute("cy"));
+      c.setAttribute("r", dot.getAttribute("r"));
+      c.setAttribute("stroke", couleur);
+      dot.parentNode.insertBefore(c, dot);
+      setTimeout(function () { c.remove(); }, 1500);
+    }
+
+    function el(tag, cls, txt) {
+      var e = document.createElement(tag);
+      if (cls) e.className = cls;
+      if (txt != null) e.textContent = txt;
+      return e;
+    }
+    function ico(id) {
+      var s = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+      s.setAttribute("class", "i");
+      s.setAttribute("aria-hidden", "true");
+      var u = document.createElementNS("http://www.w3.org/2000/svg", "use");
+      u.setAttribute("href", "#" + id);
+      s.appendChild(u);
+      return s;
+    }
+    function freqDe(id) {
+      var b = BARS[id];
+      if (!b.freq) return null;
+      if (id !== "balto") return b.freq;
+      return [b.freq[0] + baltoSession + baltoDirect, b.freq[1], b.freq[2] + baltoSession + baltoDirect];
+    }
+    // La ligne qui résume un bar, pour les lecteurs d'écran et l'extrait.
+    function resume(id) {
+      var b = BARS[id];
+      if (b.statut === "verif") return "Unverified PMU · " + b.heures[1];
+      if (b.chaleur) return b.chaleur[1];
+      return b.heures[1];
+    }
+
+    var carte = document.getElementById("carte");
+    var world = document.getElementById("world");
+    var fiche = document.getElementById("fiche");
+    var ficheCorps = document.getElementById("ficheCorps");
+    var carteAnnonce = document.getElementById("carteAnnonce");
+    var ficheId = null;
+
+    function remplirFiche(id) {
+      var b = BARS[id];
+      var f = document.createDocumentFragment();
+      f.appendChild(el("div", "grab"));
+      var head = el("div", "bs-head");
+      head.appendChild(el("h4", "bs-name", b.nom));
+      var x = el("button", "bs-close");
+      x.type = "button";
+      x.setAttribute("aria-label", "Close the bar page");
+      x.appendChild(ico("i-x"));
+      x.addEventListener("click", function () { fermer(true); });
+      head.appendChild(x);
+      f.appendChild(head);
+
+      var meta = el("p", "bs-meta");
+      meta.appendChild(el("span", "st", "★ "));
+      meta.appendChild(el("span", "rt", b.note));
+      meta.appendChild(document.createTextNode(" (" + b.avis + (b.avis === 1 ? " Google review" : " Google reviews") + ") · " + b.type + " · " + b.dist + " away"));
+      f.appendChild(meta);
+      f.appendChild(el("p", "bs-addr", b.adresse));
+
+      if (b.statut === "verif") {
+        var no = el("div", "bs-notice");
+        no.appendChild(document.createTextNode("Unconfirmed PMU — this place comes from a rough search, and nobody has checked yet that you can really play here."));
+        var ok = el("button", null, "I’ve been, it’s a real PMU");
+        ok.type = "button";
+        ok.addEventListener("click", function () { confirmer(id, no); });
+        no.appendChild(ok);
+        f.appendChild(no);
+      } else if (b.confirme) {
+        f.appendChild(el("div", "bs-notice ok", "Thanks, noted: the place is confirmed, and its pin turns PMU red."));
+      }
+
+      var hr = el("div", "bs-card");
+      var hd = el("span", "bs-dot");
+      hd.style.background = { open: "#4CCB84", closed: "#FF7377", unknown: "#A6AEA8" }[b.heures[0]];
+      hr.appendChild(hd);
+      hr.appendChild(el("b", null, b.heures[1]));
+      f.appendChild(hr);
+
+      var q = el("div", "bs-quick");
+      q.setAttribute("aria-hidden", "true");
+      [["i-arrow-r", "Directions"], ["i-share", "Share"], ["i-star", "Favourite"]].forEach(function (a) {
+        var s = el("span");
+        s.appendChild(ico(a[0]));
+        s.appendChild(document.createTextNode(a[1]));
+        q.appendChild(s);
+      });
+      f.appendChild(q);
+
+      f.appendChild(el("h5", "bs-h", "On site"));
+      var ch = el("div", "bs-chips");
+      var inconnus = 0;
+      b.surPlace.split("").forEach(function (v, i) {
+        if (v === "?") inconnus++;
+        ch.appendChild(el("span", v === "o" ? "yes" : v === "n" ? "no" : "unk", (v === "o" ? "✓ " : v === "n" ? "✕ " : "? ") + SUR_PLACE[i]));
+      });
+      f.appendChild(ch);
+      if (inconnus) f.appendChild(el("p", "bs-more", inconnus > 1 ? inconnus + " details are missing — fill in the page" : "One detail is missing — fill in the page"));
+
+      f.appendChild(el("h5", "bs-h", "Activity"));
+      var fr = freqDe(id);
+      if (!fr) {
+        f.appendChild(el("p", "bs-empty", "No plays logged here yet."));
+      } else {
+        var st = el("div", "bs-stats");
+        [[fr[0], "Play", "Plays", "all time", ""], [fr[1], "Player", "Players", "last 30 days", "gold"], [fr[2], "Play", "Plays", "last 7 days", ""]].forEach(function (t) {
+          var c = el("div");
+          c.appendChild(el("b", t[4], String(t[0])));
+          c.appendChild(el("span", null, t[0] === 1 ? t[1] : t[2]));
+          c.appendChild(el("small", null, t[3]));
+          st.appendChild(c);
+        });
+        f.appendChild(st);
+      }
+
+      if (b.record) {
+        f.appendChild(el("h5", "bs-h", "Wins here"));
+        var rc = el("div", "bs-rec");
+        var l1 = el("div");
+        var t1 = el("div");
+        t1.appendChild(el("b", null, b.record[0]));
+        t1.appendChild(el("span", null, "Bar’s best win — " + b.record[1] + (b.record[2] ? " · " + b.record[2] : "")));
+        l1.appendChild(t1);
+        // Un gain de 100 € ou plus ne figure ici qu'avec la photo du ticket.
+        if (b.record[3]) l1.appendChild(el("span", "ok", "verified"));
+        rc.appendChild(l1);
+        if (b.moi) {
+          var l2 = el("div");
+          var t2 = el("div");
+          t2.appendChild(el("b", null, b.moi));
+          t2.appendChild(el("span", null, "Your best win here"));
+          l2.appendChild(t2);
+          rc.appendChild(l2);
+        }
+        f.appendChild(rc);
+      }
+
+      if (b.amis.length) {
+        var am = el("div", "bs-friends");
+        var avs = el("div", "avs2");
+        b.amis.slice(0, 3).forEach(function (n) { avs.appendChild(avatar(n)); });
+        am.appendChild(avs);
+        var at = el("div");
+        at.appendChild(el("b", null, b.amis.length > 1 ? b.amis.length + " friends played here" : "1 friend played here"));
+        at.appendChild(el("span", "who", b.amis.length > 2 ? b.amis.slice(0, 2).join(", ") + " and " + pluriel(b.amis.length - 2, "other") : b.amis.join(", ")));
+        am.appendChild(at);
+        f.appendChild(am);
+      }
+
+      ficheCorps.textContent = "";
+      ficheCorps.appendChild(f);
+    }
+
+    // Le point bleu « à vérifier » devient un PMU : c'est ce que fait le
+    // bouton dans l'app, et la seule écriture qu'on montre ici.
+    function confirmer(id, notice) {
+      var b = BARS[id];
+      b.statut = "pmu";
+      b.confirme = true;
+      document.querySelectorAll('.pin[data-bar="' + id + '"] .dot').forEach(function (d) {
+        d.setAttribute("fill", "#FF7377");
+        if (!still) onde(d, "#FF7377");
+      });
+      notice.classList.add("ok");
+      notice.textContent = "Thanks, noted: the place is confirmed, and its pin turns PMU red.";
+      etiqueter();
+      carteAnnonce.textContent = b.nom + " confirmed as a PMU.";
+    }
+
+    // La carte glisse et zoome un peu pour poser le bar choisi au milieu de
+    // ce qui reste visible au-dessus de la fiche. Le SVG est en « slice » :
+    // son échelle et son décalage se recalculent sur la taille du panneau.
+    function cadrer(id) {
+      if (!id) { world.style.transform = ""; return; }
+      var dot = carte.querySelector('.pin[data-bar="' + id + '"] .dot');
+      var x = +dot.getAttribute("cx"), y = +dot.getAttribute("cy");
+      var w = carte.clientWidth, h = carte.clientHeight;
+      var s = Math.max(w / 700, h / 460);
+      var ox = (w - 700 * s) / 2, oy = (h - 460 * s) / 2;
+      var cible;
+      if (carte.classList.contains("side")) {
+        cible = [(w - fiche.offsetWidth - 16) / 2, 64 + (h - 64) / 2];
+      } else {
+        var haut = 64, bas = h - fiche.offsetHeight - 8;
+        cible = [w / 2, haut + Math.max(36, (bas - haut) / 2)];
+      }
+      var dx = (cible[0] - (ox + x * s)) / s, dy = (cible[1] - (oy + y * s)) / s;
+      dx = Math.max(-260, Math.min(260, dx));
+      dy = Math.max(-260, Math.min(260, dy));
+      world.style.transformOrigin = x + "px " + y + "px";
+      world.style.transform = "translate(" + dx + "px, " + dy + "px) scale(1.15)";
+    }
+
+    function ouvrir(id) {
+      var deja = ficheId !== null;
+      ficheId = id;
+      carte.classList.add("has-sel", "touched");
+      carte.querySelectorAll(".pin").forEach(function (p) { p.classList.toggle("sel", p.dataset.bar === id); });
+      if (deja && !still) {
+        ficheCorps.classList.add("swap");
+        setTimeout(function () { remplirFiche(id); ficheCorps.scrollTop = 0; ficheCorps.classList.remove("swap"); cadrer(id); }, 180);
+      } else {
+        remplirFiche(id);
+        ficheCorps.scrollTop = 0;
+        fiche.classList.add("on");
+        cadrer(id);
+      }
+      carteAnnonce.textContent = "Bar page open: " + BARS[id].nom + ". " + resume(id) + ".";
+    }
+    function fermer(rendreFocus) {
+      if (ficheId === null) return;
+      var id = ficheId;
+      ficheId = null;
+      fiche.classList.remove("on");
+      carte.classList.remove("has-sel");
+      carte.querySelectorAll(".pin.sel").forEach(function (p) { p.classList.remove("sel"); });
+      cadrer(null);
+      if (rendreFocus) {
+        var p = carte.querySelector('.pin[data-bar="' + id + '"]');
+        if (p) p.focus({ preventScroll: true });
+      }
+    }
+
+    function etiqueter() {
+      document.querySelectorAll(".pin[data-bar]").forEach(function (p) {
+        var b = BARS[p.dataset.bar];
+        p.setAttribute("aria-label", b.nom + ", " + resume(p.dataset.bar));
+      });
+    }
+    etiqueter();
+
+    // La légende repliée du téléphone : le bouton l'ouvre, tout autre appui
+    // sur la carte la referme.
+    var legendeBtn = document.getElementById("legendeBtn");
+    legendeBtn.addEventListener("click", function () { carte.classList.toggle("leg-on"); });
+    carte.addEventListener("click", function (e) {
+      if (e.target.closest(".legend-btn")) return;
+      carte.classList.remove("leg-on");
+      var p = e.target.closest(".pin");
+      if (p) { ouvrir(p.dataset.bar); return; }
+      if (e.target.closest(".map-bg") || e.target.closest("#world")) fermer(false);
+    });
+    carte.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") { fermer(true); return; }
+      if (e.key !== "Enter" && e.key !== " ") return;
+      var p = e.target.closest(".pin");
+      if (!p) return;
+      e.preventDefault();
+      ouvrir(p.dataset.bar);
+    });
+    document.getElementById("viseur").addEventListener("click", function () { fermer(false); });
+    function disposer() { carte.classList.toggle("side", carte.clientWidth >= 560); }
+    disposer();
+    window.addEventListener("resize", function () { disposer(); if (ficheId) cadrer(ficheId); });
+
+    // Les deux gestes de la fiche mènent aux démos qui les montrent.
+    function mener(cible) {
+      cible.scrollIntoView({ behavior: still ? "auto" : "smooth", block: "center" });
+      if (!still) setTimeout(function () { rejouer(cible, "flash"); }, 500);
+    }
+    document.getElementById("ficheGratte").addEventListener("click", function () { mener(document.getElementById("gratte")); });
+    document.getElementById("ficheSession").addEventListener("click", function () { mener(document.getElementById("scene")); });
+
+    // L'arrivée : les points tombent sur la carte, puis, tant qu'elle est
+    // à l'écran, quelques tickets s'ajoutent au Balto, où la session joue.
+    if (!still && "IntersectionObserver" in window) {
+      carte.classList.add("armed");
+      var direct = null, coups = 0;
+      var io3 = new IntersectionObserver(function (e) {
+        if (e[0].isIntersecting) {
+          if (carte.classList.contains("armed")) {
+            carte.classList.remove("armed");
+            carte.classList.add("in");
+          }
+          if (!direct && coups < 5) {
+            direct = setInterval(function () {
+              baltoDirect++;
+              coups++;
+              majBalto(true);
+              if (coups >= 5) { clearInterval(direct); direct = null; }
+            }, 6500);
+          }
+        } else if (direct) {
+          clearInterval(direct);
+          direct = null;
+        }
+      }, { threshold: 0.4 });
+      io3.observe(carte);
+    }
+
+    // L'extrait du héros : un résumé du bar, puis la vraie fiche plus bas.
+    var fragMap = document.getElementById("fragMap");
+    var miniCard = document.getElementById("miniCard");
+    var miniNom = document.getElementById("miniNom");
+    var miniLigne = document.getElementById("miniLigne");
+    var miniId = null;
+    function majMini() {
+      if (!miniId) return;
+      miniNom.textContent = BARS[miniId].nom;
+      miniLigne.textContent = miniId === "balto" ? resume("balto") + " · " + (12 + baltoSession + baltoDirect) + " tickets in the last 30 days" : resume(miniId);
+    }
+    function mini(id) {
+      miniId = id;
+      fragMap.querySelectorAll(".pin").forEach(function (p) { p.classList.toggle("sel", p.dataset.bar === id); });
+      miniCard.classList.toggle("on", !!id);
+      majMini();
+    }
+    fragMap.addEventListener("click", function (e) {
+      if (e.target.closest(".mini-card")) return;
+      var p = e.target.closest(".pin");
+      mini(p ? p.dataset.bar : null);
+    });
+    fragMap.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") { mini(null); return; }
+      if (e.key !== "Enter" && e.key !== " ") return;
+      var p = e.target.closest(".pin");
+      if (!p) return;
+      e.preventDefault();
+      mini(p.dataset.bar);
+    });
+    document.getElementById("miniOuvrir").addEventListener("click", function () {
+      var id = miniId;
+      carte.scrollIntoView({ behavior: still ? "auto" : "smooth", block: "center" });
+      setTimeout(function () { ouvrir(id); }, still ? 0 : 650);
+    });
+
+    /* ---------- « J'ai gratté ici » : la saisie, comme dans l'app ---------- */
+    // QuickPlayEntryModal en mode solo : « Quel ticket ? », puis « Combien ? »
+    // avec « Perdu », les deux lots les plus fréquents et « Autre… », puis
+    // Enregistrer. Le résultat, c'est le visiteur qui le donne.
+    var catalogue = {
+      astro: { nom: "Astro", prix: 2, lots: [2, 4] },
+      banco: { nom: "Banco", prix: 1, lots: [1, 2] },
+      cash: { nom: "Cash", prix: 5, lots: [5, 10] }
+    };
+    var choix = null, montant = null;
+    var shTitle = document.getElementById("shTitle");
+    var shSub = document.getElementById("shSub");
+    var g2 = document.getElementById("g2");
+    var step1 = document.getElementById("step1");
+    var step2 = document.getElementById("step2");
+    var prix = document.getElementById("prix");
+    var tlist = document.getElementById("tlist");
+    var chips = document.getElementById("chips");
+    var pcard = document.getElementById("pcard");
+    var tpillName = document.getElementById("tpillName");
+    var shHint = document.getElementById("shHint");
+    var save = document.getElementById("save");
+    var scNote = document.getElementById("scNote");
+
+    function etape1() {
+      choix = null; montant = null;
+      shTitle.textContent = "Which ticket?";
+      shSub.textContent = "Pick the ticket you scratched.";
+      g2.classList.remove("on");
+      step1.hidden = false;
+      step2.hidden = true;
+    }
+
+    function puce(label, valeur, inactive) {
+      var b = document.createElement("button");
+      b.type = "button";
+      b.className = "chip";
+      b.setAttribute("role", "radio");
+      b.setAttribute("aria-checked", "false");
+      b.textContent = label;
+      if (inactive) { b.setAttribute("aria-disabled", "true"); b.title = "Other prizes and custom amounts: in the app"; }
+      else b.dataset.v = valeur;
+      return b;
+    }
+
+    function etape2(k) {
+      choix = k; montant = null;
+      var t = catalogue[k];
+      shTitle.textContent = "How much?";
+      shSub.textContent = "How much did this ticket win?";
+      g2.classList.add("on");
+      tpillName.textContent = t.nom;
+      chips.textContent = "";
+      chips.appendChild(puce("Lost", 0));
+      t.lots.forEach(function (l) { chips.appendChild(puce(fmtS(l), l)); });
+      chips.appendChild(puce("Other…", null, true));
+      pcard.classList.remove("set");
+      shHint.hidden = false;
+      save.disabled = true;
+      step1.hidden = true;
+      step2.hidden = false;
+    }
+
+    prix.addEventListener("click", function (e) {
+      var b = e.target.closest(".chip");
+      if (!b) return;
+      var p = +b.dataset.p;
+      prix.querySelectorAll(".chip").forEach(function (c) { c.setAttribute("aria-checked", c === b ? "true" : "false"); });
+      tlist.querySelectorAll(".trow").forEach(function (r) { r.hidden = p !== 0 && +r.dataset.p !== p; });
+    });
+    tlist.addEventListener("click", function (e) {
+      var r = e.target.closest(".trow");
+      if (r) etape2(r.dataset.k);
+    });
+    document.getElementById("tpill").addEventListener("click", etape1);
+    document.getElementById("shCancel").addEventListener("click", etape1);
+    chips.addEventListener("click", function (e) {
+      var b = e.target.closest(".chip");
+      if (!b || b.getAttribute("aria-disabled") === "true") return;
+      montant = +b.dataset.v;
+      chips.querySelectorAll(".chip").forEach(function (c) { c.setAttribute("aria-checked", c === b ? "true" : "false"); });
+      pcard.classList.add("set");
+      shHint.hidden = true;
+      save.disabled = false;
+    });
+    save.addEventListener("click", function () {
+      if (montant === null || !choix) return;
+      var t = catalogue[choix];
+      scNote.textContent = "Logged in today’s session at Le Balto: " + t.nom + ", " +
+        (montant === 0 ? "lost" : "won " + fmtS(montant)) + " (net " + fmtSS(montant - t.prix) + "). Demo, nothing is saved.";
+      etape1();
+    });
+    etape1();
+  })();
+</script>
+<script src="/assets/visite.js" defer></script>
+</body>
+</html>
