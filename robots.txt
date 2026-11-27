@@ -1,2 +1,4 @@
 User-agent: *
 Disallow:
+
+Sitemap: https://dooka.fr/sitemap.xml
